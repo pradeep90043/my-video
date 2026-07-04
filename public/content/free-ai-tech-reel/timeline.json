@@ -1,0 +1,389 @@
+{
+  "elements": [
+    {
+      "startMs": 0,
+      "endMs": 5000,
+      "imageUrl": "free-01.svg",
+      "enterTransition": "blur",
+      "exitTransition": "blur",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 1.2,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 5000
+        }
+      ]
+    },
+    {
+      "startMs": 5000,
+      "endMs": 10000,
+      "imageUrl": "free-02.svg",
+      "enterTransition": "blur",
+      "exitTransition": "blur",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 1,
+          "to": 1.2,
+          "startMs": 0,
+          "endMs": 5000
+        }
+      ]
+    },
+    {
+      "startMs": 10000,
+      "endMs": 15000,
+      "imageUrl": "free-03.svg",
+      "enterTransition": "blur",
+      "exitTransition": "blur",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 1.2,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 5000
+        }
+      ]
+    },
+    {
+      "startMs": 15000,
+      "endMs": 20000,
+      "imageUrl": "free-04.svg",
+      "enterTransition": "blur",
+      "exitTransition": "blur",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 1,
+          "to": 1.2,
+          "startMs": 0,
+          "endMs": 5000
+        }
+      ]
+    },
+    {
+      "startMs": 20000,
+      "endMs": 25000,
+      "imageUrl": "free-05.svg",
+      "enterTransition": "blur",
+      "exitTransition": "blur",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 1.2,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 5000
+        }
+      ]
+    },
+    {
+      "startMs": 25000,
+      "endMs": 30000,
+      "imageUrl": "free-06.svg",
+      "enterTransition": "blur",
+      "exitTransition": "blur",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 1,
+          "to": 1.2,
+          "startMs": 0,
+          "endMs": 5000
+        }
+      ]
+    }
+  ],
+  "text": [
+    {
+      "startMs": 0,
+      "endMs": 1667,
+      "text": "AI automation is moving",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 1667,
+      "endMs": 3333,
+      "text": "from demos into daily",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 3333,
+      "endMs": 5000,
+      "text": "work.",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 5000,
+      "endMs": 6667,
+      "text": "Small teams now automate",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 6667,
+      "endMs": 8333,
+      "text": "research, drafts, support,",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 8333,
+      "endMs": 10000,
+      "text": "and analysis.",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 10000,
+      "endMs": 11667,
+      "text": "The real shift is not the",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 11667,
+      "endMs": 13333,
+      "text": "model. It is the workflow",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 13333,
+      "endMs": 15000,
+      "text": "around it.",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 15000,
+      "endMs": 16667,
+      "text": "Better prompts, cleaner",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 16667,
+      "endMs": 18333,
+      "text": "data, and faster review",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 18333,
+      "endMs": 20000,
+      "text": "loops compound quickly.",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 20000,
+      "endMs": 21667,
+      "text": "Winners will ship useful",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 21667,
+      "endMs": 23333,
+      "text": "systems before the hype",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 23333,
+      "endMs": 25000,
+      "text": "cycle cools.",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 25000,
+      "endMs": 26250,
+      "text": "Watch Free AI Tech Reel",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 26250,
+      "endMs": 27500,
+      "text": "become a practical",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 27500,
+      "endMs": 28750,
+      "text": "advantage, not just a",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    },
+    {
+      "startMs": 28750,
+      "endMs": 30000,
+      "text": "headline.",
+      "position": "center",
+      "animations": [
+        {
+          "type": "scale",
+          "from": 0.82,
+          "to": 1,
+          "startMs": 0,
+          "endMs": 300
+        }
+      ]
+    }
+  ],
+  "audio": [],
+  "shortTitle": "Free AI Tech Reel"
+}

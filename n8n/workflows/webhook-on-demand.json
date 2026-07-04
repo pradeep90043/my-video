@@ -1,0 +1,132 @@
+{
+  "name": "CodeOrCap — Webhook On-Demand Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "generate-video",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "b2c3d4e5-0002-0002-0002-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [250, 300],
+      "webhookId": "codeorcap-generate-video"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "extract-001",
+              "name": "topic",
+              "value": "={{ $json.body.topic ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "extract-002",
+              "name": "category",
+              "value": "={{ $json.body.category ?? '' }}",
+              "type": "string"
+            },
+            {
+              "id": "extract-003",
+              "name": "skipImages",
+              "value": "={{ $json.body.skipImages ?? false }}",
+              "type": "boolean"
+            },
+            {
+              "id": "extract-004",
+              "name": "skipVoice",
+              "value": "={{ $json.body.skipVoice ?? false }}",
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "id": "b2c3d4e5-0002-0002-0002-000000000002",
+      "name": "Extract Params",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3001/api/generate/sync",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"topic\": \"{{ $json.topic }}\",\n  \"category\": \"{{ $json.category }}\",\n  \"skipImages\": {{ $json.skipImages }},\n  \"skipVoice\": {{ $json.skipVoice }}\n}",
+        "options": {
+          "timeout": 600000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "b2c3d4e5-0002-0002-0002-000000000003",
+      "name": "Generate Video",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": {{ $json.success }},\n  \"jobId\": \"{{ $json.jobId }}\",\n  \"title\": \"{{ $json.result?.title ?? '' }}\",\n  \"slug\": \"{{ $json.result?.slug ?? '' }}\",\n  \"videoPath\": \"{{ $json.result?.videoPath ?? '' }}\",\n  \"duration\": {{ $json.result?.duration ?? 0 }},\n  \"error\": \"{{ $json.error ?? '' }}\"\n}"
+      },
+      "id": "b2c3d4e5-0002-0002-0002-000000000004",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1000, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract Params",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Params": {
+      "main": [
+        [
+          {
+            "node": "Generate Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Video": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "id": "webhook-on-demand-v1",
+  "meta": {
+    "instanceId": "codeorcap-local"
+  }
+}

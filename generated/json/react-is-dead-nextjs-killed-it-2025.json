@@ -1,0 +1,1007 @@
+{
+  "id": "b8400392",
+  "title": "React Is Dead? Next.js Took Over (Here's Proof)",
+  "script": {
+    "hook": "Bhai, seedha baat karta hoon — React ab ek library hai, framework nahi. Aur Next.js ne uski gaadi cheen li hai.",
+    "body": "Dekho, 2024 Stack Overflow survey mein Next.js top 3 most-loved frameworks mein hai. React? Sirf ek tool reh gaya hai jiske upar Next.js bana hai. Pehle hum React mein routing khud likhte the, state manage karte the, SEO ke liye jugaad lagate the — Next.js ne yeh sab out-of-the-box de diya. Netflix, TikTok, Twitch — sab Next.js pe hain. Pure React apps production mein rarely milte hain ab. Aur dekho job boards — 'Next.js Developer' postings pichle ek saal mein 40% badhein hain. React seekhna zaroori hai, but woh sirf foundation hai. Ghar banane ke liye Next.js chahiye. React dead nahi hai — but alone use karna? That's the real mistake.",
+    "cta": "Comment karo — tum pure React use karte ho ya Next.js pe shift ho gaye? Aur is video ko us dost ko bhejo jo abhi bhi React mein jugaad laga raha hai. Follow karo CodeOrCap — Stop Guessing. Start Knowing.",
+    "durationSecs": 55,
+    "topic": "React Is Dead — Next.js Killed It",
+    "category": "React"
+  },
+  "voice": "/Users/apple/Desktop/pradeep/my-video/generated/audio/b8400392/voiceover.mp3",
+  "thumbnail": "",
+  "duration": 68.179592,
+  "scenes": [
+    {
+      "id": "scene-1",
+      "duration": 7,
+      "text": "React Is Just A Tool Now.",
+      "voiceText": "Bhai, seedha baat karta hoon — React ab ek library hai, framework nahi. Aur Next.js ne uski gaadi cheen li hai.",
+      "subtitle": "Let's be real — React is a library, not a framework. And Next.js stole its throne.",
+      "imagePrompt": "Dark cyberpunk React logo cracking apart, neon blue fracture lines splitting through it, black void background, dramatic lighting, ultra-sharp 9:16 portrait, cinematic composition",
+      "animation": "pop",
+      "background": "#0B0B0B",
+      "cameraMove": "shake",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-2",
+      "duration": 9,
+      "text": "Next.js: Top 3 Most Loved in 2024",
+      "voiceText": "Dekho, 2024 Stack Overflow survey mein Next.js top 3 most-loved frameworks mein hai. React? Sirf ek tool reh gaya hai jiske upar Next.js bana hai.",
+      "subtitle": "Stack Overflow 2024 survey: Next.js is top 3 most-loved. React is just the foundation underneath.",
+      "imagePrompt": "Towering holographic bar chart suspended in pitch-black void, Next.js bar blazing electric blue crowned with a golden-yellow (#FFB800) glow, competing bars dissolving into shadow. Microscopic circuit traces pulse amber (#FF8A00) along the chart's base. Cold neon reflections scatter across a glossy dark floor. Floating data particles drift upward. Composition: chart centered, heavy negative space above and below. 9:16 portrait, cinematic depth-of-field, ultra-sharp 4K render, cyberpunk data visualization, no humans.",
+      "animation": "slide",
+      "background": "image",
+      "cameraMove": "zoom-in",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-3",
+      "duration": 10,
+      "text": "Routing. SEO. State. All Out-of-the-Box.",
+      "voiceText": "Pehle hum React mein routing khud likhte the, state manage karte the, SEO ke liye jugaad lagate the — Next.js ne yeh sab out-of-the-box de diya.",
+      "subtitle": "We used to hack routing, state, and SEO manually in React. Next.js ships all of it built-in.",
+      "imagePrompt": "Split-screen 9:16 portrait: left side shows chaotic tangled neon-cyan wires labeled \"React\" in flickering red, right side reveals a pristine glowing circuit board labeled \"Next.js\" pulsing with golden-yellow (#FFB800) and orange (#FF8A00) light. Deep black (#0B0B0B) background. Center divider crackles with electric sparks. Bottom third overlaid with bold text: \"Routing. SEO. State. All Out-of-the-Box.\" Cyberpunk ultra-sharp cinematic, no humans.",
+      "animation": "scale",
+      "background": "image",
+      "cameraMove": "pan-left",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-4",
+      "duration": 9,
+      "text": "Netflix. TikTok. Twitch. All Next.js.",
+      "voiceText": "Netflix, TikTok, Twitch — sab Next.js pe hain. Pure React apps production mein rarely milte hain ab.",
+      "subtitle": "Netflix, TikTok, Twitch — all running on Next.js. Pure React in production is rare now.",
+      "imagePrompt": "Hyper-cinematic futuristic megacity skyline at night, towering skyscrapers clad in glowing Next.js logos, Netflix/TikTok/Twitch neon signs dissolving into cascading React component fragments, electric cobalt and deep violet atmosphere, golden yellow (#FFB800) circuit-light streaks cutting vertically through frame, orange (#FF8A00) ember sparks drifting upward, black void sky, zero humans, ultra-sharp 9:16 portrait, photorealistic cyberpunk, 8K detail",
+      "animation": "zoom",
+      "background": "image",
+      "cameraMove": "zoom-out",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-5",
+      "duration": 9,
+      "text": "Next.js Jobs Up 40% in One Year.",
+      "voiceText": "Aur dekho job boards — Next.js Developer postings pichle ek saal mein 40% badhein hain. React seekhna zaroori hai, but woh sirf foundation hai. Ghar banane ke liye Next.js chahiye.",
+      "subtitle": "Next.js Developer job postings up 40% in a year. React is the foundation — Next.js is the house.",
+      "imagePrompt": "Holographic hiring board floating in pitch-black void, towering Next.js job listings pulsing in electric neon green, an upward arrow spiking 40% rendered in molten golden yellow (#FFB800) with orange (#FF8A00) ember glow at its peak. Faint circuit-trace grid lines bleed into the dark background. Glowing text reads \"Next.js Jobs Up 40% in One Year.\" Deep bokeh, volumetric light shafts, cyberpunk data-terminal aesthetic. 9:16 portrait, ultra-sharp cinematic, no humans.",
+      "animation": "typing",
+      "background": "image",
+      "cameraMove": "pan-right",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-6",
+      "duration": 6,
+      "text": "React Alone? That's The Real Mistake.",
+      "voiceText": "React dead nahi hai — but alone use karna? That's the real mistake.",
+      "subtitle": "React isn't dead — but using it alone? That's the real mistake.",
+      "imagePrompt": "Cracked neon React atom symbol dissolving into fragmented circuit shards, bathed in dying amber and blood-red glow, swallowed by an infinite #0B0B0B void. Faint Next.js wordmark pulses in cold white behind it — dominant, victorious. Golden #FFB800 sparks bleed from the fractures. Smoke trails drift upward. Ultra-sharp 9:16 portrait, anamorphic lens flare, cinematic depth, cyberpunk desolation, no humans.",
+      "animation": "scale",
+      "background": "image",
+      "cameraMove": "zoom-in",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-7",
+      "duration": 5,
+      "text": "Pure React or Next.js? Comment Below. Follow CodeOrCap.",
+      "voiceText": "Comment karo — tum pure React use karte ho ya Next.js pe shift ho gaye? Is video ko us dost ko bhejo jo abhi bhi React mein jugaad laga raha hai. Follow karo CodeOrCap — Stop Guessing. Start Knowing.",
+      "subtitle": "Comment: Pure React or Next.js? Share with that friend still hacking React. Follow CodeOrCap — Stop Guessing. Start Knowing.",
+      "imagePrompt": "Minimalist dark screen with neon text glow, CodeOrCap brand logo in electric blue, subtle bokeh light particles, clean professional finish, 9:16 portrait, ultra-sharp cinematic",
+      "animation": "fade",
+      "background": "#0B0B0B",
+      "cameraMove": "static",
+      "imagePath": "",
+      "audioPart": ""
+    }
+  ],
+  "subtitlePath": "/Users/apple/Desktop/pradeep/my-video/generated/subtitles/b8400392/subtitles.srt",
+  "wordTimings": [
+    {
+      "word": "Bhai,",
+      "startMs": 0,
+      "endMs": 396
+    },
+    {
+      "word": "seedha",
+      "startMs": 396,
+      "endMs": 793
+    },
+    {
+      "word": "baat",
+      "startMs": 793,
+      "endMs": 1189
+    },
+    {
+      "word": "karta",
+      "startMs": 1189,
+      "endMs": 1586
+    },
+    {
+      "word": "hoon",
+      "startMs": 1586,
+      "endMs": 1982
+    },
+    {
+      "word": "—",
+      "startMs": 1982,
+      "endMs": 2378
+    },
+    {
+      "word": "React",
+      "startMs": 2378,
+      "endMs": 2775
+    },
+    {
+      "word": "ab",
+      "startMs": 2775,
+      "endMs": 3171
+    },
+    {
+      "word": "ek",
+      "startMs": 3171,
+      "endMs": 3568
+    },
+    {
+      "word": "library",
+      "startMs": 3568,
+      "endMs": 3964
+    },
+    {
+      "word": "hai,",
+      "startMs": 3964,
+      "endMs": 4360
+    },
+    {
+      "word": "framework",
+      "startMs": 4360,
+      "endMs": 4757
+    },
+    {
+      "word": "nahi.",
+      "startMs": 4757,
+      "endMs": 5153
+    },
+    {
+      "word": "Aur",
+      "startMs": 5153,
+      "endMs": 5550
+    },
+    {
+      "word": "Next.js",
+      "startMs": 5550,
+      "endMs": 5946
+    },
+    {
+      "word": "ne",
+      "startMs": 5946,
+      "endMs": 6342
+    },
+    {
+      "word": "uski",
+      "startMs": 6342,
+      "endMs": 6739
+    },
+    {
+      "word": "gaadi",
+      "startMs": 6739,
+      "endMs": 7135
+    },
+    {
+      "word": "cheen",
+      "startMs": 7135,
+      "endMs": 7531
+    },
+    {
+      "word": "li",
+      "startMs": 7531,
+      "endMs": 7928
+    },
+    {
+      "word": "hai.",
+      "startMs": 7928,
+      "endMs": 8324
+    },
+    {
+      "word": "Dekho,",
+      "startMs": 8324,
+      "endMs": 8721
+    },
+    {
+      "word": "2024",
+      "startMs": 8721,
+      "endMs": 9117
+    },
+    {
+      "word": "Stack",
+      "startMs": 9117,
+      "endMs": 9513
+    },
+    {
+      "word": "Overflow",
+      "startMs": 9513,
+      "endMs": 9910
+    },
+    {
+      "word": "survey",
+      "startMs": 9910,
+      "endMs": 10306
+    },
+    {
+      "word": "mein",
+      "startMs": 10306,
+      "endMs": 10703
+    },
+    {
+      "word": "Next.js",
+      "startMs": 10703,
+      "endMs": 11099
+    },
+    {
+      "word": "top",
+      "startMs": 11099,
+      "endMs": 11495
+    },
+    {
+      "word": "3",
+      "startMs": 11495,
+      "endMs": 11892
+    },
+    {
+      "word": "most-loved",
+      "startMs": 11892,
+      "endMs": 12288
+    },
+    {
+      "word": "frameworks",
+      "startMs": 12288,
+      "endMs": 12685
+    },
+    {
+      "word": "mein",
+      "startMs": 12685,
+      "endMs": 13081
+    },
+    {
+      "word": "hai.",
+      "startMs": 13081,
+      "endMs": 13477
+    },
+    {
+      "word": "React?",
+      "startMs": 13477,
+      "endMs": 13874
+    },
+    {
+      "word": "Sirf",
+      "startMs": 13874,
+      "endMs": 14270
+    },
+    {
+      "word": "ek",
+      "startMs": 14270,
+      "endMs": 14667
+    },
+    {
+      "word": "tool",
+      "startMs": 14667,
+      "endMs": 15063
+    },
+    {
+      "word": "reh",
+      "startMs": 15063,
+      "endMs": 15459
+    },
+    {
+      "word": "gaya",
+      "startMs": 15459,
+      "endMs": 15856
+    },
+    {
+      "word": "hai",
+      "startMs": 15856,
+      "endMs": 16252
+    },
+    {
+      "word": "jiske",
+      "startMs": 16252,
+      "endMs": 16649
+    },
+    {
+      "word": "upar",
+      "startMs": 16649,
+      "endMs": 17045
+    },
+    {
+      "word": "Next.js",
+      "startMs": 17045,
+      "endMs": 17441
+    },
+    {
+      "word": "bana",
+      "startMs": 17441,
+      "endMs": 17838
+    },
+    {
+      "word": "hai.",
+      "startMs": 17838,
+      "endMs": 18234
+    },
+    {
+      "word": "Pehle",
+      "startMs": 18234,
+      "endMs": 18630
+    },
+    {
+      "word": "hum",
+      "startMs": 18630,
+      "endMs": 19027
+    },
+    {
+      "word": "React",
+      "startMs": 19027,
+      "endMs": 19423
+    },
+    {
+      "word": "mein",
+      "startMs": 19423,
+      "endMs": 19820
+    },
+    {
+      "word": "routing",
+      "startMs": 19820,
+      "endMs": 20216
+    },
+    {
+      "word": "khud",
+      "startMs": 20216,
+      "endMs": 20612
+    },
+    {
+      "word": "likhte",
+      "startMs": 20612,
+      "endMs": 21009
+    },
+    {
+      "word": "the,",
+      "startMs": 21009,
+      "endMs": 21405
+    },
+    {
+      "word": "state",
+      "startMs": 21405,
+      "endMs": 21802
+    },
+    {
+      "word": "manage",
+      "startMs": 21802,
+      "endMs": 22198
+    },
+    {
+      "word": "karte",
+      "startMs": 22198,
+      "endMs": 22594
+    },
+    {
+      "word": "the,",
+      "startMs": 22594,
+      "endMs": 22991
+    },
+    {
+      "word": "SEO",
+      "startMs": 22991,
+      "endMs": 23387
+    },
+    {
+      "word": "ke",
+      "startMs": 23387,
+      "endMs": 23784
+    },
+    {
+      "word": "liye",
+      "startMs": 23784,
+      "endMs": 24180
+    },
+    {
+      "word": "jugaad",
+      "startMs": 24180,
+      "endMs": 24576
+    },
+    {
+      "word": "lagate",
+      "startMs": 24576,
+      "endMs": 24973
+    },
+    {
+      "word": "the",
+      "startMs": 24973,
+      "endMs": 25369
+    },
+    {
+      "word": "—",
+      "startMs": 25369,
+      "endMs": 25766
+    },
+    {
+      "word": "Next.js",
+      "startMs": 25766,
+      "endMs": 26162
+    },
+    {
+      "word": "ne",
+      "startMs": 26162,
+      "endMs": 26558
+    },
+    {
+      "word": "yeh",
+      "startMs": 26558,
+      "endMs": 26955
+    },
+    {
+      "word": "sab",
+      "startMs": 26955,
+      "endMs": 27351
+    },
+    {
+      "word": "out-of-the-box",
+      "startMs": 27351,
+      "endMs": 27748
+    },
+    {
+      "word": "de",
+      "startMs": 27748,
+      "endMs": 28144
+    },
+    {
+      "word": "diya.",
+      "startMs": 28144,
+      "endMs": 28540
+    },
+    {
+      "word": "Netflix,",
+      "startMs": 28540,
+      "endMs": 28937
+    },
+    {
+      "word": "TikTok,",
+      "startMs": 28937,
+      "endMs": 29333
+    },
+    {
+      "word": "Twitch",
+      "startMs": 29333,
+      "endMs": 29729
+    },
+    {
+      "word": "—",
+      "startMs": 29729,
+      "endMs": 30126
+    },
+    {
+      "word": "sab",
+      "startMs": 30126,
+      "endMs": 30522
+    },
+    {
+      "word": "Next.js",
+      "startMs": 30522,
+      "endMs": 30919
+    },
+    {
+      "word": "pe",
+      "startMs": 30919,
+      "endMs": 31315
+    },
+    {
+      "word": "hain.",
+      "startMs": 31315,
+      "endMs": 31711
+    },
+    {
+      "word": "Pure",
+      "startMs": 31711,
+      "endMs": 32108
+    },
+    {
+      "word": "React",
+      "startMs": 32108,
+      "endMs": 32504
+    },
+    {
+      "word": "apps",
+      "startMs": 32504,
+      "endMs": 32901
+    },
+    {
+      "word": "production",
+      "startMs": 32901,
+      "endMs": 33297
+    },
+    {
+      "word": "mein",
+      "startMs": 33297,
+      "endMs": 33693
+    },
+    {
+      "word": "rarely",
+      "startMs": 33693,
+      "endMs": 34090
+    },
+    {
+      "word": "milte",
+      "startMs": 34090,
+      "endMs": 34486
+    },
+    {
+      "word": "hain",
+      "startMs": 34486,
+      "endMs": 34883
+    },
+    {
+      "word": "ab.",
+      "startMs": 34883,
+      "endMs": 35279
+    },
+    {
+      "word": "Aur",
+      "startMs": 35279,
+      "endMs": 35675
+    },
+    {
+      "word": "dekho",
+      "startMs": 35675,
+      "endMs": 36072
+    },
+    {
+      "word": "job",
+      "startMs": 36072,
+      "endMs": 36468
+    },
+    {
+      "word": "boards",
+      "startMs": 36468,
+      "endMs": 36865
+    },
+    {
+      "word": "—",
+      "startMs": 36865,
+      "endMs": 37261
+    },
+    {
+      "word": "'Next.js",
+      "startMs": 37261,
+      "endMs": 37657
+    },
+    {
+      "word": "Developer'",
+      "startMs": 37657,
+      "endMs": 38054
+    },
+    {
+      "word": "postings",
+      "startMs": 38054,
+      "endMs": 38450
+    },
+    {
+      "word": "pichle",
+      "startMs": 38450,
+      "endMs": 38847
+    },
+    {
+      "word": "ek",
+      "startMs": 38847,
+      "endMs": 39243
+    },
+    {
+      "word": "saal",
+      "startMs": 39243,
+      "endMs": 39639
+    },
+    {
+      "word": "mein",
+      "startMs": 39639,
+      "endMs": 40036
+    },
+    {
+      "word": "40%",
+      "startMs": 40036,
+      "endMs": 40432
+    },
+    {
+      "word": "badhein",
+      "startMs": 40432,
+      "endMs": 40828
+    },
+    {
+      "word": "hain.",
+      "startMs": 40828,
+      "endMs": 41225
+    },
+    {
+      "word": "React",
+      "startMs": 41225,
+      "endMs": 41621
+    },
+    {
+      "word": "seekhna",
+      "startMs": 41621,
+      "endMs": 42018
+    },
+    {
+      "word": "zaroori",
+      "startMs": 42018,
+      "endMs": 42414
+    },
+    {
+      "word": "hai,",
+      "startMs": 42414,
+      "endMs": 42810
+    },
+    {
+      "word": "but",
+      "startMs": 42810,
+      "endMs": 43207
+    },
+    {
+      "word": "woh",
+      "startMs": 43207,
+      "endMs": 43603
+    },
+    {
+      "word": "sirf",
+      "startMs": 43603,
+      "endMs": 44000
+    },
+    {
+      "word": "foundation",
+      "startMs": 44000,
+      "endMs": 44396
+    },
+    {
+      "word": "hai.",
+      "startMs": 44396,
+      "endMs": 44792
+    },
+    {
+      "word": "Ghar",
+      "startMs": 44792,
+      "endMs": 45189
+    },
+    {
+      "word": "banane",
+      "startMs": 45189,
+      "endMs": 45585
+    },
+    {
+      "word": "ke",
+      "startMs": 45585,
+      "endMs": 45982
+    },
+    {
+      "word": "liye",
+      "startMs": 45982,
+      "endMs": 46378
+    },
+    {
+      "word": "Next.js",
+      "startMs": 46378,
+      "endMs": 46774
+    },
+    {
+      "word": "chahiye.",
+      "startMs": 46774,
+      "endMs": 47171
+    },
+    {
+      "word": "React",
+      "startMs": 47171,
+      "endMs": 47567
+    },
+    {
+      "word": "dead",
+      "startMs": 47567,
+      "endMs": 47964
+    },
+    {
+      "word": "nahi",
+      "startMs": 47964,
+      "endMs": 48360
+    },
+    {
+      "word": "hai",
+      "startMs": 48360,
+      "endMs": 48756
+    },
+    {
+      "word": "—",
+      "startMs": 48756,
+      "endMs": 49153
+    },
+    {
+      "word": "but",
+      "startMs": 49153,
+      "endMs": 49549
+    },
+    {
+      "word": "alone",
+      "startMs": 49549,
+      "endMs": 49946
+    },
+    {
+      "word": "use",
+      "startMs": 49946,
+      "endMs": 50342
+    },
+    {
+      "word": "karna?",
+      "startMs": 50342,
+      "endMs": 50738
+    },
+    {
+      "word": "That's",
+      "startMs": 50738,
+      "endMs": 51135
+    },
+    {
+      "word": "the",
+      "startMs": 51135,
+      "endMs": 51531
+    },
+    {
+      "word": "real",
+      "startMs": 51531,
+      "endMs": 51927
+    },
+    {
+      "word": "mistake.",
+      "startMs": 51927,
+      "endMs": 52324
+    },
+    {
+      "word": "Comment",
+      "startMs": 52324,
+      "endMs": 52720
+    },
+    {
+      "word": "karo",
+      "startMs": 52720,
+      "endMs": 53117
+    },
+    {
+      "word": "—",
+      "startMs": 53117,
+      "endMs": 53513
+    },
+    {
+      "word": "tum",
+      "startMs": 53513,
+      "endMs": 53909
+    },
+    {
+      "word": "pure",
+      "startMs": 53909,
+      "endMs": 54306
+    },
+    {
+      "word": "React",
+      "startMs": 54306,
+      "endMs": 54702
+    },
+    {
+      "word": "use",
+      "startMs": 54702,
+      "endMs": 55099
+    },
+    {
+      "word": "karte",
+      "startMs": 55099,
+      "endMs": 55495
+    },
+    {
+      "word": "ho",
+      "startMs": 55495,
+      "endMs": 55891
+    },
+    {
+      "word": "ya",
+      "startMs": 55891,
+      "endMs": 56288
+    },
+    {
+      "word": "Next.js",
+      "startMs": 56288,
+      "endMs": 56684
+    },
+    {
+      "word": "pe",
+      "startMs": 56684,
+      "endMs": 57081
+    },
+    {
+      "word": "shift",
+      "startMs": 57081,
+      "endMs": 57477
+    },
+    {
+      "word": "ho",
+      "startMs": 57477,
+      "endMs": 57873
+    },
+    {
+      "word": "gaye?",
+      "startMs": 57873,
+      "endMs": 58270
+    },
+    {
+      "word": "Aur",
+      "startMs": 58270,
+      "endMs": 58666
+    },
+    {
+      "word": "is",
+      "startMs": 58666,
+      "endMs": 59063
+    },
+    {
+      "word": "video",
+      "startMs": 59063,
+      "endMs": 59459
+    },
+    {
+      "word": "ko",
+      "startMs": 59459,
+      "endMs": 59855
+    },
+    {
+      "word": "us",
+      "startMs": 59855,
+      "endMs": 60252
+    },
+    {
+      "word": "dost",
+      "startMs": 60252,
+      "endMs": 60648
+    },
+    {
+      "word": "ko",
+      "startMs": 60648,
+      "endMs": 61045
+    },
+    {
+      "word": "bhejo",
+      "startMs": 61045,
+      "endMs": 61441
+    },
+    {
+      "word": "jo",
+      "startMs": 61441,
+      "endMs": 61837
+    },
+    {
+      "word": "abhi",
+      "startMs": 61837,
+      "endMs": 62234
+    },
+    {
+      "word": "bhi",
+      "startMs": 62234,
+      "endMs": 62630
+    },
+    {
+      "word": "React",
+      "startMs": 62630,
+      "endMs": 63026
+    },
+    {
+      "word": "mein",
+      "startMs": 63026,
+      "endMs": 63423
+    },
+    {
+      "word": "jugaad",
+      "startMs": 63423,
+      "endMs": 63819
+    },
+    {
+      "word": "laga",
+      "startMs": 63819,
+      "endMs": 64216
+    },
+    {
+      "word": "raha",
+      "startMs": 64216,
+      "endMs": 64612
+    },
+    {
+      "word": "hai.",
+      "startMs": 64612,
+      "endMs": 65008
+    },
+    {
+      "word": "Follow",
+      "startMs": 65008,
+      "endMs": 65405
+    },
+    {
+      "word": "karo",
+      "startMs": 65405,
+      "endMs": 65801
+    },
+    {
+      "word": "CodeOrCap",
+      "startMs": 65801,
+      "endMs": 66198
+    },
+    {
+      "word": "—",
+      "startMs": 66198,
+      "endMs": 66594
+    },
+    {
+      "word": "Stop",
+      "startMs": 66594,
+      "endMs": 66990
+    },
+    {
+      "word": "Guessing.",
+      "startMs": 66990,
+      "endMs": 67387
+    },
+    {
+      "word": "Start",
+      "startMs": 67387,
+      "endMs": 67783
+    },
+    {
+      "word": "Knowing.",
+      "startMs": 67783,
+      "endMs": 68180
+    }
+  ],
+  "musicTrack": "",
+  "metadata": {
+    "title": "React Is Dead? Next.js Took Over (Here's Proof)",
+    "description": "Bhai, seedha baat karta hoon — React ab ek library hai, framework nahi. Aur Next.js ne uski gaadi cheen li hai. Every serious React project today runs inside Next.js. The routing, the data fetching, the SSR, the deployment — Next.js owns all of it now. React is just the rendering engine underneath. So are you still calling yourself a \"React developer\" in 2025? That title needs an upgrade. In this video, we break down exactly how Next.js swallowed the React ecosystem, what it means for your career, and whether React is actually dying or just evolving into something unrecognisable. If you are building with React and ignoring Next.js, you are already behind. This is not hype — this is the market. Watch till the end. Subscribe to CodeOrCap → @codeorcap | Stop Guessing. Start Knowing.",
+    "tags": [
+      "react is dead",
+      "nextjs vs react",
+      "is react dead 2025",
+      "nextjs killed react",
+      "react future 2025",
+      "next.js tutorial",
+      "react developer career",
+      "frontend frameworks 2025",
+      "javascript frameworks 2025",
+      "nextjs app router",
+      "react library vs framework",
+      "web development 2025",
+      "full stack nextjs",
+      "react ecosystem",
+      "learn nextjs india"
+    ],
+    "hashtags": [
+      "#CodeOrCap",
+      "#TechMythBuster",
+      "#ReactJS",
+      "#NextJS",
+      "#ReactIsDead",
+      "#WebDev",
+      "#JavaScript",
+      "#HindiTech",
+      "#FrontendDev"
+    ],
+    "filename": "react-is-dead-nextjs-killed-it-2025",
+    "slug": "react-is-dead-nextjs-killed-it-2025"
+  },
+  "createdAt": "2026-06-26T17:29:13.671Z"
+}

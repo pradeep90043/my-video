@@ -1,0 +1,972 @@
+{
+  "id": "0f5a4035",
+  "title": "Vibe Coding Is Making Indian Developers Unemployable",
+  "script": {
+    "hook": "Bhai, tu code likh raha hai ya sirf ChatGPT ka copy-paste machine ban gaya hai?",
+    "body": "Ek survey mein aaya — 67% Indian developers jo sirf AI tools pe depend karte hain, unhe basic DSA problems solve nahi hoti bina AI ke. Vibe coding matlab hai vibes se code karna — bina samjhe, bina sooche. Interviews mein yahi hota hai — recruiter ne ek simple pointer question pucha, aur banda blank ho gaya kyunki pehle toh GPT answer deta tha. Top companies like Google, Microsoft, aur homegrown startups bhi ab specifically puch rahe hain — 'explain karo yeh code kyun kaam karta hai' — aur vibe coders yahan fail ho rahe hain. AI ek tool hai, crutch nahi — jo developer fundamentals jaanta hai, wahi AI ko 10x effectively use kar sakta hai.",
+    "cta": "Comment karo — 'FUNDAMENTALS' agar tu actually samajhke code karta hai, ya 'VIBES' agar tu directly GPT pe jaata hai. Follow karo CodeOrCap — kyunki yahan hum sirf vibes nahi, knowledge dete hain.",
+    "durationSecs": 55,
+    "topic": "Vibe Coding Is Making Indian Developers Lazy and Unemployable",
+    "category": "AI"
+  },
+  "voice": "content/factory/vibe-coding-indian-developers-unemployable-2025/voiceover.mp3",
+  "thumbnail": "",
+  "duration": 71.706122,
+  "scenes": [
+    {
+      "id": "scene-1",
+      "duration": 8,
+      "text": "Tu Code Likh Raha Hai Ya Copy-Paste Machine Ban Gaya?",
+      "voiceText": "Bhai, tu code likh raha hai ya sirf ChatGPT ka copy-paste machine ban gaya hai?",
+      "subtitle": "Are you coding or just a ChatGPT copy-paste machine?",
+      "imagePrompt": "dark cyberpunk terminal screen glowing neon green, ctrl+c ctrl+v keys highlighted in red neon, black background, ultra-sharp, 9:16 portrait, minimal composition, dramatic shadows",
+      "animation": "pop",
+      "background": "#0B0B0B",
+      "cameraMove": "shake",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-2",
+      "duration": 10,
+      "text": "67% Indian Devs Can't Solve DSA Without AI",
+      "voiceText": "Ek survey mein aaya — 67% Indian developers jo sirf AI tools pe depend karte hain, unhe basic DSA problems solve nahi hoti bina AI ke.",
+      "subtitle": "Survey: 67% AI-dependent Indian devs can't solve basic DSA without AI.",
+      "imagePrompt": "Massive glowing pie chart dominates a pitch-black void, 67% segment burning in crimson neon, edges bleeding golden-yellow (#FFB800) sparks. Circuit board veins crawl across the background, pulsing orange (#FF8A00) data streams. Shattered Python and LeetCode fragments orbit the chart like digital debris. Volumetric god-rays cut through smoke. Bottom-third: bold white stat text. Cyberpunk data visualization, ultra-sharp, 9:16 portrait, no humans.",
+      "animation": "scale",
+      "background": "image",
+      "cameraMove": "zoom-in",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-3",
+      "duration": 9,
+      "text": "Vibe Coding = Vibes Se Code, Bina Samjhe",
+      "voiceText": "Vibe coding matlab hai vibes se code karna — bina samjhe, bina sooche.",
+      "subtitle": "Vibe coding means coding on vibes — without understanding, without thinking.",
+      "imagePrompt": "Mechanical keyboard bathed in golden-yellow and orange neon glow, keys melting and morphing into glowing question marks and chaotic wavy lines, floating fragments of corrupted code dissolving into digital smoke, deep black background (#0B0B0B) with amber and orange light halos, circuit-board textures bleeding through shadows, ultra-sharp macro lens detail, dramatic chiaroscuro lighting, cinematic depth-of-field, vertical 9:16 portrait, cyberpunk decay aesthetic, no humans.",
+      "animation": "typing",
+      "background": "image",
+      "cameraMove": "pan-left",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-4",
+      "duration": 10,
+      "text": "Interview Mein Blank Ho Gaya — GPT Wahan Nahi Tha",
+      "voiceText": "Interviews mein yahi hota hai — recruiter ne ek simple pointer question pucha, aur banda blank ho gaya kyunki pehle toh GPT answer deta tha.",
+      "subtitle": "In interviews — recruiter asked a simple pointer question and the dev went blank. GPT wasn't there.",
+      "imagePrompt": "Pitch-black interview room, lone golden-yellow spotlight (#FFB800) carving an empty chair from darkness, whiteboard behind it glowing faint amber with a linked-list diagram scrawled in desperation. Corner wall pulsing neon red ERROR in sharp cyberpunk typography. Circuit-trace patterns bleed across the floor in orange (#FF8A00). Floating ghost-code fragments dissolve mid-air — unanswered. Ultra-sharp, high contrast, 9:16 portrait, no humans, cinematic depth-of-field, dystopian tech atmosphere.",
+      "animation": "zoom",
+      "background": "image",
+      "cameraMove": "zoom-in",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-5",
+      "duration": 10,
+      "text": "Google, Microsoft, Startups — Sab Pooch Rahe Hain 'WHY'",
+      "voiceText": "Top companies like Google, Microsoft, aur homegrown startups bhi ab specifically puch rahe hain — 'explain karo yeh code kyun kaam karta hai' — aur vibe coders yahan fail ho rahe hain.",
+      "subtitle": "Top companies now ask 'explain WHY this code works' — and vibe coders fail here.",
+      "imagePrompt": "Fractured neon logos of Google and Microsoft hovering in glitchy cyberpunk void, chromatic aberration tearing edges apart, cascading red X marks slashing through floating code snippets in electric crimson. Circuit-board ground reflects toxic cyan and magenta glow. Golden yellow (#FFB800) hazard stripes frame the composition, orange (#FF8A00) embers drifting upward like dying sparks. Deep #0B0B0B background swallows the scene. Dramatic low-angle perspective, 9:16 portrait, ultra-sharp cinematic render, no humans, ominous decay atmosphere.",
+      "animation": "slide",
+      "background": "image",
+      "cameraMove": "pan-right",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-6",
+      "duration": 8,
+      "text": "AI Is A Tool, Not A Crutch",
+      "voiceText": "AI ek tool hai, crutch nahi — jo developer fundamentals jaanta hai, wahi AI ko 10x effectively use kar sakta hai.",
+      "subtitle": "AI is a tool, not a crutch — devs with strong fundamentals use AI 10x more effectively.",
+      "imagePrompt": "A colossal hammer forged from glowing circuit boards and molten neon hovers center-frame against a void-black background. Cyan and gold energy veins pulse through its surface. Floating around it: cascading code fragments, mathematical equations, and fragmented dependency graphs dissolve mid-air — half-built, abandoned. Golden-yellow (#FFB800) light bleeds from the impact point. Orange (#FF8A00) sparks scatter downward. Minimal. Ominous. 9:16 portrait, ultra-sharp, cinematic depth-of-field.",
+      "animation": "scale",
+      "background": "image",
+      "cameraMove": "zoom-out",
+      "imagePath": "",
+      "audioPart": ""
+    },
+    {
+      "id": "scene-7",
+      "duration": 10,
+      "text": "Comment: FUNDAMENTALS ya VIBES? Follow CodeOrCap",
+      "voiceText": "Comment karo — 'FUNDAMENTALS' agar tu actually samajhke code karta hai, ya 'VIBES' agar tu directly GPT pe jaata hai. Follow karo CodeOrCap — kyunki yahan hum sirf vibes nahi, knowledge dete hain.",
+      "subtitle": "Comment 'FUNDAMENTALS' or 'VIBES'. Follow CodeOrCap — we give knowledge, not just vibes.",
+      "imagePrompt": "dark minimal screen showing two glowing neon buttons — FUNDAMENTALS in green and VIBES in red, CodeOrCap logo in neon at bottom, clean cyberpunk UI aesthetic, 9:16 portrait, ultra-sharp",
+      "animation": "fade",
+      "background": "#0B0B0B",
+      "cameraMove": "static",
+      "imagePath": "",
+      "audioPart": ""
+    }
+  ],
+  "subtitlePath": "/Users/apple/Desktop/pradeep/my-video/generated/subtitles/0f5a4035/subtitles.srt",
+  "wordTimings": [
+    {
+      "word": "Bhai,",
+      "startMs": 0,
+      "endMs": 435
+    },
+    {
+      "word": "tu",
+      "startMs": 435,
+      "endMs": 869
+    },
+    {
+      "word": "code",
+      "startMs": 869,
+      "endMs": 1304
+    },
+    {
+      "word": "likh",
+      "startMs": 1304,
+      "endMs": 1738
+    },
+    {
+      "word": "raha",
+      "startMs": 1738,
+      "endMs": 2173
+    },
+    {
+      "word": "hai",
+      "startMs": 2173,
+      "endMs": 2607
+    },
+    {
+      "word": "ya",
+      "startMs": 2607,
+      "endMs": 3042
+    },
+    {
+      "word": "sirf",
+      "startMs": 3042,
+      "endMs": 3477
+    },
+    {
+      "word": "ChatGPT",
+      "startMs": 3477,
+      "endMs": 3911
+    },
+    {
+      "word": "ka",
+      "startMs": 3911,
+      "endMs": 4346
+    },
+    {
+      "word": "copy-paste",
+      "startMs": 4346,
+      "endMs": 4780
+    },
+    {
+      "word": "machine",
+      "startMs": 4780,
+      "endMs": 5215
+    },
+    {
+      "word": "ban",
+      "startMs": 5215,
+      "endMs": 5650
+    },
+    {
+      "word": "gaya",
+      "startMs": 5650,
+      "endMs": 6084
+    },
+    {
+      "word": "hai?",
+      "startMs": 6084,
+      "endMs": 6519
+    },
+    {
+      "word": "Ek",
+      "startMs": 6519,
+      "endMs": 6953
+    },
+    {
+      "word": "survey",
+      "startMs": 6953,
+      "endMs": 7388
+    },
+    {
+      "word": "mein",
+      "startMs": 7388,
+      "endMs": 7822
+    },
+    {
+      "word": "aaya",
+      "startMs": 7822,
+      "endMs": 8257
+    },
+    {
+      "word": "—",
+      "startMs": 8257,
+      "endMs": 8692
+    },
+    {
+      "word": "67%",
+      "startMs": 8692,
+      "endMs": 9126
+    },
+    {
+      "word": "Indian",
+      "startMs": 9126,
+      "endMs": 9561
+    },
+    {
+      "word": "developers",
+      "startMs": 9561,
+      "endMs": 9995
+    },
+    {
+      "word": "jo",
+      "startMs": 9995,
+      "endMs": 10430
+    },
+    {
+      "word": "sirf",
+      "startMs": 10430,
+      "endMs": 10865
+    },
+    {
+      "word": "AI",
+      "startMs": 10865,
+      "endMs": 11299
+    },
+    {
+      "word": "tools",
+      "startMs": 11299,
+      "endMs": 11734
+    },
+    {
+      "word": "pe",
+      "startMs": 11734,
+      "endMs": 12168
+    },
+    {
+      "word": "depend",
+      "startMs": 12168,
+      "endMs": 12603
+    },
+    {
+      "word": "karte",
+      "startMs": 12603,
+      "endMs": 13037
+    },
+    {
+      "word": "hain,",
+      "startMs": 13037,
+      "endMs": 13472
+    },
+    {
+      "word": "unhe",
+      "startMs": 13472,
+      "endMs": 13907
+    },
+    {
+      "word": "basic",
+      "startMs": 13907,
+      "endMs": 14341
+    },
+    {
+      "word": "DSA",
+      "startMs": 14341,
+      "endMs": 14776
+    },
+    {
+      "word": "problems",
+      "startMs": 14776,
+      "endMs": 15210
+    },
+    {
+      "word": "solve",
+      "startMs": 15210,
+      "endMs": 15645
+    },
+    {
+      "word": "nahi",
+      "startMs": 15645,
+      "endMs": 16080
+    },
+    {
+      "word": "hoti",
+      "startMs": 16080,
+      "endMs": 16514
+    },
+    {
+      "word": "bina",
+      "startMs": 16514,
+      "endMs": 16949
+    },
+    {
+      "word": "AI",
+      "startMs": 16949,
+      "endMs": 17383
+    },
+    {
+      "word": "ke.",
+      "startMs": 17383,
+      "endMs": 17818
+    },
+    {
+      "word": "Vibe",
+      "startMs": 17818,
+      "endMs": 18252
+    },
+    {
+      "word": "coding",
+      "startMs": 18252,
+      "endMs": 18687
+    },
+    {
+      "word": "matlab",
+      "startMs": 18687,
+      "endMs": 19122
+    },
+    {
+      "word": "hai",
+      "startMs": 19122,
+      "endMs": 19556
+    },
+    {
+      "word": "vibes",
+      "startMs": 19556,
+      "endMs": 19991
+    },
+    {
+      "word": "se",
+      "startMs": 19991,
+      "endMs": 20425
+    },
+    {
+      "word": "code",
+      "startMs": 20425,
+      "endMs": 20860
+    },
+    {
+      "word": "karna",
+      "startMs": 20860,
+      "endMs": 21295
+    },
+    {
+      "word": "—",
+      "startMs": 21295,
+      "endMs": 21729
+    },
+    {
+      "word": "bina",
+      "startMs": 21729,
+      "endMs": 22164
+    },
+    {
+      "word": "samjhe,",
+      "startMs": 22164,
+      "endMs": 22598
+    },
+    {
+      "word": "bina",
+      "startMs": 22598,
+      "endMs": 23033
+    },
+    {
+      "word": "sooche.",
+      "startMs": 23033,
+      "endMs": 23467
+    },
+    {
+      "word": "Interviews",
+      "startMs": 23467,
+      "endMs": 23902
+    },
+    {
+      "word": "mein",
+      "startMs": 23902,
+      "endMs": 24337
+    },
+    {
+      "word": "yahi",
+      "startMs": 24337,
+      "endMs": 24771
+    },
+    {
+      "word": "hota",
+      "startMs": 24771,
+      "endMs": 25206
+    },
+    {
+      "word": "hai",
+      "startMs": 25206,
+      "endMs": 25640
+    },
+    {
+      "word": "—",
+      "startMs": 25640,
+      "endMs": 26075
+    },
+    {
+      "word": "recruiter",
+      "startMs": 26075,
+      "endMs": 26510
+    },
+    {
+      "word": "ne",
+      "startMs": 26510,
+      "endMs": 26944
+    },
+    {
+      "word": "ek",
+      "startMs": 26944,
+      "endMs": 27379
+    },
+    {
+      "word": "simple",
+      "startMs": 27379,
+      "endMs": 27813
+    },
+    {
+      "word": "pointer",
+      "startMs": 27813,
+      "endMs": 28248
+    },
+    {
+      "word": "question",
+      "startMs": 28248,
+      "endMs": 28682
+    },
+    {
+      "word": "pucha,",
+      "startMs": 28682,
+      "endMs": 29117
+    },
+    {
+      "word": "aur",
+      "startMs": 29117,
+      "endMs": 29552
+    },
+    {
+      "word": "banda",
+      "startMs": 29552,
+      "endMs": 29986
+    },
+    {
+      "word": "blank",
+      "startMs": 29986,
+      "endMs": 30421
+    },
+    {
+      "word": "ho",
+      "startMs": 30421,
+      "endMs": 30855
+    },
+    {
+      "word": "gaya",
+      "startMs": 30855,
+      "endMs": 31290
+    },
+    {
+      "word": "kyunki",
+      "startMs": 31290,
+      "endMs": 31725
+    },
+    {
+      "word": "pehle",
+      "startMs": 31725,
+      "endMs": 32159
+    },
+    {
+      "word": "toh",
+      "startMs": 32159,
+      "endMs": 32594
+    },
+    {
+      "word": "GPT",
+      "startMs": 32594,
+      "endMs": 33028
+    },
+    {
+      "word": "answer",
+      "startMs": 33028,
+      "endMs": 33463
+    },
+    {
+      "word": "deta",
+      "startMs": 33463,
+      "endMs": 33897
+    },
+    {
+      "word": "tha.",
+      "startMs": 33897,
+      "endMs": 34332
+    },
+    {
+      "word": "Top",
+      "startMs": 34332,
+      "endMs": 34767
+    },
+    {
+      "word": "companies",
+      "startMs": 34767,
+      "endMs": 35201
+    },
+    {
+      "word": "like",
+      "startMs": 35201,
+      "endMs": 35636
+    },
+    {
+      "word": "Google,",
+      "startMs": 35636,
+      "endMs": 36070
+    },
+    {
+      "word": "Microsoft,",
+      "startMs": 36070,
+      "endMs": 36505
+    },
+    {
+      "word": "aur",
+      "startMs": 36505,
+      "endMs": 36940
+    },
+    {
+      "word": "homegrown",
+      "startMs": 36940,
+      "endMs": 37374
+    },
+    {
+      "word": "startups",
+      "startMs": 37374,
+      "endMs": 37809
+    },
+    {
+      "word": "bhi",
+      "startMs": 37809,
+      "endMs": 38243
+    },
+    {
+      "word": "ab",
+      "startMs": 38243,
+      "endMs": 38678
+    },
+    {
+      "word": "specifically",
+      "startMs": 38678,
+      "endMs": 39112
+    },
+    {
+      "word": "puch",
+      "startMs": 39112,
+      "endMs": 39547
+    },
+    {
+      "word": "rahe",
+      "startMs": 39547,
+      "endMs": 39982
+    },
+    {
+      "word": "hain",
+      "startMs": 39982,
+      "endMs": 40416
+    },
+    {
+      "word": "—",
+      "startMs": 40416,
+      "endMs": 40851
+    },
+    {
+      "word": "'explain",
+      "startMs": 40851,
+      "endMs": 41285
+    },
+    {
+      "word": "karo",
+      "startMs": 41285,
+      "endMs": 41720
+    },
+    {
+      "word": "yeh",
+      "startMs": 41720,
+      "endMs": 42155
+    },
+    {
+      "word": "code",
+      "startMs": 42155,
+      "endMs": 42589
+    },
+    {
+      "word": "kyun",
+      "startMs": 42589,
+      "endMs": 43024
+    },
+    {
+      "word": "kaam",
+      "startMs": 43024,
+      "endMs": 43458
+    },
+    {
+      "word": "karta",
+      "startMs": 43458,
+      "endMs": 43893
+    },
+    {
+      "word": "hai'",
+      "startMs": 43893,
+      "endMs": 44327
+    },
+    {
+      "word": "—",
+      "startMs": 44327,
+      "endMs": 44762
+    },
+    {
+      "word": "aur",
+      "startMs": 44762,
+      "endMs": 45197
+    },
+    {
+      "word": "vibe",
+      "startMs": 45197,
+      "endMs": 45631
+    },
+    {
+      "word": "coders",
+      "startMs": 45631,
+      "endMs": 46066
+    },
+    {
+      "word": "yahan",
+      "startMs": 46066,
+      "endMs": 46500
+    },
+    {
+      "word": "fail",
+      "startMs": 46500,
+      "endMs": 46935
+    },
+    {
+      "word": "ho",
+      "startMs": 46935,
+      "endMs": 47369
+    },
+    {
+      "word": "rahe",
+      "startMs": 47369,
+      "endMs": 47804
+    },
+    {
+      "word": "hain.",
+      "startMs": 47804,
+      "endMs": 48239
+    },
+    {
+      "word": "AI",
+      "startMs": 48239,
+      "endMs": 48673
+    },
+    {
+      "word": "ek",
+      "startMs": 48673,
+      "endMs": 49108
+    },
+    {
+      "word": "tool",
+      "startMs": 49108,
+      "endMs": 49542
+    },
+    {
+      "word": "hai,",
+      "startMs": 49542,
+      "endMs": 49977
+    },
+    {
+      "word": "crutch",
+      "startMs": 49977,
+      "endMs": 50412
+    },
+    {
+      "word": "nahi",
+      "startMs": 50412,
+      "endMs": 50846
+    },
+    {
+      "word": "—",
+      "startMs": 50846,
+      "endMs": 51281
+    },
+    {
+      "word": "jo",
+      "startMs": 51281,
+      "endMs": 51715
+    },
+    {
+      "word": "developer",
+      "startMs": 51715,
+      "endMs": 52150
+    },
+    {
+      "word": "fundamentals",
+      "startMs": 52150,
+      "endMs": 52584
+    },
+    {
+      "word": "jaanta",
+      "startMs": 52584,
+      "endMs": 53019
+    },
+    {
+      "word": "hai,",
+      "startMs": 53019,
+      "endMs": 53454
+    },
+    {
+      "word": "wahi",
+      "startMs": 53454,
+      "endMs": 53888
+    },
+    {
+      "word": "AI",
+      "startMs": 53888,
+      "endMs": 54323
+    },
+    {
+      "word": "ko",
+      "startMs": 54323,
+      "endMs": 54757
+    },
+    {
+      "word": "10x",
+      "startMs": 54757,
+      "endMs": 55192
+    },
+    {
+      "word": "effectively",
+      "startMs": 55192,
+      "endMs": 55627
+    },
+    {
+      "word": "use",
+      "startMs": 55627,
+      "endMs": 56061
+    },
+    {
+      "word": "kar",
+      "startMs": 56061,
+      "endMs": 56496
+    },
+    {
+      "word": "sakta",
+      "startMs": 56496,
+      "endMs": 56930
+    },
+    {
+      "word": "hai.",
+      "startMs": 56930,
+      "endMs": 57365
+    },
+    {
+      "word": "Comment",
+      "startMs": 57365,
+      "endMs": 57799
+    },
+    {
+      "word": "karo",
+      "startMs": 57799,
+      "endMs": 58234
+    },
+    {
+      "word": "—",
+      "startMs": 58234,
+      "endMs": 58669
+    },
+    {
+      "word": "'FUNDAMENTALS'",
+      "startMs": 58669,
+      "endMs": 59103
+    },
+    {
+      "word": "agar",
+      "startMs": 59103,
+      "endMs": 59538
+    },
+    {
+      "word": "tu",
+      "startMs": 59538,
+      "endMs": 59972
+    },
+    {
+      "word": "actually",
+      "startMs": 59972,
+      "endMs": 60407
+    },
+    {
+      "word": "samajhke",
+      "startMs": 60407,
+      "endMs": 60842
+    },
+    {
+      "word": "code",
+      "startMs": 60842,
+      "endMs": 61276
+    },
+    {
+      "word": "karta",
+      "startMs": 61276,
+      "endMs": 61711
+    },
+    {
+      "word": "hai,",
+      "startMs": 61711,
+      "endMs": 62145
+    },
+    {
+      "word": "ya",
+      "startMs": 62145,
+      "endMs": 62580
+    },
+    {
+      "word": "'VIBES'",
+      "startMs": 62580,
+      "endMs": 63014
+    },
+    {
+      "word": "agar",
+      "startMs": 63014,
+      "endMs": 63449
+    },
+    {
+      "word": "tu",
+      "startMs": 63449,
+      "endMs": 63884
+    },
+    {
+      "word": "directly",
+      "startMs": 63884,
+      "endMs": 64318
+    },
+    {
+      "word": "GPT",
+      "startMs": 64318,
+      "endMs": 64753
+    },
+    {
+      "word": "pe",
+      "startMs": 64753,
+      "endMs": 65187
+    },
+    {
+      "word": "jaata",
+      "startMs": 65187,
+      "endMs": 65622
+    },
+    {
+      "word": "hai.",
+      "startMs": 65622,
+      "endMs": 66057
+    },
+    {
+      "word": "Follow",
+      "startMs": 66057,
+      "endMs": 66491
+    },
+    {
+      "word": "karo",
+      "startMs": 66491,
+      "endMs": 66926
+    },
+    {
+      "word": "CodeOrCap",
+      "startMs": 66926,
+      "endMs": 67360
+    },
+    {
+      "word": "—",
+      "startMs": 67360,
+      "endMs": 67795
+    },
+    {
+      "word": "kyunki",
+      "startMs": 67795,
+      "endMs": 68229
+    },
+    {
+      "word": "yahan",
+      "startMs": 68229,
+      "endMs": 68664
+    },
+    {
+      "word": "hum",
+      "startMs": 68664,
+      "endMs": 69099
+    },
+    {
+      "word": "sirf",
+      "startMs": 69099,
+      "endMs": 69533
+    },
+    {
+      "word": "vibes",
+      "startMs": 69533,
+      "endMs": 69968
+    },
+    {
+      "word": "nahi,",
+      "startMs": 69968,
+      "endMs": 70402
+    },
+    {
+      "word": "knowledge",
+      "startMs": 70402,
+      "endMs": 70837
+    },
+    {
+      "word": "dete",
+      "startMs": 70837,
+      "endMs": 71272
+    },
+    {
+      "word": "hain.",
+      "startMs": 71272,
+      "endMs": 71706
+    }
+  ],
+  "musicTrack": "",
+  "metadata": {
+    "title": "Vibe Coding Is Making Indian Developers Unemployable",
+    "description": "Bhai, tu code likh raha hai ya sirf ChatGPT ka copy-paste machine ban gaya hai? Vibe coding sounds cool — but it's quietly destroying the fundamentals of Indian developers. From juniors who can't explain their own code to interviews where AI-generated answers fall flat — the damage is real and recruiters are noticing.\n\nIn this video, we break down exactly why vibe coding is a dangerous shortcut, what Indian tech companies are actually seeing in 2025 interviews, and how to use AI tools the right way without losing your core skills.\n\nWhether you're a fresher or a mid-level dev, this is the reality check you need before your next interview or layoff. Don't let AI tools turn you into a copy-paste engineer with zero market value. Learn to think first — then let AI help you build faster.\n\nSubscribe to CodeOrCap → @codeorcap | Stop Guessing. Start Knowing.",
+    "tags": [
+      "vibe coding",
+      "AI coding tools",
+      "Indian developers 2025",
+      "ChatGPT for coding",
+      "GitHub Copilot dangers",
+      "programming fundamentals",
+      "developer skills 2025",
+      "coding interview tips India",
+      "AI replacing programmers",
+      "software engineering India",
+      "junior developer mistakes",
+      "how to learn coding properly",
+      "tech jobs India 2025",
+      "AI tools for developers",
+      "coding without understanding"
+    ],
+    "hashtags": [
+      "#CodeOrCap",
+      "#TechMythBuster",
+      "#VibeCoding",
+      "#IndianDevelopers",
+      "#AITools",
+      "#CodingIndia",
+      "#DevLife",
+      "#TechHindi",
+      "#SoftwareEngineering"
+    ],
+    "filename": "vibe-coding-indian-developers-unemployable-2025",
+    "slug": "vibe-coding-indian-developers-unemployable-2025"
+  },
+  "createdAt": "2026-06-26T17:50:18.515Z"
+}

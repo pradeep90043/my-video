@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:06,000
+Bro, you use GitHub Copilot? Your job is already at risk.
+
+2
+00:00:06,000 --> 00:00:14,000
+Stack Overflow's 2024 survey revealed — 76% developers now use AI coding tools.
+
+3
+00:00:14,000 --> 00:00:23,000
+But the problem? When Copilot writes code, you're just copy-pasting — not understanding the logic.
+
+4
+00:00:23,000 --> 00:00:33,000
+A LinkedIn study found Indian fresher devs who rely only on AI have 40% weaker problem-solving skills vs manual coders.
+
+5
+00:00:33,000 --> 00:00:43,000
+Companies are banning Copilot in interviews — and those failing are devs who can't write a single function without the tool.
+
+6
+00:00:43,000 --> 00:00:49,000
+The tool should be your assistant, not your replacement.
+
+7
+00:00:49,000 --> 00:00:55,000
+Comment — do you use Copilot or think yourself? If this was useful, follow CodeOrCap. Stop Guessing. Start Knowing.

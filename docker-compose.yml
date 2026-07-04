@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: codeorcap-n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    # Lets n8n reach the API server running on your Mac (localhost:3001)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=Asia/Kolkata
+      - TZ=Asia/Kolkata
+      # Optional: basic auth to protect n8n UI
+      # - N8N_BASIC_AUTH_ACTIVE=true
+      # - N8N_BASIC_AUTH_USER=admin
+      # - N8N_BASIC_AUTH_PASSWORD=changeme
+    volumes:
+      - n8n_data:/home/node/.n8n
+      # Mount workflow JSONs so they appear in n8n on first start
+      - ./n8n/workflows:/home/node/.n8n/workflows:ro
+
+volumes:
+  n8n_data:
+    name: codeorcap_n8n_data
