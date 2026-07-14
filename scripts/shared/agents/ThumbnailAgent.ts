@@ -41,9 +41,9 @@ Generate:
     return this.llm.generateJSON<ThumbnailPlan>(prompt, THUMBNAIL_SCHEMA, { temperature: 0.7 });
   }
 
-  async generate(script: VideoScript, metadata: VideoMetadata, videoId: string): Promise<string> {
+  async generate(script: VideoScript, metadata: VideoMetadata, videoId: string, outputDir?: string): Promise<string> {
     const plan = await this.plan(script, metadata);
-    const dir = path.join(PATHS.thumbnails, videoId);
+    const dir = outputDir || path.join(PATHS.thumbnails, videoId);
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, "thumbnail.json"), JSON.stringify(plan, null, 2));
     const imagePath = path.join(dir, "thumbnail.png");

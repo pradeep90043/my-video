@@ -30,6 +30,15 @@ export interface LongformVideoJSON {
   language?: string;
   totalDuration?: number;
   totalFrames?: number;
+  title?: string;
+  description?: string;
+  tags?: string[];
+  logoBottom?: number;
+  logoRight?: number;
+  logoScale?: number;
+  logoImageScale?: number;
+  logoOpacity?: number;
+  blurAmount?: number;
   scenes: LongformScene[];
 }
 

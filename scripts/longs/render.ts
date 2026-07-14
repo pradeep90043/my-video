@@ -16,6 +16,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { execSync } from "child_process";
 import { loadVideoJson, resolveProject } from "./lib";
+import { addBranding } from "../shared/branding";
 
 function getArg(name: string): string | undefined {
   const i = process.argv.indexOf(`--${name}`);
@@ -48,14 +49,21 @@ function main() {
   const mins = ((data.totalDuration ?? 0) / 60).toFixed(1);
   console.log(`🎬 [${slug}] Rendering composition "${compositionId}" (~${mins} min)…`);
 
+  const propsArg = getArg("props");
+  const propsOption = propsArg ? `--props='${propsArg}'` : "";
+
   execSync(
-    `npx remotion render ${compositionId} "${outPath}" --concurrency=${concurrency}`,
+    `npx remotion render ${compositionId} "${outPath}" --concurrency=${concurrency} ${propsOption}`,
     { stdio: "inherit", cwd: process.cwd() },
   );
 
+  // Apply logo branding overlay
+  addBranding(outPath);
+
   const sizeMb = (fs.statSync(outPath).size / (1024 * 1024)).toFixed(1);
   console.log(`\n✅ YouTube video ready → ${outPath} (${sizeMb} MB)`);
-  console.log("   Upload to: YouTube (1920×1080 landscape)\n");
+  console.log(`   To publish to YouTube, run:`);
+  console.log(`   \x1b[36mnpm run publish -- --file "${path.relative(process.cwd(), outPath)}"\x1b[0m\n`);
 }
 
 main();

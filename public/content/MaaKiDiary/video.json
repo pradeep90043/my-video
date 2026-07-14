@@ -1,0 +1,316 @@
+{
+  "format": "longform",
+  "composition": "MaaKiDiary",
+  "fps": 30,
+  "voice": "hi-IN-MadhurNeural",
+  "rate": "+0%",
+  "pitch": "+0Hz",
+  "language": "hi",
+  "title": "Maa Ki Diary",
+  "description": "Maa ke jaane ke teen mahine baad, Arjun ko unki ek purani diary milti hai. Har panna ek naya raaz kholta hai — kyunki maa ko Arjun ki har haar ke baare mein pata tha. Har baar. Aur usne kabhi kuch nahi kaha. Ek kahani un maa'on ke liye jo apne bacchon ki takleef chup chaap apne seene mein rakh leti hain.",
+  "tags": [
+    "maakidiary",
+    "emotionalstory",
+    "storiyum",
+    "hindikahani",
+    "maa"
+  ],
+  "logoBottom": 113,
+  "logoRight": 80,
+  "logoScale": 1.1,
+  "logoImageScale": 1,
+  "logoOpacity": 0.75,
+  "blurAmount": 3,
+  "characterStyleLock": {
+    "arjun": "Indian man, 30 years old, short black hair neatly side-parted, light stubble, warm tired eyes, average build, wears a plain white or light-blue cotton shirt with sleeves rolled up, wedding-band-free (single), wears a simple analog wristwatch",
+    "maa": "Indian woman, late 50s at time of passing, greying hair tied in a neat low bun, soft wrinkled kind face, warm brown eyes, always seen wearing a simple cotton saree in soft pastel colors, warm gentle smile, slightly hunched posture",
+    "maa_young": "Indian woman, early 30s, black hair, warm brown eyes, bright colorful cotton saree, glowing smile",
+    "style": "Realistic cinematic emotional drama photography style, warm nostalgic color grading (soft amber, muted gold, gentle sepia undertones for flashbacks), soft natural window light, gentle shallow depth of field, subtle film grain, tender and intimate framing, 16:9, photoreal movie-still quality",
+    "locationLock": "middle-class Indian home, faded floral curtains, wooden almirah, old family photographs, simple bed with worn quilt, small nightstand, steel trunk"
+  },
+  "scenes": [
+    {
+      "id": "scene_1",
+      "text": "Maa ko gujre hue teen mahine ho chuke the. Arjun aaj pehli baar unke kamre mein gaya tha — unka saaman sametne.",
+      "imagePrompt": "[ARJUN REF] Arjun standing quietly at the doorway of his mother's bedroom, soft afternoon light through faded floral curtains, dust particles floating in the light, hesitant posture",
+      "duration": 9.72,
+      "startFrame": 0,
+      "durationFrames": 292,
+      "audioFile": "segment_0_scene_1.mp3"
+    },
+    {
+      "id": "scene_2",
+      "text": "Almirah kholte hi, purani saarhiyon ki khushboo aayi. Waqt jaise ruk gaya ho.",
+      "imagePrompt": "[ARJUN REF] Close-up of Arjun's hand opening an old wooden almirah, folded pastel sarees visible inside, warm nostalgic amber lighting",
+      "duration": 7.056,
+      "startFrame": 292,
+      "durationFrames": 212,
+      "audioFile": "segment_1_scene_2.mp3"
+    },
+    {
+      "id": "scene_3",
+      "text": "Tabhi, bed ke neeche rakhe ek purane steel trunk par uski nazar padi. Usne kabhi woh trunk khola nahi tha.",
+      "imagePrompt": "[ARJUN REF] Arjun kneeling on the floor, pulling an old steel trunk out from under the bed, dust rising slightly in the window light",
+      "duration": 9.12,
+      "startFrame": 504,
+      "durationFrames": 274,
+      "audioFile": "segment_2_scene_3.mp3"
+    },
+    {
+      "id": "scene_4",
+      "text": "Andar kapdon ke neeche, usse ek purani, morphin-si diary mili. Cover par likha tha — 'Sirf mere liye.'",
+      "imagePrompt": "[ARJUN REF] Close-up of Arjun's hands lifting a worn brown leather diary from inside the trunk, faded handwritten text 'Sirf mere liye' visible on the cover",
+      "duration": 9.312,
+      "startFrame": 778,
+      "durationFrames": 280,
+      "audioFile": "segment_3_scene_4.mp3"
+    },
+    {
+      "id": "scene_5",
+      "text": "Arjun ke haath halke se kaanp rahe the. Usne pehla panna khola.",
+      "imagePrompt": "[ARJUN REF] Arjun sitting on the edge of his mother's bed, diary open in his lap, soft window light falling on the handwritten pages, emotional anticipation on his face",
+      "duration": 6.216,
+      "startFrame": 1058,
+      "durationFrames": 187,
+      "audioFile": "segment_4_scene_5.mp3"
+    },
+    {
+      "id": "scene_6",
+      "text": "Pehli entry mein likha tha — '15 August, 1998. Aaj Arjun paida hua. Meri zindagi ka sabse khoobsurat din.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "FLASHBACK (warm golden-sepia tone): [MAA_YOUNG REF] holding a newborn baby in a hospital bed, exhausted but glowing smile, soft warm hospital light",
+      "duration": 13.008,
+      "startFrame": 1245,
+      "durationFrames": 391,
+      "audioFile": "segment_5_scene_6.mp3"
+    },
+    {
+      "id": "scene_7",
+      "text": "Arjun muskuraya. Par jaise jaise usne panne palte, entries badalne lagi.",
+      "imagePrompt": "[ARJUN REF] Close-up of Arjun's face shifting from a soft smile to a puzzled frown, flipping through several pages quickly, diary pages filling the frame",
+      "duration": 7.104,
+      "startFrame": 1636,
+      "durationFrames": 214,
+      "audioFile": "segment_6_scene_7.mp3"
+    },
+    {
+      "id": "scene_8",
+      "text": "'12 March, 2005. Arjun class mein fail ho gaya. Usne mujhe bataya nahi — teacher ne bataya. Maine usse kabhi nahi kaha ki mujhe pata hai.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "FLASHBACK (sepia): [MAA_YOUNG REF] standing outside a small school building gate, holding a report card, worried but composed expression, young boy silhouette visible walking ahead not noticing her",
+      "duration": 14.952,
+      "startFrame": 1850,
+      "durationFrames": 449,
+      "audioFile": "segment_7_scene_8.mp3"
+    },
+    {
+      "id": "scene_9",
+      "text": "Arjun ruk gaya. Usse yeh baat yaad hi nahi thi ki maa ko pata chal gaya tha.",
+      "imagePrompt": "[ARJUN REF] Present-day close-up: Arjun's eyes widening slightly, hand pausing mid-page-turn, confused and unsettled expression",
+      "duration": 6.888,
+      "startFrame": 2299,
+      "durationFrames": 207,
+      "audioFile": "segment_8_scene_9.mp3"
+    },
+    {
+      "id": "scene_10",
+      "text": "Agla panna — '20 June, 2010. Arjun ne college ka pehla saal fail kar diya. Maine sabko bataya ki woh 'break' le raha hai.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "FLASHBACK (sepia): [MAA REF] sitting alone at a modest kitchen table late at night, reading a letter/notice with a worried expression, a single lightbulb overhead",
+      "duration": 12.816,
+      "startFrame": 2506,
+      "durationFrames": 385,
+      "audioFile": "segment_9_scene_10.mp3"
+    },
+    {
+      "id": "scene_11",
+      "text": "'Maine rishtedaaron se jhooth bola. Kaha ki Arjun bahut acha kar raha hai. Kyunki main nahi chahti thi ki koi usse kam samjhe.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "[ARJUN REF] Present-day: Arjun sitting motionless on the bed, diary held loosely, a single tear forming, soft window light now dimming slightly as if time passing",
+      "duration": 11.136,
+      "startFrame": 2891,
+      "durationFrames": 335,
+      "audioFile": "segment_10_scene_11.mp3"
+    },
+    {
+      "id": "scene_12",
+      "text": "Arjun ko yaad aaya — us saal usne socha tha maa ko kabhi pata hi nahi chala.",
+      "imagePrompt": "FLASHBACK (sepia): [MAA REF] + young Arjun sitting together at dinner, Maa smiling and serving him food, appearing completely unaware in his memory",
+      "duration": 6.192,
+      "startFrame": 3226,
+      "durationFrames": 186,
+      "audioFile": "segment_11_scene_12.mp3"
+    },
+    {
+      "id": "scene_13",
+      "text": "Par diary ke har panne mein, ek naya raaz khulta gaya. Har baar jab Arjun gira... maa ne use chupke se sambhala tha.",
+      "imagePrompt": "[ARJUN REF] Close-up of diary pages, handwriting visible with dates spanning years, Arjun's finger tracing along the lines slowly",
+      "duration": 9.912,
+      "startFrame": 3412,
+      "durationFrames": 298,
+      "audioFile": "segment_12_scene_13.mp3"
+    },
+    {
+      "id": "scene_14",
+      "text": "'22 January, 2015. Arjun ki naukri chali gayi. Usne mujhe seedha nahi bataya — maine uski awaaz se samajh liya.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "FLASHBACK (sepia): [MAA REF] sitting with an old landline phone to her ear, concerned expression, small living room with family photos on the wall behind her",
+      "duration": 12.792,
+      "startFrame": 3710,
+      "durationFrames": 384,
+      "audioFile": "segment_13_scene_14.mp3"
+    },
+    {
+      "id": "scene_15",
+      "text": "'Maine kuch nahi poocha. Bas itna kaha — ghar aa ja, khana thanda ho raha hai. Kabhi kabhi pyaar, sawaal poochhne se zyada, chup rehne mein hota hai.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "[ARJUN REF] Present-day: Arjun closing his eyes, hand pressed against the open diary page, overwhelmed expression, tears now visible on his cheeks",
+      "duration": 13.152,
+      "startFrame": 4094,
+      "durationFrames": 395,
+      "audioFile": "segment_14_scene_15.mp3"
+    },
+    {
+      "id": "scene_16",
+      "text": "Arjun ko woh raat yaad aa gayi. Woh ghar aaya tha, chup chaap khana khaya tha. Maa ne kuch nahi poocha tha.",
+      "imagePrompt": "FLASHBACK (sepia): [MAA REF] + adult Arjun (younger, tired posture) sitting quietly at the dinner table together, Maa gently placing more food on his plate without a word",
+      "duration": 10.032,
+      "startFrame": 4489,
+      "durationFrames": 301,
+      "audioFile": "segment_15_scene_16.mp3"
+    },
+    {
+      "id": "scene_17",
+      "text": "Us waqt Arjun ne socha tha — maa ko kabhi pata nahi chalega. Ab usse ehsaas hua — maa sab jaanti thi. Hamesha se.",
+      "imagePrompt": "[ARJUN REF] Present-day: Arjun looking up from the diary toward an old photo frame on the nightstand — himself as a child with young Maa — soft focus on the photo",
+      "duration": 10.92,
+      "startFrame": 4790,
+      "durationFrames": 328,
+      "audioFile": "segment_16_scene_17.mp3"
+    },
+    {
+      "id": "scene_18",
+      "text": "Usne agla panna palta. Yeh sabse aakhri entry thi.",
+      "imagePrompt": "[ARJUN REF] Close-up of Arjun's trembling hand turning to the final written page of the diary, handwriting slightly shakier than earlier pages",
+      "duration": 5.952,
+      "startFrame": 5118,
+      "durationFrames": 179,
+      "audioFile": "segment_17_scene_18.mp3"
+    },
+    {
+      "id": "scene_19",
+      "text": "'10 September, 2023. Doctor ne kaha hai zyada waqt nahi bacha. Arjun ko pata nahi hai. Main nahi chahti woh apna kaam, apni zindagi chhod kar mere paas baithe.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "FLASHBACK (present-toned, slightly less sepia): [MAA REF] sitting alone on a hospital corridor bench, frail but composed, holding the same diary against her chest",
+      "duration": 16.224,
+      "startFrame": 5297,
+      "durationFrames": 487,
+      "audioFile": "segment_18_scene_19.mp3"
+    },
+    {
+      "id": "scene_20",
+      "text": "Arjun ki saans ruk gayi. Usse yaad aaya — un aakhri mahino mein maa ne kabhi kuch nahi kaha tha.",
+      "imagePrompt": "[ARJUN REF] Present-day extreme close-up: Arjun's face crumbling with grief, tears falling freely now onto the diary page, hands gripping the book tightly",
+      "duration": 8.28,
+      "startFrame": 5784,
+      "durationFrames": 249,
+      "audioFile": "segment_19_scene_20.mp3"
+    },
+    {
+      "id": "scene_21",
+      "text": "'Agar tum yeh padh rahe ho, Arjun, toh iska matlab hai main ja chuki hoon. Please mujhse naraz mat hona.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "[ARJUN REF] Extreme close-up of the diary's final handwritten paragraph, Arjun's tear falling directly onto the page, ink slightly blurring at the edge",
+      "duration": 9.624,
+      "startFrame": 6033,
+      "durationFrames": 289,
+      "audioFile": "segment_20_scene_21.mp3"
+    },
+    {
+      "id": "scene_22",
+      "text": "'Tumhari har haar mujhe pata thi. Par main chahti thi tum khud uthna seekho. Isliye maine kabhi kuch nahi kaha.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "[ARJUN REF] Present-day: Arjun looking upward, eyes closed, tears streaming, holding the diary against his chest with both hands",
+      "duration": 10.08,
+      "startFrame": 6322,
+      "durationFrames": 303,
+      "audioFile": "segment_21_scene_22.mp3"
+    },
+    {
+      "id": "scene_23",
+      "text": "'Tumhari haar tumhari kamzori nahi thi, beta. Woh sirf zindagi thi. Aur main... main hamesha tumhare saath thi, chup chaap.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "FLASHBACK (soft golden light, almost dreamlike): [MAA REF] standing in a doorway bathed in soft light, gently smiling toward camera",
+      "duration": 12.144,
+      "startFrame": 6625,
+      "durationFrames": 365,
+      "audioFile": "segment_22_scene_23.mp3"
+    },
+    {
+      "id": "scene_24",
+      "text": "Diary ka aakhri paragraph tha — 'Kabhi khud ko akela mat samajhna. Main hamesha in panno mein, in yaadon mein, tumhare saath rahungi.'",
+      "voice": "hi-IN-SwaraNeural",
+      "imagePrompt": "[ARJUN REF] Present-day: Arjun pressing the closed diary against his forehead, eyes shut, tears still falling, soft window light now warmer than before",
+      "duration": 11.496,
+      "startFrame": 6990,
+      "durationFrames": 345,
+      "audioFile": "segment_23_scene_24.mp3"
+    },
+    {
+      "id": "scene_25",
+      "text": "Arjun ne diary ko apne seene se laga liya. Bahut der tak, woh bas wahin baitha raha.",
+      "imagePrompt": "[ARJUN REF] Wide shot: Arjun sitting alone on his mother's bed, diary held to his chest, golden late-afternoon light filling the room, peaceful stillness",
+      "duration": 7.632,
+      "startFrame": 7335,
+      "durationFrames": 229,
+      "audioFile": "segment_24_scene_25.mp3"
+    },
+    {
+      "id": "scene_26",
+      "text": "Us din Arjun ko samajh aaya — pyaar sirf shabdon mein nahi hota. Kabhi kabhi, woh khamoshi mein sabse zyada bolta hai.",
+      "imagePrompt": "[ARJUN REF] Arjun standing up slowly, placing the diary carefully back on the nightstand next to the old photo frame, tender and calm expression",
+      "duration": 10.008,
+      "startFrame": 7564,
+      "durationFrames": 301,
+      "audioFile": "segment_25_scene_26.mp3"
+    },
+    {
+      "id": "scene_27",
+      "text": "Usne apni maa ki sarhiyaan, unki cheezein sambhal kar rakh di. Par diary... woh humesha apne paas rakhega.",
+      "imagePrompt": "[ARJUN REF] Arjun carefully folding one of his mother's pastel sarees and placing it back in the almirah, diary now visible tucked under his arm",
+      "duration": 9.24,
+      "startFrame": 7865,
+      "durationFrames": 278,
+      "audioFile": "segment_26_scene_27.mp3"
+    },
+    {
+      "id": "scene_28",
+      "text": "Kyunki kabhi kabhi, sabse bada pyaar wahi hota hai... jo kabhi kaha hi nahi jaata.",
+      "imagePrompt": "[ARJUN REF] Close-up: Arjun's hand gently placing the diary on his own bookshelf at home, next to a small framed photo of Maa, soft evening lamp light",
+      "duration": 6.576,
+      "startFrame": 8143,
+      "durationFrames": 198,
+      "audioFile": "segment_27_scene_28.mp3"
+    },
+    {
+      "id": "scene_29",
+      "text": "Aur agar aaj bhi kabhi Arjun ko lage ki woh akela hai... woh bas woh diary khol leta hai.",
+      "imagePrompt": "[ARJUN REF] Arjun sitting in his own home at night, diary open on his lap once more, a soft content smile on his face, warm lamp glow around him",
+      "duration": 7.536,
+      "startFrame": 8341,
+      "durationFrames": 227,
+      "audioFile": "segment_28_scene_29.mp3"
+    },
+    {
+      "id": "scene_30",
+      "text": "Kyunki kahin na kahin, woh jaanta hai... maa abhi bhi, chup chaap, uske saath hai.",
+      "imagePrompt": "[ARJUN REF] Final wide shot: Arjun looking up from the diary with a peaceful, warm smile, soft golden light filling the room around him, a faint translucent warm glow near the window suggesting a comforting unseen presence, tender emotional closure",
+      "duration": 7.104,
+      "startFrame": 8568,
+      "durationFrames": 214,
+      "audioFile": "segment_29_scene_30.mp3"
+    }
+  ],
+  "totalDuration": 292.22400000000005,
+  "totalFrames": 8782
+}

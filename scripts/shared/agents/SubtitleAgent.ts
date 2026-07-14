@@ -6,8 +6,10 @@ import { PATHS } from "../config";
 interface SRTEntry { index: number; startMs: number; endMs: number; text: string; }
 
 export class SubtitleAgent {
-  generate(scenes: Scene[], videoId: string): { srtPath: string } {
-    const outputPath = path.join(PATHS.subtitles, videoId, "subtitles.srt");
+  generate(scenes: Scene[], videoId: string, outputDir?: string): { srtPath: string } {
+    const outputPath = outputDir
+      ? path.join(outputDir, "subtitles.srt")
+      : path.join(PATHS.subtitles, videoId, "subtitles.srt");
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
     let currentMs = 0;
@@ -41,8 +43,10 @@ export class SubtitleAgent {
     return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")},${String(mill).padStart(3,"0")}`;
   }
 
-  generateWordLevel(narration: string, durationSecs: number, videoId: string): { jsonPath: string; timings: WordTiming[] } {
-    const outputPath = path.join(PATHS.subtitles, videoId, "word-level.json");
+  generateWordLevel(narration: string, durationSecs: number, videoId: string, outputDir?: string): { jsonPath: string; timings: WordTiming[] } {
+    const outputPath = outputDir
+      ? path.join(outputDir, "word-level.json")
+      : path.join(PATHS.subtitles, videoId, "word-level.json");
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
     const words = narration.split(/\s+/).filter(Boolean);

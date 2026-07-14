@@ -16,9 +16,12 @@ export class VoiceAgent {
   async generate(
     script: VideoScript,
     videoId: string,
+    outputDir?: string,
   ): Promise<{ path: string; durationSecs: number; narration: string }> {
     const narration = this.buildNarration(script);
-    const outputPath = path.join(PATHS.audio, videoId, "voiceover.mp3");
+    const outputPath = outputDir
+      ? path.join(outputDir, "voiceover.mp3")
+      : path.join(PATHS.audio, videoId, "voiceover.mp3");
     const result = await this.provider.synthesize(narration, outputPath);
     return { ...result, narration };
   }

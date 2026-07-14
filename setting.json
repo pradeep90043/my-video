@@ -1,0 +1,11 @@
+{
+  "lipSync": {
+    "tool": "Rhubarb Lip Sync",
+    "version": "1.13.0",
+    "executablePath": "./rhubarb/Rhubarb-Lip-Sync-1.13.0-Windows/rhubarb.exe",
+    "cuesFile": "public/content/VibeCodingNotProgramming/audio/voiceover_rhubarb.json"
+  },
+  "editor": {
+    "formatOnSave": true
+  }
+}

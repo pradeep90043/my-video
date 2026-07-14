@@ -1,0 +1,77 @@
+{
+  "format": "longform",
+  "composition": "collage-animation",
+  "fps": 30,
+  "voice": "hi-IN-MadhurNeural",
+  "rate": "+5%",
+  "pitch": "+0Hz",
+  "language": "hi",
+  "title": "How to Make a $1000 Collage Animation",
+  "description": "Learn the step-by-step process of creating a professional hand-cut collage style animation using paper textures, custom layers, and Remotion parallax effects.",
+  "tags": [
+    "collage-animation",
+    "motion-design",
+    "remotion",
+    "video-editing",
+    "paper-art"
+  ],
+  "logoBottom": 113,
+  "logoRight": 80,
+  "logoScale": 1.1,
+  "logoImageScale": 1,
+  "logoOpacity": 0.75,
+  "blurAmount": 3,
+  "characterStyleLock": {
+    "style": "in a consistent hand-cut collage style with white torn paper edges, isolated on transparent background, high resolution, flat design aesthetic",
+    "locationLock": ""
+  },
+  "scenes": [
+    {
+      "id": "scene_1_reveal",
+      "text": "Kya aapne premium one thousand dollar collage animation style dekhi hai? Lagta hai ise banana bohot mushkil hai, par ye sab shuru hota hai ek craft paper scroll se.",
+      "imagePrompt": "A slightly weathered, vintage craft paper scroll, isolated, flat lay",
+      "duration": 13.464,
+      "startFrame": 0,
+      "durationFrames": 404,
+      "audioFile": "segment_0_scene_1_reveal.mp3"
+    },
+    {
+      "id": "scene_2_horizon",
+      "text": "Sabse pehle, ek hand-cut sky backdrop add karo — soft blue aur white colors mein, simple construction paper textures ke saath.",
+      "imagePrompt": "Layered collage-style sky, hand-cut construction paper texture, soft blue and white",
+      "duration": 9.264,
+      "startFrame": 404,
+      "durationFrames": 278,
+      "audioFile": "segment_1_scene_2_horizon.mp3"
+    },
+    {
+      "id": "scene_3_ocean",
+      "text": "Phir, parallax effect dene ke liye, blue paper ke char alag-alag layers se ocean waves create karo.",
+      "imagePrompt": "Four individual horizontal strips of hand-torn blue construction paper representing ocean waves, textured",
+      "duration": 7.464,
+      "startFrame": 682,
+      "durationFrames": 224,
+      "audioFile": "segment_2_scene_3_ocean.mp3"
+    },
+    {
+      "id": "scene_4_action",
+      "text": "Ab is ke beech, ek dollar bill boat ko introduce karo jo is ocean par float karegi.",
+      "imagePrompt": "A boat made of US dollar bill fragments, collage style, artistic, hand-cut, white border around edges",
+      "duration": 6.888,
+      "startFrame": 906,
+      "durationFrames": 207,
+      "audioFile": "segment_3_scene_4_action.mp3"
+    },
+    {
+      "id": "scene_5_details",
+      "text": "Aur aakhir mein, details jaise yellow paper sun, geometric paper confetti aur udta hua seagull add karo. Aur bas, aapka professional collage scene ready hai!",
+      "imagePrompt": "Hand-cut yellow paper sun, small paper seagull silhouette, and scattered geometric paper confetti shapes, high contrast, flat",
+      "duration": 12.648,
+      "startFrame": 1113,
+      "durationFrames": 380,
+      "audioFile": "segment_4_scene_5_details.mp3"
+    }
+  ],
+  "totalDuration": 49.727999999999994,
+  "totalFrames": 1493
+}

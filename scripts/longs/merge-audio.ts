@@ -19,6 +19,14 @@ function getArg(name: string): string | undefined {
   return i !== -1 ? process.argv[i + 1] : undefined;
 }
 
+function getFfmpegPath(): string {
+  const localWinPath = path.join(process.cwd(), "node_modules", "@remotion", "compositor-win32-x64-msvc", "ffmpeg.exe");
+  if (fs.existsSync(localWinPath)) {
+    return localWinPath;
+  }
+  return "ffmpeg";
+}
+
 function main() {
   const slug = resolveProject(getArg("project"));
   const data = loadVideoJson(slug);
@@ -46,7 +54,8 @@ function main() {
   const outputPath = path.join(dir, "voiceover.mp3");
   if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
 
-  execSync(`ffmpeg -f concat -safe 0 -i "${concatFilePath}" -c copy "${outputPath}" -y`, {
+  const ffmpegPath = getFfmpegPath();
+  execSync(`"${ffmpegPath}" -f concat -safe 0 -i "${concatFilePath}" -c copy "${outputPath}" -y`, {
     stdio: "inherit",
   });
   fs.unlinkSync(concatFilePath);

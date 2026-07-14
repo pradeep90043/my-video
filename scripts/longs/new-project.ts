@@ -42,6 +42,15 @@ const template: LongformVideoJSON = {
   rate: "+5%",
   pitch: "+0Hz",
   language: "hi",
+  title: `${slug} - AI Video`,
+  description: "A professional video about " + slug,
+  tags: [slug, "codeorcap", "tech"],
+  logoBottom: 113,
+  logoRight: 80,
+  logoScale: 1.1,
+  logoImageScale: 1.0,
+  logoOpacity: 0.75,
+  blurAmount: 3,
   scenes: SCENE_IDS.map((id) => ({ id, text: "" })),
 };
 
@@ -54,7 +63,7 @@ console.log(`✅ Created public/content/${slug}/video.json
 Next steps:
   1. Write the Hinglish script into each scene's "text" field
      (delete/add scenes freely — ids are yours to choose).
-  2. Build the scene components, e.g. src/codeorcap/scenes/ has the
+  2. Build the scene components, e.g. src/codeorcap/shorts/scenes/ has the
      AIvsSWE references (HookScene, ClaimScene, …).
   3. Register a 1920×1080 composition with id "${slug}" in src/Root.tsx
      (copy the AIvsSWE composition block and point it at your video.json).

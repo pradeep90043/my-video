@@ -16,7 +16,7 @@ export const Word: React.FC<{
   const fittedText = fitText({
     fontFamily,
     text,
-    withinWidth: width * 0.8,
+    withinWidth: width * 0.95,
   });
 
   const fontSize = Math.min(desiredFontSize, fittedText.fontSize);
@@ -26,9 +26,6 @@ export const Word: React.FC<{
       style={{
         justifyContent: "center",
         alignItems: "center",
-        top: undefined,
-        bottom: 350,
-        height: 150,
       }}
     >
       <div

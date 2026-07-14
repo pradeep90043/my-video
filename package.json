@@ -17,6 +17,8 @@
     "@remotion/media": "4.0.484",
     "@remotion/tailwind-v4": "4.0.484",
     "@remotion/zod-types": "4.0.484",
+    "axios": "^1.18.1",
+    "googleapis": "^173.0.0",
     "puppeteer": "^24.43.1",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
@@ -28,7 +30,6 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@elevenlabs/elevenlabs-js": "^2.20.0",
     "@remotion/eslint-config-flat": "4.0.484",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
@@ -63,11 +64,21 @@
     "shorts:render": "tsx scripts/shorts/generate-video.ts --skip-images --skip-voice",
     "shorts:codeorcap": "tsx scripts/shorts/cli/render-codeorcap.ts",
     "shorts:gen": "tsx scripts/shorts/cli/cli.ts",
+    "short:vibe": "tsx scripts/longs/run.ts --project VibeCodingNotProgrammingShort",
+    "short:vibe:audio": "tsx scripts/longs/generate-audio.ts --project VibeCodingNotProgrammingShort",
+    "short:vibe:natural-audio": "tsx scripts/longs/generate-natural-audio.ts --project VibeCodingNotProgrammingShort",
+    "short:vibe:merge": "tsx scripts/longs/merge-audio.ts --project VibeCodingNotProgrammingShort",
+    "short:vibe:render": "tsx scripts/longs/render.ts --project VibeCodingNotProgrammingShort",
     "longform": "tsx scripts/longs/run.ts",
     "longform:new": "tsx scripts/longs/new-project.ts",
     "longform:audio": "tsx scripts/longs/generate-audio.ts",
+    "longform:natural-audio": "tsx scripts/longs/generate-natural-audio.ts",
+    "longform:images": "tsx scripts/longs/generate-images.ts",
     "longform:merge": "tsx scripts/longs/merge-audio.ts",
     "longform:render": "tsx scripts/longs/render.ts",
+    "bake:intro-outro": "tsx scripts/longs/bake-intro-outro.ts",
+    "stitch": "tsx scripts/longs/stitch.ts",
+    "stitch:storiyum": "python scripts/storiyum/stitch.py",
     "gen": "tsx scripts/shorts/cli/cli.ts",
     "render": "tsx scripts/shorts/cli/render-codeorcap.ts",
     "render-codeorcap": "tsx scripts/shorts/cli/render-codeorcap.ts",
@@ -78,7 +89,9 @@
     "thumbnail": "tsx scripts/shorts/generate-video.ts --skip-render",
     "render-factory": "tsx scripts/shorts/generate-video.ts --skip-images --skip-voice",
     "server": "tsx scripts/shared/server.ts",
-    "n8n": "docker compose up -d"
+    "n8n": "docker compose up -d",
+    "publish": "tsx scripts/shared/publish.ts",
+    "publish:latest": "tsx scripts/shared/publish.ts"
   },
   "sideEffects": [
     "*.css"

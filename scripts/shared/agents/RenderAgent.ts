@@ -3,6 +3,7 @@ import * as path from "path";
 import { execSync } from "child_process";
 import { FactoryVideoJSON } from "../types";
 import { PATHS, VIDEO, BRAND } from "../config";
+import { addBranding } from "../branding";
 
 export class RenderAgent {
   async render(videoJSON: FactoryVideoJSON): Promise<string> {
@@ -18,7 +19,9 @@ export class RenderAgent {
     const updatedScenes = videoJSON.scenes.map((scene) => {
       if (scene.imagePath && fs.existsSync(scene.imagePath)) {
         const dest = path.join(publicImagesDir, path.basename(scene.imagePath));
-        fs.copyFileSync(scene.imagePath, dest);
+        if (path.resolve(scene.imagePath) !== path.resolve(dest)) {
+          fs.copyFileSync(scene.imagePath, dest);
+        }
         return { ...scene, imagePath: `content/factory/${slug}/images/${path.basename(scene.imagePath)}` };
       }
       return scene;
@@ -28,7 +31,9 @@ export class RenderAgent {
     let publicVoicePath = "";
     if (voice && fs.existsSync(voice)) {
       const destVoice = path.join(publicDir, "voiceover.mp3");
-      fs.copyFileSync(voice, destVoice);
+      if (path.resolve(voice) !== path.resolve(destVoice)) {
+        fs.copyFileSync(voice, destVoice);
+      }
       publicVoicePath = `content/factory/${slug}/voiceover.mp3`;
     }
 
@@ -96,6 +101,10 @@ export class RenderAgent {
     // ── 5. Copy to out/ ───────────────────────────────────────────────────────
     const outPath = path.join(PATHS.out, `${slug}.mp4`);
     fs.mkdirSync(PATHS.out, { recursive: true });
+    
+    // Apply logo branding overlay
+    addBranding(finalPath);
+
     fs.copyFileSync(finalPath, outPath);
 
     return finalPath;

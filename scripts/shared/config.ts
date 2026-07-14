@@ -47,9 +47,8 @@ export const MODELS = {
   llm: (process.env.LLM_PROVIDER as "gemini" | "claude" | "claude-cli") ?? "gemini",
   gemini: process.env.GEMINI_MODEL ?? "gemini-2.0-flash",
   claude: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
-  imageModel: process.env.IMAGE_MODEL ?? "gemini-2.0-flash-preview-image-generation",
-  voiceProvider: (process.env.VOICE_PROVIDER as "elevenlabs" | "google-tts" | "mac-tts" | "edge-tts") ?? "elevenlabs",
-  voiceId: process.env.ELEVENLABS_VOICE_ID ?? "21m00Tcm4TlvDq8ikWAM",
+  imageModel: process.env.IMAGE_MODEL ?? "imagen-4.0-generate-001",
+  voiceProvider: (process.env.VOICE_PROVIDER as "google-tts" | "mac-tts" | "edge-tts" | "openai-fm") ?? "openai-fm",
 } as const;
 
 export const GOOGLE_TTS = {
@@ -75,4 +74,4 @@ export const CATEGORIES = [
 export type Category = (typeof CATEGORIES)[number];
 
 export const IMAGE_STYLE =
-  "dark cinematic cyberpunk tech aesthetic, neon accents, minimal composition, no humans unless required, 9:16 portrait, ultra-sharp, professional";
+  "in a consistent hand-cut collage style with white torn paper edges, isolated on transparent background, high resolution, flat design aesthetic";

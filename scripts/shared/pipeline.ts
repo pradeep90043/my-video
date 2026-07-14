@@ -14,10 +14,10 @@ import { PATHS, MODELS, type Category } from "./config";
 import { GeminiProvider } from "./providers/GeminiProvider";
 import { ClaudeProvider } from "./providers/ClaudeProvider";
 import { ClaudeCLIProvider } from "./providers/ClaudeCLIProvider";
-import { ElevenLabsProvider } from "./providers/ElevenLabsProvider";
 import { GoogleTTSProvider } from "./providers/GoogleTTSProvider";
 import { MacTTSProvider } from "./providers/MacTTSProvider";
 import { EdgeTTSProvider } from "./providers/EdgeTTSProvider";
+import { OpenAIFMProvider } from "./providers/OpenAIFMProvider";
 import { GeminiImageProvider } from "./providers/GeminiImageProvider";
 import { TopicAgent } from "./agents/TopicAgent";
 import { ScriptAgent } from "./agents/ScriptAgent";
@@ -77,7 +77,7 @@ function buildVoiceProvider(): VoiceProvider {
   if (MODELS.voiceProvider === "edge-tts") return new EdgeTTSProvider();
   if (MODELS.voiceProvider === "mac-tts") return new MacTTSProvider();
   if (MODELS.voiceProvider === "google-tts") return new GoogleTTSProvider(process.env.GOOGLE_TTS_API_KEY ?? "");
-  return new ElevenLabsProvider(process.env.ELEVENLABS_API_KEY ?? "");
+  return new OpenAIFMProvider();
 }
 
 // ── Main pipeline ─────────────────────────────────────────────────────────────
@@ -132,6 +132,13 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
   const script = await scriptAgent.generate(topicResult.topic, topicResult.category);
   onStepDone(`${script.durationSecs}s script ready`);
 
+  // Generate metadata here to get the slug early so assets are stored directly in public/content/factory/${slug}
+  const metadata = await metaAgent.generate(script);
+  const slug = metadata.slug;
+  const videoFolder = path.join(PATHS.public, "content", "factory", slug);
+  const imagesFolder = path.join(videoFolder, "images");
+  fs.mkdirSync(imagesFolder, { recursive: true });
+
   // ── 3. Scene plan ───────────────────────────────────────────────────────────
   onStep(3, TOTAL, "Planning scenes");
   const rawScenes = await scenePlanner.plan(script);
@@ -147,7 +154,7 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
   let scenes = scenesWithPrompts;
   if (!skipImages && imageGen) {
     const count = scenes.filter((s) => s.background === "image").length;
-    scenes = await imageGen.generateAll(scenesWithPrompts, videoId);
+    scenes = await imageGen.generateAll(scenesWithPrompts, videoId, imagesFolder);
     onStepDone(`${count} images generated`);
   } else {
     onLog("Images skipped");
@@ -159,7 +166,7 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
   let voiceDuration = script.durationSecs;
   let narration = "";
   if (!skipVoice) {
-    const voice = await voiceAgent.generate(script, videoId);
+    const voice = await voiceAgent.generate(script, videoId, videoFolder);
     voicePath = voice.path;
     voiceDuration = voice.durationSecs;
     narration = voice.narration;
@@ -171,17 +178,16 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
 
   // ── 7. Subtitles ────────────────────────────────────────────────────────────
   onStep(7, TOTAL, "Generating subtitles");
-  const { srtPath: subtitlePath } = subtitleAgent.generate(scenes, videoId);
+  const { srtPath: subtitlePath } = subtitleAgent.generate(scenes, videoId, videoFolder);
   let wordTimings: WordTiming[] = [];
   if (narration) {
-    const wl = subtitleAgent.generateWordLevel(narration, voiceDuration, videoId);
+    const wl = subtitleAgent.generateWordLevel(narration, voiceDuration, videoId, videoFolder);
     wordTimings = wl.timings;
   }
   onStepDone(`${wordTimings.length} word timings`);
 
   // ── 8. Metadata ─────────────────────────────────────────────────────────────
-  onStep(8, TOTAL, "Generating metadata");
-  const metadata = await metaAgent.generate(script);
+  onStep(8, TOTAL, "Generating metadata (ready)");
   onStepDone(metadata.title);
 
   // ── 9. Thumbnail ────────────────────────────────────────────────────────────
@@ -189,7 +195,7 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
   let thumbnailPath = "";
   if (!skipImages && thumbAgent) {
     try {
-      thumbnailPath = await thumbAgent.generate(script, metadata, videoId);
+      thumbnailPath = await thumbAgent.generate(script, metadata, videoId, videoFolder);
       onStepDone(thumbnailPath);
     } catch (e: any) {
       onWarn(`Thumbnail skipped: ${e.message}`);
@@ -214,20 +220,20 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
     metadata,
     createdAt: new Date().toISOString(),
   };
-  const jsonPath = path.join(PATHS.json, `${metadata.slug}.json`);
+  const jsonPath = path.join(videoFolder, "video.json");
   fs.writeFileSync(jsonPath, JSON.stringify(videoJSON, null, 2));
   onStepDone(jsonPath);
 
   // ── 11. Script file ─────────────────────────────────────────────────────────
   onStep(11, TOTAL, "Saving script");
   const scriptMd = [`# ${topicResult.topic}`, "", "## Hook", script.hook, "", "## Body", script.body, "", "## CTA", script.cta].join("\n");
-  const scriptPath = path.join(PATHS.scripts, `${metadata.slug}.md`);
+  const scriptPath = path.join(videoFolder, "script.md");
   fs.writeFileSync(scriptPath, scriptMd);
   onStepDone(scriptPath);
 
   // ── 12. Metadata file ───────────────────────────────────────────────────────
   onStep(12, TOTAL, "Saving metadata");
-  const metaPath = path.join(PATHS.metadata, `${metadata.slug}.json`);
+  const metaPath = path.join(videoFolder, "metadata.json");
   fs.writeFileSync(metaPath, JSON.stringify({ ...metadata, videoId, createdAt: videoJSON.createdAt }, null, 2));
   onStepDone(metaPath);
 

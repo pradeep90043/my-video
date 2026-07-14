@@ -22,10 +22,10 @@ const steps: [string, string][] = [
   ...(skipAudio
     ? []
     : ([
-        ["Generating per-scene TTS", `tsx scripts/longform/generate-audio.ts --project ${slug}`],
-        ["Merging voiceover", `tsx scripts/longform/merge-audio.ts --project ${slug}`],
+        ["Generating per-scene TTS", `tsx scripts/longs/generate-audio.ts --project ${slug}`],
+        ["Merging voiceover", `tsx scripts/longs/merge-audio.ts --project ${slug}`],
       ] as [string, string][])),
-  ["Rendering video", `tsx scripts/longform/render.ts --project ${slug}`],
+  ["Rendering video", `tsx scripts/longs/render.ts --project ${slug}`],
 ];
 
 steps.forEach(([label, cmd], i) => {

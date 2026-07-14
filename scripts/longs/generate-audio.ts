@@ -11,12 +11,20 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { execSync } from "child_process";
+import { execSync, spawnSync } from "child_process";
 import { audioDir, loadVideoJson, resolveProject, saveVideoJson } from "./lib";
 
 function getArg(name: string): string | undefined {
   const i = process.argv.indexOf(`--${name}`);
   return i !== -1 ? process.argv[i + 1] : undefined;
+}
+
+function getFfprobePath(): string {
+  const localWinPath = path.join(process.cwd(), "node_modules", "@remotion", "compositor-win32-x64-msvc", "ffprobe.exe");
+  if (fs.existsSync(localWinPath)) {
+    return localWinPath;
+  }
+  return "ffprobe";
 }
 
 function main() {
@@ -36,20 +44,36 @@ function main() {
   let currentStartFrame = 0;
   let totalDurationSec = 0;
 
-  data.scenes.forEach((scene, i) => {
+  data.scenes.forEach((scene: any, i) => {
     const segmentName = `segment_${i}_${scene.id}.mp3`;
     const segmentPath = path.join(outDir, segmentName);
 
-    console.log(`  -> Scene ${i}: ${scene.id}`);
+    const sceneVoice = scene.voice || voice;
+    const sceneRate = scene.rate || rate;
+    const scenePitch = scene.pitch || pitch;
 
-    const escapedText = scene.text.replace(/'/g, "'\\''");
-    execSync(
-      `edge-tts --voice "${voice}" --rate "${rate}" --pitch "${pitch}" --text '${escapedText}' --write-media "${segmentPath}"`,
-      { stdio: "pipe", timeout: 180_000 },
+    console.log(`  -> Scene ${i}: ${scene.id} (voice: ${sceneVoice})`);
+
+    const ttsResult = spawnSync(
+      "edge-tts",
+      [
+        "--voice", sceneVoice,
+        "--rate", sceneRate,
+        "--pitch", scenePitch,
+        "--text", scene.text,
+        "--write-media", segmentPath,
+      ],
+      { stdio: "pipe", timeout: 180_000 }
     );
+    if (ttsResult.status !== 0) {
+      console.error(`✗ edge-tts failed with exit code ${ttsResult.status}`);
+      console.error(ttsResult.stderr.toString());
+      process.exit(1);
+    }
 
+    const ffprobePath = getFfprobePath();
     const probe = execSync(
-      `ffprobe -v quiet -show_entries format=duration -of csv=p=0 "${segmentPath}"`,
+      `"${ffprobePath}" -v quiet -show_entries format=duration -of csv=p=0 "${segmentPath}"`,
       { encoding: "utf-8" },
     ).trim();
 

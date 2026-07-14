@@ -6,18 +6,20 @@ import { PATHS } from "../config";
 export class ImageGenerator {
   constructor(private provider: ImageProvider) {}
 
-  async generateForScene(scene: Scene, videoId: string): Promise<string> {
+  async generateForScene(scene: Scene, videoId: string, outputDir?: string): Promise<string> {
     if (scene.background !== "image") return "";
-    const outputPath = path.join(PATHS.images, videoId, `${scene.id}.png`);
+    const outputPath = outputDir
+      ? path.join(outputDir, `${scene.id}.png`)
+      : path.join(PATHS.images, videoId, `${scene.id}.png`);
     await this.provider.generate(scene.imagePrompt, outputPath);
     return outputPath;
   }
 
-  async generateAll(scenes: Scene[], videoId: string): Promise<Scene[]> {
+  async generateAll(scenes: Scene[], videoId: string, outputDir?: string): Promise<Scene[]> {
     const results: Scene[] = [];
     for (const scene of scenes) {
       try {
-        const imagePath = await this.generateForScene(scene, videoId);
+        const imagePath = await this.generateForScene(scene, videoId, outputDir);
         results.push({ ...scene, imagePath });
       } catch (err: any) {
         console.warn(`⚠ Image failed for ${scene.id}: ${err.message}`);
