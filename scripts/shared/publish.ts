@@ -33,6 +33,7 @@ dotenv.config();
 
 import { uploadVideoToYouTube, type YouTubeCredentials } from "./youtube";
 import { publishReel } from "./instagram";
+import { verifyStamp } from "./qa-stamp";
 
 type Channel = "codeorcap" | "storiyum";
 
@@ -143,7 +144,7 @@ function getLatestOutVideo(): string | null {
   if (!fs.existsSync(outDir)) return null;
   const files = fs
     .readdirSync(outDir)
-    .filter((f) => f.endsWith(".mp4") && !f.endsWith("-silent.mp4"))
+    .filter((f) => f.endsWith(".mp4") && !/(-silent|-draft|-unbranded|\.rendering|\.FAILED-QA)\.mp4$/.test(f))
     .map((f) => ({ name: f, time: fs.statSync(path.join(outDir, f)).mtime.getTime() }))
     .sort((a, b) => b.time - a.time);
 
@@ -269,6 +270,16 @@ async function main() {
       default: false,
       description: "Skip posting to Instagram (only applies to shorts)",
     })
+    .option("dry-run", {
+      type: "boolean",
+      default: false,
+      description: "Show what would be uploaded (file, QA status, title) and stop. Sends nothing.",
+    })
+    .option("allow-unverified", {
+      type: "boolean",
+      default: false,
+      description: "Publish a file that has no valid QA stamp (e.g. rendered by the old shorts pipeline).",
+    })
     .option("tunnel-url", {
       type: "string",
       description: "Override PUBLIC_TUNNEL_URL from .env",
@@ -279,13 +290,14 @@ async function main() {
   const channel = argv.channel as Channel;
   console.log(chalk.bgCyan.black.bold(`\n 🚀 Publishing to: ${channel.toUpperCase()} \n`));
 
+  const dryRun = argv["dry-run"];
   const creds = resolveChannelCredentials(channel);
-  if (!creds) process.exit(1);
+  if (!creds && !dryRun) process.exit(1);
 
   const ytCreds: YouTubeCredentials = {
     clientId: process.env.YOUTUBE_CLIENT_ID!,
     clientSecret: process.env.YOUTUBE_CLIENT_SECRET!,
-    refreshToken: creds.youtubeRefreshToken,
+    refreshToken: creds?.youtubeRefreshToken ?? "",
   };
 
   // ── 1. Resolve video file ──────────────────────────────────────────────────
@@ -303,6 +315,18 @@ async function main() {
   const absoluteVideoPath = path.resolve(process.cwd(), videoPath);
   if (!fs.existsSync(absoluteVideoPath)) {
     console.error(chalk.red(`❌ Error: Video file not found at path: ${videoPath}`));
+    process.exit(1);
+  }
+
+  // ── 1b. QA gate ────────────────────────────────────────────────────────────
+  const qa = verifyStamp(absoluteVideoPath);
+  if (qa.ok) {
+    console.log(chalk.bold("  QA:           ") + chalk.green(`passed (${qa.stamp.width}x${qa.stamp.height}, ${qa.stamp.warnings.length} warning(s))`));
+  } else if (argv["allow-unverified"]) {
+    console.log(chalk.bold("  QA:           ") + chalk.yellow(`UNVERIFIED — ${qa.reason} (--allow-unverified)`));
+  } else {
+    console.error(chalk.red(`❌ Refusing to publish: ${qa.reason}.`));
+    console.error(chalk.yellow("   Re-render with: npm run longform:render -- --project <slug>   (or pass --allow-unverified)"));
     process.exit(1);
   }
 
@@ -347,6 +371,12 @@ async function main() {
   console.log(chalk.bold("  Duration:     ") + duration.toFixed(1) + "s");
   console.log(chalk.bold("  Description:  ") + chalk.dim(description.replace(/\n/g, " ").substring(0, 80) + "..."));
 
+  if (dryRun) {
+    console.log(chalk.bold("  Privacy:      ") + argv.privacy);
+    console.log(chalk.green("\n  Dry run — nothing was uploaded."));
+    process.exit(0);
+  }
+
   // ── 4. YouTube Upload ──────────────────────────────────────────────────────
   if (argv["skip-youtube"]) {
     console.log(chalk.yellow("  YouTube:      Skipped"));
@@ -372,8 +402,8 @@ async function main() {
     console.log(chalk.yellow("  Instagram:    Skipped"));
   } else {
     // Credentials check
-    const igUserId = creds.igUserId;
-    const accessToken = creds.igAccessToken;
+    const igUserId = creds?.igUserId;
+    const accessToken = creds?.igAccessToken;
     const tunnelUrl = (argv["tunnel-url"] as string) || process.env.PUBLIC_TUNNEL_URL;
 
     if (!igUserId || !accessToken) {

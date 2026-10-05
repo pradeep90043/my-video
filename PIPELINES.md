@@ -66,18 +66,34 @@ public/content/<slug>/
 
 ```bash
 npm run longform:new -- --project MyTopic       # scaffold a new project
-npm run longform -- --project AivsSWE           # full run: TTS → merge → render
+npm run longform:check -- --project AivsSWE     # preflight only (tools, video.json, composition, disk)
+npm run longform -- --project AivsSWE           # full run: preflight → TTS → merge → render → QA
 npm run longform -- --project AivsSWE --skip-audio   # just re-render
+npm run longform -- --project AivsSWE --images       # also generate scene images (free Pollinations)
+npm run longform -- --project AivsSWE --from merge   # resume a failed run from a step (audio|images|merge|render)
 
 # or step-by-step:
-npm run longform:audio  -- --project AivsSWE    # edge-tts per scene + exact frame timings
-npm run longform:merge  -- --project AivsSWE    # ffmpeg concat → voiceover.mp3
-npm run longform:render -- --project AivsSWE    # remotion render → out/AivsSWE.mp4
+npm run longform:audio  -- --project AivsSWE    # edge-tts per scene (cached, retried) + exact frame timings
+npm run longform:merge  -- --project AivsSWE    # frame-exact pad + concat + -16 LUFS → voiceover.mp3
+npm run longform:render -- --project AivsSWE    # 720p by default (--resolution 1080 for full HD); remotion render → logo/BT.709 encode → QA → out/AivsSWE.mp4
+npm run longform:qa     -- --project AivsSWE    # re-run QA on an existing render
 ```
 
-(With a single project in `public/content/`, `--project` can be omitted.)
+Flags: `--force` (regenerate all TTS), `--no-branding` (skip logo, still converts colour),
+`--concurrency N`, `--out path.mp4`. Each run writes a step-timing summary to `out/logs/`.
 
-### How it works (scripts in `scripts/longform/`)
+### Production guarantees
+
+- **Preflight** fails fast on missing ffmpeg/edge-tts, invalid `video.json`, an unregistered
+  composition, or too little disk — before any slow step.
+- **TTS** is cached per scene (hash of text+voice+rate+pitch), retried 3×, and written atomically.
+- **Audio/visual sync** is frame-exact: each segment is padded to its scene's `durationFrames`.
+- **Render** is written to a temp file and only moved into place after the QA gate passes
+  (a failed QA is kept as `*.FAILED-QA.mp4`). Output is H.264 CRF 16, BT.709 limited-range yuv420p.
+- **QA gate** checks resolution, fps, codec, pixel format, audio present/not silent, duration vs
+  timeline; warns on loudness and black frames.
+
+### How it works (scripts in `scripts/longs/`)
 
 1. **Write the script** — fill each scene's `text` in `video.json`. Scene order =
    video order. TTS settings (`voice`, `rate`, `pitch`) live in the same file.
@@ -94,6 +110,35 @@ npm run longform:render -- --project AivsSWE    # remotion render → out/AivsSW
    `startFrame`) → outro.mp4, with the merged voiceover + ambient music.
 6. **`render.ts`** — `npx remotion render <slug>` → `out/<slug>.mp4`
    (audio renders inside the composition; the branded outro is part of it).
+
+### Stickman template (no scene code needed)
+
+A project with `"template": "stickman"` renders through the shared `StickmanVideo` composition
+(`src/stickman/`). Scaffold and run:
+
+```bash
+npm run longform:new -- --project MyTopic --template stickman --theme light   # or dark
+# write each scene's "text" and tune its "visual" block in public/content/MyTopic/video.json
+npm run longform -- --project MyTopic         # TTS → merge → render (720p) → QA
+```
+
+Each scene's `visual` (validated in preflight; schema in `src/stickman/schema.ts`):
+
+| field | values |
+|---|---|
+| `pose` | idle, point, present, shrug, think, celebrate, worried, facepalm, shocked, walk |
+| `mood` | neutral, happy, worried, shocked, sad |
+| `props[]` | `type` laptop, bulb, chartUp, chartDown, warning, clock, money, robot, question, check, cross, rocket, lock, gear, magnifier, bug, code; plus `x`, optional `y`, `scale`, `accent`, `delay` (frames) |
+| `title`, `callouts[]` | big headline and up to 4 pills |
+| `camera` | none, push, pull, pan-left, pan-right |
+| `transition` | cut, wipe |
+| `accent` | red, blue, gold, green |
+| `figureX`, `flip`, `hideFigure` | figure placement |
+
+Tips: keep each scene to ~2 short sentences (≤ 6 s) so something changes every few seconds (preflight
+warns above 8 s); grounded props (laptop, robot, …) stand on the floor automatically; the figure's
+mouth animates while the scene plays and its pose eases from the previous scene's. Captions are
+generated from the scene text. Reference: `public/content/stickman-demo/`.
 
 ### Reference project: AIvsSWE
 
