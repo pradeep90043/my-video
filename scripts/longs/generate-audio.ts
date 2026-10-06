@@ -97,7 +97,8 @@ async function main() {
     const sceneVoice = scene.voice || voice;
     const sceneRate = scene.rate || rate;
     const scenePitch = scene.pitch || pitch;
-    const hash = sceneHash(scene.text, sceneVoice, sceneRate, scenePitch);
+    const spoken: string = scene.ttsText || scene.text;
+    const hash = sceneHash(spoken, sceneVoice, sceneRate, scenePitch);
 
     const cached = !force && cache[segmentName] === hash && fs.existsSync(segmentPath);
     if (cached) {
@@ -105,7 +106,7 @@ async function main() {
     } else {
       console.log(`  -> Scene ${i}: ${scene.id} (voice: ${sceneVoice})`);
       await retry(`TTS for ${scene.id}`, 3, () =>
-        synthesize(scene.text, sceneVoice, sceneRate, scenePitch, segmentPath),
+        synthesize(spoken, sceneVoice, sceneRate, scenePitch, segmentPath),
       );
       cache[segmentName] = hash;
       fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2)); // persist progress per scene

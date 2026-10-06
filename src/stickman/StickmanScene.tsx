@@ -113,7 +113,16 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
   const captions = buildCaptions(text, durationFrames);
   const active = captions.find((c) => frame >= c.start && frame < c.end);
   const capOpacity = active
-    ? interpolate(frame, [active.start, active.start + 4, active.end - 3, active.end], [0, 1, 1, 0.85], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
+    ? interpolate(
+        frame,
+        (() => {
+          const len = Math.max(4, active.end - active.start);
+          const fade = Math.min(4, Math.floor((len - 1) / 3));
+          return [active.start, active.start + fade, active.start + len - fade, active.start + len];
+        })(),
+        [0, 1, 1, 0.85],
+        { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
+      )
     : 0;
 
   const fadeIn = interpolate(frame, [0, 5], [0, 1], { extrapolateRight: "clamp" });

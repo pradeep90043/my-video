@@ -1,0 +1,3088 @@
+{
+  "format": "longform",
+  "template": "stickman",
+  "theme": "light",
+  "composition": "StickmanVideo",
+  "fps": 30,
+  "voice": "hi-IN-MadhurNeural",
+  "rate": "+12%",
+  "pitch": "+0Hz",
+  "language": "hi",
+  "title": "Circular Dependency, Bean Scopes & Lazy Initialization in Spring (Hinglish) | CodeOrCap",
+  "description": "Spring Framework series (Hinglish): Circular Dependency, why constructor injection fails, how field/setter injection resolves it, why you should refactor instead, Singleton vs Prototype bean scopes, Eager vs Lazy initialization and @Lazy proxies. Includes 2 pause-and-think quizzes.\n\n🔔 Subscribe to CodeOrCap for evidence-based tech content.\n\n#Spring #SpringFramework #Java #CircularDependency #BeanScope #CodeOrCap",
+  "tags": [
+    "spring framework",
+    "circular dependency",
+    "bean scope",
+    "singleton",
+    "prototype",
+    "lazy initialization",
+    "java",
+    "codeorcap"
+  ],
+  "scenes": [
+    {
+      "id": "hook1",
+      "text": "Welcome back Coder Army! Spring Framework series mein aaj teen bade topics: Circular Dependency, Bean Scopes, aur Bean Initialization.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "transition": "wipe",
+        "title": "Circular Dependency, Scopes & Lazy",
+        "callouts": [
+          "Circular Dependency",
+          "Bean Scopes",
+          "Eager vs Lazy"
+        ],
+        "camera": "push"
+      },
+      "duration": 10.8,
+      "startFrame": 0,
+      "durationFrames": 324,
+      "audioFile": "segment_0_hook1.mp3"
+    },
+    {
+      "id": "hook2",
+      "text": "Ye teeno topics aapas mein linked hain, aur inhe samajhne mein aapko bahut maza aayega.",
+      "visual": {
+        "pose": "think",
+        "mood": "happy",
+        "accent": "blue",
+        "props": [
+          {
+            "type": "gear",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 5.952,
+      "startFrame": 324,
+      "durationFrames": 179,
+      "audioFile": "segment_1_hook2.mp3"
+    },
+    {
+      "id": "hook3",
+      "text": "Isse aapka Spring ka core knowledge aur strong hoga, aur interview mein ye sawaal bahut poochhe jaate hain. Chalo shuru karte hain!",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "props": [
+          {
+            "type": "rocket",
+            "x": 0.74,
+            "delay": 8
+          }
+        ],
+        "callouts": [
+          "Interview favourite"
+        ]
+      },
+      "duration": 9.576,
+      "startFrame": 503,
+      "durationFrames": 288,
+      "audioFile": "segment_2_hook3.mp3"
+    },
+    {
+      "id": "rec1",
+      "text": "Pehle ek quick recap. OrderService ko order place karne ke liye PaymentService ka object chahiye.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "1 · Dependency Recap",
+        "transition": "wipe",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "public class OrderService {",
+            "    private PaymentService ps;",
+            "",
+            "    public void placeOrder() {",
+            "        ps.pay();",
+            "    }",
+            "}"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 7.56,
+      "startFrame": 791,
+      "durationFrames": 227,
+      "audioFile": "segment_3_rec1.mp3"
+    },
+    {
+      "id": "rec2",
+      "text": "Yaani OrderService, PaymentService par dependent hai. Jab tak PaymentService ka object nahi, OrderService nahi ban sakti.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "1 · Dependency Recap",
+        "steps": {
+          "items": [
+            "PaymentService",
+            "OrderService"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 9.936,
+      "startFrame": 1018,
+      "durationFrames": 299,
+      "audioFile": "segment_4_rec2.mp3"
+    },
+    {
+      "id": "rec3",
+      "text": "PaymentService ko khud ek PaymentGateway chahiye. To dependency ki ek poori chain ban jaati hai.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "1 · Dependency Recap",
+        "steps": {
+          "items": [
+            "PaymentGateway",
+            "PaymentService",
+            "OrderService"
+          ],
+          "current": 2
+        }
+      },
+      "duration": 7.848,
+      "startFrame": 1317,
+      "durationFrames": 236,
+      "audioFile": "segment_5_rec3.mp3"
+    },
+    {
+      "id": "rec4",
+      "text": "Spring ka IoC container bahut smart hai. Use pata hai ki pehle Gateway banana hai, phir Payment, aur sabse last mein Order.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "1 · Dependency Recap",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "PaymentGateway",
+            "PaymentService",
+            "OrderService"
+          ]
+        }
+      },
+      "duration": 9.84,
+      "startFrame": 1553,
+      "durationFrames": 296,
+      "audioFile": "segment_6_rec4.mp3"
+    },
+    {
+      "id": "rec5",
+      "text": "Aur dependency inject bhi wahi karta hai. Seedhi line, koi dikkat nahi. Ab sochiye, agar ye line seedhi na ho to?",
+      "visual": {
+        "pose": "think",
+        "mood": "worried",
+        "accent": "gold",
+        "chapter": "1 · Dependency Recap",
+        "props": [
+          {
+            "type": "question",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.45
+          }
+        ]
+      },
+      "duration": 9.864,
+      "startFrame": 1849,
+      "durationFrames": 296,
+      "audioFile": "segment_7_rec5.mp3"
+    },
+    {
+      "id": "cir1",
+      "text": "Maan lo do classes hain, A aur B. A ko banane ke liye B chahiye.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "2 · Circular Dependency",
+        "transition": "wipe",
+        "steps": {
+          "items": [
+            "A",
+            "needs B"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 5.16,
+      "startFrame": 2145,
+      "durationFrames": 155,
+      "audioFile": "segment_8_cir1.mp3"
+    },
+    {
+      "id": "cir2",
+      "text": "Aur B ko banane ke liye A chahiye. Yahi hai Circular Dependency.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "2 · Circular Dependency",
+        "steps": {
+          "items": [
+            "A needs B",
+            "B needs A"
+          ],
+          "current": 1
+        },
+        "callouts": [
+          "Circular!"
+        ]
+      },
+      "duration": 5.616,
+      "startFrame": 2300,
+      "durationFrames": 169,
+      "audioFile": "segment_9_cir2.mp3"
+    },
+    {
+      "id": "cir3",
+      "text": "Ab Spring ko samajh hi nahi aayega ki shuruaat kahan se kare. Pehle A banaye ya pehle B?",
+      "visual": {
+        "pose": "shrug",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "2 · Circular Dependency",
+        "props": [
+          {
+            "type": "question",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.45
+          },
+          {
+            "type": "warning",
+            "x": 0.85,
+            "delay": 14,
+            "y": 0.3
+          }
+        ]
+      },
+      "duration": 6.696,
+      "startFrame": 2469,
+      "durationFrames": 201,
+      "audioFile": "segment_10_cir3.mp3"
+    },
+    {
+      "id": "cir4",
+      "text": "Apne example mein A ko OrderService maan lo, aur B ko PaymentService. Dono ek doosre par dependent hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "red",
+        "chapter": "2 · Circular Dependency",
+        "steps": {
+          "items": [
+            "OrderService needs PaymentService",
+            "PaymentService needs OrderService"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 9.072,
+      "startFrame": 2670,
+      "durationFrames": 273,
+      "audioFile": "segment_11_cir4.mp3"
+    },
+    {
+      "id": "cir5",
+      "text": "Chalo code mein ise banate hain, aur dekhte hain ki Spring ise kaise handle karta hai.",
+      "visual": {
+        "pose": "walk",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "2 · Circular Dependency",
+        "props": [
+          {
+            "type": "laptop",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 6.576,
+      "startFrame": 2943,
+      "durationFrames": 198,
+      "audioFile": "segment_12_cir5.mp3"
+    },
+    {
+      "id": "set1",
+      "text": "IntelliJ mein ek naya Maven project banate hain, naam circular-dependency-demo.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "3 · Demo Setup",
+        "transition": "wipe",
+        "code": {
+          "title": "pom.xml",
+          "lines": [
+            "<project>",
+            "  <groupId>com.codeorcap</groupId>",
+            "  <artifactId>circular-dependency-demo</artifactId>",
+            "  <version>1.0</version>",
+            "</project>"
+          ],
+          "highlight": []
+        }
+      },
+      "duration": 5.952,
+      "startFrame": 3141,
+      "durationFrames": 179,
+      "audioFile": "segment_13_set1.mp3"
+    },
+    {
+      "id": "set2",
+      "text": "Spring Core ke features chahiye, to pom mein spring-context ki dependency add karte hain. Version 7.0.7, kyunki hum Spring Boot 4 ke saath kaam karna chahte hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "3 · Demo Setup",
+        "code": {
+          "title": "pom.xml",
+          "lines": [
+            "<dependency>",
+            "  <groupId>org.springframework</groupId>",
+            "  <artifactId>spring-context</artifactId>",
+            "  <version>7.0.7</version>",
+            "</dependency>"
+          ],
+          "highlight": [
+            3
+          ]
+        }
+      },
+      "duration": 13.2,
+      "startFrame": 3320,
+      "durationFrames": 396,
+      "audioFile": "segment_14_set2.mp3"
+    },
+    {
+      "id": "set3",
+      "text": "Maven reload karo, aur saari transitive dependencies bhi aa jaati hain.",
+      "visual": {
+        "pose": "idle",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "3 · Demo Setup",
+        "props": [
+          {
+            "type": "check",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ]
+      },
+      "duration": 5.664,
+      "startFrame": 3716,
+      "durationFrames": 170,
+      "audioFile": "segment_15_set3.mp3"
+    },
+    {
+      "id": "set4",
+      "text": "Ab Main class mein IoC container start karte hain, AnnotationConfigApplicationContext ke saath.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "3 · Demo Setup",
+        "code": {
+          "title": "Main.java",
+          "lines": [
+            "public class Main {",
+            "  public static void main(String[] a) {",
+            "    ApplicationContext context =",
+            "      new AnnotationConfigApplicationContext(",
+            "          AppConfig.class);",
+            "  }",
+            "}"
+          ],
+          "highlight": [
+            3,
+            4
+          ]
+        }
+      },
+      "duration": 7.104,
+      "startFrame": 3886,
+      "durationFrames": 214,
+      "audioFile": "segment_16_set4.mp3"
+    },
+    {
+      "id": "set5",
+      "text": "AppConfig par Configuration aur ComponentScan lagao, taaki Spring har Component class ko scan kar sake.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "3 · Demo Setup",
+        "code": {
+          "title": "AppConfig.java",
+          "lines": [
+            "@Configuration",
+            "@ComponentScan",
+            "public class AppConfig {",
+            "}"
+          ],
+          "highlight": [
+            0,
+            1
+          ]
+        }
+      },
+      "duration": 7.296,
+      "startFrame": 4100,
+      "durationFrames": 219,
+      "audioFile": "segment_17_set5.mp3"
+    },
+    {
+      "id": "set6",
+      "text": "Ek interesting baat: Configuration annotation ke andar bhi Component laga hota hai. Yaani AppConfig khud bhi ek bean hai.",
+      "visual": {
+        "pose": "think",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "3 · Demo Setup",
+        "code": {
+          "title": "@Configuration (source)",
+          "lines": [
+            "@Target(ElementType.TYPE)",
+            "@Component",
+            "public @interface Configuration {",
+            "}"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 9.936,
+      "startFrame": 4319,
+      "durationFrames": 299,
+      "audioFile": "segment_18_set6.mp3"
+    },
+    {
+      "id": "set7",
+      "text": "Isi wajah se Spring AppConfig ke Bean methods ko call kar paata hai. Uska object container ke paas hota hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "3 · Demo Setup",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "AppConfig",
+            "(its @Bean methods)"
+          ]
+        }
+      },
+      "duration": 8.832,
+      "startFrame": 4618,
+      "durationFrames": 265,
+      "audioFile": "segment_19_set7.mp3"
+    },
+    {
+      "id": "wk1",
+      "text": "Pehle ek normal, bina circle wala version banate hain. OrderService par Component lagao.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "3 · Working Version",
+        "transition": "wipe",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Component",
+            "public class OrderService {",
+            "  private PaymentService payment;",
+            "",
+            "  public OrderService(PaymentService payment) {",
+            "    this.payment = payment;",
+            "  }",
+            "}"
+          ],
+          "highlight": [
+            0,
+            4
+          ]
+        }
+      },
+      "duration": 7.512,
+      "startFrame": 4883,
+      "durationFrames": 226,
+      "audioFile": "segment_20_wk1.mp3"
+    },
+    {
+      "id": "wk2",
+      "text": "Single constructor hai, to Autowired likhne ki zarurat nahi. Spring khud inject kar deta hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "3 · Working Version",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "public void placeOrder() {",
+            "  payment.pay();",
+            "  System.out.println(\"Order placed\");",
+            "}"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 7.68,
+      "startFrame": 5109,
+      "durationFrames": 231,
+      "audioFile": "segment_21_wk2.mp3"
+    },
+    {
+      "id": "wk3",
+      "text": "PaymentService mein bas ek pay method hai, jo print karta hai Payment done.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "3 · Working Version",
+        "code": {
+          "title": "PaymentService.java",
+          "lines": [
+            "@Component",
+            "public class PaymentService {",
+            "  public void pay() {",
+            "    System.out.println(\"Payment done\");",
+            "  }",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 5.328,
+      "startFrame": 5340,
+      "durationFrames": 160,
+      "audioFile": "segment_22_wk3.mp3"
+    },
+    {
+      "id": "wk4",
+      "text": "Main se getBean karke placeOrder call karte hain. Output: Payment done, phir Order placed. Sab sahi chal raha hai.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "3 · Working Version",
+        "code": {
+          "title": "Main.java",
+          "lines": [
+            "OrderService order =",
+            "    context.getBean(OrderService.class);",
+            "order.placeOrder();",
+            "",
+            "// Payment done",
+            "// Order placed"
+          ],
+          "highlight": [
+            2
+          ]
+        }
+      },
+      "duration": 9.912,
+      "startFrame": 5500,
+      "durationFrames": 298,
+      "audioFile": "segment_23_wk4.mp3"
+    },
+    {
+      "id": "cc1",
+      "text": "Ab zabardasti circular dependency banate hain. PaymentService ko bhi OrderService chahiye.",
+      "visual": {
+        "pose": "point",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "4 · Creating the Circle",
+        "transition": "wipe",
+        "code": {
+          "title": "PaymentService.java",
+          "lines": [
+            "@Component",
+            "public class PaymentService {",
+            "  private OrderService order;",
+            "",
+            "  public PaymentService(OrderService order) {",
+            "    this.order = order;",
+            "  }",
+            "}"
+          ],
+          "highlight": [
+            2,
+            4
+          ]
+        }
+      },
+      "duration": 7.416,
+      "startFrame": 5798,
+      "durationFrames": 223,
+      "audioFile": "segment_24_cc1.mp3"
+    },
+    {
+      "id": "cc2",
+      "text": "Aur pay method ke baad, ye OrderService ka getOrderDetails method call karti hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "red",
+        "chapter": "4 · Creating the Circle",
+        "code": {
+          "title": "PaymentService.java",
+          "lines": [
+            "public void pay() {",
+            "  System.out.println(\"Payment done\");",
+            "  order.getOrderDetails();",
+            "}"
+          ],
+          "highlight": [
+            2
+          ]
+        }
+      },
+      "duration": 6.36,
+      "startFrame": 6021,
+      "durationFrames": 191,
+      "audioFile": "segment_25_cc2.mp3"
+    },
+    {
+      "id": "cc3",
+      "text": "OrderService mein ye method bas Order details print karta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "4 · Creating the Circle",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "public void getOrderDetails() {",
+            "  System.out.println(\"Order details\");",
+            "}"
+          ],
+          "highlight": []
+        }
+      },
+      "duration": 4.968,
+      "startFrame": 6212,
+      "durationFrames": 150,
+      "audioFile": "segment_26_cc3.mp3"
+    },
+    {
+      "id": "cc4",
+      "text": "Flow aisa hoga: placeOrder pay ko call karega, pay Payment done print karke getOrderDetails ko, aur last mein Order placed.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "4 · Creating the Circle",
+        "steps": {
+          "items": [
+            "placeOrder()",
+            "pay()",
+            "getOrderDetails()",
+            "Order placed"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 8.472,
+      "startFrame": 6362,
+      "durationFrames": 255,
+      "audioFile": "segment_27_cc4.mp3"
+    },
+    {
+      "id": "cc5",
+      "text": "Lekin sabse pehla sawaal: kya Spring dono beans bana bhi payega?",
+      "visual": {
+        "pose": "think",
+        "mood": "worried",
+        "accent": "gold",
+        "chapter": "4 · Creating the Circle",
+        "props": [
+          {
+            "type": "question",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.45
+          }
+        ]
+      },
+      "duration": 4.704,
+      "startFrame": 6617,
+      "durationFrames": 142,
+      "audioFile": "segment_28_cc5.mp3"
+    },
+    {
+      "id": "cc6",
+      "text": "Jawab hai nahi. OrderService ka constructor PaymentService maangta hai, aur PaymentService ka constructor OrderService.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "4 · Creating the Circle",
+        "steps": {
+          "items": [
+            "new OrderService(needs PS)",
+            "new PaymentService(needs OS)"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 9.048,
+      "startFrame": 6759,
+      "durationFrames": 272,
+      "audioFile": "segment_29_cc6.mp3"
+    },
+    {
+      "id": "cc7",
+      "text": "Chalo run karke dekhte hain, kaunsa error milta hai.",
+      "visual": {
+        "pose": "walk",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "4 · Creating the Circle",
+        "props": [
+          {
+            "type": "bug",
+            "x": 0.72,
+            "delay": 12
+          }
+        ]
+      },
+      "duration": 4.416,
+      "startFrame": 7031,
+      "durationFrames": 133,
+      "audioFile": "segment_30_cc7.mp3"
+    },
+    {
+      "id": "cc8",
+      "text": "Exception aa gayi: BeanCurrentlyInCreationException. Message: Requested bean is currently in creation. Is there an unresolvable circular reference?",
+      "visual": {
+        "pose": "shocked",
+        "mood": "shocked",
+        "accent": "red",
+        "chapter": "4 · Creating the Circle",
+        "code": {
+          "title": "Console",
+          "lines": [
+            "Error creating bean with name 'orderService':",
+            "Requested bean is currently in creation:",
+            "Is there an unresolvable circular reference?",
+            "",
+            "BeanCurrentlyInCreationException"
+          ],
+          "highlight": [
+            4
+          ]
+        }
+      },
+      "duration": 11.304,
+      "startFrame": 7164,
+      "durationFrames": 340,
+      "audioFile": "segment_31_cc8.mp3"
+    },
+    {
+      "id": "cc9",
+      "text": "Matlab Spring ne OrderService banana shuru kiya, beech mein PaymentService banane gaya, aur PaymentService ne wapas OrderService maang li, jo abhi bana hi nahi.",
+      "visual": {
+        "pose": "present",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "4 · Creating the Circle",
+        "steps": {
+          "items": [
+            "create OrderService",
+            "needs PaymentService",
+            "create PaymentService",
+            "needs OrderService (in creation!)"
+          ],
+          "current": 3
+        }
+      },
+      "duration": 10.776,
+      "startFrame": 7504,
+      "durationFrames": 324,
+      "audioFile": "segment_32_cc9.mp3"
+    },
+    {
+      "id": "cc10",
+      "text": "Spring ko pata chal jaata hai ki bean pehle se creation state mein hai, aur wo exception throw kar deta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "red",
+        "chapter": "4 · Creating the Circle",
+        "props": [
+          {
+            "type": "warning",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ]
+      },
+      "duration": 7.416,
+      "startFrame": 7828,
+      "durationFrames": 223,
+      "audioFile": "segment_33_cc10.mp3"
+    },
+    {
+      "id": "pj1",
+      "text": "Ek zaroori baat: ye problem Spring ki wajah se nahi aati. Ye aapke code design ki problem hai. Pure Java mein bhi ban sakti hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "5 · Not a Spring Problem",
+        "transition": "wipe",
+        "callouts": [
+          "Bad design, not Spring"
+        ],
+        "props": [
+          {
+            "type": "bulb",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ]
+      },
+      "duration": 11.04,
+      "startFrame": 8051,
+      "durationFrames": 332,
+      "audioFile": "segment_34_pj1.mp3"
+    },
+    {
+      "id": "pj2",
+      "text": "Do plain classes lo, A aur B, bina kisi Component ke. A ka constructor B maangta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "5 · Not a Spring Problem",
+        "code": {
+          "title": "A.java",
+          "lines": [
+            "public class A {",
+            "  private B b;",
+            "",
+            "  public A(B b) {",
+            "    this.b = b;",
+            "  }",
+            "}"
+          ],
+          "highlight": [
+            3
+          ]
+        }
+      },
+      "duration": 7.68,
+      "startFrame": 8383,
+      "durationFrames": 231,
+      "audioFile": "segment_35_pj2.mp3"
+    },
+    {
+      "id": "pj3",
+      "text": "Aur B ka constructor A maangta hai. Ab main mein new A ke liye new B chahiye, aur new B ke liye new A.",
+      "visual": {
+        "pose": "shrug",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "5 · Not a Spring Problem",
+        "code": {
+          "title": "B.java",
+          "lines": [
+            "public class B {",
+            "  private A a;",
+            "",
+            "  public B(A a) {",
+            "    this.a = a;",
+            "  }",
+            "}"
+          ],
+          "highlight": [
+            3
+          ]
+        }
+      },
+      "duration": 8.304,
+      "startFrame": 8614,
+      "durationFrames": 250,
+      "audioFile": "segment_36_pj3.mp3"
+    },
+    {
+      "id": "pj4",
+      "text": "Ek hack hai: default constructor mein A, B ko new karta hai, aur B, A ko new karta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "red",
+        "chapter": "5 · Not a Spring Problem",
+        "code": {
+          "title": "A.java / B.java",
+          "lines": [
+            "// in A",
+            "public A() { this.b = new B(); }",
+            "",
+            "// in B",
+            "public B() { this.a = new A(); }"
+          ],
+          "highlight": [
+            1,
+            4
+          ]
+        }
+      },
+      "duration": 7.104,
+      "startFrame": 8864,
+      "durationFrames": 214,
+      "audioFile": "segment_37_pj4.mp3"
+    },
+    {
+      "id": "pj5",
+      "text": "Ab new A chalao. A ka constructor B banata hai, B ka constructor wapas A banata hai, aur ye chakkar chalta rahta hai.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "5 · Not a Spring Problem",
+        "steps": {
+          "items": [
+            "new A()",
+            "new B()",
+            "new A()",
+            "new B()  ... forever"
+          ],
+          "current": 3
+        }
+      },
+      "duration": 9.384,
+      "startFrame": 9078,
+      "durationFrames": 282,
+      "audioFile": "segment_38_pj5.mp3"
+    },
+    {
+      "id": "pj6",
+      "text": "Stack memory bhar jaati hai, aur aakhir mein StackOverflowError aa jaata hai. Yaani pure Java mein bhi ye bug ban sakta hai.",
+      "visual": {
+        "pose": "facepalm",
+        "mood": "shocked",
+        "accent": "red",
+        "chapter": "5 · Not a Spring Problem",
+        "props": [
+          {
+            "type": "bug",
+            "x": 0.72,
+            "delay": 10
+          }
+        ],
+        "callouts": [
+          "StackOverflowError"
+        ]
+      },
+      "duration": 9.792,
+      "startFrame": 9360,
+      "durationFrames": 294,
+      "audioFile": "segment_39_pj6.mp3"
+    },
+    {
+      "id": "fs1",
+      "text": "Wapas Spring par aate hain. Error constructor injection ki wajah se aa rahi thi, kyunki dono ek doosre ka object constructor mein maangte the.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "6 · Field & Setter Injection",
+        "transition": "wipe",
+        "props": [
+          {
+            "type": "lock",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 10.632,
+      "startFrame": 9654,
+      "durationFrames": 319,
+      "audioFile": "segment_40_fs1.mp3"
+    },
+    {
+      "id": "fs2",
+      "text": "Ek tareeka hai ki constructor injection hata kar field injection ya setter injection par chale jao.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "6 · Field & Setter Injection",
+        "callouts": [
+          "Constructor",
+          "Field",
+          "Setter"
+        ]
+      },
+      "duration": 6.768,
+      "startFrame": 9973,
+      "durationFrames": 204,
+      "audioFile": "segment_41_fs2.mp3"
+    },
+    {
+      "id": "fs3",
+      "text": "Dono classes se constructor hata do, aur field par Autowired laga do.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "6 · Field & Setter Injection",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Component",
+            "public class OrderService {",
+            "",
+            "  @Autowired",
+            "  private PaymentService payment;",
+            "",
+            "}"
+          ],
+          "highlight": [
+            3
+          ]
+        }
+      },
+      "duration": 5.616,
+      "startFrame": 10177,
+      "durationFrames": 169,
+      "audioFile": "segment_42_fs3.mp3"
+    },
+    {
+      "id": "fs4",
+      "text": "PaymentService mein bhi bilkul yahi. Setter injection mein bhi kahani wahi rehti, bas setter method par Autowired lagta.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "green",
+        "chapter": "6 · Field & Setter Injection",
+        "code": {
+          "title": "PaymentService.java",
+          "lines": [
+            "@Component",
+            "public class PaymentService {",
+            "",
+            "  @Autowired",
+            "  private OrderService order;",
+            "",
+            "}"
+          ],
+          "highlight": [
+            3
+          ]
+        }
+      },
+      "duration": 9.096,
+      "startFrame": 10346,
+      "durationFrames": 273,
+      "audioFile": "segment_43_fs4.mp3"
+    },
+    {
+      "id": "fs5",
+      "text": "Ek interesting sawaal: field to private hai. Spring bina setter ya constructor ke usme object kaise daal deta hai?",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "6 · Field & Setter Injection",
+        "props": [
+          {
+            "type": "question",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.45
+          }
+        ]
+      },
+      "duration": 9.264,
+      "startFrame": 10619,
+      "durationFrames": 278,
+      "audioFile": "segment_44_fs5.mp3"
+    },
+    {
+      "id": "fs6",
+      "text": "Jawab: Java Reflection. Spring ke paas poori class ka access hota hai, aur Reflection API se wo private members mein bhi values inject kar deta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "6 · Field & Setter Injection",
+        "props": [
+          {
+            "type": "magnifier",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ],
+        "callouts": [
+          "Reflection API"
+        ]
+      },
+      "duration": 11.352,
+      "startFrame": 10897,
+      "durationFrames": 341,
+      "audioFile": "segment_45_fs6.mp3"
+    },
+    {
+      "id": "fs7",
+      "text": "Ab main run karo. Payment done, Order details, Order placed. Spring ne circular dependency solve kar di!",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "6 · Field & Setter Injection",
+        "code": {
+          "title": "Console",
+          "lines": [
+            "Payment done",
+            "Order details",
+            "Order placed"
+          ],
+          "highlight": []
+        }
+      },
+      "duration": 9.072,
+      "startFrame": 11238,
+      "durationFrames": 273,
+      "audioFile": "segment_46_fs7.mp3"
+    },
+    {
+      "id": "fs8",
+      "text": "Lekin ye hua kaise? Yahi samajhna sabse zaroori hai.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "6 · Field & Setter Injection",
+        "props": [
+          {
+            "type": "question",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.45
+          }
+        ]
+      },
+      "duration": 5.352,
+      "startFrame": 11511,
+      "durationFrames": 161,
+      "audioFile": "segment_47_fs8.mp3"
+    },
+    {
+      "id": "hw1",
+      "text": "Field ya setter injection mein object banana aur dependency inject karna, dono alag ho jaate hain.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "7 · How Spring Resolves It",
+        "transition": "wipe",
+        "callouts": [
+          "Create",
+          "then Inject"
+        ]
+      },
+      "duration": 7.464,
+      "startFrame": 11672,
+      "durationFrames": 224,
+      "audioFile": "segment_48_hw1.mp3"
+    },
+    {
+      "id": "hw2",
+      "text": "Constructor injection kehta hai: mujhe banane ke liye hi meri dependency chahiye. Field injection kehta hai: pehle mujhe khali bana do, dependency baad mein daal dena.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "7 · How Spring Resolves It",
+        "props": [
+          {
+            "type": "lock",
+            "x": 0.72,
+            "delay": 8
+          },
+          {
+            "type": "check",
+            "x": 0.88,
+            "delay": 12,
+            "y": 0.45
+          }
+        ]
+      },
+      "duration": 11.712,
+      "startFrame": 11896,
+      "durationFrames": 352,
+      "audioFile": "segment_49_hw2.mp3"
+    },
+    {
+      "id": "hw3",
+      "text": "Spring ka normal flow: pehle A create, phir A ki dependency inject. Uske baad B create, phir B ki dependency inject.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "7 · How Spring Resolves It",
+        "steps": {
+          "items": [
+            "Create A",
+            "Inject A's dependencies",
+            "Create B",
+            "Inject B's dependencies"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 9.48,
+      "startFrame": 12248,
+      "durationFrames": 285,
+      "audioFile": "segment_50_hw3.mp3"
+    },
+    {
+      "id": "hw4",
+      "text": "Ab circular case mein Spring OrderService ka partial object bana leta hai. Constructor chal gaya, lekin dependency abhi inject nahi hui.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "7 · How Spring Resolves It",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "OrderService (partial)"
+          ]
+        }
+      },
+      "duration": 10.368,
+      "startFrame": 12533,
+      "durationFrames": 312,
+      "audioFile": "segment_51_hw4.mp3"
+    },
+    {
+      "id": "hw5",
+      "text": "Phir wo dependency resolve karne jaata hai. PaymentService chahiye. Container mein check karta hai, nahi hai, to PaymentService ka khali object bana deta hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "7 · How Spring Resolves It",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "OrderService (partial)",
+            "PaymentService (empty)"
+          ]
+        }
+      },
+      "duration": 12.36,
+      "startFrame": 12845,
+      "durationFrames": 371,
+      "audioFile": "segment_52_hw5.mp3"
+    },
+    {
+      "id": "hw6",
+      "text": "Ab PaymentService ko OrderService chahiye. Container mein dekhta hai, partial hi sahi, wo maujood hai. Wahi inject kar deta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "7 · How Spring Resolves It",
+        "steps": {
+          "items": [
+            "Create OrderService (partial)",
+            "Create PaymentService",
+            "Inject partial OrderService",
+            "Inject PaymentService into OrderService"
+          ],
+          "current": 2
+        }
+      },
+      "duration": 11.256,
+      "startFrame": 13216,
+      "durationFrames": 338,
+      "audioFile": "segment_53_hw6.mp3"
+    },
+    {
+      "id": "hw7",
+      "text": "Phir wapas OrderService mein PaymentService inject hoti hai. Dono ek doosre ko sahi point karte hain, aur dono complete ho jaate hain.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "7 · How Spring Resolves It",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "OrderService (done)",
+            "PaymentService (done)"
+          ]
+        }
+      },
+      "duration": 10.416,
+      "startFrame": 13554,
+      "durationFrames": 313,
+      "audioFile": "segment_54_hw7.mp3"
+    },
+    {
+      "id": "hw8",
+      "text": "Isi concept ko kehte hain early reference. Object poora bana nahi, lekin uska reference pehle de diya jaata hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "7 · How Spring Resolves It",
+        "callouts": [
+          "Early reference"
+        ],
+        "props": [
+          {
+            "type": "bulb",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ]
+      },
+      "duration": 8.76,
+      "startFrame": 13867,
+      "durationFrames": 263,
+      "audioFile": "segment_55_hw8.mp3"
+    },
+    {
+      "id": "hw9",
+      "text": "Lekin ye constructor injection mein nahi ho sakta, kyunki wahan object banta hi dependency milne ke baad hai.",
+      "visual": {
+        "pose": "shrug",
+        "mood": "neutral",
+        "accent": "red",
+        "chapter": "7 · How Spring Resolves It",
+        "steps": {
+          "items": [
+            "Constructor: dependency FIRST",
+            "Field/Setter: dependency AFTER"
+          ],
+          "current": 0
+        }
+      },
+      "duration": 7.776,
+      "startFrame": 14130,
+      "durationFrames": 234,
+      "audioFile": "segment_56_hw9.mp3"
+    },
+    {
+      "id": "av1",
+      "text": "To problem solve ho gayi? Technically haan, lekin practically ye achhi coding practice nahi hai.",
+      "visual": {
+        "pose": "shrug",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "8 · Why Avoid It",
+        "transition": "wipe",
+        "props": [
+          {
+            "type": "warning",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ]
+      },
+      "duration": 7.512,
+      "startFrame": 14364,
+      "durationFrames": 226,
+      "audioFile": "segment_57_av1.mp3"
+    },
+    {
+      "id": "av2",
+      "text": "Spring Boot 2.6 ke baad circular references by default disallow hain. Property hai spring dot main dot allow-circular-references, aur uski default value false hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "red",
+        "chapter": "8 · Why Avoid It",
+        "code": {
+          "title": "application.properties",
+          "lines": [
+            "# default is false",
+            "spring.main.allow-circular-references=false",
+            "",
+            "# you must opt in:",
+            "spring.main.allow-circular-references=true"
+          ],
+          "highlight": [
+            1,
+            4
+          ]
+        }
+      },
+      "duration": 12.96,
+      "startFrame": 14590,
+      "durationFrames": 389,
+      "audioFile": "segment_58_av2.mp3"
+    },
+    {
+      "id": "av3",
+      "text": "Yaani Spring Boot mein ye code aisa hi chalega nahi. Chahe field injection ho ya setter injection, wo dono ko error dega, jab tak aap property true na karo.",
+      "visual": {
+        "pose": "present",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "8 · Why Avoid It",
+        "callouts": [
+          "Boot 2.6+: blocked"
+        ]
+      },
+      "duration": 11.328,
+      "startFrame": 14979,
+      "durationFrames": 340,
+      "audioFile": "segment_59_av3.mp3"
+    },
+    {
+      "id": "av4",
+      "text": "Plain Spring Core mein ye supported hai, lekin enterprise applications mein circular dependency honi hi nahi chahiye.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "8 · Why Avoid It",
+        "props": [
+          {
+            "type": "cross",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5,
+            "accent": "red"
+          }
+        ]
+      },
+      "duration": 7.92,
+      "startFrame": 15319,
+      "durationFrames": 238,
+      "audioFile": "segment_60_av4.mp3"
+    },
+    {
+      "id": "av5",
+      "text": "Wajah? Aisa code tightly coupled hota hai. Do classes ek doosre ke bina kaam hi nahi kar sakti.",
+      "visual": {
+        "pose": "present",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "8 · Why Avoid It",
+        "callouts": [
+          "Tightly coupled"
+        ]
+      },
+      "duration": 8.496,
+      "startFrame": 15557,
+      "durationFrames": 255,
+      "audioFile": "segment_61_av5.mp3"
+    },
+    {
+      "id": "av6",
+      "text": "Aur sochiye, aisa hota hi kyun hai? Iska matlab hamne responsibilities ko sahi se alag nahi kiya. Single Responsibility Principle toot gaya.",
+      "visual": {
+        "pose": "think",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "8 · Why Avoid It",
+        "callouts": [
+          "Single Responsibility Principle"
+        ],
+        "props": [
+          {
+            "type": "bug",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 11.328,
+      "startFrame": 15812,
+      "durationFrames": 340,
+      "audioFile": "segment_62_av6.mp3"
+    },
+    {
+      "id": "quiz1",
+      "text": "Quick quiz: circular dependency ka sabse achha solution kya hai? Rukkar socho. Jawab: design refactor karo.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "8 · Why Avoid It",
+        "transition": "wipe",
+        "quiz": {
+          "question": "Best fix for a circular dependency?",
+          "options": [
+            "Switch to field injection",
+            "Enable allow-circular-references",
+            "Refactor the design"
+          ],
+          "answer": 2,
+          "revealAt": 0.6
+        }
+      },
+      "duration": 9.576,
+      "startFrame": 16152,
+      "durationFrames": 288,
+      "audioFile": "segment_63_quiz1.mp3"
+    },
+    {
+      "id": "rf1",
+      "text": "To fix kaise karein? Dekhte hain ki circular dependency aa kyun rahi hai. Wajah hai getOrderDetails ka PaymentService se call hona.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "9 · Refactoring It",
+        "transition": "wipe",
+        "code": {
+          "title": "PaymentService.java",
+          "lines": [
+            "public void pay() {",
+            "  System.out.println(\"Payment done\");",
+            "  order.getOrderDetails();  // why?!",
+            "}"
+          ],
+          "highlight": [
+            2
+          ]
+        }
+      },
+      "duration": 10.608,
+      "startFrame": 16440,
+      "durationFrames": 319,
+      "audioFile": "segment_64_rf1.mp3"
+    },
+    {
+      "id": "rf2",
+      "text": "OrderService ka kaam hai orders handle karna. Usne payment ka kaam PaymentService ko delegate kar diya, ye theek hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "9 · Refactoring It",
+        "steps": {
+          "items": [
+            "OrderService: handle orders",
+            "PaymentService: handle payments"
+          ],
+          "current": 0
+        }
+      },
+      "duration": 9.144,
+      "startFrame": 16759,
+      "durationFrames": 275,
+      "audioFile": "segment_65_rf2.mp3"
+    },
+    {
+      "id": "rf3",
+      "text": "Lekin payment ho jaane ke baad PaymentService order ke details kyun maange? Ye uska kaam hai hi nahi. Uska kaam hai sirf payment handle karna.",
+      "visual": {
+        "pose": "shrug",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "9 · Refactoring It",
+        "callouts": [
+          "Not its responsibility"
+        ]
+      },
+      "duration": 10.992,
+      "startFrame": 17034,
+      "durationFrames": 330,
+      "audioFile": "segment_66_rf3.mp3"
+    },
+    {
+      "id": "rf4",
+      "text": "To ye call PaymentService se hata do, aur OrderService ke andar le aao. Payment hone ke baad OrderService khud details print karegi.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "9 · Refactoring It",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "public void placeOrder() {",
+            "  payment.pay();",
+            "  getOrderDetails();",
+            "  System.out.println(\"Order placed\");",
+            "}"
+          ],
+          "highlight": [
+            2
+          ]
+        }
+      },
+      "duration": 9.888,
+      "startFrame": 17364,
+      "durationFrames": 297,
+      "audioFile": "segment_67_rf4.mp3"
+    },
+    {
+      "id": "rf5",
+      "text": "Ab PaymentService ko OrderService ki zarurat hi nahi. Field aur constructor dono hata sakte ho.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "9 · Refactoring It",
+        "code": {
+          "title": "PaymentService.java",
+          "lines": [
+            "@Component",
+            "public class PaymentService {",
+            "  public void pay() {",
+            "    System.out.println(\"Payment done\");",
+            "  }",
+            "}"
+          ],
+          "highlight": []
+        }
+      },
+      "duration": 7.584,
+      "startFrame": 17661,
+      "durationFrames": 228,
+      "audioFile": "segment_68_rf5.mp3"
+    },
+    {
+      "id": "rf6",
+      "text": "Dependency ab ek taraf ki hai. OrderService, PaymentService par depend karti hai, lekin wapas nahi. Circular dependency khatam.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "9 · Refactoring It",
+        "steps": {
+          "items": [
+            "PaymentService",
+            "OrderService"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 11.304,
+      "startFrame": 17889,
+      "durationFrames": 340,
+      "audioFile": "segment_69_rf6.mp3"
+    },
+    {
+      "id": "rf7",
+      "text": "Output bilkul same: Payment done, Order details, Order placed. Lekin code ab clean aur design sahi hai.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "9 · Refactoring It",
+        "code": {
+          "title": "Console",
+          "lines": [
+            "Payment done",
+            "Order details",
+            "Order placed"
+          ],
+          "highlight": []
+        }
+      },
+      "duration": 8.904,
+      "startFrame": 18229,
+      "durationFrames": 268,
+      "audioFile": "segment_70_rf7.mp3"
+    },
+    {
+      "id": "rf8",
+      "text": "Yaad rakhna: circular dependency ko solve mat karo, use hata do. Ye enterprise level ka sabse bada rule hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "9 · Refactoring It",
+        "transition": "wipe",
+        "callouts": [
+          "Remove it, don't solve it"
+        ],
+        "props": [
+          {
+            "type": "bulb",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ]
+      },
+      "duration": 9.192,
+      "startFrame": 18497,
+      "durationFrames": 276,
+      "audioFile": "segment_71_rf8.mp3"
+    },
+    {
+      "id": "sc1",
+      "text": "Ab agla topic: Bean Scopes. Ek naye project mein samjhte hain, bean-scope-demo.",
+      "visual": {
+        "pose": "walk",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "10 · Bean Scopes",
+        "transition": "wipe",
+        "props": [
+          {
+            "type": "laptop",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 6.504,
+      "startFrame": 18773,
+      "durationFrames": 196,
+      "audioFile": "segment_72_sc1.mp3"
+    },
+    {
+      "id": "sc2",
+      "text": "Ek khali OrderService bana lo, Component laga hua, aur uske constructor mein print karo Order service created.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "10 · Bean Scopes",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Component",
+            "public class OrderService {",
+            "  public OrderService() {",
+            "    System.out.println(\"OrderService created\");",
+            "  }",
+            "}"
+          ],
+          "highlight": [
+            3
+          ]
+        }
+      },
+      "duration": 7.8,
+      "startFrame": 18969,
+      "durationFrames": 234,
+      "audioFile": "segment_73_sc2.mp3"
+    },
+    {
+      "id": "sc3",
+      "text": "Main mein getBean se ek baar OrderService maango, aur doosre variable order2 mein dobara maango.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "10 · Bean Scopes",
+        "code": {
+          "title": "Main.java",
+          "lines": [
+            "OrderService order =",
+            "    context.getBean(OrderService.class);",
+            "OrderService order2 =",
+            "    context.getBean(OrderService.class);",
+            "",
+            "System.out.println(order == order2);"
+          ],
+          "highlight": [
+            1,
+            3,
+            5
+          ]
+        }
+      },
+      "duration": 6.888,
+      "startFrame": 19203,
+      "durationFrames": 207,
+      "audioFile": "segment_74_sc3.mp3"
+    },
+    {
+      "id": "sc4",
+      "text": "Sawaal: kya do object bane honge, ya dono ko ek hi object ka reference mila? Rukkar socho.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "10 · Bean Scopes",
+        "props": [
+          {
+            "type": "question",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.45
+          }
+        ]
+      },
+      "duration": 7.56,
+      "startFrame": 19410,
+      "durationFrames": 227,
+      "audioFile": "segment_75_sc4.mp3"
+    },
+    {
+      "id": "sc5",
+      "text": "Run karo. Order service created sirf ek baar print hua, aur double equals ka jawab true. Yaani ek hi object tha.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "10 · Bean Scopes",
+        "code": {
+          "title": "Console",
+          "lines": [
+            "OrderService created",
+            "true"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 10.032,
+      "startFrame": 19637,
+      "durationFrames": 301,
+      "audioFile": "segment_76_sc5.mp3"
+    },
+    {
+      "id": "sc6",
+      "text": "Container ne ek hi object banaya, aur har baar wahi reference wapas kiya. Ise kehte hain Singleton scope.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "10 · Bean Scopes",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "OrderService (1 object)"
+          ]
+        }
+      },
+      "duration": 8.472,
+      "startFrame": 19938,
+      "durationFrames": 255,
+      "audioFile": "segment_77_sc6.mp3"
+    },
+    {
+      "id": "sc7",
+      "text": "Java mein mainly do scopes hote hain: Singleton aur Prototype. Baaki scopes web application mein kaam aate hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "10 · Bean Scopes",
+        "callouts": [
+          "Singleton",
+          "Prototype"
+        ]
+      },
+      "duration": 8.784,
+      "startFrame": 20193,
+      "durationFrames": 264,
+      "audioFile": "segment_78_sc7.mp3"
+    },
+    {
+      "id": "sc8",
+      "text": "Singleton kehta hai: ek bean definition ke liye ek hi object banega. Kitni baar bhi getBean karo, wahi object milega.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "10 · Bean Scopes",
+        "callouts": [
+          "1 definition = 1 object"
+        ]
+      },
+      "duration": 9.264,
+      "startFrame": 20457,
+      "durationFrames": 278,
+      "audioFile": "segment_79_sc8.mp3"
+    },
+    {
+      "id": "sc9",
+      "text": "Ye default scope hai. Aap likh bhi sakte ho, Scope annotation mein singleton, tab bhi kuch nahi badlega.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "10 · Bean Scopes",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Component",
+            "@Scope(\"singleton\")",
+            "public class OrderService {",
+            "}"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 8.568,
+      "startFrame": 20735,
+      "durationFrames": 258,
+      "audioFile": "segment_80_sc9.mp3"
+    },
+    {
+      "id": "sc10",
+      "text": "Ab Prototype ko dekhte hain. Ye bilkul ulta hai: jab bhi aap object maangoge, har baar naya object milega.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "10 · Bean Scopes",
+        "transition": "wipe",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Component",
+            "@Scope(\"prototype\")",
+            "public class OrderService {",
+            "}"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 9.12,
+      "startFrame": 20993,
+      "durationFrames": 274,
+      "audioFile": "segment_81_sc10.mp3"
+    },
+    {
+      "id": "sc11",
+      "text": "Wahi Main chalao. Ab Order service created do baar print hota hai, aur double equals ka jawab false.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "10 · Bean Scopes",
+        "code": {
+          "title": "Console",
+          "lines": [
+            "OrderService created",
+            "OrderService created",
+            "false"
+          ],
+          "highlight": [
+            2
+          ]
+        }
+      },
+      "duration": 8.064,
+      "startFrame": 21267,
+      "durationFrames": 242,
+      "audioFile": "segment_82_sc11.mp3"
+    },
+    {
+      "id": "sc12",
+      "text": "Chahe getBean se maango, ya dependency injection ke liye, har baar ek naya object banega. Ye bilkul new keyword jaisa hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "10 · Bean Scopes",
+        "props": [
+          {
+            "type": "gear",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 10.008,
+      "startFrame": 21509,
+      "durationFrames": 301,
+      "audioFile": "segment_83_sc12.mp3"
+    },
+    {
+      "id": "sc13",
+      "text": "Maan lo do aur classes A aur B, dono OrderService ko constructor mein maangti hain. Singleton mein dono ko ek hi object milega.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "10 · Bean Scopes",
+        "steps": {
+          "items": [
+            "A needs OrderService",
+            "B needs OrderService",
+            "Singleton: same object"
+          ],
+          "current": 2
+        }
+      },
+      "duration": 10.272,
+      "startFrame": 21810,
+      "durationFrames": 309,
+      "audioFile": "segment_84_sc13.mp3"
+    },
+    {
+      "id": "sc14",
+      "text": "Prototype mein A ko alag object milega, B ko alag. Aur Main ke do getBean ke do aur. Total chaar objects.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "10 · Bean Scopes",
+        "container": {
+          "label": "Prototype beans",
+          "beans": [
+            "Main #1",
+            "Main #2",
+            "A's copy",
+            "B's copy"
+          ]
+        }
+      },
+      "duration": 8.88,
+      "startFrame": 22119,
+      "durationFrames": 267,
+      "audioFile": "segment_85_sc14.mp3"
+    },
+    {
+      "id": "sn1",
+      "text": "Ab ek bahut hi important point, jisme log confuse ho jaate hain. Spring ka singleton, Singleton design pattern jaisa nahi hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "worried",
+        "accent": "gold",
+        "chapter": "11 · Singleton Nuance",
+        "transition": "wipe",
+        "callouts": [
+          "Not the GoF pattern"
+        ]
+      },
+      "duration": 10.44,
+      "startFrame": 22386,
+      "durationFrames": 314,
+      "audioFile": "segment_86_sn1.mp3"
+    },
+    {
+      "id": "sn2",
+      "text": "Design pattern kehta hai ki ek Java class ka sirf ek hi object ban sakta hai. Bahut strict.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "11 · Singleton Nuance",
+        "callouts": [
+          "1 class = 1 object"
+        ]
+      },
+      "duration": 7.896,
+      "startFrame": 22700,
+      "durationFrames": 237,
+      "audioFile": "segment_87_sn2.mp3"
+    },
+    {
+      "id": "sn3",
+      "text": "Spring mein singleton ka matlab sirf itna hai: ek bean definition ke liye ek object.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "11 · Singleton Nuance",
+        "callouts": [
+          "1 bean definition = 1 object"
+        ]
+      },
+      "duration": 6.024,
+      "startFrame": 22937,
+      "durationFrames": 181,
+      "audioFile": "segment_88_sn3.mp3"
+    },
+    {
+      "id": "sn4",
+      "text": "Aap khud new keyword se jitne chaho objects bana sakte ho. Spring unhe manage nahi karega.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "11 · Singleton Nuance",
+        "code": {
+          "title": "Main.java",
+          "lines": [
+            "OrderService o3 = new OrderService();",
+            "// not a bean, Spring doesn't know it"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 7.368,
+      "startFrame": 23118,
+      "durationFrames": 222,
+      "audioFile": "segment_89_sn4.mp3"
+    },
+    {
+      "id": "sn5",
+      "text": "Aur agar AppConfig mein Bean ke saath do methods likho jo OrderService return karte hain, to do alag bean definitions ho jaati hain.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "11 · Singleton Nuance",
+        "code": {
+          "title": "AppConfig.java",
+          "lines": [
+            "@Bean",
+            "public OrderService getOrder() {",
+            "  return new OrderService();",
+            "}",
+            "",
+            "@Bean",
+            "public OrderService getOrder2() {",
+            "  return new OrderService();",
+            "}"
+          ],
+          "highlight": [
+            0,
+            5
+          ]
+        }
+      },
+      "duration": 9.264,
+      "startFrame": 23340,
+      "durationFrames": 278,
+      "audioFile": "segment_90_sn5.mp3"
+    },
+    {
+      "id": "sn6",
+      "text": "Run karo to Order service created do baar print hota hai. Container mein ab OrderService ke do beans hain, aur har ek khud mein singleton hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "11 · Singleton Nuance",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "getOrder (singleton)",
+            "getOrder2 (singleton)"
+          ]
+        }
+      },
+      "duration": 11.112,
+      "startFrame": 23618,
+      "durationFrames": 334,
+      "audioFile": "segment_91_sn6.mp3"
+    },
+    {
+      "id": "sn7",
+      "text": "Lekin ab agar koi OrderService inject karwaye, to Spring confuse ho jaayega ki kaunsa dena hai, aur NoUniqueBeanDefinitionException aayegi.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "11 · Singleton Nuance",
+        "callouts": [
+          "NoUniqueBeanDefinitionException"
+        ]
+      },
+      "duration": 9.528,
+      "startFrame": 23952,
+      "durationFrames": 286,
+      "audioFile": "segment_92_sn7.mp3"
+    },
+    {
+      "id": "sn8",
+      "text": "Iska solution hum Primary aur Qualifier se pehle dekh chuke hain. Bas yaad rakhna: scope bean definition ke hisaab se kaam karta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "11 · Singleton Nuance",
+        "props": [
+          {
+            "type": "check",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ]
+      },
+      "duration": 10.656,
+      "startFrame": 24238,
+      "durationFrames": 320,
+      "audioFile": "segment_93_sn8.mp3"
+    },
+    {
+      "id": "st1",
+      "text": "Ab practical sawaal: kab singleton, aur kab prototype? Ek User class socho, jisme name aur age fields hain.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "12 · Which Scope When?",
+        "transition": "wipe",
+        "code": {
+          "title": "User.java",
+          "lines": [
+            "@Component",
+            "public class User {",
+            "  private String name;",
+            "  private int age;",
+            "}"
+          ],
+          "highlight": [
+            2,
+            3
+          ]
+        }
+      },
+      "duration": 9.096,
+      "startFrame": 24558,
+      "durationFrames": 273,
+      "audioFile": "segment_94_st1.mp3"
+    },
+    {
+      "id": "st2",
+      "text": "Ye saari properties us object ki state hain. Har user ka naam aur age alag hogi.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "12 · Which Scope When?",
+        "callouts": [
+          "name, age = state"
+        ]
+      },
+      "duration": 7.344,
+      "startFrame": 24831,
+      "durationFrames": 221,
+      "audioFile": "segment_95_st2.mp3"
+    },
+    {
+      "id": "st3",
+      "text": "Agar User singleton hua, to container ke paas bas ek user hoga, jiska naam Aditya aur age 28. Har getBean par wahi milega.",
+      "visual": {
+        "pose": "shrug",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "12 · Which Scope When?",
+        "props": [
+          {
+            "type": "cross",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5,
+            "accent": "red"
+          }
+        ]
+      },
+      "duration": 10.416,
+      "startFrame": 25052,
+      "durationFrames": 313,
+      "audioFile": "segment_96_st3.mp3"
+    },
+    {
+      "id": "st4",
+      "text": "Hum chahte hain ki application mein multiple users hon. To jis class mein state hai, use hamesha prototype banao.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "12 · Which Scope When?",
+        "callouts": [
+          "Stateful = Prototype"
+        ]
+      },
+      "duration": 5.928,
+      "startFrame": 25365,
+      "durationFrames": 178,
+      "audioFile": "segment_97_st4.mp3"
+    },
+    {
+      "id": "st5",
+      "text": "Aur singleton ke liye class stateless honi chahiye, yaani apni koi state na rakhe.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "12 · Which Scope When?",
+        "callouts": [
+          "Stateless = Singleton"
+        ]
+      },
+      "duration": 6.024,
+      "startFrame": 25543,
+      "durationFrames": 181,
+      "audioFile": "segment_98_st5.mp3"
+    },
+    {
+      "id": "st6",
+      "text": "Iske best candidates hain service aur manager classes: OrderService, PaymentService, OrderManager. Wo bahut orders handle karti hain, lekin khud ki koi state nahi rakhti.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "12 · Which Scope When?",
+        "steps": {
+          "items": [
+            "OrderService",
+            "PaymentService",
+            "OrderManager"
+          ],
+          "current": 2
+        }
+      },
+      "duration": 12.984,
+      "startFrame": 25724,
+      "durationFrames": 390,
+      "audioFile": "segment_99_st6.mp3"
+    },
+    {
+      "id": "st7",
+      "text": "Aur request, session, application jaise scopes bhi hote hain. Wo web application mein kaam aate hain, jo hum Spring MVC mein padhenge.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "12 · Which Scope When?",
+        "callouts": [
+          "request",
+          "session",
+          "application"
+        ]
+      },
+      "duration": 10.224,
+      "startFrame": 26114,
+      "durationFrames": 307,
+      "audioFile": "segment_100_st7.mp3"
+    },
+    {
+      "id": "quiz2",
+      "text": "Quiz time: UserSession class, jisme har user ka data hai, kaunsa scope hona chahiye? Socho. Jawab: prototype, ya web scope.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "12 · Which Scope When?",
+        "transition": "wipe",
+        "quiz": {
+          "question": "Class holding per-user state: scope?",
+          "options": [
+            "Singleton",
+            "Prototype",
+            "Doesn't matter"
+          ],
+          "answer": 1,
+          "revealAt": 0.6
+        }
+      },
+      "duration": 10.416,
+      "startFrame": 26421,
+      "durationFrames": 313,
+      "audioFile": "segment_101_quiz2.mp3"
+    },
+    {
+      "id": "el1",
+      "text": "Ab teesra topic: Bean Initialization. Beans do tarah se initialize ho sakte hain, Eager aur Lazy.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "13 · Eager vs Lazy",
+        "transition": "wipe",
+        "callouts": [
+          "Eager",
+          "Lazy"
+        ]
+      },
+      "duration": 8.136,
+      "startFrame": 26734,
+      "durationFrames": 245,
+      "audioFile": "segment_102_el1.mp3"
+    },
+    {
+      "id": "el2",
+      "text": "Eager ka matlab: jaise hi application context start hua, saare beans turant create ho jaate hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "green",
+        "chapter": "13 · Eager vs Lazy",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "OrderService",
+            "PaymentService"
+          ]
+        }
+      },
+      "duration": 7.224,
+      "startFrame": 26979,
+      "durationFrames": 217,
+      "audioFile": "segment_103_el2.mp3"
+    },
+    {
+      "id": "el3",
+      "text": "Demo ke liye do classes lo, OrderService aur PaymentService, dono Component, aur constructors mein print. Main mein kuch bhi call nahi.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "13 · Eager vs Lazy",
+        "code": {
+          "title": "Main.java",
+          "lines": [
+            "ApplicationContext context =",
+            "  new AnnotationConfigApplicationContext(",
+            "      AppConfig.class);",
+            "// nothing else!"
+          ],
+          "highlight": [
+            3
+          ]
+        }
+      },
+      "duration": 9.744,
+      "startFrame": 27196,
+      "durationFrames": 293,
+      "audioFile": "segment_104_el3.mp3"
+    },
+    {
+      "id": "el4",
+      "text": "Run karte hi screen par aata hai: Order service created, Payment service created. Container start hote hi dono bean ban gaye.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "13 · Eager vs Lazy",
+        "code": {
+          "title": "Console",
+          "lines": [
+            "OrderService created",
+            "PaymentService created"
+          ],
+          "highlight": []
+        }
+      },
+      "duration": 9.72,
+      "startFrame": 27489,
+      "durationFrames": 292,
+      "audioFile": "segment_105_el4.mp3"
+    },
+    {
+      "id": "el5",
+      "text": "Ye default hai. Singleton scope ke beans by default eager hote hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "13 · Eager vs Lazy",
+        "callouts": [
+          "Singleton = Eager (default)"
+        ]
+      },
+      "duration": 6.768,
+      "startFrame": 27781,
+      "durationFrames": 204,
+      "audioFile": "segment_106_el5.mp3"
+    },
+    {
+      "id": "el6",
+      "text": "Agar aap chaho to ek heavy class ko Lazy bana sakte ho. Class par Lazy annotation lagao.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "13 · Eager vs Lazy",
+        "transition": "wipe",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Lazy",
+            "@Component",
+            "public class OrderService {",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 7.488,
+      "startFrame": 27985,
+      "durationFrames": 225,
+      "audioFile": "segment_107_el6.mp3"
+    },
+    {
+      "id": "el7",
+      "text": "Dono par Lazy lagao aur run karo. Ab kuch bhi print nahi hota. Container start hua, lekin koi object nahi bana.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "13 · Eager vs Lazy",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "(empty)"
+          ]
+        }
+      },
+      "duration": 9.864,
+      "startFrame": 28210,
+      "durationFrames": 296,
+      "audioFile": "segment_108_el7.mp3"
+    },
+    {
+      "id": "el8",
+      "text": "Jab aap context getBean se OrderService maangoge, tabhi uska object banega, aur tabhi print hoga.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "13 · Eager vs Lazy",
+        "code": {
+          "title": "Main.java",
+          "lines": [
+            "OrderService o =",
+            "  context.getBean(OrderService.class);",
+            "",
+            "// now prints: OrderService created"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 7.176,
+      "startFrame": 28506,
+      "durationFrames": 216,
+      "audioFile": "segment_109_el8.mp3"
+    },
+    {
+      "id": "el9",
+      "text": "Ab baat prototype ki. Prototype par Lazy likhne ki zarurat hi nahi. Wo hamesha lazy hi hota hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "13 · Eager vs Lazy",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Scope(\"prototype\")",
+            "@Component",
+            "public class OrderService {",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 9.12,
+      "startFrame": 28722,
+      "durationFrames": 274,
+      "audioFile": "segment_110_el9.mp3"
+    },
+    {
+      "id": "el10",
+      "text": "Kyunki prototype kehta hai, jab bhi maangoge naya object doonga. To pehle se ek object bana kar rakhne ka fayda hi kya?",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "13 · Eager vs Lazy",
+        "callouts": [
+          "Prototype = always Lazy"
+        ]
+      },
+      "duration": 8.904,
+      "startFrame": 28996,
+      "durationFrames": 268,
+      "audioFile": "segment_111_el10.mp3"
+    },
+    {
+      "id": "el11",
+      "text": "Aur singleton mein ye hota hai: sabko wahi ek object dena hai, to pehle hi bana ke rakh lo. Isliye singleton eager hota hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "13 · Eager vs Lazy",
+        "callouts": [
+          "Singleton = eager by default"
+        ]
+      },
+      "duration": 9.864,
+      "startFrame": 29264,
+      "durationFrames": 296,
+      "audioFile": "segment_112_el11.mp3"
+    },
+    {
+      "id": "el12",
+      "text": "Yaani Lazy sirf singleton ko lazy banata hai. Prototype ko eager banane ka koi tareeka hi nahi.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "13 · Eager vs Lazy",
+        "steps": {
+          "items": [
+            "Singleton: eager or @Lazy",
+            "Prototype: always lazy"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 7.968,
+      "startFrame": 29560,
+      "durationFrames": 240,
+      "audioFile": "segment_113_el12.mp3"
+    },
+    {
+      "id": "el13",
+      "text": "Ek property bhi hai: spring dot main dot lazy-initialization. True kar do to saare beans globally lazy ho jaate hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "13 · Eager vs Lazy",
+        "code": {
+          "title": "application.properties",
+          "lines": [
+            "spring.main.lazy-initialization=true"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 9.288,
+      "startFrame": 29800,
+      "durationFrames": 279,
+      "audioFile": "segment_114_el13.mp3"
+    },
+    {
+      "id": "el14",
+      "text": "Phir koi ek class eager chahiye to uspar Lazy ke saath value false likh do. Baaki sab lazy rahenge.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "13 · Eager vs Lazy",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Lazy(false)",
+            "@Component",
+            "public class OrderService { }"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 8.28,
+      "startFrame": 30079,
+      "durationFrames": 249,
+      "audioFile": "segment_115_el14.mp3"
+    },
+    {
+      "id": "el15",
+      "text": "To Spring eager ko prefer kyun karta hai? Kyunki fail fast. Wiring ki saari galtiyan application start hote hi pakdi jaati hain.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "13 · Eager vs Lazy",
+        "transition": "wipe",
+        "callouts": [
+          "Fail fast"
+        ],
+        "props": [
+          {
+            "type": "bug",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 10.56,
+      "startFrame": 30328,
+      "durationFrames": 317,
+      "audioFile": "segment_116_el15.mp3"
+    },
+    {
+      "id": "el16",
+      "text": "Agar lazy hua, to ho sakta hai production par jab pehli baar bean maanga jaaye, tab application phat jaaye. Isliye heavy classes ke liye hi Lazy use karo.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "13 · Eager vs Lazy",
+        "props": [
+          {
+            "type": "warning",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ]
+      },
+      "duration": 11.064,
+      "startFrame": 30645,
+      "durationFrames": 332,
+      "audioFile": "segment_117_el16.mp3"
+    },
+    {
+      "id": "lz1",
+      "text": "Ab dekhte hain Lazy ka ek aur interesting use. Wapas constructor wali circular dependency par chalte hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "14 · @Lazy as a Circular Fix",
+        "transition": "wipe",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Component",
+            "public class OrderService {",
+            "  public OrderService(PaymentService p) {",
+            "    ...",
+            "  }",
+            "}"
+          ],
+          "highlight": [
+            2
+          ]
+        }
+      },
+      "duration": 8.712,
+      "startFrame": 30977,
+      "durationFrames": 262,
+      "audioFile": "segment_118_lz1.mp3"
+    },
+    {
+      "id": "lz2",
+      "text": "Ab maan lo PaymentService par Lazy lagaya, aur constructor se circular dependency hai. Spring OrderService banayega, lekin PaymentService nahi.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "14 · @Lazy as a Circular Fix",
+        "steps": {
+          "items": [
+            "OrderService: create",
+            "PaymentService: @Lazy, skip"
+          ],
+          "current": 0
+        }
+      },
+      "duration": 11.424,
+      "startFrame": 31239,
+      "durationFrames": 343,
+      "audioFile": "segment_119_lz2.mp3"
+    },
+    {
+      "id": "lz3",
+      "text": "Phir bhi OrderService ko PaymentService chahiye. To Spring ek proxy object inject kar deta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "14 · @Lazy as a Circular Fix",
+        "container": {
+          "label": "OrderService",
+          "beans": [
+            "PaymentService proxy"
+          ]
+        }
+      },
+      "duration": 7.92,
+      "startFrame": 31582,
+      "durationFrames": 238,
+      "audioFile": "segment_120_lz3.mp3"
+    },
+    {
+      "id": "lz4",
+      "text": "Proxy ek design pattern hai: ek fake object jo PaymentService jaisa dikhta hai, lekin asli PaymentService nahi hota.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "14 · @Lazy as a Circular Fix",
+        "callouts": [
+          "Proxy = lookalike"
+        ],
+        "props": [
+          {
+            "type": "robot",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 8.856,
+      "startFrame": 31820,
+      "durationFrames": 266,
+      "audioFile": "segment_121_lz4.mp3"
+    },
+    {
+      "id": "lz5",
+      "text": "Isi tarah aap constructor ke parameter par bhi Lazy laga sakte ho. Ye aksar circular dependency todne ke liye use hota hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "14 · @Lazy as a Circular Fix",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "public OrderService(",
+            "    @Lazy PaymentService payment) {",
+            "  this.payment = payment;",
+            "}"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 9.648,
+      "startFrame": 32086,
+      "durationFrames": 290,
+      "audioFile": "segment_122_lz5.mp3"
+    },
+    {
+      "id": "lz6",
+      "text": "Jab tak placeOrder call nahi hota, proxy hi rehta hai. Jaise hi payment dot pay chalta hai, asli PaymentService banta hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "14 · @Lazy as a Circular Fix",
+        "steps": {
+          "items": [
+            "OrderService created",
+            "proxy injected",
+            "placeOrder() called",
+            "real PaymentService created"
+          ],
+          "current": 3
+        }
+      },
+      "duration": 10.224,
+      "startFrame": 32376,
+      "durationFrames": 307,
+      "audioFile": "segment_123_lz6.mp3"
+    },
+    {
+      "id": "lz7",
+      "text": "Us waqt PaymentService ko OrderService chahiye, wo already ban chuki hai. Dono sahi wire ho jaate hain, aur proxy hat jaata hai.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "14 · @Lazy as a Circular Fix",
+        "props": [
+          {
+            "type": "check",
+            "x": 0.72,
+            "delay": 8,
+            "y": 0.5
+          }
+        ]
+      },
+      "duration": 10.584,
+      "startFrame": 32683,
+      "durationFrames": 318,
+      "audioFile": "segment_124_lz7.mp3"
+    },
+    {
+      "id": "lz8",
+      "text": "Ye bhi circular dependency solve karne ka ek tareeka hai. Lekin phir wahi baat: solve nahi, refactor karna hi sahi hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "14 · @Lazy as a Circular Fix",
+        "callouts": [
+          "Refactor > workaround"
+        ]
+      },
+      "duration": 9.912,
+      "startFrame": 33001,
+      "durationFrames": 298,
+      "audioFile": "segment_125_lz8.mp3"
+    },
+    {
+      "id": "lz9",
+      "text": "Aur ek aur tareeka aage Bean Lifecycle mein aayega, PostConstruct annotation ke saath. Lekin wo bhi sirf workaround hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "14 · @Lazy as a Circular Fix",
+        "props": [
+          {
+            "type": "gear",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 9.696,
+      "startFrame": 33299,
+      "durationFrames": 291,
+      "audioFile": "segment_126_lz9.mp3"
+    },
+    {
+      "id": "end1",
+      "text": "Recap: circular dependency tab aati hai jab do beans ek doosre par depend karein. Constructor injection mein ye fail ho jaati hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "15 · Wrap-up",
+        "transition": "wipe",
+        "steps": {
+          "items": [
+            "Circular = A needs B, B needs A",
+            "Constructor injection fails",
+            "Field/Setter work (early reference)",
+            "Best fix: refactor"
+          ],
+          "current": 3
+        }
+      },
+      "duration": 10.32,
+      "startFrame": 33590,
+      "durationFrames": 310,
+      "audioFile": "segment_127_end1.mp3"
+    },
+    {
+      "id": "end2",
+      "text": "Singleton mein ek bean definition ka ek object banta hai, aur prototype mein har baar naya. Stateless ko singleton, stateful ko prototype banao.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "15 · Wrap-up",
+        "steps": {
+          "items": [
+            "Singleton: 1 per definition",
+            "Prototype: new each time",
+            "Stateless = singleton",
+            "Stateful = prototype"
+          ],
+          "current": 3
+        }
+      },
+      "duration": 10.56,
+      "startFrame": 33900,
+      "durationFrames": 317,
+      "audioFile": "segment_128_end2.mp3"
+    },
+    {
+      "id": "end3",
+      "text": "Singleton eager hota hai, lekin Lazy se lazy ho sakta hai. Prototype hamesha lazy hota hai. Fail fast ke liye eager hi behtar.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "15 · Wrap-up",
+        "steps": {
+          "items": [
+            "Singleton: eager by default",
+            "@Lazy makes it lazy",
+            "Prototype: always lazy",
+            "Eager = fail fast"
+          ],
+          "current": 3
+        }
+      },
+      "duration": 11.64,
+      "startFrame": 34217,
+      "durationFrames": 350,
+      "audioFile": "segment_129_end3.mp3"
+    },
+    {
+      "id": "end4",
+      "text": "Ab ek practice: kuch classes par Lazy, kuch par singleton aur prototype lagao, aur khud socho ki output kya aayega. Fir run karke check karo.",
+      "visual": {
+        "pose": "think",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "15 · Wrap-up",
+        "props": [
+          {
+            "type": "laptop",
+            "x": 0.72,
+            "delay": 8
+          }
+        ],
+        "callouts": [
+          "Predict the output!"
+        ]
+      },
+      "duration": 11.136,
+      "startFrame": 34567,
+      "durationFrames": 335,
+      "audioFile": "segment_130_end4.mp3"
+    },
+    {
+      "id": "end5",
+      "text": "Agle video mein Bean Lifecycle dekhenge. Video pasand aaya to like karo, aur CodeOrCap ko subscribe karna mat bhoolna.",
+      "visual": {
+        "pose": "walk",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "15 · Wrap-up",
+        "transition": "wipe",
+        "title": "Subscribe: CodeOrCap",
+        "props": [
+          {
+            "type": "rocket",
+            "x": 0.74,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 8.928,
+      "startFrame": 34902,
+      "durationFrames": 268,
+      "audioFile": "segment_131_end5.mp3"
+    }
+  ],
+  "totalDuration": 1170.24,
+  "totalFrames": 35170
+}

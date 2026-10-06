@@ -18,6 +18,9 @@ export interface LongformScene {
   startFrame?: number;
   durationFrames?: number;
   audioFile?: string;
+  /** Text sent to the TTS engine when it should differ from `text` (the on-screen caption),
+   *  e.g. Devanagari Hindi for natural pronunciation while captions stay romanised. */
+  ttsText?: string;
   /** template-specific visual spec (see src/stickman/schema.ts) */
   visual?: unknown;
 }
