@@ -69,6 +69,90 @@ export const StepsSchema = z.object({
   current: z.number().int().min(0).default(0),
 });
 
+
+// ── Extra panels (all draw in the same right-hand PANEL area as code/quiz/container/steps) ──
+
+/** Side-by-side cards: "versus" for options, "beforeAfter" for a transformation. */
+export const CompareSchema = z.object({
+  mode: z.enum(["versus", "beforeAfter"]).default("versus"),
+  cards: z.array(z.object({
+    title: z.string().max(28),
+    points: z.array(z.string().max(40)).max(4).default([]),
+    /** mark the recommended option */
+    winner: z.boolean().default(false),
+  })).min(2).max(3),
+});
+
+/** Architecture / request flow: a packet travels through the nodes. */
+export const FlowSchema = z.object({
+  nodes: z.array(z.string().max(24)).min(2).max(5),
+  /** node the packet travels to and stays on. Omit: the packet bounces end to end (request / response). */
+  active: z.number().int().min(0).optional(),
+  /** label on the travelling packet, e.g. "GET /users" */
+  packet: z.string().max(20).optional(),
+});
+
+export const TerminalSchema = z.object({
+  title: z.string().max(30).optional(),
+  /** lines starting with "$ " are typed out as commands; other lines are output */
+  lines: z.array(z.string().max(64)).min(1).max(10),
+});
+
+export const BrowserSchema = z.object({
+  url: z.string().max(48),
+  /** "page" renders a heading + rows, "json" renders an API response */
+  kind: z.enum(["page", "json"]).default("page"),
+  heading: z.string().max(40).optional(),
+  lines: z.array(z.string().max(44)).min(1).max(8),
+});
+
+/** Big animated numbers (count up from 0 or `from`). */
+export const CounterSchema = z.object({
+  items: z.array(z.object({
+    value: z.number(),
+    from: z.number().default(0),
+    prefix: z.string().max(4).default(""),
+    suffix: z.string().max(10).default(""),
+    label: z.string().max(26),
+  })).min(1).max(3),
+  decimals: z.number().int().min(0).max(2).default(0),
+});
+
+export const ChartSchema = z.object({
+  kind: z.enum(["bar", "line"]).default("bar"),
+  title: z.string().max(40).optional(),
+  labels: z.array(z.string().max(14)).min(2).max(6),
+  values: z.array(z.number()).min(2).max(6),
+  unit: z.string().max(8).default(""),
+  /** index of the bar / point to emphasise */
+  highlight: z.number().int().min(0).optional(),
+});
+
+export const ProgressSchema = z.object({
+  items: z.array(z.object({ label: z.string().max(28), value: z.number().min(0).max(100) })).min(1).max(5),
+});
+
+/** Database table (a query result). */
+export const TableSchema = z.object({
+  name: z.string().max(30).optional(),
+  columns: z.array(z.string().max(14)).min(2).max(5),
+  rows: z.array(z.array(z.string().max(18))).min(1).max(5),
+  highlightRow: z.number().int().min(0).optional(),
+});
+
+/** Error / success / warning state. */
+export const AlertSchema = z.object({
+  kind: z.enum(["error", "success", "warning"]),
+  title: z.string().max(40),
+  detail: z.string().max(90).optional(),
+});
+
+/** Every panel key. A scene may use only one. */
+export const PANEL_KEYS = [
+  "code", "quiz", "container", "steps",
+  "compare", "flow", "terminal", "browser", "counter", "chart", "progress", "table", "alert",
+] as const;
+
 export const StickmanVisualSchema = z.object({
   pose: z.enum(POSES).default("idle"),
   mood: z.enum(MOODS).default("neutral"),
@@ -85,6 +169,15 @@ export const StickmanVisualSchema = z.object({
   quiz: QuizSchema.optional(),
   container: ContainerSchema.optional(),
   steps: StepsSchema.optional(),
+  compare: CompareSchema.optional(),
+  flow: FlowSchema.optional(),
+  terminal: TerminalSchema.optional(),
+  browser: BrowserSchema.optional(),
+  counter: CounterSchema.optional(),
+  chart: ChartSchema.optional(),
+  progress: ProgressSchema.optional(),
+  table: TableSchema.optional(),
+  alert: AlertSchema.optional(),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),
@@ -107,6 +200,15 @@ export type CodeSpec = z.infer<typeof CodeSchema>;
 export type QuizSpec = z.infer<typeof QuizSchema>;
 export type ContainerSpec = z.infer<typeof ContainerSchema>;
 export type StepsSpec = z.infer<typeof StepsSchema>;
+export type CompareSpec = z.infer<typeof CompareSchema>;
+export type FlowSpec = z.infer<typeof FlowSchema>;
+export type TerminalSpec = z.infer<typeof TerminalSchema>;
+export type BrowserSpec = z.infer<typeof BrowserSchema>;
+export type CounterSpec = z.infer<typeof CounterSchema>;
+export type ChartSpec = z.infer<typeof ChartSchema>;
+export type ProgressSpec = z.infer<typeof ProgressSchema>;
+export type TableSpec = z.infer<typeof TableSchema>;
+export type AlertSpec = z.infer<typeof AlertSchema>;
 export type StickmanVisual = z.infer<typeof StickmanVisualSchema>;
 export type PoseName = (typeof POSES)[number];
 export type SfxName = (typeof SFX_NAMES)[number];
@@ -127,7 +229,12 @@ export function validateStickmanScenes(scenes: { id: string; visual?: unknown }[
     if (v.quiz && v.quiz.answer >= v.quiz.options.length) problems.push(`scene ${s.id} visual.quiz.answer: index out of range`);
     if (v.steps && v.steps.current >= v.steps.items.length) problems.push(`scene ${s.id} visual.steps.current: index out of range`);
     if (v.code && v.code.highlight.some((h) => h >= v.code!.lines.length)) problems.push(`scene ${s.id} visual.code.highlight: line out of range`);
-    if ([v.code, v.quiz, v.container, v.steps].filter(Boolean).length > 1) problems.push(`scene ${s.id}: use only one of code / quiz / container / steps per scene`);
+    if (PANEL_KEYS.filter((k) => v[k]).length > 1) problems.push(`scene ${s.id}: use only one panel (${PANEL_KEYS.join(" / ")}) per scene`);
+    if (v.chart && v.chart.labels.length !== v.chart.values.length) problems.push(`scene ${s.id} visual.chart: labels and values must have the same length`);
+    if (v.chart?.highlight !== undefined && v.chart.highlight >= v.chart.values.length) problems.push(`scene ${s.id} visual.chart.highlight: index out of range`);
+    if (v.flow?.active !== undefined && v.flow.active >= v.flow.nodes.length) problems.push(`scene ${s.id} visual.flow.active: index out of range`);
+    if (v.table && v.table.rows.some((r) => r.length !== v.table!.columns.length)) problems.push(`scene ${s.id} visual.table: every row needs ${v.table.columns.length} cells`);
+    if (v.table?.highlightRow !== undefined && v.table.highlightRow >= v.table.rows.length) problems.push(`scene ${s.id} visual.table.highlightRow: index out of range`);
   }
   return problems;
 }

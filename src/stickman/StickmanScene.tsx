@@ -2,13 +2,17 @@ import React from "react";
 import { AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadMontserrat } from "@remotion/google-fonts/Montserrat";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { GROUNDED_PROP_BOTTOM, MOOD_SFX, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
+import { GROUNDED_PROP_BOTTOM, MOOD_SFX, PANEL_KEYS, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
 import { WORLD, WORLD_VERTICAL, type Theme, type World } from "./theme";
 import { Figure, blendedPose } from "./Figure";
 import { ScreenFx, cameraPunch } from "./Emotion";
 import { PropDrawing } from "./Props";
 import { buildCaptions } from "./captions";
 import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
+import {
+  AlertPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
+  ProgressPanel, TablePanel, TerminalPanel,
+} from "./PanelsExtra";
 
 // Load only what is used (latin, weights 800/900) — the defaults fetch every subset and weight.
 const montserrat = loadMontserrat("normal", { weights: ["900"], subsets: ["latin"] });
@@ -118,7 +122,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
 
   const pose = blendedPose(prevPose, v.pose, frame, fps);
   const hop = v.pose === "celebrate" || v.pose === "laugh" ? Math.abs(Math.sin(frame * 0.2)) * (v.pose === "laugh" ? 12 : 26) : 0;
-  const hasPanel = Boolean(v.code || v.quiz || v.container || v.steps);
+  const hasPanel = PANEL_KEYS.some((k) => v[k]);
   // With a panel on the right the figure shrinks and tucks into the left strip.
   const figureScale = v.figureScale ?? (hasPanel ? 0.8 : vertical ? 1.9 : FIGURE_SCALE);
   const figureXFrac = hasPanel && v.figureX === 0.3 ? 0.14 : vertical && v.figureX === 0.3 ? 0.5 : v.figureX;
@@ -201,9 +205,18 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {v.quiz && <QuizPanel spec={v.quiz} durationFrames={durationFrames} theme={theme} accent={accent} />}
         {v.container && <ContainerPanel spec={v.container} theme={theme} accent={accent} />}
         {v.steps && <StepsPanel spec={v.steps} theme={theme} accent={accent} />}
+        {v.compare && <ComparePanel spec={v.compare} theme={theme} accent={accent} />}
+        {v.flow && <FlowPanel spec={v.flow} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.terminal && <TerminalPanel spec={v.terminal} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.browser && <BrowserPanel spec={v.browser} theme={theme} accent={accent} />}
+        {v.counter && <CounterPanel spec={v.counter} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.chart && <ChartPanel spec={v.chart} theme={theme} accent={accent} />}
+        {v.progress && <ProgressPanel spec={v.progress} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.table && <TablePanel spec={v.table} theme={theme} accent={accent} />}
+        {v.alert && <AlertPanel spec={v.alert} theme={theme} accent={accent} />}
 
         {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
-        {v.callouts.length > 0 && <CalloutRow items={v.callouts} color={accent} centerX={figureX < world.width / 2 ? 1280 : 640} world={world} />}
+        {v.callouts.length > 0 && !hasPanel && <CalloutRow items={v.callouts} color={accent} centerX={figureX < world.width / 2 ? 1280 : 640} world={world} />}
 
         {active && (
           <g opacity={capOpacity} transform={`translate(${world.width / 2},${vertical ? world.height - 420 : 985})`}>
