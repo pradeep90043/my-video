@@ -11,10 +11,12 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@remotion/animation-utils": "4.0.484",
+    "@remotion/bundler": "4.0.484",
     "@remotion/cli": "4.0.484",
     "@remotion/google-fonts": "4.0.484",
     "@remotion/layout-utils": "4.0.484",
     "@remotion/media": "4.0.484",
+    "@remotion/renderer": "4.0.484",
     "@remotion/tailwind-v4": "4.0.484",
     "@remotion/zod-types": "4.0.484",
     "axios": "^1.18.1",
@@ -72,6 +74,7 @@
     "longform": "tsx scripts/longs/run.ts",
     "longform:new": "tsx scripts/longs/new-project.ts",
     "longform:audio": "tsx scripts/longs/generate-audio.ts",
+    "longform:sfx": "tsx scripts/longs/generate-sfx.ts",
     "longform:natural-audio": "tsx scripts/longs/generate-natural-audio.ts",
     "longform:images": "tsx scripts/longs/generate-images.ts",
     "longform:merge": "tsx scripts/longs/merge-audio.ts",
@@ -91,9 +94,17 @@
     "server": "tsx scripts/shared/server.ts",
     "n8n": "docker compose up -d",
     "publish": "tsx scripts/shared/publish.ts",
-    "publish:latest": "tsx scripts/shared/publish.ts"
+    "publish:latest": "tsx scripts/shared/publish.ts",
+    "longform:check": "tsx scripts/longs/preflight.ts",
+    "longform:qa": "tsx scripts/longs/qa.ts",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "longform:preview": "tsx scripts/longs/preview.ts"
   },
   "sideEffects": [
     "*.css"
-  ]
+  ],
+  "engines": {
+    "node": ">=20.17"
+  }
 }

@@ -14,6 +14,8 @@ import vibeCodingData from "../public/content/VibeCodingNotProgramming/video.jso
 import vibeShortData from "../public/content/VibeCodingNotProgrammingShort/video.json";
 import maaKiDiaryData from "../public/content/MaaKiDiary/video.json";
 import collageData from "../public/content/collage-animation/video.json";
+import { StickmanVideo, stickmanSchema, type StickmanProjectData } from "./stickman/StickmanVideo";
+import { staticFile } from "remotion";
 import {
   CollageAnimationVideo,
   collageAnimationSchema,
@@ -97,6 +99,29 @@ export const RemotionRoot: React.FC = () => {
           bgMusicVolume: 0.12,
           voVolume: 0.95,
           previewMode: false,
+        }}
+      />
+      {/* Stickman explainer — any project with "template": "stickman" in its video.json.
+          Render with: --props='{"project":"<slug>"}' (scripts/longs/render.ts does this). */}
+      <Composition
+        id="StickmanVideo"
+        component={StickmanVideo}
+        width={1920}
+        height={1080}
+        fps={30}
+        durationInFrames={300}
+        schema={stickmanSchema}
+        defaultProps={{ project: "stickman-demo", bgMusicVolume: 0.06, voVolume: 1 }}
+        calculateMetadata={async ({ props }) => {
+          const res = await fetch(staticFile(`content/${props.project}/video.json`));
+          if (!res.ok) throw new Error(`Cannot load content/${props.project}/video.json (${res.status})`);
+          const data = (await res.json()) as StickmanProjectData;
+          return {
+            fps: data.fps,
+            ...(data.orientation === "vertical" ? { width: 1080, height: 1920 } : {}),
+            durationInFrames: Math.max(1, data.totalFrames ?? 300),
+            props: { ...props, data },
+          };
         }}
       />
     </>

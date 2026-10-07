@@ -1,0 +1,312 @@
+{
+  "format": "longform",
+  "template": "stickman",
+  "theme": "light",
+  "composition": "StickmanVideo",
+  "fps": 30,
+  "voice": "hi-IN-MadhurNeural",
+  "rate": "+5%",
+  "pitch": "+0Hz",
+  "language": "hi",
+  "title": "Kya AI Programmers Ko Replace Kar Dega? | CodeOrCap",
+  "description": "Stickman explainer: kya AI sach mein programmers ki jagah le lega? Evidence ke saath fair verdict.",
+  "tags": [
+    "ai",
+    "programming",
+    "stickman",
+    "codeorcap"
+  ],
+  "scenes": [
+    {
+      "id": "hook",
+      "text": "Har dusra video bol raha hai — AI ab programmers ki jagah le lega.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "shocked",
+        "accent": "red",
+        "title": "AI vs Programmers",
+        "transition": "wipe",
+        "camera": "push",
+        "props": [
+          {
+            "type": "robot",
+            "x": 0.72,
+            "delay": 14
+          }
+        ]
+      },
+      "duration": 5.64,
+      "startFrame": 0,
+      "durationFrames": 170,
+      "audioFile": "segment_0_hook.mp3"
+    },
+    {
+      "id": "hook2",
+      "text": "Lekin kya ye sach hai? Chalo evidence ke saath dekhte hain.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "red",
+        "title": "AI vs Programmers",
+        "props": [
+          {
+            "type": "question",
+            "x": 0.72,
+            "delay": 6
+          }
+        ]
+      },
+      "duration": 6.312,
+      "startFrame": 170,
+      "durationFrames": 190,
+      "audioFile": "segment_1_hook2.mp3"
+    },
+    {
+      "id": "claim",
+      "text": "Viral claim ye hai: AI code likh sakta hai, toh developers ki zaroorat khatam.",
+      "visual": {
+        "pose": "worried",
+        "mood": "worried",
+        "accent": "red",
+        "callouts": [
+          "Claim: devs obsolete"
+        ],
+        "transition": "wipe",
+        "props": [
+          {
+            "type": "warning",
+            "x": 0.72,
+            "y": 0.55,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 6.024,
+      "startFrame": 360,
+      "durationFrames": 181,
+      "audioFile": "segment_2_claim.mp3"
+    },
+    {
+      "id": "claim2",
+      "text": "Sunne mein dar lagta hai, hai na? Par ruko, pehle data dekhte hain.",
+      "visual": {
+        "pose": "shrug",
+        "mood": "worried",
+        "accent": "red",
+        "camera": "pull",
+        "props": [
+          {
+            "type": "chartDown",
+            "x": 0.72,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 6.456,
+      "startFrame": 541,
+      "durationFrames": 194,
+      "audioFile": "segment_3_claim2.mp3"
+    },
+    {
+      "id": "truth",
+      "text": "Sach ye hai ki AI boilerplate code bahut tezi se likhta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "blue",
+        "figureX": 0.28,
+        "transition": "wipe",
+        "camera": "pan-right",
+        "props": [
+          {
+            "type": "laptop",
+            "x": 0.7,
+            "delay": 6
+          }
+        ]
+      },
+      "duration": 5.448,
+      "startFrame": 735,
+      "durationFrames": 164,
+      "audioFile": "segment_4_truth.mp3"
+    },
+    {
+      "id": "truth2",
+      "text": "Lekin requirements samajhna, architecture sochna aur bugs fix karna abhi bhi insaan ka kaam hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "blue",
+        "figureX": 0.28,
+        "callouts": [
+          "Architecture",
+          "Debugging"
+        ],
+        "props": [
+          {
+            "type": "laptop",
+            "x": 0.7,
+            "delay": 2
+          },
+          {
+            "type": "bug",
+            "x": 0.9,
+            "scale": 0.7,
+            "delay": 30
+          }
+        ]
+      },
+      "duration": 7.992,
+      "startFrame": 899,
+      "durationFrames": 240,
+      "audioFile": "segment_5_truth2.mp3"
+    },
+    {
+      "id": "data",
+      "text": "Studies batati hain ki AI ka code aksar security bugs ke saath aata hai.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "title": "Hidden risks",
+        "transition": "wipe",
+        "props": [
+          {
+            "type": "magnifier",
+            "x": 0.62,
+            "y": 0.55,
+            "delay": 12
+          },
+          {
+            "type": "lock",
+            "x": 0.84,
+            "delay": 26
+          }
+        ]
+      },
+      "duration": 6.312,
+      "startFrame": 1139,
+      "durationFrames": 190,
+      "audioFile": "segment_6_data.mp3"
+    },
+    {
+      "id": "data2",
+      "text": "Matlab review karne wala developer pehle se zyada zaroori ho gaya hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "title": "Review > Typing",
+        "camera": "push",
+        "props": [
+          {
+            "type": "code",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 5.472,
+      "startFrame": 1329,
+      "durationFrames": 165,
+      "audioFile": "segment_7_data2.mp3"
+    },
+    {
+      "id": "shift",
+      "text": "Kaam khatam nahi ho raha, kaam badal raha hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "transition": "wipe",
+        "callouts": [
+          "Same job, new tools"
+        ],
+        "props": [
+          {
+            "type": "gear",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 4.32,
+      "startFrame": 1494,
+      "durationFrames": 130,
+      "audioFile": "segment_8_shift.mp3"
+    },
+    {
+      "id": "shift2",
+      "text": "Jo AI ko sahi tarah use karna seekhta hai, wo do guna fast ban jata hai.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "camera": "push",
+        "callouts": [
+          "2x faster"
+        ],
+        "props": [
+          {
+            "type": "chartUp",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 6.552,
+      "startFrame": 1624,
+      "durationFrames": 197,
+      "audioFile": "segment_9_shift2.mp3"
+    },
+    {
+      "id": "verdict",
+      "text": "Toh verdict: replace nahi, upgrade. Code ya cap? Ye claim — cap.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "transition": "wipe",
+        "title": "Verdict: CAP",
+        "props": [
+          {
+            "type": "cross",
+            "x": 0.72,
+            "y": 0.55,
+            "accent": "red",
+            "delay": 12
+          }
+        ]
+      },
+      "duration": 6.864,
+      "startFrame": 1821,
+      "durationFrames": 206,
+      "audioFile": "segment_10_verdict.mp3"
+    },
+    {
+      "id": "cta",
+      "text": "Aise evidence-based videos ke liye CodeOrCap ko subscribe karein. Milte hain agle video mein.",
+      "visual": {
+        "pose": "walk",
+        "mood": "happy",
+        "accent": "gold",
+        "figureX": 0.35,
+        "title": "Subscribe: CodeOrCap",
+        "transition": "wipe",
+        "props": [
+          {
+            "type": "rocket",
+            "x": 0.72,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 7.8,
+      "startFrame": 2027,
+      "durationFrames": 234,
+      "audioFile": "segment_11_cta.mp3"
+    }
+  ],
+  "totalDuration": 75.192,
+  "totalFrames": 2261
+}

@@ -9,6 +9,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { z } from "zod";
 
 export interface LongformScene {
   id: string;
@@ -17,10 +18,24 @@ export interface LongformScene {
   startFrame?: number;
   durationFrames?: number;
   audioFile?: string;
+  /** Text sent to the TTS engine when it should differ from `text` (the on-screen caption),
+   *  e.g. Devanagari Hindi for natural pronunciation while captions stay romanised. */
+  ttsText?: string;
+  /** seconds of silence before the line (a dramatic beat); counted in durationFrames */
+  pauseBefore?: number;
+  /** volume override, e.g. "+10%" */
+  volume?: string;
+  /** template-specific visual spec (see src/stickman/schema.ts) */
+  visual?: unknown;
 }
 
 export interface LongformVideoJSON {
   format: "longform";
+  /** "stickman": rendered by the shared StickmanVideo composition */
+  template?: string;
+  theme?: string;
+  /** "vertical" = 1080x1920 Short/Reel; default 16:9 */
+  orientation?: "horizontal" | "vertical";
   /** Remotion composition id — defaults to the project slug */
   composition?: string;
   fps: number;
@@ -105,4 +120,47 @@ export function loadVideoJson(slug: string): LongformVideoJSON {
 
 export function saveVideoJson(slug: string, data: LongformVideoJSON): void {
   fs.writeFileSync(videoJsonPath(slug), JSON.stringify(data, null, 2));
+}
+
+// ── Validation ───────────────────────────────────────────────────────────────
+
+const sceneSchema = z.object({
+  id: z.string().regex(/^[A-Za-z0-9_-]+$/, "scene id must be letters/digits/_/-"),
+  text: z.string().trim().min(1, "scene text is empty"),
+});
+
+const videoJsonSchema = z.object({
+  format: z.literal("longform"),
+  fps: z.number().int().min(24).max(60),
+  voice: z.string().min(1),
+  scenes: z.array(sceneSchema).min(1, "at least one scene is required"),
+});
+
+/** Returns a list of human-readable problems; empty means valid. */
+export function validateVideoJson(data: unknown): string[] {
+  const problems: string[] = [];
+  const parsed = videoJsonSchema.safeParse(data);
+  if (!parsed.success) {
+    for (const issue of parsed.error.issues) {
+      problems.push(`${issue.path.join(".") || "(root)"}: ${issue.message}`);
+    }
+    return problems;
+  }
+  const ids = new Set<string>();
+  for (const s of parsed.data.scenes) {
+    if (ids.has(s.id)) problems.push(`duplicate scene id "${s.id}"`);
+    ids.add(s.id);
+  }
+  return problems;
+}
+
+/** edge-tts accepts only "+N%" / "-N%" rates and "+NHz" / "-NHz" pitches. */
+export function validateEdgeTtsSettings(voice: string, rate: string, pitch: string): string[] {
+  const problems: string[] = [];
+  if (!/^[a-z]{2,3}-[A-Z]{2}-\w+Neural$/.test(voice)) {
+    problems.push(`voice "${voice}" is not an edge-tts voice (e.g. hi-IN-MadhurNeural). Run: edge-tts --list-voices`);
+  }
+  if (!/^[+-]\d+%$/.test(rate)) problems.push(`rate "${rate}" must look like "+5%" or "-10%"`);
+  if (!/^[+-]\d+Hz$/.test(pitch)) problems.push(`pitch "${pitch}" must look like "+0Hz" or "-5Hz"`);
+  return problems;
 }

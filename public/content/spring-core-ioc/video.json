@@ -1,0 +1,1732 @@
+{
+  "format": "longform",
+  "template": "stickman",
+  "theme": "light",
+  "composition": "StickmanVideo",
+  "fps": 30,
+  "voice": "hi-IN-MadhurNeural",
+  "rate": "+12%",
+  "pitch": "+0Hz",
+  "language": "hi",
+  "title": "Spring Core Explained: IoC, Dependency Injection & Beans (Hinglish) | CodeOrCap",
+  "description": "Spring Core explained simply (Hinglish): Dependency Injection, the IoC container, beans, Component, Configuration, Autowired, Primary, Qualifier and the Bean annotation. Includes 3 pause-and-think quizzes.\n\n⏱ Chapters:\n0:00 Intro\n0:25 Recap\n1:24 IoC Container\n2:11 Setup\n2:31 Reflection\n3:08 Component & Config\n4:31 Autowired\n5:50 Inside the Container\n6:57 Primary & Qualifier\n7:58 The Bean annotation\n9:18 Wrap-up\n\n🔔 Subscribe to CodeOrCap for evidence-based tech content.\n\n#Spring #SpringFramework #Java #DependencyInjection #SpringCore #CodeOrCap",
+  "tags": [
+    "spring framework",
+    "spring core",
+    "dependency injection",
+    "ioc container",
+    "spring beans",
+    "java",
+    "autowired",
+    "codeorcap"
+  ],
+  "scenes": [
+    {
+      "id": "hook1",
+      "text": "Welcome to CodeOrCap! Aaj Spring ke core fundamentals: Dependency Injection, Inversion of Control, aur Beans.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "title": "Spring Core Fundamentals",
+        "transition": "wipe",
+        "callouts": [
+          "DI",
+          "IoC",
+          "Beans"
+        ],
+        "camera": "push"
+      },
+      "duration": 8.976,
+      "startFrame": 0,
+      "durationFrames": 270,
+      "audioFile": "segment_0_hook1.mp3"
+    },
+    {
+      "id": "hook2",
+      "text": "Ye concepts bina kisi framework ke bhi samjhe ja sakte hain. Aaj dekhenge ki Spring inhe kaise implement karta hai.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "blue",
+        "props": [
+          {
+            "type": "gear",
+            "x": 0.72,
+            "delay": 8
+          }
+        ]
+      },
+      "duration": 9.264,
+      "startFrame": 270,
+      "durationFrames": 278,
+      "audioFile": "segment_1_hook2.mp3"
+    },
+    {
+      "id": "hook3",
+      "text": "Ye lecture sabse important hai, kyunki poora Spring architecture isi Spring Core par khada hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "props": [
+          {
+            "type": "rocket",
+            "x": 0.74,
+            "delay": 8
+          }
+        ],
+        "callouts": [
+          "Spring Core = foundation"
+        ]
+      },
+      "duration": 7.032,
+      "startFrame": 548,
+      "durationFrames": 211,
+      "audioFile": "segment_2_hook3.mp3"
+    },
+    {
+      "id": "rec1",
+      "text": "Pehle ek quick recap. Hamari ek class hai OrderService, jiska kaam hai order place karna.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "1 · Recap",
+        "transition": "wipe",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "public class OrderService {",
+            "    public void placeOrder() {",
+            "        System.out.println(\"Order placed\");",
+            "    }",
+            "}"
+          ],
+          "highlight": []
+        }
+      },
+      "duration": 7.512,
+      "startFrame": 759,
+      "durationFrames": 226,
+      "audioFile": "segment_3_rec1.mp3"
+    },
+    {
+      "id": "rec2",
+      "text": "Aur ek PaymentService, jo payment karti hai. Order place karne se pehle payment zaroori hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "1 · Recap",
+        "code": {
+          "title": "PaymentService.java",
+          "lines": [
+            "public class PaymentService {",
+            "    public void pay() {",
+            "        System.out.println(\"Payment done\");",
+            "    }",
+            "}"
+          ],
+          "highlight": []
+        }
+      },
+      "duration": 8.04,
+      "startFrame": 985,
+      "durationFrames": 242,
+      "audioFile": "segment_4_rec2.mp3"
+    },
+    {
+      "id": "rec3",
+      "text": "Ab OrderService ke andar hum PaymentService ka object khud bana dete hain, new keyword ke saath.",
+      "visual": {
+        "pose": "idle",
+        "mood": "neutral",
+        "accent": "red",
+        "chapter": "1 · Recap",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "public class OrderService {",
+            "    private PaymentService payment =",
+            "        new PaymentService();",
+            "",
+            "    public void placeOrder() {",
+            "        payment.pay();",
+            "        System.out.println(\"Order placed\");",
+            "    }",
+            "}"
+          ],
+          "highlight": [
+            1,
+            2
+          ]
+        }
+      },
+      "duration": 6.672,
+      "startFrame": 1227,
+      "durationFrames": 201,
+      "audioFile": "segment_5_rec3.mp3"
+    },
+    {
+      "id": "rec4",
+      "text": "Ye galat hai! Ye Single Responsibility Principle todta hai. OrderService ka kaam sirf orders handle karna hai.",
+      "visual": {
+        "pose": "facepalm",
+        "mood": "sad",
+        "accent": "red",
+        "chapter": "1 · Recap",
+        "title": "Hard-coded dependency",
+        "props": [
+          {
+            "type": "warning",
+            "x": 0.74,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 10.368,
+      "startFrame": 1428,
+      "durationFrames": 312,
+      "audioFile": "segment_6_rec4.mp3"
+    },
+    {
+      "id": "rec5",
+      "text": "OrderService, PaymentService par depend karti hai. Toh ye dependency bahar se milni chahiye. Yahi hai Dependency Injection.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "1 · Recap",
+        "callouts": [
+          "Dependency",
+          "Injection"
+        ],
+        "props": [
+          {
+            "type": "gear",
+            "x": 0.72,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 10.512,
+      "startFrame": 1740,
+      "durationFrames": 316,
+      "audioFile": "segment_7_rec5.mp3"
+    },
+    {
+      "id": "rec6",
+      "text": "Constructor banao, PaymentService receive karo, aur main method se pass kar do. Ye hua manual dependency injection.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "1 · Recap",
+        "transition": "wipe",
+        "code": {
+          "title": "Main.java",
+          "lines": [
+            "public OrderService(PaymentService payment) {",
+            "    this.payment = payment;",
+            "}",
+            "",
+            "// in main()",
+            "PaymentService p = new PaymentService();",
+            "OrderService o = new OrderService(p);",
+            "o.placeOrder();"
+          ],
+          "highlight": [
+            6
+          ]
+        }
+      },
+      "duration": 8.976,
+      "startFrame": 2056,
+      "durationFrames": 270,
+      "audioFile": "segment_8_rec6.mp3"
+    },
+    {
+      "id": "rec7",
+      "text": "Lekin ye wiring ka kaam hum khud kar rahe hain. Hum chahte hain ki Spring ye kaam sambhale.",
+      "visual": {
+        "pose": "shrug",
+        "mood": "worried",
+        "accent": "gold",
+        "chapter": "1 · Recap",
+        "callouts": [
+          "Manual wiring"
+        ],
+        "props": [
+          {
+            "type": "question",
+            "x": 0.72,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 7.152,
+      "startFrame": 2326,
+      "durationFrames": 215,
+      "audioFile": "segment_9_rec7.mp3"
+    },
+    {
+      "id": "ioc1",
+      "text": "Spring ke paas ek IoC container hota hai, yaani Inversion of Control container. Ye hamare objects ko sambhalta hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "2 · IoC Container",
+        "transition": "wipe",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "PaymentService",
+            "OrderService"
+          ]
+        }
+      },
+      "duration": 9.6,
+      "startFrame": 2541,
+      "durationFrames": 288,
+      "audioFile": "segment_10_ioc1.mp3"
+    },
+    {
+      "id": "ioc2",
+      "text": "Matlab ye objects banata hai, unme dependencies wire karta hai, aur unki poori life cycle ka zimmedar hota hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "2 · IoC Container",
+        "steps": {
+          "items": [
+            "Create the objects",
+            "Wire the dependencies",
+            "Manage the life cycle"
+          ],
+          "current": 2
+        }
+      },
+      "duration": 8.472,
+      "startFrame": 2829,
+      "durationFrames": 255,
+      "audioFile": "segment_11_ioc2.mp3"
+    },
+    {
+      "id": "ioc3",
+      "text": "Spring mein in managed objects ko kehte hain Beans. Har bean ek object hota hai, lekin har object bean nahi hota.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "2 · IoC Container",
+        "title": "Bean = Spring-managed object",
+        "props": [
+          {
+            "type": "check",
+            "x": 0.76,
+            "accent": "green",
+            "delay": 14
+          }
+        ]
+      },
+      "duration": 8.784,
+      "startFrame": 3084,
+      "durationFrames": 264,
+      "audioFile": "segment_12_ioc3.mp3"
+    },
+    {
+      "id": "quiz1",
+      "text": "Ek quick sawaal: kya har object ek bean hota hai? Rukkar socho. Jawab: nahi. Sirf wahi object bean hai, jise Spring manage karta hai.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "2 · IoC Container",
+        "transition": "wipe",
+        "quiz": {
+          "question": "Is every object a bean?",
+          "options": [
+            "Yes, every object",
+            "No, only Spring-managed ones"
+          ],
+          "answer": 1,
+          "revealAt": 0.6
+        }
+      },
+      "duration": 12.48,
+      "startFrame": 3348,
+      "durationFrames": 375,
+      "audioFile": "segment_13_quiz1.mp3"
+    },
+    {
+      "id": "ioc4",
+      "text": "Spring ko beans manage karwane ke do tarike hain: annotation based, aur XML configuration based.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "2 · IoC Container",
+        "callouts": [
+          "Annotation based",
+          "XML based"
+        ],
+        "props": [
+          {
+            "type": "code",
+            "x": 0.74,
+            "delay": 12
+          }
+        ]
+      },
+      "duration": 7.08,
+      "startFrame": 3723,
+      "durationFrames": 213,
+      "audioFile": "segment_14_ioc4.mp3"
+    },
+    {
+      "id": "set1",
+      "text": "Ab ek khali Maven project banate hain, naam spring-core-demo. Pom dot xml abhi bilkul khali hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "3 · Setup",
+        "transition": "wipe",
+        "code": {
+          "title": "pom.xml",
+          "lines": [
+            "<project>",
+            "  <groupId>com.codeorcap</groupId>",
+            "  <artifactId>spring-core-demo</artifactId>",
+            "  <version>1.0</version>",
+            "  <!-- no dependencies yet -->",
+            "</project>"
+          ],
+          "highlight": []
+        }
+      },
+      "duration": 8.28,
+      "startFrame": 3936,
+      "durationFrames": 249,
+      "audioFile": "segment_15_set1.mp3"
+    },
+    {
+      "id": "set2",
+      "text": "Kya Spring Boot chahiye? Nahi. Spring MVC? Nahi, ye console application hai. Bas ek dependency: spring-context.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "3 · Setup",
+        "code": {
+          "title": "pom.xml",
+          "lines": [
+            "<dependency>",
+            "  <groupId>org.springframework</groupId>",
+            "  <artifactId>spring-context</artifactId>",
+            "  <version>7.x.x</version>",
+            "</dependency>"
+          ],
+          "highlight": [
+            2
+          ]
+        }
+      },
+      "duration": 11.904,
+      "startFrame": 4185,
+      "durationFrames": 358,
+      "audioFile": "segment_16_set2.mp3"
+    },
+    {
+      "id": "ref1",
+      "text": "Ek interesting topic: Java ka Reflection API. Spring isse bahut use karta hai, isliye thoda samajh lete hain.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "4 · Reflection",
+        "transition": "wipe",
+        "props": [
+          {
+            "type": "magnifier",
+            "x": 0.72,
+            "y": 0.5,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 9,
+      "startFrame": 4543,
+      "durationFrames": 270,
+      "audioFile": "segment_17_ref1.mp3"
+    },
+    {
+      "id": "ref2",
+      "text": "Student s1 = new Student, yahan s1 reference hai. Lekin Java mein ek special class bhi hai, jiska naam hi Class hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "4 · Reflection",
+        "code": {
+          "title": "Reflection.java",
+          "lines": [
+            "Student s1 = new Student();",
+            "",
+            "Class<Student> c1 = Student.class;"
+          ],
+          "highlight": [
+            2
+          ]
+        }
+      },
+      "duration": 10.296,
+      "startFrame": 4813,
+      "durationFrames": 309,
+      "audioFile": "segment_18_ref2.mp3"
+    },
+    {
+      "id": "ref3",
+      "text": "Ye Class object kisi bhi class ka metadata hold karta hai: naam, fields, constructors, methods, aur annotations.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "4 · Reflection",
+        "container": {
+          "label": "Class<Student> metadata",
+          "beans": [
+            "name",
+            "fields",
+            "constructors",
+            "methods",
+            "annotations"
+          ]
+        }
+      },
+      "duration": 8.352,
+      "startFrame": 5122,
+      "durationFrames": 251,
+      "audioFile": "segment_19_ref3.mp3"
+    },
+    {
+      "id": "ref4",
+      "text": "Spring ko object khud banana hai, toh use class ka metadata chahiye. Wo metadata Reflection API se milta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "4 · Reflection",
+        "callouts": [
+          "Reflection = metadata"
+        ],
+        "props": [
+          {
+            "type": "bulb",
+            "x": 0.74,
+            "y": 0.5,
+            "delay": 12
+          }
+        ]
+      },
+      "duration": 9.096,
+      "startFrame": 5373,
+      "durationFrames": 273,
+      "audioFile": "segment_20_ref4.mp3"
+    },
+    {
+      "id": "cmp1",
+      "text": "Ab Spring ko batana hai ki kaun se objects manage karne hain. OrderService par Component annotation laga dete hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "5 · Component & Config",
+        "transition": "wipe",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Component",
+            "public class OrderService {",
+            "    public void placeOrder() {",
+            "        System.out.println(\"Order placed\");",
+            "    }",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 9.144,
+      "startFrame": 5646,
+      "durationFrames": 275,
+      "audioFile": "segment_21_cmp1.mp3"
+    },
+    {
+      "id": "cmp2",
+      "text": "Wahi PaymentService par bhi. Ye ek marker hai: Spring, is class ko tum sambhalo.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "5 · Component & Config",
+        "code": {
+          "title": "PaymentService.java",
+          "lines": [
+            "@Component",
+            "public class PaymentService {",
+            "    public void pay() {",
+            "        System.out.println(\"Payment done\");",
+            "    }",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 7.08,
+      "startFrame": 5921,
+      "durationFrames": 213,
+      "audioFile": "segment_22_cmp2.mp3"
+    },
+    {
+      "id": "cmp3",
+      "text": "Ab container start karna hai. Spring mein ise kehte hain ApplicationContext, jo ek interface hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "5 · Component & Config",
+        "title": "ApplicationContext = IoC Container",
+        "props": [
+          {
+            "type": "gear",
+            "x": 0.72,
+            "delay": 12
+          }
+        ]
+      },
+      "duration": 8.52,
+      "startFrame": 6134,
+      "durationFrames": 256,
+      "audioFile": "segment_23_cmp3.mp3"
+    },
+    {
+      "id": "cmp4",
+      "text": "Annotation based configuration se container start karne wali implementation hai AnnotationConfigApplicationContext.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "5 · Component & Config",
+        "code": {
+          "title": "Main.java",
+          "lines": [
+            "ApplicationContext context =",
+            "    new AnnotationConfigApplicationContext(",
+            "        AppConfig.class);"
+          ],
+          "highlight": [
+            1,
+            2
+          ]
+        }
+      },
+      "duration": 8.184,
+      "startFrame": 6390,
+      "durationFrames": 246,
+      "audioFile": "segment_24_cmp4.mp3"
+    },
+    {
+      "id": "cmp5",
+      "text": "Rules batane ke liye ek alag class chahiye, AppConfig. Us par Configuration annotation lagate hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "5 · Component & Config",
+        "code": {
+          "title": "AppConfig.java",
+          "lines": [
+            "@Configuration",
+            "public class AppConfig {",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 8.184,
+      "startFrame": 6636,
+      "durationFrames": 246,
+      "audioFile": "segment_25_cmp5.mp3"
+    },
+    {
+      "id": "cmp6",
+      "text": "Fir ComponentScan lagate hain: poore package mein dhundo, kis kis class par Component laga hai, aur unhe manage karo.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "5 · Component & Config",
+        "code": {
+          "title": "AppConfig.java",
+          "lines": [
+            "@Configuration",
+            "@ComponentScan(\"com.codeorcap\")",
+            "public class AppConfig {",
+            "}"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 8.232,
+      "startFrame": 6882,
+      "durationFrames": 247,
+      "audioFile": "segment_26_cmp6.mp3"
+    },
+    {
+      "id": "cmp7",
+      "text": "Package ke sub-packages bhi scan hote hain. Aur package naam na do, toh config class wala package scan hota hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "5 · Component & Config",
+        "callouts": [
+          "Sub-packages included"
+        ],
+        "props": [
+          {
+            "type": "magnifier",
+            "x": 0.72,
+            "y": 0.5,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 9.12,
+      "startFrame": 7129,
+      "durationFrames": 274,
+      "audioFile": "segment_27_cmp7.mp3"
+    },
+    {
+      "id": "cmp8",
+      "text": "Ab main se bean maango: context dot getBean. Naya object banane ki zarurat hi nahi.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "5 · Component & Config",
+        "transition": "wipe",
+        "code": {
+          "title": "Main.java",
+          "lines": [
+            "OrderService o = context.getBean(OrderService.class);",
+            "o.placeOrder();"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 6.888,
+      "startFrame": 7403,
+      "durationFrames": 207,
+      "audioFile": "segment_28_cmp8.mp3"
+    },
+    {
+      "id": "cmp9",
+      "text": "Run karo: Order placed. Spring ne object khud banaya aur manage kiya. Sab kuch bas do annotations se.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "5 · Component & Config",
+        "title": "It just works",
+        "props": [
+          {
+            "type": "check",
+            "x": 0.74,
+            "y": 0.52,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 8.976,
+      "startFrame": 7610,
+      "durationFrames": 270,
+      "audioFile": "segment_29_cmp9.mp3"
+    },
+    {
+      "id": "cmp10",
+      "text": "Aur agar Component hata do, toh error aayega: No qualifying bean. Kyunki Spring us class ko jaanta hi nahi.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "shocked",
+        "accent": "red",
+        "chapter": "5 · Component & Config",
+        "title": "No qualifying bean",
+        "props": [
+          {
+            "type": "warning",
+            "x": 0.74,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 8.616,
+      "startFrame": 7880,
+      "durationFrames": 259,
+      "audioFile": "segment_30_cmp10.mp3"
+    },
+    {
+      "id": "aut1",
+      "text": "Ab dependency wiring. OrderService ko PaymentService chahiye. Constructor par Autowired lagao, Spring khud inject karega.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "6 · Autowired",
+        "transition": "wipe",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Component",
+            "public class OrderService {",
+            "    private PaymentService payment;",
+            "",
+            "    @Autowired",
+            "    public OrderService(PaymentService payment) {",
+            "        this.payment = payment;",
+            "    }",
+            "}"
+          ],
+          "highlight": [
+            4
+          ]
+        }
+      },
+      "duration": 10.248,
+      "startFrame": 8139,
+      "durationFrames": 308,
+      "audioFile": "segment_31_aut1.mp3"
+    },
+    {
+      "id": "aut2",
+      "text": "Container pehle PaymentService ka bean banata hai, fir OrderService ka, aur constructor mein payment bean pass kar deta hai.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "6 · Autowired",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "PaymentService",
+            "OrderService"
+          ]
+        }
+      },
+      "duration": 9.024,
+      "startFrame": 8447,
+      "durationFrames": 271,
+      "audioFile": "segment_32_aut2.mp3"
+    },
+    {
+      "id": "aut3",
+      "text": "Dependency injection ke teen types hain: constructor injection, setter injection, aur field injection.",
+      "visual": {
+        "pose": "present",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "6 · Autowired",
+        "steps": {
+          "items": [
+            "Constructor injection",
+            "Setter injection",
+            "Field injection"
+          ],
+          "current": 0
+        }
+      },
+      "duration": 7.68,
+      "startFrame": 8718,
+      "durationFrames": 231,
+      "audioFile": "segment_33_aut3.mp3"
+    },
+    {
+      "id": "aut4",
+      "text": "Setter injection: setter method par Autowired lagao. Spring objects banakar baad mein setter call karke wire karta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "6 · Autowired",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Autowired",
+            "public void setPayment(PaymentService payment) {",
+            "    this.payment = payment;",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 9.696,
+      "startFrame": 8949,
+      "durationFrames": 291,
+      "audioFile": "segment_34_aut4.mp3"
+    },
+    {
+      "id": "aut5",
+      "text": "Field injection: seedha field par Autowired. Kaam ho jaata hai, lekin ye recommended approach nahi hai.",
+      "visual": {
+        "pose": "shrug",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "6 · Autowired",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "@Autowired",
+            "private PaymentService payment;"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 8.52,
+      "startFrame": 9240,
+      "durationFrames": 256,
+      "audioFile": "segment_35_aut5.mp3"
+    },
+    {
+      "id": "aut6",
+      "text": "Sabse recommended hai constructor injection. Modern Spring mein agar sirf ek constructor hai, toh Autowired likhna zaroori nahi.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "6 · Autowired",
+        "steps": {
+          "items": [
+            "Constructor injection",
+            "Setter injection",
+            "Field injection"
+          ],
+          "current": 0
+        }
+      },
+      "duration": 9.408,
+      "startFrame": 9496,
+      "durationFrames": 283,
+      "audioFile": "segment_36_aut6.mp3"
+    },
+    {
+      "id": "aut8",
+      "text": "Doosra: field ko final bana sakte hain, taaki baad mein koi dependency change na kar sake.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "6 · Autowired",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "private final PaymentService payment;",
+            "",
+            "public OrderService(PaymentService payment) {",
+            "    this.payment = payment;",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 6.456,
+      "startFrame": 9779,
+      "durationFrames": 194,
+      "audioFile": "segment_37_aut8.mp3"
+    },
+    {
+      "id": "aut9",
+      "text": "Teesra: unit testing aasan. Spring ke bina hi OrderService ban jaati hai, aur fake PaymentService pass kar sakte hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "6 · Autowired",
+        "code": {
+          "title": "OrderServiceTest.java",
+          "lines": [
+            "// unit test: no Spring needed",
+            "PaymentService fake = new FakePayment();",
+            "OrderService o = new OrderService(fake);",
+            "o.placeOrder();"
+          ],
+          "highlight": [
+            1,
+            2
+          ]
+        }
+      },
+      "duration": 9.312,
+      "startFrame": 9973,
+      "durationFrames": 280,
+      "audioFile": "segment_38_aut9.mp3"
+    },
+    {
+      "id": "quiz2",
+      "text": "Quiz time: sabse recommended injection kaun sa hai? Socho. Jawab: constructor injection.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "6 · Autowired",
+        "transition": "wipe",
+        "quiz": {
+          "question": "Which injection is recommended?",
+          "options": [
+            "Field injection",
+            "Setter injection",
+            "Constructor injection"
+          ],
+          "answer": 2,
+          "revealAt": 0.6
+        }
+      },
+      "duration": 8.328,
+      "startFrame": 10253,
+      "durationFrames": 250,
+      "audioFile": "segment_39_quiz2.mp3"
+    },
+    {
+      "id": "int1",
+      "text": "Ab dekhte hain andar kya hota hai jab container start hota hai. Total saat steps hain.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "7 · Inside the Container",
+        "transition": "wipe",
+        "steps": {
+          "items": [
+            "Start AnnotationConfigApplicationContext",
+            "Spring reads AppConfig rules",
+            "Process ComponentScan",
+            "Find Component classes",
+            "Create BeanDefinitions",
+            "Create the objects (beans)",
+            "Application uses the beans"
+          ],
+          "current": 0
+        }
+      },
+      "duration": 7.704,
+      "startFrame": 10503,
+      "durationFrames": 232,
+      "audioFile": "segment_40_int1.mp3"
+    },
+    {
+      "id": "int2",
+      "text": "Step ek: AnnotationConfigApplicationContext banate hi Spring IoC container start karta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "7 · Inside the Container",
+        "steps": {
+          "items": [
+            "Start AnnotationConfigApplicationContext",
+            "Spring reads AppConfig rules",
+            "Process ComponentScan",
+            "Find Component classes",
+            "Create BeanDefinitions",
+            "Create the objects (beans)",
+            "Application uses the beans"
+          ],
+          "current": 0
+        }
+      },
+      "duration": 7.248,
+      "startFrame": 10735,
+      "durationFrames": 218,
+      "audioFile": "segment_41_int2.mp3"
+    },
+    {
+      "id": "int3",
+      "text": "Step do: Spring AppConfig class padhta hai: kaun se rules hain, aur kaun se packages scan karne hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "7 · Inside the Container",
+        "steps": {
+          "items": [
+            "Start AnnotationConfigApplicationContext",
+            "Spring reads AppConfig rules",
+            "Process ComponentScan",
+            "Find Component classes",
+            "Create BeanDefinitions",
+            "Create the objects (beans)",
+            "Application uses the beans"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 7.8,
+      "startFrame": 10953,
+      "durationFrames": 234,
+      "audioFile": "segment_42_int3.mp3"
+    },
+    {
+      "id": "int4",
+      "text": "Step teen aur chaar: ComponentScan process hota hai, aur Component wali saari classes mil jaati hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "blue",
+        "chapter": "7 · Inside the Container",
+        "steps": {
+          "items": [
+            "Start AnnotationConfigApplicationContext",
+            "Spring reads AppConfig rules",
+            "Process ComponentScan",
+            "Find Component classes",
+            "Create BeanDefinitions",
+            "Create the objects (beans)",
+            "Application uses the beans"
+          ],
+          "current": 3
+        }
+      },
+      "duration": 7.368,
+      "startFrame": 11187,
+      "durationFrames": 222,
+      "audioFile": "segment_43_int4.mp3"
+    },
+    {
+      "id": "int5",
+      "text": "Step paanch sabse important hai: Spring turant object nahi banata. Pehle har class ki BeanDefinition banata hai.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "shocked",
+        "accent": "gold",
+        "chapter": "7 · Inside the Container",
+        "steps": {
+          "items": [
+            "Start AnnotationConfigApplicationContext",
+            "Spring reads AppConfig rules",
+            "Process ComponentScan",
+            "Find Component classes",
+            "Create BeanDefinitions",
+            "Create the objects (beans)",
+            "Application uses the beans"
+          ],
+          "current": 4
+        }
+      },
+      "duration": 8.76,
+      "startFrame": 11409,
+      "durationFrames": 263,
+      "audioFile": "segment_44_int5.mp3"
+    },
+    {
+      "id": "int6",
+      "text": "BeanDefinition mein metadata hota hai: bean ka naam, class, scope, aur dependencies. Ye internal use hota hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "7 · Inside the Container",
+        "container": {
+          "label": "BeanDefinition",
+          "beans": [
+            "name",
+            "class",
+            "scope",
+            "dependencies"
+          ]
+        }
+      },
+      "duration": 9.192,
+      "startFrame": 11672,
+      "durationFrames": 276,
+      "audioFile": "segment_45_int6.mp3"
+    },
+    {
+      "id": "int8",
+      "text": "Step chhe: ab objects ban-te hain. PaymentService seedha bana. OrderService ko payment bean chahiye, jo already ready hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "7 · Inside the Container",
+        "steps": {
+          "items": [
+            "Start AnnotationConfigApplicationContext",
+            "Spring reads AppConfig rules",
+            "Process ComponentScan",
+            "Find Component classes",
+            "Create BeanDefinitions",
+            "Create the objects (beans)",
+            "Application uses the beans"
+          ],
+          "current": 5
+        }
+      },
+      "duration": 10.56,
+      "startFrame": 11948,
+      "durationFrames": 317,
+      "audioFile": "segment_46_int8.mp3"
+    },
+    {
+      "id": "int9",
+      "text": "Step saat: hamari application in beans ko use karti hai. getBean se bean lo aur method call karo.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "7 · Inside the Container",
+        "steps": {
+          "items": [
+            "Start AnnotationConfigApplicationContext",
+            "Spring reads AppConfig rules",
+            "Process ComponentScan",
+            "Find Component classes",
+            "Create BeanDefinitions",
+            "Create the objects (beans)",
+            "Application uses the beans"
+          ],
+          "current": 6
+        }
+      },
+      "duration": 8.208,
+      "startFrame": 12265,
+      "durationFrames": 247,
+      "audioFile": "segment_47_int9.mp3"
+    },
+    {
+      "id": "pq1",
+      "text": "Ab ek interesting sawaal. PaymentService ko interface bana dete hain, aur CardPayment aur UpiPayment use implement karte hain.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "8 · Primary & Qualifier",
+        "transition": "wipe",
+        "code": {
+          "title": "Payments.java",
+          "lines": [
+            "public interface PaymentService {",
+            "    void pay();",
+            "}",
+            "",
+            "@Component",
+            "public class CardPayment implements PaymentService { }",
+            "",
+            "@Component",
+            "public class UpiPayment implements PaymentService { }"
+          ],
+          "highlight": [
+            4,
+            7
+          ]
+        }
+      },
+      "duration": 9.912,
+      "startFrame": 12512,
+      "durationFrames": 298,
+      "audioFile": "segment_48_pq1.mp3"
+    },
+    {
+      "id": "pq2",
+      "text": "Dono par Component hai, toh Spring ke paas PaymentService type ke do beans hain. OrderService ko ek hi chahiye. Confusion!",
+      "visual": {
+        "pose": "worried",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "8 · Primary & Qualifier",
+        "container": {
+          "label": "Two PaymentService beans",
+          "beans": [
+            "cardPayment",
+            "upiPayment"
+          ]
+        }
+      },
+      "duration": 10.008,
+      "startFrame": 12810,
+      "durationFrames": 301,
+      "audioFile": "segment_49_pq2.mp3"
+    },
+    {
+      "id": "pq3",
+      "text": "Result: NoUniqueBeanDefinitionException. Expected single matching bean, but found two.",
+      "visual": {
+        "pose": "shocked",
+        "mood": "shocked",
+        "accent": "red",
+        "chapter": "8 · Primary & Qualifier",
+        "title": "Expected 1, found 2",
+        "props": [
+          {
+            "type": "warning",
+            "x": 0.74,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 7.056,
+      "startFrame": 13111,
+      "durationFrames": 212,
+      "audioFile": "segment_50_pq3.mp3"
+    },
+    {
+      "id": "pq4",
+      "text": "Solution ek: Primary. Jis bean par lagate ho, confusion mein usi ko priority milti hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "8 · Primary & Qualifier",
+        "code": {
+          "title": "UpiPayment.java",
+          "lines": [
+            "@Primary",
+            "@Component",
+            "public class UpiPayment implements PaymentService { }"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 7.752,
+      "startFrame": 13323,
+      "durationFrames": 233,
+      "audioFile": "segment_51_pq4.mp3"
+    },
+    {
+      "id": "pq5",
+      "text": "Solution do: Qualifier. Constructor mein bean ka naam batao. Default naam hota hai class ka naam, camel case mein.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "8 · Primary & Qualifier",
+        "code": {
+          "title": "OrderService.java",
+          "lines": [
+            "public OrderService(",
+            "    @Qualifier(\"cardPayment\") PaymentService payment) {",
+            "    this.payment = payment;",
+            "}"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 9.36,
+      "startFrame": 13556,
+      "durationFrames": 281,
+      "audioFile": "segment_52_pq5.mp3"
+    },
+    {
+      "id": "pq6",
+      "text": "Naam badalna bhi possible hai: Component ke andar custom naam do, aur Qualifier mein wahi naam use karo.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "8 · Primary & Qualifier",
+        "code": {
+          "title": "Custom bean name",
+          "lines": [
+            "@Component(\"upi\")",
+            "public class UpiPayment implements PaymentService { }",
+            "",
+            "// OrderService",
+            "@Qualifier(\"upi\") PaymentService payment"
+          ],
+          "highlight": [
+            0,
+            4
+          ]
+        }
+      },
+      "duration": 7.272,
+      "startFrame": 13837,
+      "durationFrames": 219,
+      "audioFile": "segment_53_pq6.mp3"
+    },
+    {
+      "id": "quiz3",
+      "text": "Ek aur quiz: ek type ke do beans hon, aur Primary ya Qualifier na ho, toh kya hoga? Socho. Jawab: exception aayega.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "8 · Primary & Qualifier",
+        "transition": "wipe",
+        "quiz": {
+          "question": "Two beans of one type, no hint. Result?",
+          "options": [
+            "First bean is used",
+            "NoUniqueBeanDefinitionException",
+            "A random bean is used"
+          ],
+          "answer": 1,
+          "revealAt": 0.6
+        }
+      },
+      "duration": 9.912,
+      "startFrame": 14056,
+      "durationFrames": 298,
+      "audioFile": "segment_54_quiz3.mp3"
+    },
+    {
+      "id": "bn1",
+      "text": "Kya har class par Component laga sakte hain? Nahi. Do situations hain jahan ye kaam nahi karta.",
+      "visual": {
+        "pose": "think",
+        "mood": "neutral",
+        "accent": "gold",
+        "chapter": "9 · The Bean annotation",
+        "transition": "wipe",
+        "callouts": [
+          "Needs custom values",
+          "Third-party code"
+        ]
+      },
+      "duration": 8.4,
+      "startFrame": 14354,
+      "durationFrames": 252,
+      "audioFile": "segment_55_bn1.mp3"
+    },
+    {
+      "id": "bn2",
+      "text": "Case ek: User class, jisme name aur age primitives hain. Spring ko kaise pata ki constructor mein kya values daalni hain?",
+      "visual": {
+        "pose": "shrug",
+        "mood": "worried",
+        "accent": "red",
+        "chapter": "9 · The Bean annotation",
+        "code": {
+          "title": "User.java",
+          "lines": [
+            "@Component  // fails!",
+            "public class User {",
+            "    private String name;",
+            "    private int age;",
+            "",
+            "    public User(String name, int age) { }",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 9.72,
+      "startFrame": 14606,
+      "durationFrames": 292,
+      "audioFile": "segment_56_bn2.mp3"
+    },
+    {
+      "id": "bn3",
+      "text": "Case do: third-party library ki class, jaise CardService, jo jar file se aati hai. Wo read-only bytecode hai. Usme Component likh hi nahi sakte.",
+      "visual": {
+        "pose": "shrug",
+        "mood": "sad",
+        "accent": "red",
+        "chapter": "9 · The Bean annotation",
+        "container": {
+          "label": "External JAR (read-only)",
+          "beans": [
+            "CardService.class"
+          ]
+        }
+      },
+      "duration": 12.648,
+      "startFrame": 14898,
+      "durationFrames": 380,
+      "audioFile": "segment_57_bn3.mp3"
+    },
+    {
+      "id": "bn4",
+      "text": "Solution: Bean annotation. AppConfig mein ek method banao jo object return kare, aur us par Bean lagao.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "9 · The Bean annotation",
+        "transition": "wipe",
+        "code": {
+          "title": "AppConfig.java",
+          "lines": [
+            "@Configuration",
+            "public class AppConfig {",
+            "",
+            "    @Bean",
+            "    public User createUser() {",
+            "        return new User(\"Aditya\", 28);",
+            "    }",
+            "}"
+          ],
+          "highlight": [
+            3,
+            5
+          ]
+        }
+      },
+      "duration": 8.448,
+      "startFrame": 15278,
+      "durationFrames": 254,
+      "audioFile": "segment_58_bn4.mp3"
+    },
+    {
+      "id": "bn5",
+      "text": "Spring is method ko call karta hai, aur jo object milta hai use apne container mein bean ki tarah store kar leta hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "9 · The Bean annotation",
+        "container": {
+          "label": "IoC Container",
+          "beans": [
+            "user"
+          ]
+        }
+      },
+      "duration": 8.4,
+      "startFrame": 15532,
+      "durationFrames": 252,
+      "audioFile": "segment_59_bn5.mp3"
+    },
+    {
+      "id": "bn6",
+      "text": "Bilkul isi tarah CardService ka bean bhi ban jaata hai. Object hum banate hain, manage Spring karta hai.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "9 · The Bean annotation",
+        "code": {
+          "title": "AppConfig.java",
+          "lines": [
+            "@Bean",
+            "public CardService createCardService() {",
+            "    return new CardService();",
+            "}"
+          ],
+          "highlight": [
+            0
+          ]
+        }
+      },
+      "duration": 8.592,
+      "startFrame": 15784,
+      "durationFrames": 258,
+      "audioFile": "segment_60_bn6.mp3"
+    },
+    {
+      "id": "bn7",
+      "text": "Wiring bhi aasan: bean method ke parameter mein PaymentService maango, aur Spring khud pass kar deta hai.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "9 · The Bean annotation",
+        "code": {
+          "title": "AppConfig.java",
+          "lines": [
+            "@Bean",
+            "public OrderService orderService(PaymentService p) {",
+            "    return new OrderService(p);",
+            "}"
+          ],
+          "highlight": [
+            1
+          ]
+        }
+      },
+      "duration": 7.32,
+      "startFrame": 16042,
+      "durationFrames": 220,
+      "audioFile": "segment_61_bn7.mp3"
+    },
+    {
+      "id": "bn8",
+      "text": "Yahan bhi Primary aur Qualifier same tarah kaam karte hain. Bean ka naam hota hai method ka naam.",
+      "visual": {
+        "pose": "point",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "9 · The Bean annotation",
+        "callouts": [
+          "Bean name = method name"
+        ],
+        "props": [
+          {
+            "type": "lock",
+            "x": 0.74,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 7.776,
+      "startFrame": 16262,
+      "durationFrames": 234,
+      "audioFile": "segment_62_bn8.mp3"
+    },
+    {
+      "id": "bn9",
+      "text": "Aur agar ek hi class par Component bhi ho aur Bean bhi? Sirf ek bean banta hai, aur Bean wala jeetta hai.",
+      "visual": {
+        "pose": "think",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "9 · The Bean annotation",
+        "title": "Bean wins",
+        "props": [
+          {
+            "type": "check",
+            "x": 0.74,
+            "y": 0.52,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 8.856,
+      "startFrame": 16496,
+      "durationFrames": 266,
+      "audioFile": "segment_63_bn9.mp3"
+    },
+    {
+      "id": "end2",
+      "text": "Config class ka naam kuch bhi ho sakta hai. Bas Configuration annotation zaroor lagao, warna ComponentScan kaam nahi karega.",
+      "visual": {
+        "pose": "point",
+        "mood": "neutral",
+        "accent": "blue",
+        "chapter": "10 · Wrap-up",
+        "callouts": [
+          "Name is free",
+          "Annotation is required"
+        ]
+      },
+      "duration": 9.768,
+      "startFrame": 16762,
+      "durationFrames": 294,
+      "audioFile": "segment_64_end2.mp3"
+    },
+    {
+      "id": "end3",
+      "text": "Ek aakhri baat: ApplicationContext asal mein BeanFactory ko extend karta hai. Pehle BeanFactory use hota tha, ab ApplicationContext.",
+      "visual": {
+        "pose": "present",
+        "mood": "happy",
+        "accent": "gold",
+        "chapter": "10 · Wrap-up",
+        "container": {
+          "label": "ApplicationContext extends BeanFactory",
+          "beans": [
+            "BeanFactory (old)",
+            "ApplicationContext (now)"
+          ]
+        }
+      },
+      "duration": 10.248,
+      "startFrame": 17056,
+      "durationFrames": 308,
+      "audioFile": "segment_65_end3.mp3"
+    },
+    {
+      "id": "end4",
+      "text": "Recap: IoC container beans banata aur wire karta hai, aur Component ya Bean se bean bante hain.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "10 · Wrap-up",
+        "steps": {
+          "items": [
+            "IoC container creates and wires beans",
+            "Component or Bean makes a bean",
+            "Constructor injection is best",
+            "Primary or Qualifier picks one"
+          ],
+          "current": 1
+        }
+      },
+      "duration": 7.536,
+      "startFrame": 17364,
+      "durationFrames": 227,
+      "audioFile": "segment_66_end4.mp3"
+    },
+    {
+      "id": "end5",
+      "text": "Constructor injection sabse best hai, aur Primary ya Qualifier confusion hataate hain.",
+      "visual": {
+        "pose": "celebrate",
+        "mood": "happy",
+        "accent": "green",
+        "chapter": "10 · Wrap-up",
+        "steps": {
+          "items": [
+            "IoC container creates and wires beans",
+            "Component or Bean makes a bean",
+            "Constructor injection is best",
+            "Primary or Qualifier picks one"
+          ],
+          "current": 3
+        }
+      },
+      "duration": 6.648,
+      "startFrame": 17591,
+      "durationFrames": 200,
+      "audioFile": "segment_67_end5.mp3"
+    },
+    {
+      "id": "end6",
+      "text": "Agle lecture mein XML based configuration dekhenge. Video pasand aaya toh like karo, aur CodeOrCap ko subscribe karna mat bhoolna.",
+      "visual": {
+        "pose": "walk",
+        "mood": "happy",
+        "accent": "gold",
+        "title": "Subscribe: CodeOrCap",
+        "transition": "wipe",
+        "props": [
+          {
+            "type": "rocket",
+            "x": 0.74,
+            "delay": 10
+          }
+        ]
+      },
+      "duration": 9.768,
+      "startFrame": 17791,
+      "durationFrames": 294,
+      "audioFile": "segment_68_end6.mp3"
+    }
+  ],
+  "totalDuration": 601.7040000000001,
+  "totalFrames": 18085
+}
