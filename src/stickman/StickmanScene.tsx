@@ -30,6 +30,9 @@ interface SceneProps {
   speakFrames?: number;
   muteSfx?: boolean;
   vertical?: boolean;
+  /** first frame of this scene on the video timeline, and the lip-sync track (mouth level per video frame) */
+  startFrame?: number;
+  mouth?: number[];
 }
 
 const PROP_BASE_SCALE = 1.7;
@@ -113,7 +116,7 @@ const CalloutRow: React.FC<{ items: string[]; color: string; centerX: number; wo
   );
 };
 
-export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false }) => {
+export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, startFrame = 0, mouth }) => {
   const world: World = vertical ? WORLD_VERTICAL : WORLD;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -144,6 +147,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
   const sfx = v.sfx === "auto" ? (prevMood !== undefined && prevMood !== v.mood ? MOOD_SFX[v.mood] : undefined) : v.sfx === "none" ? undefined : v.sfx;
 
   const seed = Math.floor(frame / 4); // "boiling line" hand-drawn wobble
+  // real speech loudness when the project has a lip-sync track; undefined = generic flap
+  const mouthLevel = mouth ? mouth[startFrame + frame] ?? 0 : undefined;
   const talking = frame >= speakFrom && (speakFrames === undefined || frame < speakFrom + speakFrames);
   const captions = buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7);
   const active = captions.find((c) => frame - speakFrom >= c.start && frame - speakFrom < c.end);
@@ -188,7 +193,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
               );
             })}
             {!v.hideFigure && (
-              <Figure x={figureX} ground={world.ground} pose={pose} mood={v.mood} prevMood={prevMood} talking={talking} look={v.look} frame={frame} theme={theme} accent={accent} flip={v.flip} hop={hop} scale={figureScale} calm={v.calm} />
+              <Figure x={figureX} ground={world.ground} pose={pose} mood={v.mood} prevMood={prevMood} talking={talking} mouthLevel={mouthLevel} look={v.look} frame={frame} theme={theme} accent={accent} flip={v.flip} hop={hop} scale={figureScale} calm={v.calm} />
             )}
           </g>
         </g>

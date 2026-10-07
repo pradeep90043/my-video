@@ -126,9 +126,10 @@ interface FaceProps {
   accent: string;
   gaze: { x: number; y: number };
   talking: boolean;
+  mouthLevel?: number;
 }
 
-export const Face: React.FC<FaceProps> = ({ mood, prevMood, frame, theme, accent, gaze, talking }) => {
+export const Face: React.FC<FaceProps> = ({ mood, prevMood, frame, theme, accent, gaze, talking, mouthLevel }) => {
   const { fps } = useVideoConfig();
   const ink = theme.ink;
   // expression change: quick spring with a touch of overshoot (the "snap + settle" of hand animation)
@@ -196,8 +197,11 @@ export const Face: React.FC<FaceProps> = ({ mood, prevMood, frame, theme, accent
 
   // mouth: curved lip line; opens by `mouthOpen` plus speech flap
   const my = 21;
-  const open = f.mouthOpen * 13 + (talking ? flap(frame) * 9 : 0);
-  const w = f.mouthW;
+  // lip sync: follow the voiceover loudness when available, otherwise the generic flap
+  const speech = mouthLevel !== undefined ? mouthLevel : talking ? flap(frame) : 0;
+  const open = f.mouthOpen * 13 + speech * (mouthLevel !== undefined ? 13 : 9);
+  // a wide-open vowel also narrows the mouth a little ("o"), a closed one stays wide
+  const w = f.mouthW * (1 - (mouthLevel !== undefined ? 0.28 * mouthLevel : 0));
   const yl = my - f.curve * 5;
   const yr = yl - f.skew;
   const ctrl = my + f.curve * 16 - f.skew * 0.3;
