@@ -98,6 +98,19 @@ jobs:
           echo "📁 Project contents unpacked:"
           ls -la "public/content/${PROJECT}"
 
+      - name: Generate Voiceover and Merge Audio if Bundle Has None
+        if: steps.args.outputs.bundle_url != ''
+        run: |
+          PROJECT="${{ steps.args.outputs.project }}"
+          if ls "public/content/${PROJECT}/audio/"*.mp3 >/dev/null 2>&1; then
+            echo "Audio already present in bundle, skipping TTS."
+          else
+            pip install --user edge-tts
+            export PATH="$HOME/.local/bin:$PATH"
+            npm run longform:audio -- --project "${PROJECT}"
+            npm run longform:merge -- --project "${PROJECT}"
+          fi
+
       - name: Render Video via Remotion (7GB RAM Runner)
         run: |
           echo "🎬 Starting Remotion Render: ${{ steps.args.outputs.render_cmd }}"
