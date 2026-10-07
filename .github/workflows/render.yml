@@ -146,8 +146,10 @@ jobs:
           TOTAL=$(node -e "console.log(require('./public/content/${PROJECT}/video.json').totalFrames||0)")
           N=${{ steps.args.outputs.want_chunks }}
           case "$N" in 1|2|3|4) ;; *) N=2 ;; esac
-          # tiny videos are not worth the extra runner start-up time
-          if [ "$TOTAL" -lt 1800 ]; then N=1; fi
+          # splitting only pays off with enough frames: ~4500 frames (2.5 min of video) per runner
+          NEED=$(( (TOTAL + 4499) / 4500 ))
+          [ "$NEED" -lt 1 ] && NEED=1
+          [ "$N" -gt "$NEED" ] && N=$NEED
           MATRIX="[$(seq -s, 0 $((N-1)))]"
           echo "total frames=$TOTAL chunks=$N matrix=$MATRIX"
           echo "chunks=$N" >> "$GITHUB_OUTPUT"
