@@ -28,6 +28,10 @@ on:
         description: "Per-job token for progress_url"
         required: false
         default: ""
+      chunks:
+        description: "Number of parallel runners to split the render across (1-4)"
+        required: false
+        default: "2"
       draft:
         description: "Draft mode (fast 360p review render, skips logo/branding)"
         type: boolean
@@ -45,10 +49,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  render:
+  # 1) Voiceover, audio mix and the composition's final audio track — done once.
+  prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
-
+    timeout-minutes: 30
+    outputs:
+      project: ${{ steps.args.outputs.project }}
+      render_flags: ${{ steps.args.outputs.render_flags }}
+      progress_url: ${{ steps.args.outputs.progress_url }}
+      progress_token: ${{ steps.args.outputs.progress_token }}
+      chunks: ${{ steps.plan.outputs.chunks }}
+      matrix: ${{ steps.plan.outputs.matrix }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -59,7 +70,7 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install ffmpeg (needed for logo branding)
+      - name: Install ffmpeg (needed for audio merge and logo branding)
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
       - name: Install Node Dependencies
@@ -74,25 +85,24 @@ jobs:
             RESOLUTION="${{ github.event.client_payload.resolution || '720' }}"
             DRAFT="${{ github.event.client_payload.draft || 'false' }}"
             NO_BRANDING="${{ github.event.client_payload.no_branding || 'false' }}"
+            CHUNKS="${{ github.event.client_payload.chunks || '2' }}"
           else
             PROJECT="${{ inputs.project }}"
             BUNDLE_URL="${{ inputs.bundle_url }}"
             RESOLUTION="${{ inputs.resolution }}"
             DRAFT="${{ inputs.draft }}"
             NO_BRANDING="${{ inputs.no_branding }}"
+            CHUNKS="${{ inputs.chunks || '2' }}"
           fi
 
-          CMD="--project ${PROJECT} --resolution ${RESOLUTION} --concurrency 2"
-          if [ "$DRAFT" = "true" ]; then
-            CMD="$CMD --draft"
-          fi
-          if [ "$NO_BRANDING" = "true" ]; then
-            CMD="$CMD --no-branding"
-          fi
+          FLAGS="--project ${PROJECT} --resolution ${RESOLUTION} --concurrency 2"
+          [ "$DRAFT" = "true" ] && FLAGS="$FLAGS --draft"
+          [ "$NO_BRANDING" = "true" ] && FLAGS="$FLAGS --no-branding"
 
           echo "project=$PROJECT" >> "$GITHUB_OUTPUT"
           echo "bundle_url=$BUNDLE_URL" >> "$GITHUB_OUTPUT"
-          echo "render_cmd=$CMD" >> "$GITHUB_OUTPUT"
+          echo "render_flags=$FLAGS" >> "$GITHUB_OUTPUT"
+          echo "want_chunks=$CHUNKS" >> "$GITHUB_OUTPUT"
           echo "progress_url=${{ inputs.progress_url }}" >> "$GITHUB_OUTPUT"
           echo "progress_token=${{ inputs.progress_token }}" >> "$GITHUB_OUTPUT"
 
@@ -105,7 +115,6 @@ jobs:
           mkdir -p "public/content/${PROJECT}"
           curl -sSL "$BUNDLE_URL" -o bundle.tar.gz
           tar -xzf bundle.tar.gz -C "public/content/${PROJECT}"
-          echo "📁 Project contents unpacked:"
           ls -la "public/content/${PROJECT}"
 
       - name: Generate Voiceover and Merge Audio if Bundle Has None
@@ -121,12 +130,64 @@ jobs:
             npm run longform:merge -- --project "${PROJECT}"
           fi
 
-      - name: Render Video via Remotion (7GB RAM Runner)
+      - name: Render the composition's audio track once
+        run: npx tsx scripts/longs/render.ts ${{ steps.args.outputs.render_flags }} --audio-only
+
+      - name: Plan frame chunks
+        id: plan
         run: |
-          echo "🎬 Starting Remotion Render: ${{ steps.args.outputs.render_cmd }}"
-          PROGRESS_URL="${{ steps.args.outputs.progress_url }}"
+          PROJECT="${{ steps.args.outputs.project }}"
+          TOTAL=$(node -e "console.log(require('./public/content/${PROJECT}/video.json').totalFrames||0)")
+          N=${{ steps.args.outputs.want_chunks }}
+          case "$N" in 1|2|3|4) ;; *) N=2 ;; esac
+          # tiny videos are not worth the extra runner start-up time
+          if [ "$TOTAL" -lt 1800 ]; then N=1; fi
+          MATRIX="[$(seq -s, 0 $((N-1)))]"
+          echo "total frames=$TOTAL chunks=$N matrix=$MATRIX"
+          echo "chunks=$N" >> "$GITHUB_OUTPUT"
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+
+      - name: Upload prepared project (voiceover, audio track)
+        uses: actions/upload-artifact@v4
+        with:
+          name: prep-${{ steps.args.outputs.project }}-${{ github.run_id }}
+          path: |
+            public/content/${{ steps.args.outputs.project }}
+            out/${{ steps.args.outputs.project }}.audio.aac
+          retention-days: 1
+
+  # 2) The frames, split across parallel runners.
+  render-chunk:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: true
+      matrix:
+        chunk: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 with npm Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Node Dependencies
+        run: npm install --include=optional
+
+      - name: Download prepared project
+        uses: actions/download-artifact@v4
+        with:
+          name: prep-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+
+      - name: Render frame chunk
+        run: |
+          PROGRESS_URL="${{ needs.prepare.outputs.progress_url }}"
           if [ -n "$PROGRESS_URL" ]; then
-            # Report "Rendered X/Y" to the app every 10s so the Studio shows live frame counts.
+            # Report "Rendered X/Y" for this chunk every 10s so the Studio shows live frame counts.
             (
               while true; do
                 sleep 10
@@ -134,11 +195,54 @@ jobs:
                 [ -n "$L" ] || continue
                 D=${L#Rendered }; DONE=${D%/*}; TOTAL=${D#*/}
                 curl -s -m 8 -X POST "$PROGRESS_URL" -H 'Content-Type: application/json' \
-                  -d "{\"slug\":\"${{ steps.args.outputs.project }}\",\"token\":\"${{ steps.args.outputs.progress_token }}\",\"done\":$DONE,\"total\":$TOTAL}" >/dev/null || true
+                  -d "{\"slug\":\"${{ needs.prepare.outputs.project }}\",\"token\":\"${{ needs.prepare.outputs.progress_token }}\",\"chunk\":${{ matrix.chunk }},\"done\":$DONE,\"total\":$TOTAL}" >/dev/null || true
               done
             ) &
           fi
-          npx tsx scripts/longs/render.ts ${{ steps.args.outputs.render_cmd }} 2>&1 | tee render.log
+          npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --chunk ${{ matrix.chunk }}/${{ needs.prepare.outputs.chunks }} 2>&1 | tee render.log
+
+      - name: Upload chunk
+        uses: actions/upload-artifact@v4
+        with:
+          name: chunk-${{ needs.prepare.outputs.project }}-${{ github.run_id }}-${{ matrix.chunk }}
+          path: out/${{ needs.prepare.outputs.project }}.chunk${{ matrix.chunk }}.mp4
+          retention-days: 1
+
+  # 3) Join chunks + audio, brand, QA.
+  combine:
+    needs: [prepare, render-chunk]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 with npm Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Node Dependencies
+        run: npm install --include=optional
+
+      - name: Download prepared project
+        uses: actions/download-artifact@v4
+        with:
+          name: prep-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+
+      - name: Download chunks
+        uses: actions/download-artifact@v4
+        with:
+          pattern: chunk-${{ needs.prepare.outputs.project }}-${{ github.run_id }}-*
+          path: out
+          merge-multiple: true
+
+      - name: Join, brand and QA
+        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --combine ${{ needs.prepare.outputs.chunks }}
 
       - name: List Output Files
         run: ls -lh out/
@@ -146,15 +250,19 @@ jobs:
       - name: Upload Video Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: video-${{ steps.args.outputs.project }}-${{ github.run_number }}
-          path: out/*.mp4
+          name: video-${{ needs.prepare.outputs.project }}-${{ github.run_number }}
+          path: out/${{ needs.prepare.outputs.project }}.mp4
           retention-days: 14
 
+  notify:
+    needs: [prepare, render-chunk, combine]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
       - name: Send Telegram Notification
-        if: always()
         run: |
-          STATUS="${{ job.status }}"
-          PROJECT="${{ steps.args.outputs.project }}"
+          STATUS="${{ needs.combine.result }}"
+          PROJECT="${{ needs.prepare.outputs.project }}"
           RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
           [ -z "$BOT_TOKEN" ] && BOT_TOKEN="8947411485:AAG0cqcP43Q2qdaHxtXsYrUVgMMrS17HdQI"
