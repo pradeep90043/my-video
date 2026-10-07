@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       project:
-        description: "Project slug (e.g. stickman-demo, single-income-trap, friday-deploy-short, VibeCodingNotProgrammingShort)"
+        description: "Project slug (e.g. stickman-demo, single-income-trap, or dynamic lv-* slug)"
         required: true
         default: "stickman-demo"
+      bundle_url:
+        description: "Optional URL to download project bundle (video.json + audio) if dynamically generated"
+        required: false
+        default: ""
       resolution:
         description: "Output resolution (720 or 1080, or 360 for fast draft)"
         required: true
@@ -41,18 +45,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Set up Node.js 20 with npm Cache
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: Install System Dependencies (FFmpeg & Fonts)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg fonts-noto-color-emoji fonts-liberation
+      - name: Restore node_modules Cache
+        id: node-cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node20-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node20-modules-
 
       - name: Install Node Dependencies
+        if: steps.node-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Determine Render Arguments
@@ -60,17 +69,19 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
             PROJECT="${{ github.event.client_payload.project }}"
+            BUNDLE_URL="${{ github.event.client_payload.bundle_url }}"
             RESOLUTION="${{ github.event.client_payload.resolution || '720' }}"
             DRAFT="${{ github.event.client_payload.draft || 'false' }}"
             NO_BRANDING="${{ github.event.client_payload.no_branding || 'false' }}"
           else
             PROJECT="${{ inputs.project }}"
+            BUNDLE_URL="${{ inputs.bundle_url }}"
             RESOLUTION="${{ inputs.resolution }}"
             DRAFT="${{ inputs.draft }}"
             NO_BRANDING="${{ inputs.no_branding }}"
           fi
 
-          CMD="--project ${PROJECT} --resolution ${RESOLUTION}"
+          CMD="--project ${PROJECT} --resolution ${RESOLUTION} --concurrency 3"
           if [ "$DRAFT" = "true" ]; then
             CMD="$CMD --draft"
           fi
@@ -79,7 +90,20 @@ jobs:
           fi
 
           echo "project=$PROJECT" >> "$GITHUB_OUTPUT"
+          echo "bundle_url=$BUNDLE_URL" >> "$GITHUB_OUTPUT"
           echo "render_cmd=$CMD" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch Dynamic Project Bundle if Provided
+        if: steps.args.outputs.bundle_url != ''
+        run: |
+          PROJECT="${{ steps.args.outputs.project }}"
+          BUNDLE_URL="${{ steps.args.outputs.bundle_url }}"
+          echo "📥 Fetching dynamic project bundle from ${BUNDLE_URL}..."
+          mkdir -p "public/content/${PROJECT}"
+          curl -sSL "$BUNDLE_URL" -o bundle.tar.gz
+          tar -xzf bundle.tar.gz -C "public/content/${PROJECT}"
+          echo "📁 Project contents unpacked:"
+          ls -la "public/content/${PROJECT}"
 
       - name: Render Video via Remotion (7GB RAM Runner)
         run: |
@@ -102,8 +126,10 @@ jobs:
           STATUS="${{ job.status }}"
           PROJECT="${{ steps.args.outputs.project }}"
           RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN || '8947411485:AAG0cqcP43Q2qdaHxtXsYrUVgMMrS17HdQI' }}"
-          CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID || '7668650862' }}"
+          BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          [ -z "$BOT_TOKEN" ] && BOT_TOKEN="8947411485:AAG0cqcP43Q2qdaHxtXsYrUVgMMrS17HdQI"
+          CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
+          [ -z "$CHAT_ID" ] && CHAT_ID="7668650862"
 
           if [ "$STATUS" = "success" ]; then
             MSG="🎬 *Video Render Finished on GitHub Cloud!*%0A%0A• *Project*: \`${PROJECT}\`%0A• *Status*: ✅ Success%0A• *Download*: [Click to Download Video](${RUN_URL})"
