@@ -43,7 +43,9 @@ function main() {
   data.scenes.forEach((s, i) => {
     inputs.push("-i", path.join(dir, s.audioFile!));
     const target = (s.durationFrames! / data.fps).toFixed(6);
-    filters.push(`[${i}:a]aresample=44100,aformat=channel_layouts=stereo,apad=whole_dur=${target}[a${i}]`);
+    const lead = Math.round(((s as any).pauseBefore ?? 0) * 1000);
+    const delay = lead > 0 ? `adelay=${lead}|${lead},` : "";
+    filters.push(`[${i}:a]aresample=44100,aformat=channel_layouts=stereo,${delay}apad=whole_dur=${target}[a${i}]`);
   });
   const labels = data.scenes.map((_, i) => `[a${i}]`).join("");
   const graph =

@@ -9,8 +9,18 @@ import { z } from "zod";
 export const POSES = [
   "idle", "point", "present", "shrug", "think",
   "celebrate", "worried", "facepalm", "shocked", "walk",
+  "angry", "laugh", "cry", "smug",
 ] as const;
-export const MOODS = ["neutral", "happy", "worried", "shocked", "sad"] as const;
+export const MOODS = [
+  "neutral", "happy", "worried", "shocked", "sad",
+  "angry", "excited", "confused", "smug", "crying",
+] as const;
+/** Emotion sound effects (synthesised by `npm run longform:sfx` into public/audio/sfx/). */
+export const SFX_NAMES = ["ding", "gasp", "sad", "boom", "fail", "tada", "scratch", "riser", "pop"] as const;
+/** SFX played automatically when a scene's mood differs from the previous scene's. */
+export const MOOD_SFX: Partial<Record<(typeof MOODS)[number], (typeof SFX_NAMES)[number]>> = {
+  shocked: "gasp", sad: "sad", crying: "sad", angry: "boom", excited: "tada", confused: "scratch", smug: "ding",
+};
 export const PROP_TYPES = [
   "laptop", "bulb", "chartUp", "chartDown", "warning", "clock", "money", "robot",
   "question", "check", "cross", "rocket", "lock", "gear", "magnifier", "bug", "code",
@@ -83,6 +93,14 @@ export const StickmanVisualSchema = z.object({
   // eslint-disable-next-line @remotion/non-pure-animation
   transition: z.enum(["cut", "wipe"]).default("cut"),
   accent: z.enum(ACCENTS).default("blue"),
+  /** Emotion SFX: "auto" (default) plays the mood's sound when the mood changes from the previous scene. */
+  sfx: z.enum(["auto", "none", ...SFX_NAMES]).default("auto"),
+  /** frames after scene start before the SFX plays */
+  sfxDelay: z.number().int().min(0).default(0),
+  /** where the eyes look: "auto" = lively saccades */
+  look: z.enum(["auto", "camera", "left", "right", "up", "down"]).default("auto"),
+  /** turn off the mood overlay (tint / flash / confetti) and body motion */
+  calm: z.boolean().default(false),
 });
 
 export type CodeSpec = z.infer<typeof CodeSchema>;
@@ -91,6 +109,7 @@ export type ContainerSpec = z.infer<typeof ContainerSchema>;
 export type StepsSpec = z.infer<typeof StepsSchema>;
 export type StickmanVisual = z.infer<typeof StickmanVisualSchema>;
 export type PoseName = (typeof POSES)[number];
+export type SfxName = (typeof SFX_NAMES)[number];
 export type Mood = (typeof MOODS)[number];
 export type PropType = (typeof PROP_TYPES)[number];
 export type AccentName = (typeof ACCENTS)[number];

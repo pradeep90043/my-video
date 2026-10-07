@@ -23,23 +23,26 @@ import {
   validateEdgeTtsSettings,
   validateVideoJson,
 } from "./lib";
+import { voiceForScene } from "./emotions";
 import { fail, getArg, hasFlag, probeDuration, retry, run } from "./util";
 
 const MIN_SEGMENT_SECS = 0.3;
 
 type Cache = Record<string, string>;
 
-function sceneHash(text: string, voice: string, rate: string, pitch: string): string {
-  return createHash("sha256").update([text, voice, rate, pitch].join("\u0000")).digest("hex");
+function sceneHash(text: string, voice: string, rate: string, pitch: string, volume: string): string {
+  const parts = [text, voice, rate, pitch];
+  if (volume !== "+0%") parts.push(volume); // keeps pre-emotion cache entries valid
+  return createHash("sha256").update(parts.join("\u0000")).digest("hex");
 }
 
-function synthesize(text: string, voice: string, rate: string, pitch: string, outPath: string): void {
+function synthesize(text: string, voice: string, rate: string, pitch: string, volume: string, outPath: string): void {
   // `--opt=value` form: values such as "-5%" or text starting with "-" would
   // otherwise be parsed by edge-tts's argparse as flags.
   const tmp = `${outPath}.part.mp3`;
   const r = run(
     "edge-tts",
-    [`--voice=${voice}`, `--rate=${rate}`, `--pitch=${pitch}`, `--text=${text}`, `--write-media=${tmp}`],
+    [`--voice=${voice}`, `--rate=${rate}`, `--pitch=${pitch}`, `--volume=${volume}`, `--text=${text}`, `--write-media=${tmp}`],
     180_000,
   );
   if (r.status !== 0) {
@@ -70,9 +73,10 @@ async function main() {
   const pitch = data.pitch || "+0Hz";
   const fps = data.fps;
 
-  const settingProblems = data.scenes.flatMap((s: any) =>
-    validateEdgeTtsSettings(s.voice || voice, s.rate || rate, s.pitch || pitch).map((p) => `scene ${s.id}: ${p}`),
-  );
+  const settingProblems = data.scenes.flatMap((s: any) => {
+    const v = voiceForScene(s.visual?.mood, { rate, pitch }, { rate: s.rate, pitch: s.pitch });
+    return validateEdgeTtsSettings(s.voice || voice, v.rate, v.pitch).map((p) => `scene ${s.id}: ${p}`);
+  });
   if (settingProblems.length) fail(`TTS settings invalid:\n  - ${settingProblems.join("\n  - ")}`);
 
   const cachePath = path.join(outDir, ".cache.json");
@@ -95,17 +99,20 @@ async function main() {
     const segmentPath = path.join(outDir, segmentName);
 
     const sceneVoice = scene.voice || voice;
-    const sceneRate = scene.rate || rate;
-    const scenePitch = scene.pitch || pitch;
-    const hash = sceneHash(scene.text, sceneVoice, sceneRate, scenePitch);
+    // Emotion: the scene's visual.mood shifts rate/pitch/volume (explicit scene.rate/pitch win).
+    const { rate: sceneRate, pitch: scenePitch, volume: sceneVolume } = voiceForScene(
+      scene.visual?.mood, { rate, pitch }, { rate: scene.rate, pitch: scene.pitch, volume: scene.volume },
+    );
+    const spoken: string = scene.ttsText || scene.text;
+    const hash = sceneHash(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume);
 
     const cached = !force && cache[segmentName] === hash && fs.existsSync(segmentPath);
     if (cached) {
       console.log(`  -> Scene ${i}: ${scene.id} (cached)`);
     } else {
-      console.log(`  -> Scene ${i}: ${scene.id} (voice: ${sceneVoice})`);
+      console.log(`  -> Scene ${i}: ${scene.id} (voice: ${sceneVoice}, ${scene.visual?.mood ?? "neutral"}: ${sceneRate} ${scenePitch} ${sceneVolume})`);
       await retry(`TTS for ${scene.id}`, 3, () =>
-        synthesize(scene.text, sceneVoice, sceneRate, scenePitch, segmentPath),
+        synthesize(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume, segmentPath),
       );
       cache[segmentName] = hash;
       fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2)); // persist progress per scene
@@ -113,15 +120,16 @@ async function main() {
     }
 
     const actualDurationSec = probeDuration(segmentPath);
-    const durationFrames = Math.ceil(actualDurationSec * fps);
+    const pause = Math.max(0, Number(scene.pauseBefore) || 0);
+    const durationFrames = Math.ceil((actualDurationSec + pause) * fps);
 
-    scene.duration = actualDurationSec;
+    scene.duration = actualDurationSec; // speech only; pauseBefore is added on top
     scene.startFrame = currentStartFrame;
     scene.durationFrames = durationFrames;
     scene.audioFile = segmentName;
 
     currentStartFrame += durationFrames;
-    totalDurationSec += actualDurationSec;
+    totalDurationSec += actualDurationSec + pause;
 
     console.log(`     ${actualDurationSec.toFixed(2)}s (${durationFrames} frames)`);
   }

@@ -3,14 +3,15 @@ import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
 import { z } from "zod";
 import { StickmanScene } from "./StickmanScene";
 import { THEMES, type ThemeName } from "./theme";
-import { StickmanVisualSchema, type PoseName } from "./schema";
+import { StickmanVisualSchema, type Mood, type PoseName } from "./schema";
 
 /** The slice of a project's video.json the composition needs. */
 export interface StickmanProjectData {
   fps: number;
   theme?: ThemeName;
   totalFrames?: number;
-  scenes: { id: string; text: string; startFrame?: number; durationFrames?: number; visual?: unknown }[];
+  orientation?: "horizontal" | "vertical";
+  scenes: { id: string; text: string; startFrame?: number; durationFrames?: number; duration?: number; pauseBefore?: number; visual?: unknown }[];
 }
 
 export const stickmanSchema = z.object({
@@ -27,6 +28,7 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
   const theme = THEMES[data.theme ?? "light"];
 
   let prevPose: PoseName = "idle";
+  let prevMood: Mood | undefined;
   return (
     <AbsoluteFill style={{ backgroundColor: theme.bg }}>
       {data.scenes.map((scene) => {
@@ -35,10 +37,13 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
         const visual = StickmanVisualSchema.parse(scene.visual ?? {});
         const el = (
           <Sequence key={scene.id} from={from} durationInFrames={duration} name={scene.id}>
-            <StickmanScene text={scene.text} visual={visual} durationFrames={duration} theme={theme} prevPose={prevPose} />
+            <StickmanScene text={scene.text} visual={visual} durationFrames={duration} theme={theme} prevPose={prevPose} prevMood={prevMood} vertical={data.orientation === "vertical"}
+              speakFrom={Math.round((scene.pauseBefore ?? 0) * data.fps)}
+              speakFrames={scene.duration !== undefined ? Math.round(scene.duration * data.fps) : undefined} />
           </Sequence>
         );
         prevPose = visual.pose;
+        prevMood = visual.mood;
         return el;
       })}
       <Audio src={staticFile(`content/${project}/audio/voiceover.mp3`)} volume={voVolume} />

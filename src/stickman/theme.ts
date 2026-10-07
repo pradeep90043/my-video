@@ -22,3 +22,7 @@ export const THEMES: Record<ThemeName, Theme> = {
 };
 
 export const WORLD = { width: 1920, height: 1080, ground: 880 } as const;
+
+/** 9:16 canvas for Shorts / Reels (set "orientation": "vertical" in video.json). */
+export const WORLD_VERTICAL = { width: 1080, height: 1920, ground: 1380 } as const;
+export type World = { readonly width: number; readonly height: number; readonly ground: number };

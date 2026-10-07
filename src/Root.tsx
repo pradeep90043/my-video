@@ -118,6 +118,7 @@ export const RemotionRoot: React.FC = () => {
           const data = (await res.json()) as StickmanProjectData;
           return {
             fps: data.fps,
+            ...(data.orientation === "vertical" ? { width: 1080, height: 1920 } : {}),
             durationInFrames: Math.max(1, data.totalFrames ?? 300),
             props: { ...props, data },
           };

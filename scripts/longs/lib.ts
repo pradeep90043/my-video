@@ -18,6 +18,13 @@ export interface LongformScene {
   startFrame?: number;
   durationFrames?: number;
   audioFile?: string;
+  /** Text sent to the TTS engine when it should differ from `text` (the on-screen caption),
+   *  e.g. Devanagari Hindi for natural pronunciation while captions stay romanised. */
+  ttsText?: string;
+  /** seconds of silence before the line (a dramatic beat); counted in durationFrames */
+  pauseBefore?: number;
+  /** volume override, e.g. "+10%" */
+  volume?: string;
   /** template-specific visual spec (see src/stickman/schema.ts) */
   visual?: unknown;
 }
@@ -27,6 +34,8 @@ export interface LongformVideoJSON {
   /** "stickman": rendered by the shared StickmanVideo composition */
   template?: string;
   theme?: string;
+  /** "vertical" = 1080x1920 Short/Reel; default 16:9 */
+  orientation?: "horizontal" | "vertical";
   /** Remotion composition id — defaults to the project slug */
   composition?: string;
   fps: number;

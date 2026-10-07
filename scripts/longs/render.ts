@@ -36,9 +36,11 @@ function main() {
   const draft = hasFlag("draft");
   const resolution = draft ? "360" : (getArg("resolution") ?? "720");
   if (!["360", "720", "1080"].includes(resolution)) fail("--resolution must be 720 or 1080");
-  const outHeight = Number(resolution);
-  const outWidth = (outHeight * 16) / 9;
-  const scale = outHeight / 1080;
+  const vertical = (data as any).orientation === "vertical";
+  // horizontal: resolution = frame height (authored 1920x1080); vertical: resolution = frame width (authored 1080x1920)
+  const outHeight = vertical ? Math.round((Number(resolution) * 16) / 9) : Number(resolution);
+  const outWidth = vertical ? Number(resolution) : (outHeight * 16) / 9;
+  const scale = vertical ? outWidth / 1080 : outHeight / 1080;
 
   const outDir = path.join(process.cwd(), "out");
   fs.mkdirSync(outDir, { recursive: true });

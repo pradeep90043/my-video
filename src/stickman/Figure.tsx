@@ -1,7 +1,8 @@
 import React from "react";
-import { interpolate } from "remotion";
+import { spring } from "remotion";
 import type { Mood, PoseName } from "./schema";
 import type { Theme } from "./theme";
+import { Face, HeadExtras, bodyMotion, gazeAt, type Look } from "./Emotion";
 
 /**
  * Skeleton stickman. Angles are degrees measured from "straight down",
@@ -33,6 +34,14 @@ export const POSE_LIBRARY: Record<Exclude<PoseName, "walk">, Pose> = {
   worried: { ...base, lean: -3, lUp: -140, lFore: -172, rUp: 140, rFore: 172 },
   facepalm: { ...base, lean: 4, head: 10, rUp: 32, rFore: 172, lUp: -16, lFore: -8 },
   shocked: { ...base, lean: -7, lUp: -48, lFore: -62, rUp: 48, rFore: 62, lThigh: -12, rThigh: 12 },
+  // fists down and out, leaning in
+  angry: { ...base, lean: 5, head: 4, lUp: -40, lFore: -10, rUp: 40, rFore: 10, lThigh: -14, rThigh: 14 },
+  // hands on belly
+  laugh: { ...base, lean: -4, head: -6, lUp: -25, lFore: 60, rUp: 25, rFore: -60 },
+  // hands over the face
+  cry: { ...base, lean: 4, head: 6, lUp: -120, lFore: 100, rUp: 120, rFore: -100 },
+  // arms crossed
+  smug: { ...base, lean: -2, head: -4, lUp: -15, lFore: 100, rUp: 15, rFore: -100 },
 };
 
 const KEYS = Object.keys(base) as (keyof Pose)[];
@@ -69,6 +78,10 @@ interface FigureProps {
   ground: number;
   pose: Pose;
   mood: Mood;
+  prevMood?: Mood;
+  /** false while the narrator is silent (before / after the line) — mouth rests */
+  talking?: boolean;
+  look?: Look;
   frame: number;
   theme: Theme;
   accent: string;
@@ -76,9 +89,11 @@ interface FigureProps {
   /** vertical offset, e.g. celebration hop */
   hop?: number;
   scale?: number;
+  /** disable mood body motion */
+  calm?: boolean;
 }
 
-export const Figure: React.FC<FigureProps> = ({ x, ground, pose, mood, frame, theme, accent, flip, hop = 0, scale = 1 }) => {
+export const Figure: React.FC<FigureProps> = ({ x, ground, pose, mood, prevMood, talking = true, look = "auto", frame, theme, accent, flip, hop = 0, scale = 1, calm = false }) => {
   const breathe = Math.sin(frame * 0.12) * 2.5;
   const legLen = L.thigh + L.shin;
   const hip = { x: 0, y: -legLen + breathe * 0.4 - hop };
@@ -100,27 +115,15 @@ export const Figure: React.FC<FigureProps> = ({ x, ground, pose, mood, frame, th
   type Pt = { x: number; y: number };
   const limb = (a: Pt, b: Pt, c: Pt) => `M${a.x},${a.y}L${b.x},${b.y}L${c.x},${c.y}`;
 
-  const blink = frame % 96 > 91;
-  const talking = mood === "neutral" || mood === "happy";
-  const mouthOpen = talking ? Math.abs(Math.sin(frame * 0.9)) * 9 : 0;
   const hr = L.head;
+  const g = gazeAt(look, frame, mood);
+  const gaze = { x: flip ? -g.x : g.x, y: g.y };
+  const motion = calm ? { dx: 0, dy: 0, rot: 0 } : bodyMotion(mood, frame);
 
-  const mouth = () => {
-    const cy = hr * 0.42;
-    if (mood === "shocked") return <ellipse cx={0} cy={cy + 2} rx={9} ry={13} fill={theme.ink} />;
-    if (mood === "worried") return <path d={`M-14,${cy + 6} Q0,${cy - 6} 14,${cy + 6}`} fill="none" />;
-    if (mood === "sad") return <path d={`M-14,${cy + 8} Q0,${cy - 4} 14,${cy + 8}`} fill="none" />;
-    if (mood === "happy") return <path d={`M-18,${cy - 4} Q0,${cy + 16 + mouthOpen * 0.6} 18,${cy - 4}`} fill="none" />;
-    return mouthOpen > 2.5
-      ? <ellipse cx={0} cy={cy} rx={9} ry={mouthOpen * 0.7} fill={theme.ink} />
-      : <path d={`M-10,${cy} L10,${cy}`} fill="none" />;
-  };
-
-  const brow = mood === "worried" || mood === "sad";
   const stroke = { stroke: theme.ink, strokeWidth: 11, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, fill: "none" };
 
   return (
-    <g transform={`translate(${x},${ground}) scale(${flip ? -scale : scale},${scale})`}>
+    <g transform={`translate(${x + motion.dx},${ground + motion.dy}) rotate(${flip ? -motion.rot : motion.rot}) scale(${flip ? -scale : scale},${scale})`}>
       <ellipse cx={0} cy={4} rx={70 - hop * 0.2} ry={9} fill={theme.faint} />
       <g {...stroke}>
         <path d={limb(hip, lKnee, lFoot)} />
@@ -131,36 +134,32 @@ export const Figure: React.FC<FigureProps> = ({ x, ground, pose, mood, frame, th
       </g>
       <g transform={`translate(${headC.x},${headC.y}) rotate(${pose.head - pose.lean * 0.4})`}>
         <circle r={hr} fill={theme.bg} stroke={theme.ink} strokeWidth={11} />
-        <g stroke={theme.ink} strokeWidth={7} strokeLinecap="round" fill="none">
-          {blink ? (
-            <>
-              <path d={`M-23,-6 L-11,-6`} />
-              <path d={`M11,-6 L23,-6`} />
-            </>
-          ) : (
-            <>
-              <circle cx={-17} cy={-6} r={mood === "shocked" ? 7 : 5} fill={theme.ink} stroke="none" />
-              <circle cx={17} cy={-6} r={mood === "shocked" ? 7 : 5} fill={theme.ink} stroke="none" />
-            </>
-          )}
-          {brow && (
-            <>
-              <path d={`M-28,-24 L-10,-30`} stroke={accent} />
-              <path d={`M28,-24 L10,-30`} stroke={accent} />
-            </>
-          )}
-          {mouth()}
-        </g>
+        <Face mood={mood} prevMood={prevMood} frame={frame} theme={theme} accent={accent} gaze={gaze} talking={talking} />
+        <HeadExtras mood={mood} frame={frame} accent={accent} theme={theme} />
       </g>
     </g>
   );
 };
 
-/** Smoothly ease the figure between the previous scene's pose and this one. */
-export function blendedPose(
-  prev: PoseName, next: PoseName, frame: number, blendFrames = 12,
-): Pose {
-  const t = interpolate(frame, [0, blendFrames], [0, 1], { extrapolateRight: "clamp" });
-  const eased = t * t * (3 - 2 * t);
-  return lerpPose(resolvePose(prev, frame), resolvePose(next, frame), eased);
+/**
+ * Ease the figure from the previous scene's pose into this one the way a hand
+ * animator would: a springy settle with slight overshoot on the body, a softer
+ * spring on the head (it lags and overshoots more — follow-through), and the
+ * arms trailing the torso by two frames (overlapping action).
+ */
+export function blendedPose(prev: PoseName, next: PoseName, frame: number, fps = 30): Pose {
+  const sp = (f: number, damping: number, stiffness: number) =>
+    spring({ frame: f, fps, config: { damping, stiffness, mass: 0.7 } });
+  const body = sp(frame, 15, 170);
+  const armT = sp(frame - 2, 13, 150);
+  const headT = sp(frame - 1, 9, 120);
+  const pa = resolvePose(prev, frame), pb = resolvePose(next, frame);
+  const bodyPose = lerpPose(pa, pb, body);
+  const armPose = lerpPose(pa, pb, armT);
+  const headPose = lerpPose(pa, pb, headT);
+  return {
+    ...bodyPose,
+    head: headPose.head,
+    lUp: armPose.lUp, lFore: armPose.lFore, rUp: armPose.rUp, rFore: armPose.rFore,
+  };
 }
