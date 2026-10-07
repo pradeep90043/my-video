@@ -147,10 +147,39 @@ export const AlertSchema = z.object({
   detail: z.string().max(90).optional(),
 });
 
+
+/**
+ * Free-form diagram drawn from a small shape language (an AI "draws" the visual for concepts no
+ * ready-made panel fits). Coordinates are in panel space: x 0..1300, y 0..700. Shapes appear in
+ * order (or by `step`), lines draw themselves on. Deliberately NOT raw SVG: only these primitives
+ * with validated numbers and colour tokens can reach the renderer.
+ */
+const ShapeColor = z.string().regex(/^(ink|accent|red|green|blue|gold|faint|bg|white|#[0-9a-fA-F]{6})$/);
+const ShapeBase = {
+  /** reveal order; shapes with the same step appear together. Default: position in the list. */
+  step: z.number().int().min(0).max(40).optional(),
+  fill: ShapeColor.optional(),
+  stroke: ShapeColor.optional(),
+  sw: z.number().min(1).max(16).optional(),
+};
+const X = z.number().min(-100).max(1400);
+const Y = z.number().min(-100).max(800);
+export const ShapeSchema = z.discriminatedUnion("t", [
+  z.object({ t: z.literal("rect"), x: X, y: Y, w: z.number().min(1).max(1400), h: z.number().min(1).max(800), rx: z.number().min(0).max(200).optional(), ...ShapeBase }),
+  z.object({ t: z.literal("circle"), cx: X, cy: Y, r: z.number().min(1).max(500), ...ShapeBase }),
+  z.object({ t: z.literal("line"), x1: X, y1: Y, x2: X, y2: Y, arrow: z.boolean().optional(), dash: z.boolean().optional(), ...ShapeBase }),
+  z.object({ t: z.literal("path"), d: z.string().max(400).regex(/^[MLHVCSQTAZmlhvcsqtaz0-9 ,.\-]+$/), ...ShapeBase }),
+  z.object({ t: z.literal("text"), x: X, y: Y, text: z.string().min(1).max(40), size: z.number().min(24).max(96).default(40), anchor: z.enum(["start", "middle", "end"]).default("middle"), ...ShapeBase }),
+]);
+export const SvgSchema = z.object({
+  title: z.string().max(40).optional(),
+  shapes: z.array(ShapeSchema).min(2).max(40),
+});
+
 /** Every panel key. A scene may use only one. */
 export const PANEL_KEYS = [
   "code", "quiz", "container", "steps",
-  "compare", "flow", "terminal", "browser", "counter", "chart", "progress", "table", "alert",
+  "compare", "flow", "terminal", "browser", "counter", "chart", "progress", "table", "alert", "svg",
 ] as const;
 
 export const StickmanVisualSchema = z.object({
@@ -178,6 +207,7 @@ export const StickmanVisualSchema = z.object({
   progress: ProgressSchema.optional(),
   table: TableSchema.optional(),
   alert: AlertSchema.optional(),
+  svg: SvgSchema.optional(),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),
@@ -209,6 +239,8 @@ export type ChartSpec = z.infer<typeof ChartSchema>;
 export type ProgressSpec = z.infer<typeof ProgressSchema>;
 export type TableSpec = z.infer<typeof TableSchema>;
 export type AlertSpec = z.infer<typeof AlertSchema>;
+export type SvgSpec = z.infer<typeof SvgSchema>;
+export type Shape = z.infer<typeof ShapeSchema>;
 export type StickmanVisual = z.infer<typeof StickmanVisualSchema>;
 export type PoseName = (typeof POSES)[number];
 export type SfxName = (typeof SFX_NAMES)[number];

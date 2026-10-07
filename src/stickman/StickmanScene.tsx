@@ -11,7 +11,7 @@ import { buildCaptions } from "./captions";
 import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
 import {
   AlertPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
-  ProgressPanel, TablePanel, TerminalPanel,
+  ProgressPanel, SvgPanel, TablePanel, TerminalPanel,
 } from "./PanelsExtra";
 
 // Load only what is used (latin, weights 800/900) — the defaults fetch every subset and weight.
@@ -219,6 +219,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {v.progress && <ProgressPanel spec={v.progress} durationFrames={durationFrames} theme={theme} accent={accent} />}
         {v.table && <TablePanel spec={v.table} theme={theme} accent={accent} />}
         {v.alert && <AlertPanel spec={v.alert} theme={theme} accent={accent} />}
+        {v.svg && <SvgPanel spec={v.svg} durationFrames={durationFrames} theme={theme} accent={accent} />}
 
         {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
         {v.callouts.length > 0 && !hasPanel && <CalloutRow items={v.callouts} color={accent} centerX={figureX < world.width / 2 ? 1280 : 640} world={world} />}

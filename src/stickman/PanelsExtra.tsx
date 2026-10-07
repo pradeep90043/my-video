@@ -4,7 +4,7 @@ import { loadFont as loadFiraCode } from "@remotion/google-fonts/FiraCode";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import type {
   AlertSpec, BrowserSpec, ChartSpec, CompareSpec, CounterSpec, FlowSpec,
-  ProgressSpec, TableSpec, TerminalSpec,
+  ProgressSpec, Shape, SvgSpec, TableSpec, TerminalSpec,
 } from "./schema";
 import type { Theme } from "./theme";
 import { PANEL } from "./Panels";
@@ -432,6 +432,63 @@ export const AlertPanel: React.FC<{ spec: AlertSpec } & Common> = ({ spec, theme
           <text x={PANEL.w / 2} y={PANEL.h / 2 + 180} textAnchor="middle" fontSize={fit(spec.detail, PANEL.w - 160, 42, 26)} fontWeight={800} fontFamily={mono} fill={theme.ink} opacity={clamp01((frame - 14) / 10) * 0.75}>{spec.detail}</text>
         )}
       </g>
+    </Shell>
+  );
+};
+
+// ── Svg (AI-drawn diagram from the shape language) ──────────────────────────
+export const SvgPanel: React.FC<{ spec: SvgSpec; durationFrames: number } & Common> = ({ spec, durationFrames, theme, accent }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const color = (c: string | undefined, fallback: string): string => {
+    if (!c) return fallback;
+    if (c === "ink") return theme.ink;
+    if (c === "accent") return accent;
+    if (c === "bg") return theme.bg;
+    if (c === "white") return "#FFFFFF";
+    if (c === "faint") return theme.faint;
+    if (c === "red" || c === "green" || c === "blue" || c === "gold") return theme.accents[c];
+    return c; // validated #rrggbb
+  };
+  const steps = spec.shapes.map((sh, i) => sh.step ?? i);
+  const maxStep = Math.max(...steps, 0);
+  const stagger = Math.min(14, Math.max(4, Math.floor((durationFrames * 0.55) / (maxStep + 1))));
+  const body = spec.shapes.map((sh: Shape, i) => {
+    const start = 8 + steps[i] * stagger;
+    const p = pop(frame, fps, start);
+    const t = clamp01((frame - start) / 14); // linear 0..1 for draw-on
+    const sw = sh.sw ?? 6;
+    const stroke = color(sh.stroke, theme.ink);
+    switch (sh.t) {
+      case "rect":
+        return <rect key={i} x={sh.x} y={sh.y} width={sh.w} height={sh.h} rx={sh.rx ?? 14} fill={color(sh.fill, "none")} fillOpacity={sh.fill ? 1 : 0} stroke={stroke} strokeWidth={sw} opacity={clamp01(p * 2)} transform={`translate(0,${(1 - p) * 20})`} />;
+      case "circle":
+        return <circle key={i} cx={sh.cx} cy={sh.cy} r={Math.max(0.5, sh.r * p)} fill={color(sh.fill, "none")} stroke={stroke} strokeWidth={sw} opacity={clamp01(p * 2)} />;
+      case "line": {
+        const dx = sh.x2 - sh.x1, dy = sh.y2 - sh.y1, len = Math.hypot(dx, dy) || 1;
+        const ux = dx / len, uy = dy / len;
+        const head = 28;
+        return (
+          <g key={i}>
+            <line x1={sh.x1} y1={sh.y1} x2={sh.x2} y2={sh.y2} stroke={stroke} strokeWidth={sw} strokeLinecap="round"
+              {...(sh.dash ? { strokeDasharray: "18 14" } : { pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 - t })} opacity={sh.dash ? clamp01(t * 2) : 1} />
+            {sh.arrow && (
+              <path d={`M${sh.x2 - ux * head - uy * head * 0.6},${sh.y2 - uy * head + ux * head * 0.6} L${sh.x2},${sh.y2} L${sh.x2 - ux * head + uy * head * 0.6},${sh.y2 - uy * head - ux * head * 0.6}`}
+                fill="none" stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" opacity={clamp01((t - 0.7) * 4)} />
+            )}
+          </g>
+        );
+      }
+      case "path":
+        return <path key={i} d={sh.d} fill={color(sh.fill, "none")} fillOpacity={sh.fill ? 1 : 0} stroke={stroke} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" pathLength={1} strokeDasharray={1} strokeDashoffset={sh.fill ? 0 : 1 - t} opacity={sh.fill ? clamp01(p * 2) : 1} />;
+      case "text":
+        return <text key={i} x={sh.x} y={sh.y} textAnchor={sh.anchor} fontSize={sh.size} fontWeight={800} fontFamily={sans} fill={color(sh.fill, theme.ink)} opacity={clamp01(p * 2)} transform={`translate(0,${(1 - p) * 14})`}>{sh.text}</text>;
+    }
+  });
+  return (
+    <Shell>
+      {spec.title && <text x={PANEL.w / 2} y={52} textAnchor="middle" fontSize={fit(spec.title, PANEL.w - 160, 52, 28)} fontWeight={800} fontFamily={sans} fill={theme.ink}>{spec.title}</text>}
+      {body}
     </Shell>
   );
 };
