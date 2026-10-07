@@ -85,7 +85,7 @@ jobs:
             NO_BRANDING="${{ inputs.no_branding }}"
           fi
 
-          CMD="--project ${PROJECT} --resolution ${RESOLUTION} --concurrency 3"
+          CMD="--project ${PROJECT} --resolution ${RESOLUTION} --concurrency 2"
           if [ "$DRAFT" = "true" ]; then
             CMD="$CMD --draft"
           fi
