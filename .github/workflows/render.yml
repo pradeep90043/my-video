@@ -64,6 +64,10 @@ jobs:
         if: steps.node-cache.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Verify and Ensure Native Bundler Binaries
+        run: |
+          npm install --no-save @rspack/binding-linux-x64-gnu
+
       - name: Determine Render Arguments
         id: args
         run: |
