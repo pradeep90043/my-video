@@ -1,0 +1,117 @@
+name: Remotion Cloud Video Renderer
+
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "Project slug (e.g. stickman-demo, single-income-trap, friday-deploy-short, VibeCodingNotProgrammingShort)"
+        required: true
+        default: "stickman-demo"
+      resolution:
+        description: "Output resolution (720 or 1080, or 360 for fast draft)"
+        required: true
+        type: choice
+        options:
+          - "720"
+          - "1080"
+          - "360"
+        default: "720"
+      draft:
+        description: "Draft mode (fast 360p review render, skips logo/branding)"
+        type: boolean
+        default: false
+      no_branding:
+        description: "Skip logo watermark overlay"
+        type: boolean
+        default: false
+
+  repository_dispatch:
+    types: [render_video]
+
+concurrency:
+  group: render-${{ github.event.inputs.project || github.event.client_payload.project }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install System Dependencies (FFmpeg & Fonts)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-color-emoji fonts-liberation
+
+      - name: Install Node Dependencies
+        run: npm ci
+
+      - name: Determine Render Arguments
+        id: args
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            PROJECT="${{ github.event.client_payload.project }}"
+            RESOLUTION="${{ github.event.client_payload.resolution || '720' }}"
+            DRAFT="${{ github.event.client_payload.draft || 'false' }}"
+            NO_BRANDING="${{ github.event.client_payload.no_branding || 'false' }}"
+          else
+            PROJECT="${{ inputs.project }}"
+            RESOLUTION="${{ inputs.resolution }}"
+            DRAFT="${{ inputs.draft }}"
+            NO_BRANDING="${{ inputs.no_branding }}"
+          fi
+
+          CMD="--project ${PROJECT} --resolution ${RESOLUTION}"
+          if [ "$DRAFT" = "true" ]; then
+            CMD="$CMD --draft"
+          fi
+          if [ "$NO_BRANDING" = "true" ]; then
+            CMD="$CMD --no-branding"
+          fi
+
+          echo "project=$PROJECT" >> "$GITHUB_OUTPUT"
+          echo "render_cmd=$CMD" >> "$GITHUB_OUTPUT"
+
+      - name: Render Video via Remotion (7GB RAM Runner)
+        run: |
+          echo "🎬 Starting Remotion Render: ${{ steps.args.outputs.render_cmd }}"
+          npx tsx scripts/longs/render.ts ${{ steps.args.outputs.render_cmd }}
+
+      - name: List Output Files
+        run: ls -lh out/
+
+      - name: Upload Video Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-${{ steps.args.outputs.project }}-${{ github.run_number }}
+          path: out/*.mp4
+          retention-days: 14
+
+      - name: Send Telegram Notification
+        if: always()
+        run: |
+          STATUS="${{ job.status }}"
+          PROJECT="${{ steps.args.outputs.project }}"
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN || '8947411485:AAG0cqcP43Q2qdaHxtXsYrUVgMMrS17HdQI' }}"
+          CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID || '7668650862' }}"
+
+          if [ "$STATUS" = "success" ]; then
+            MSG="🎬 *Video Render Finished on GitHub Cloud!*%0A%0A• *Project*: \`${PROJECT}\`%0A• *Status*: ✅ Success%0A• *Download*: [Click to Download Video](${RUN_URL})"
+          else
+            MSG="❌ *Video Render Failed on GitHub Cloud*%0A%0A• *Project*: \`${PROJECT}\`%0A• *Status*: ❌ ${STATUS}%0A• *Logs*: [View Action Run](${RUN_URL})"
+          fi
+
+          curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${CHAT_ID}" \
+            -d "text=${MSG}" \
+            -d "parse_mode=Markdown" || true
