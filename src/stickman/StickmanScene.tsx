@@ -2,13 +2,17 @@ import React from "react";
 import { AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadMontserrat } from "@remotion/google-fonts/Montserrat";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { GROUNDED_PROP_BOTTOM, MOOD_SFX, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
+import { GROUNDED_PROP_BOTTOM, MOOD_SFX, PANEL_KEYS, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
 import { WORLD, WORLD_VERTICAL, type Theme, type World } from "./theme";
 import { Figure, blendedPose } from "./Figure";
 import { ScreenFx, cameraPunch } from "./Emotion";
 import { PropDrawing } from "./Props";
 import { buildCaptions } from "./captions";
 import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
+import {
+  AlertPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
+  ProgressPanel, SvgPanel, TablePanel, TerminalPanel,
+} from "./PanelsExtra";
 
 // Load only what is used (latin, weights 800/900) — the defaults fetch every subset and weight.
 const montserrat = loadMontserrat("normal", { weights: ["900"], subsets: ["latin"] });
@@ -26,6 +30,9 @@ interface SceneProps {
   speakFrames?: number;
   muteSfx?: boolean;
   vertical?: boolean;
+  /** first frame of this scene on the video timeline, and the lip-sync track (mouth level per video frame) */
+  startFrame?: number;
+  mouth?: number[];
 }
 
 const PROP_BASE_SCALE = 1.7;
@@ -109,7 +116,7 @@ const CalloutRow: React.FC<{ items: string[]; color: string; centerX: number; wo
   );
 };
 
-export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false }) => {
+export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, startFrame = 0, mouth }) => {
   const world: World = vertical ? WORLD_VERTICAL : WORLD;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -118,7 +125,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
 
   const pose = blendedPose(prevPose, v.pose, frame, fps);
   const hop = v.pose === "celebrate" || v.pose === "laugh" ? Math.abs(Math.sin(frame * 0.2)) * (v.pose === "laugh" ? 12 : 26) : 0;
-  const hasPanel = Boolean(v.code || v.quiz || v.container || v.steps);
+  const hasPanel = PANEL_KEYS.some((k) => v[k]);
   // With a panel on the right the figure shrinks and tucks into the left strip.
   const figureScale = v.figureScale ?? (hasPanel ? 0.8 : vertical ? 1.9 : FIGURE_SCALE);
   const figureXFrac = hasPanel && v.figureX === 0.3 ? 0.14 : vertical && v.figureX === 0.3 ? 0.5 : v.figureX;
@@ -140,6 +147,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
   const sfx = v.sfx === "auto" ? (prevMood !== undefined && prevMood !== v.mood ? MOOD_SFX[v.mood] : undefined) : v.sfx === "none" ? undefined : v.sfx;
 
   const seed = Math.floor(frame / 4); // "boiling line" hand-drawn wobble
+  // real speech loudness when the project has a lip-sync track; undefined = generic flap
+  const mouthLevel = mouth ? mouth[startFrame + frame] ?? 0 : undefined;
   const talking = frame >= speakFrom && (speakFrames === undefined || frame < speakFrom + speakFrames);
   const captions = buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7);
   const active = captions.find((c) => frame - speakFrom >= c.start && frame - speakFrom < c.end);
@@ -184,7 +193,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
               );
             })}
             {!v.hideFigure && (
-              <Figure x={figureX} ground={world.ground} pose={pose} mood={v.mood} prevMood={prevMood} talking={talking} look={v.look} frame={frame} theme={theme} accent={accent} flip={v.flip} hop={hop} scale={figureScale} calm={v.calm} />
+              <Figure x={figureX} ground={world.ground} pose={pose} mood={v.mood} prevMood={prevMood} talking={talking} mouthLevel={mouthLevel} look={v.look} frame={frame} theme={theme} accent={accent} flip={v.flip} hop={hop} scale={figureScale} calm={v.calm} />
             )}
           </g>
         </g>
@@ -201,9 +210,19 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {v.quiz && <QuizPanel spec={v.quiz} durationFrames={durationFrames} theme={theme} accent={accent} />}
         {v.container && <ContainerPanel spec={v.container} theme={theme} accent={accent} />}
         {v.steps && <StepsPanel spec={v.steps} theme={theme} accent={accent} />}
+        {v.compare && <ComparePanel spec={v.compare} theme={theme} accent={accent} />}
+        {v.flow && <FlowPanel spec={v.flow} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.terminal && <TerminalPanel spec={v.terminal} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.browser && <BrowserPanel spec={v.browser} theme={theme} accent={accent} />}
+        {v.counter && <CounterPanel spec={v.counter} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.chart && <ChartPanel spec={v.chart} theme={theme} accent={accent} />}
+        {v.progress && <ProgressPanel spec={v.progress} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.table && <TablePanel spec={v.table} theme={theme} accent={accent} />}
+        {v.alert && <AlertPanel spec={v.alert} theme={theme} accent={accent} />}
+        {v.svg && <SvgPanel spec={v.svg} durationFrames={durationFrames} theme={theme} accent={accent} />}
 
         {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
-        {v.callouts.length > 0 && <CalloutRow items={v.callouts} color={accent} centerX={figureX < world.width / 2 ? 1280 : 640} world={world} />}
+        {v.callouts.length > 0 && !hasPanel && <CalloutRow items={v.callouts} color={accent} centerX={figureX < world.width / 2 ? 1280 : 640} world={world} />}
 
         {active && (
           <g opacity={capOpacity} transform={`translate(${world.width / 2},${vertical ? world.height - 420 : 985})`}>
