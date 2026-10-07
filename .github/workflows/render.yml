@@ -51,22 +51,8 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Restore node_modules Cache
-        id: node-cache
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node20-modules-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node20-modules-
-
       - name: Install Node Dependencies
-        if: steps.node-cache.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - name: Verify and Ensure Native Bundler Binaries
-        run: |
-          npm install --no-save @rspack/binding-linux-x64-gnu lightningcss-linux-x64-gnu
+        run: npm install --include=optional
 
       - name: Determine Render Arguments
         id: args
