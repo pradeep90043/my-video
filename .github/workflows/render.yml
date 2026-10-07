@@ -20,6 +20,14 @@ on:
           - "1080"
           - "360"
         default: "720"
+      progress_url:
+        description: "Optional URL the runner POSTs live frame progress to"
+        required: false
+        default: ""
+      progress_token:
+        description: "Per-job token for progress_url"
+        required: false
+        default: ""
       draft:
         description: "Draft mode (fast 360p review render, skips logo/branding)"
         type: boolean
@@ -85,6 +93,8 @@ jobs:
           echo "project=$PROJECT" >> "$GITHUB_OUTPUT"
           echo "bundle_url=$BUNDLE_URL" >> "$GITHUB_OUTPUT"
           echo "render_cmd=$CMD" >> "$GITHUB_OUTPUT"
+          echo "progress_url=${{ inputs.progress_url }}" >> "$GITHUB_OUTPUT"
+          echo "progress_token=${{ inputs.progress_token }}" >> "$GITHUB_OUTPUT"
 
       - name: Fetch Dynamic Project Bundle if Provided
         if: steps.args.outputs.bundle_url != ''
@@ -114,7 +124,21 @@ jobs:
       - name: Render Video via Remotion (7GB RAM Runner)
         run: |
           echo "🎬 Starting Remotion Render: ${{ steps.args.outputs.render_cmd }}"
-          npx tsx scripts/longs/render.ts ${{ steps.args.outputs.render_cmd }}
+          PROGRESS_URL="${{ steps.args.outputs.progress_url }}"
+          if [ -n "$PROGRESS_URL" ]; then
+            # Report "Rendered X/Y" to the app every 10s so the Studio shows live frame counts.
+            (
+              while true; do
+                sleep 10
+                L=$(tr '\r' '\n' < render.log 2>/dev/null | grep -o 'Rendered [0-9]*/[0-9]*' | tail -1)
+                [ -n "$L" ] || continue
+                D=${L#Rendered }; DONE=${D%/*}; TOTAL=${D#*/}
+                curl -s -m 8 -X POST "$PROGRESS_URL" -H 'Content-Type: application/json' \
+                  -d "{\"slug\":\"${{ steps.args.outputs.project }}\",\"token\":\"${{ steps.args.outputs.progress_token }}\",\"done\":$DONE,\"total\":$TOTAL}" >/dev/null || true
+              done
+            ) &
+          fi
+          npx tsx scripts/longs/render.ts ${{ steps.args.outputs.render_cmd }} 2>&1 | tee render.log
 
       - name: List Output Files
         run: ls -lh out/
