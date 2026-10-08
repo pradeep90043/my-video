@@ -180,7 +180,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
 
         <rect width={world.width} height={world.height} fill="url(#dots)" opacity={0.7} />
 
-        {v.setting !== "none" && <Backdrop setting={v.setting} t={frame} theme={theme} world={world} accent={theme.accents[v.accent]} />}
+        {v.setting !== "none" && <g opacity={hasPanel ? 0.5 : 1}><Backdrop setting={v.setting} t={frame} theme={theme} world={world} accent={theme.accents[v.accent]} /></g>}
 
         <g transform={`translate(${world.width / 2 + cam.x},${world.height / 2}) scale(${cam.s}) translate(${-world.width / 2},${-world.height / 2})`}>
           <g filter="url(#rough)">
