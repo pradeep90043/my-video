@@ -165,6 +165,10 @@ jobs:
     needs: prepare
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    strategy:
+      fail-fast: true
+      matrix:
+        chunk: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -185,13 +189,13 @@ jobs:
           path: public/content/${{ needs.prepare.outputs.project }}
 
       - name: Render the composition's audio track
-        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --audio-only
+        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --audio-chunk ${{ matrix.chunk }}/${{ needs.prepare.outputs.chunks }}
 
       - name: Upload audio track
         uses: actions/upload-artifact@v4
         with:
-          name: audio-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
-          path: out/${{ needs.prepare.outputs.project }}.audio.aac
+          name: audio-${{ needs.prepare.outputs.project }}-${{ github.run_id }}-${{ matrix.chunk }}
+          path: out/${{ needs.prepare.outputs.project }}.audio${{ matrix.chunk }}.wav
           retention-days: 1
 
   # 2) The frames, split across parallel runners.
@@ -212,6 +216,12 @@ jobs:
         with:
           node-version: 20
           cache: npm
+
+      - name: Install ffmpeg (static build, for per-chunk branding)
+        timeout-minutes: 5
+        uses: FedericoCarboni/setup-ffmpeg@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Node Dependencies
         run: npm install --include=optional
@@ -247,7 +257,7 @@ jobs:
           path: out/${{ needs.prepare.outputs.project }}.chunk${{ matrix.chunk }}.mp4
           retention-days: 1
 
-  # 3) Join chunks + audio, brand, QA.
+  # 3) Join the (already branded) chunks + audio slices, QA.
   combine:
     needs: [prepare, audio-track, render-chunk]
     runs-on: ubuntu-latest
@@ -271,8 +281,8 @@ jobs:
       - name: Check ffmpeg
         run: ffmpeg -version | head -1
 
-      - name: Install Node Dependencies
-        run: npm install --include=optional
+      - name: Install Node Dependencies (join only: no browser/compositor needed)
+        run: npm ci --ignore-scripts --omit=optional
 
       - name: Download prepared project
         uses: actions/download-artifact@v4
@@ -287,14 +297,15 @@ jobs:
           path: out
           merge-multiple: true
 
-      - name: Download audio track
+      - name: Download audio slices
         uses: actions/download-artifact@v4
         with:
-          name: audio-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+          pattern: audio-${{ needs.prepare.outputs.project }}-${{ github.run_id }}-*
           path: out
+          merge-multiple: true
 
       - name: Join, brand and QA
-        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --combine ${{ needs.prepare.outputs.chunks }}
+        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --combine ${{ needs.prepare.outputs.chunks }} --audio-chunks ${{ needs.prepare.outputs.chunks }}
 
       - name: List Output Files
         run: ls -lh out/
