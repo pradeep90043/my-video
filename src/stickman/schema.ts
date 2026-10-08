@@ -188,12 +188,18 @@ export const PANEL_KEYS = [
 export const StickmanVisualSchema = z.object({
   pose: z.enum(POSES).default("idle"),
   mood: z.enum(MOODS).default("neutral"),
-  /** horizontal position of the figure, 0..1 of frame width */
-  figureX: z.number().min(0).max(1).default(0.3),
+  /**
+   * horizontal position of the figure, 0..1 of frame width. Omit for the automatic spot. With a panel it is
+   * measured inside the figure's strip and clamped so the figure never touches the panel.
+   */
+  figureX: z.number().min(0).max(1).optional(),
+  /** mirror the figure (and its default spot). Ignored while a panel is shown: the figure then faces the panel. */
   flip: z.boolean().default(false),
+  /** which side of the frame a panel takes; the figure stands on the other side. Vertical (9:16): panel is always on top. */
+  side: z.enum(["left", "right"]).default("right"),
   /** hide the figure for pure-graphic scenes */
   hideFigure: z.boolean().default(false),
-  /** 0.5–1.5; default 1.15, or 0.8 when a panel (code/quiz/container/steps) takes the right side */
+  /** 0.5–1.5; default 1.15, or 0.8 when a panel takes one side (clamped so the figure always fits beside it) */
   figureScale: z.number().min(0.5).max(1.5).optional(),
   /** animated backdrop behind the scene (office, server room, city, ...) */
   setting: z.enum(SETTINGS).default("none"),

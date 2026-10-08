@@ -4,14 +4,14 @@ import { loadFont as loadFiraCode } from "@remotion/google-fonts/FiraCode";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import type { CodeSpec, ContainerSpec, QuizSpec, StepsSpec } from "./schema";
 import type { Theme } from "./theme";
+import { PANEL } from "./PanelGeometry";
 import { tokenizeLine, type TokKind } from "./code";
 
 const fira = loadFiraCode("normal", { weights: ["500"], subsets: ["latin"] });
 const inter = loadInter("normal", { weights: ["800"], subsets: ["latin"] });
 const sans = `${inter.fontFamily}, sans-serif`;
 
-/** Right-hand panel area shared by all panels (world units). */
-export const PANEL = { x: 560, y: 170, w: 1300, h: 700 } as const;
+export { PANEL };
 
 const pop = (frame: number, fps: number, delay: number) =>
   spring({ frame: frame - delay, fps, config: { damping: 14, stiffness: 130, mass: 0.7 } });
