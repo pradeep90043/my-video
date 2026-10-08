@@ -136,9 +136,6 @@ jobs:
             npm run longform:merge -- --project "${PROJECT}"
           fi
 
-      - name: Render the composition's audio track once
-        run: npx tsx scripts/longs/render.ts ${{ steps.args.outputs.render_flags }} --audio-only
-
       - name: Plan frame chunks
         id: plan
         run: |
@@ -159,9 +156,42 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: prep-${{ steps.args.outputs.project }}-${{ github.run_id }}
-          path: |
-            public/content/${{ steps.args.outputs.project }}
-            out/${{ steps.args.outputs.project }}.audio.aac
+          path: public/content/${{ steps.args.outputs.project }}
+          retention-days: 1
+
+  # 2b) The composition's mixed audio track (voiceover + music + effects). It walks the
+  # timeline without drawing frames, so it runs beside the frame chunks instead of before them.
+  audio-track:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 with npm Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Node Dependencies
+        run: npm install --include=optional
+
+      - name: Download prepared project
+        uses: actions/download-artifact@v4
+        with:
+          name: prep-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+          path: public/content/${{ needs.prepare.outputs.project }}
+
+      - name: Render the composition's audio track
+        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --audio-only
+
+      - name: Upload audio track
+        uses: actions/upload-artifact@v4
+        with:
+          name: audio-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+          path: out/${{ needs.prepare.outputs.project }}.audio.aac
           retention-days: 1
 
   # 2) The frames, split across parallel runners.
@@ -190,6 +220,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: prep-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+          path: public/content/${{ needs.prepare.outputs.project }}
 
       - name: Render frame chunk
         run: |
@@ -218,7 +249,7 @@ jobs:
 
   # 3) Join chunks + audio, brand, QA.
   combine:
-    needs: [prepare, render-chunk]
+    needs: [prepare, audio-track, render-chunk]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -247,6 +278,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: prep-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+          path: public/content/${{ needs.prepare.outputs.project }}
 
       - name: Download chunks
         uses: actions/download-artifact@v4
@@ -254,6 +286,12 @@ jobs:
           pattern: chunk-${{ needs.prepare.outputs.project }}-${{ github.run_id }}-*
           path: out
           merge-multiple: true
+
+      - name: Download audio track
+        uses: actions/download-artifact@v4
+        with:
+          name: audio-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+          path: out
 
       - name: Join, brand and QA
         run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --combine ${{ needs.prepare.outputs.chunks }}
@@ -269,7 +307,7 @@ jobs:
           retention-days: 14
 
   notify:
-    needs: [prepare, render-chunk, combine]
+    needs: [prepare, audio-track, render-chunk, combine]
     if: always()
     runs-on: ubuntu-latest
     steps:
