@@ -111,8 +111,12 @@ async function main() {
       console.log(`  -> Scene ${i}: ${scene.id} (cached)`);
     } else {
       console.log(`  -> Scene ${i}: ${scene.id} (voice: ${sceneVoice}, ${scene.visual?.mood ?? "neutral"}: ${sceneRate} ${scenePitch} ${sceneVolume})`);
-      await retry(`TTS for ${scene.id}`, 3, () =>
-        synthesize(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume, segmentPath),
+      // edge-tts sometimes answers "NoAudioReceived" for a particular rate/pitch combo or just under load:
+      // two tries with the scene's emotion, then fall back to the neutral prosody so one scene can never kill a 100+ scene render
+      await retry(`TTS for ${scene.id}`, 6, (attempt) =>
+        attempt <= 2
+          ? synthesize(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume, segmentPath)
+          : synthesize(spoken, sceneVoice, rate, pitch, "+0%", segmentPath),
       );
       cache[segmentName] = hash;
       fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2)); // persist progress per scene
