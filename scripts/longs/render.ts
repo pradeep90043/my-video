@@ -111,8 +111,8 @@ function main() {
     if (pr.status !== 0 || !fs.existsSync(partPath)) fail(`Remotion part render failed (exit ${pr.status}).`);
     if (chunkArg && !audioOnly) {
       // brand each chunk here, in parallel on its own runner, so the combine job only has to join files
-      if (!draft && !hasFlag("no-branding") && !addBranding(partPath, { skipLogo: false, preset: "veryfast" })) fail("Chunk branding failed.");
-      else if ((draft || hasFlag("no-branding")) && !addBranding(partPath, { skipLogo: true, preset: "veryfast" })) fail("Chunk colour conversion failed.");
+      if (!draft && !hasFlag("no-branding") && !addBranding(partPath, { skipLogo: false, preset: "veryfast", crf: 20 })) fail("Chunk branding failed.");
+      else if ((draft || hasFlag("no-branding")) && !addBranding(partPath, { skipLogo: true, preset: "veryfast", crf: 20 })) fail("Chunk colour conversion failed.");
     }
     console.log(`✅ ${path.basename(partPath)} (${(fs.statSync(partPath).size / (1024 * 1024)).toFixed(1)} MB)`);
     return;

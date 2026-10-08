@@ -116,7 +116,7 @@ async function main() {
     return { scene, i, segmentName, segmentPath, sceneVoice, sceneRate, scenePitch, sceneVolume, spoken, hash, cached };
   });
   const todo = plan.filter((x) => !x.cached);
-  const limit = Math.max(1, Number(process.env.TTS_CONCURRENCY) || 6);
+  const limit = Math.max(1, Number(process.env.TTS_CONCURRENCY) || 8);
   let nextTask = 0;
   await Promise.all(Array.from({ length: Math.min(limit, todo.length) }, async () => {
     for (;;) {

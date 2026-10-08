@@ -29,7 +29,7 @@ on:
         required: false
         default: ""
       chunks:
-        description: "Number of parallel runners to split the render across (1-8)"
+        description: "Number of parallel runners to split the render across (1-16)"
         required: false
         default: "2"
       draft:
@@ -60,6 +60,8 @@ jobs:
       progress_token: ${{ steps.args.outputs.progress_token }}
       chunks: ${{ steps.plan.outputs.chunks }}
       matrix: ${{ steps.plan.outputs.matrix }}
+      audio_chunks: ${{ steps.plan.outputs.audio_chunks }}
+      audio_matrix: ${{ steps.plan.outputs.audio_matrix }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -150,7 +152,9 @@ jobs:
           PROJECT="${{ steps.args.outputs.project }}"
           TOTAL=$(node -e "console.log(require('./public/content/${PROJECT}/video.json').totalFrames||0)")
           N=${{ steps.args.outputs.want_chunks }}
-          case "$N" in 1|2|3|4|5|6|7|8) ;; *) N=2 ;; esac
+          case "$N" in ''|*[!0-9]*) N=2 ;; esac
+          [ "$N" -lt 1 ] && N=2
+          [ "$N" -gt 16 ] && N=16
           # splitting only pays off with enough frames: ~2800 frames (1.5 min of video) per runner
           NEED=$(( (TOTAL + 2799) / 2800 ))
           [ "$NEED" -lt 1 ] && NEED=1
@@ -159,6 +163,10 @@ jobs:
           echo "total frames=$TOTAL chunks=$N matrix=$MATRIX"
           echo "chunks=$N" >> "$GITHUB_OUTPUT"
           echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+          # the audio walk costs about as much runner time as the frames: slice it too, but keep the job count under GitHub's 20 concurrent runners
+          A=$N; [ "$A" -gt 8 ] && A=8
+          echo "audio_chunks=$A" >> "$GITHUB_OUTPUT"
+          echo "audio_matrix=[$(seq -s, 0 $((A-1)))]" >> "$GITHUB_OUTPUT"
 
       - name: Upload prepared project (voiceover, audio track)
         uses: actions/upload-artifact@v4
@@ -176,7 +184,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        chunk: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+        chunk: ${{ fromJSON(needs.prepare.outputs.audio_matrix) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -205,7 +213,7 @@ jobs:
           path: public/content/${{ needs.prepare.outputs.project }}
 
       - name: Render the composition's audio track
-        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --audio-chunk ${{ matrix.chunk }}/${{ needs.prepare.outputs.chunks }}
+        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --audio-chunk ${{ matrix.chunk }}/${{ needs.prepare.outputs.audio_chunks }}
 
       - name: Upload audio track
         uses: actions/upload-artifact@v4
@@ -337,7 +345,7 @@ jobs:
           merge-multiple: true
 
       - name: Join, brand and QA
-        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --combine ${{ needs.prepare.outputs.chunks }} --audio-chunks ${{ needs.prepare.outputs.chunks }}
+        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --combine ${{ needs.prepare.outputs.chunks }} --audio-chunks ${{ needs.prepare.outputs.audio_chunks }}
 
       - name: List Output Files
         run: ls -lh out/
