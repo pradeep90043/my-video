@@ -72,11 +72,9 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install ffmpeg (static build, no apt mirrors)
-        timeout-minutes: 5
-        uses: FedericoCarboni/setup-ffmpeg@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install ffmpeg
+        timeout-minutes: 8
+        uses: ./.github/actions/ffmpeg
 
       - name: Check ffmpeg
         run: ffmpeg -version | head -1
@@ -241,11 +239,9 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install ffmpeg (static build, for per-chunk branding)
-        timeout-minutes: 5
-        uses: FedericoCarboni/setup-ffmpeg@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install ffmpeg
+        timeout-minutes: 8
+        uses: ./.github/actions/ffmpeg
 
       - name: Restore node_modules cache
         id: nm
@@ -304,11 +300,9 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install ffmpeg (static build, no apt mirrors)
-        timeout-minutes: 5
-        uses: FedericoCarboni/setup-ffmpeg@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install ffmpeg
+        timeout-minutes: 8
+        uses: ./.github/actions/ffmpeg
 
       - name: Check ffmpeg
         run: ffmpeg -version | head -1
