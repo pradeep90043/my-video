@@ -1,4 +1,5 @@
 import React from "react";
+import { Backdrop } from "./Backdrop";
 import { AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadMontserrat } from "@remotion/google-fonts/Montserrat";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
@@ -178,6 +179,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         </defs>
 
         <rect width={world.width} height={world.height} fill="url(#dots)" opacity={0.7} />
+
+        {v.setting !== "none" && <Backdrop setting={v.setting} t={frame} theme={theme} world={world} accent={theme.accents[v.accent]} />}
 
         <g transform={`translate(${world.width / 2 + cam.x},${world.height / 2}) scale(${cam.s}) translate(${-world.width / 2},${-world.height / 2})`}>
           <g filter="url(#rough)">

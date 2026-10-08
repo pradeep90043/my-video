@@ -29,6 +29,9 @@ export const PROP_TYPES = [
 export const GROUNDED_PROP_BOTTOM: Partial<Record<(typeof PROP_TYPES)[number], number>> = {
   laptop: 70, robot: 70, rocket: 75, lock: 98, gear: 108, bug: 66, code: 84, chartUp: 90, chartDown: 90,
 };
+/** Animated scene backdrop drawn behind the figure and panels. */
+export const SETTINGS = ["none", "office", "classroom", "server", "city", "home", "stage", "space", "cloud"] as const;
+export type SettingName = (typeof SETTINGS)[number];
 export const ACCENTS = ["red", "blue", "gold", "green"] as const;
 
 export const PropSchema = z.object({
@@ -192,6 +195,8 @@ export const StickmanVisualSchema = z.object({
   hideFigure: z.boolean().default(false),
   /** 0.5–1.5; default 1.15, or 0.8 when a panel (code/quiz/container/steps) takes the right side */
   figureScale: z.number().min(0.5).max(1.5).optional(),
+  /** animated backdrop behind the scene (office, server room, city, ...) */
+  setting: z.enum(SETTINGS).default("none"),
   /** small chapter tag in the top-left corner, e.g. "2 · Dependency Injection" */
   chapter: z.string().max(40).optional(),
   code: CodeSchema.optional(),
