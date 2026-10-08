@@ -281,8 +281,8 @@ jobs:
       - name: Check ffmpeg
         run: ffmpeg -version | head -1
 
-      - name: Install Node Dependencies (join only: no browser/compositor needed)
-        run: npm ci --ignore-scripts --omit=optional
+      - name: Install Node Dependencies (join only, skip install scripts)
+        run: npm ci --ignore-scripts
 
       - name: Download prepared project
         uses: actions/download-artifact@v4
