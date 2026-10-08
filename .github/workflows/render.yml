@@ -29,7 +29,7 @@ on:
         required: false
         default: ""
       chunks:
-        description: "Number of parallel runners to split the render across (1-4)"
+        description: "Number of parallel runners to split the render across (1-8)"
         required: false
         default: "2"
       draft:
@@ -79,7 +79,15 @@ jobs:
       - name: Check ffmpeg
         run: ffmpeg -version | head -1
 
+      - name: Restore node_modules cache
+        id: nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: nm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       - name: Install Node Dependencies
+        if: steps.nm.outputs.cache-hit != 'true'
         run: npm install --include=optional
 
       - name: Determine Render Arguments
@@ -142,9 +150,9 @@ jobs:
           PROJECT="${{ steps.args.outputs.project }}"
           TOTAL=$(node -e "console.log(require('./public/content/${PROJECT}/video.json').totalFrames||0)")
           N=${{ steps.args.outputs.want_chunks }}
-          case "$N" in 1|2|3|4) ;; *) N=2 ;; esac
-          # splitting only pays off with enough frames: ~4500 frames (2.5 min of video) per runner
-          NEED=$(( (TOTAL + 4499) / 4500 ))
+          case "$N" in 1|2|3|4|5|6|7|8) ;; *) N=2 ;; esac
+          # splitting only pays off with enough frames: ~2800 frames (1.5 min of video) per runner
+          NEED=$(( (TOTAL + 2799) / 2800 ))
           [ "$NEED" -lt 1 ] && NEED=1
           [ "$N" -gt "$NEED" ] && N=$NEED
           MATRIX="[$(seq -s, 0 $((N-1)))]"
@@ -179,7 +187,15 @@ jobs:
           node-version: 20
           cache: npm
 
+      - name: Restore node_modules cache
+        id: nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: nm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       - name: Install Node Dependencies
+        if: steps.nm.outputs.cache-hit != 'true'
         run: npm install --include=optional
 
       - name: Download prepared project
@@ -223,7 +239,15 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Restore node_modules cache
+        id: nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: nm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       - name: Install Node Dependencies
+        if: steps.nm.outputs.cache-hit != 'true'
         run: npm install --include=optional
 
       - name: Download prepared project
@@ -281,8 +305,16 @@ jobs:
       - name: Check ffmpeg
         run: ffmpeg -version | head -1
 
-      - name: Install Node Dependencies (join only, skip install scripts)
-        run: npm ci --ignore-scripts
+      - name: Restore node_modules cache
+        id: nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: nm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Node Dependencies
+        if: steps.nm.outputs.cache-hit != 'true'
+        run: npm install --include=optional
 
       - name: Download prepared project
         uses: actions/download-artifact@v4

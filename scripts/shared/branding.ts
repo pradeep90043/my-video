@@ -42,7 +42,7 @@ function getFullFfprobe(): string | null {
  * @param videoPath The absolute or relative path to the input video.
  * @returns true if the logo was applied; false if skipped or failed (the original file is left intact).
  */
-export function addBranding(videoPath: string, opts: { skipLogo?: boolean } = {}): boolean {
+export function addBranding(videoPath: string, opts: { skipLogo?: boolean; preset?: string } = {}): boolean {
   const logoPath = path.join(process.cwd(), "logo.png");
   if (!opts.skipLogo && !fs.existsSync(logoPath)) {
     console.warn(`⚠ logo.png not found in current directory. Skipping logo branding.`);
@@ -114,7 +114,7 @@ export function addBranding(videoPath: string, opts: { skipLogo?: boolean } = {}
       [
         "-y", "-i", tempPath, ...(opts.skipLogo ? [] : ["-i", logoPath]),
         "-filter_complex", graph, "-map", "[v]", "-map", "0:a?",
-        "-c:v", "libx264", "-crf", "16", "-preset", "slow", "-pix_fmt", "yuv420p",
+        "-c:v", "libx264", "-crf", "16", "-preset", opts.preset ?? "slow", "-pix_fmt", "yuv420p",
         "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", "-color_range", "tv",
         "-movflags", "+faststart", "-c:a", "copy",
         videoPath,
