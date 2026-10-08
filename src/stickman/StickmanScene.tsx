@@ -1,5 +1,5 @@
-import React from "react";
-import { AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import React, { useMemo } from "react";
+import { AbsoluteFill, Audio, Easing, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadMontserrat } from "@remotion/google-fonts/Montserrat";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import { GROUNDED_PROP_BOTTOM, MOOD_SFX, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
@@ -26,6 +26,8 @@ interface SceneProps {
   speakFrames?: number;
   muteSfx?: boolean;
   vertical?: boolean;
+  /** position in the video; drives the "auto" transition rotation */
+  index?: number;
 }
 
 const PROP_BASE_SCALE = 1.7;
@@ -109,11 +111,11 @@ const CalloutRow: React.FC<{ items: string[]; color: string; centerX: number; wo
   );
 };
 
-export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false }) => {
+export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, index = 0 }) => {
   const world: World = vertical ? WORLD_VERTICAL : WORLD;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const v: StickmanVisual = StickmanVisualSchema.parse(visual ?? {});
+  const v: StickmanVisual = useMemo(() => StickmanVisualSchema.parse(visual ?? {}), [visual]);
   const accent = theme.accents[v.accent];
 
   const pose = blendedPose(prevPose, v.pose, frame, fps);
@@ -125,7 +127,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
   const figureX = (v.flip ? 1 - figureXFrac : figureXFrac) * world.width;
 
   // Camera
-  const p = interpolate(frame, [0, durationFrames], [0, 1], { extrapolateRight: "clamp" });
+  const p = interpolate(frame, [0, durationFrames], [0, 1], { extrapolateRight: "clamp", easing: Easing.inOut(Easing.sin) });
   const punch = v.calm ? 0 : cameraPunch(v.mood, frame);
   const cam0 = {
     none: { s: 1, x: 0 },
@@ -141,7 +143,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
 
   const seed = Math.floor(frame / 4); // "boiling line" hand-drawn wobble
   const talking = frame >= speakFrom && (speakFrames === undefined || frame < speakFrom + speakFrames);
-  const captions = buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7);
+  const captions = useMemo(() => buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7), [text, speakFrames, durationFrames, speakFrom, vertical]);
   const active = captions.find((c) => frame - speakFrom >= c.start && frame - speakFrom < c.end);
   const capOpacity = (() => {
     if (!active) return 0;
@@ -152,8 +154,18 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
     return interpolate(local, [active.start, active.start + 4, active.end - 3, active.end], [0, 1, 1, 0.85], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   })();
 
-  const fadeIn = interpolate(frame, [0, 5], [0, 1], { extrapolateRight: "clamp" });
+  const AUTO_ROTATION = ["slide", "zoom", "iris", "wipe"] as const;
+  const transition = v.transition === "auto" ? (index === 0 ? "cut" : AUTO_ROTATION[(index - 1) % AUTO_ROTATION.length]) : v.transition;
+  const TR_FRAMES = 12;
+  const tr = interpolate(frame, [0, TR_FRAMES], [0, 1], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+  const fadeIn = transition === "cut" ? interpolate(frame, [0, 5], [0, 1], { extrapolateRight: "clamp" }) : transition === "wipe" || transition === "iris" ? 1 : Math.min(1, tr * 1.6);
   const wipeX = interpolate(frame, [0, 10], [-world.width, world.width], { extrapolateRight: "clamp" });
+  const sceneTransform =
+    transition === "slide" ? `translate(${(1 - tr) * world.width * 0.07},0)` :
+    transition === "zoom" ? `translate(${world.width / 2},${world.height / 2}) scale(${1.14 - 0.14 * tr}) translate(${-world.width / 2},${-world.height / 2})` : undefined;
+  const irisR = Math.hypot(world.width, world.height) / 2 * tr;
+  // slow parallax drift of the dot grid so the background is never static
+  const drift = (frame * 0.35) % 60;
 
   return (
     <AbsoluteFill style={{ backgroundColor: theme.bg }}>
@@ -166,9 +178,18 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
           <pattern id="dots" width="60" height="60" patternUnits="userSpaceOnUse">
             <circle cx="30" cy="30" r="2.2" fill={theme.faint} />
           </pattern>
+          <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+            <stop offset="60%" stopColor={theme.bg} stopOpacity={0} />
+            <stop offset="100%" stopColor={theme.ink} stopOpacity={0.09} />
+          </radialGradient>
+          <clipPath id="irisClip">
+            <circle cx={world.width / 2} cy={world.height / 2} r={Math.max(1, irisR)} />
+          </clipPath>
         </defs>
 
-        <rect width={world.width} height={world.height} fill="url(#dots)" opacity={0.7} />
+        <g clipPath={transition === "iris" && tr < 1 ? "url(#irisClip)" : undefined} transform={sceneTransform}>
+        <rect x={-60} y={-60} width={world.width + 120} height={world.height + 120} fill="url(#dots)" opacity={0.7} transform={`translate(${-drift},${-drift})`} />
+        <rect width={world.width} height={world.height} fill="url(#vignette)" />
 
         <g transform={`translate(${world.width / 2 + cam.x},${world.height / 2}) scale(${cam.s}) translate(${-world.width / 2},${-world.height / 2})`}>
           <g filter="url(#rough)">
@@ -205,16 +226,30 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
         {v.callouts.length > 0 && <CalloutRow items={v.callouts} color={accent} centerX={figureX < world.width / 2 ? 1280 : 640} world={world} />}
 
-        {active && (
-          <g opacity={capOpacity} transform={`translate(${world.width / 2},${vertical ? world.height - 420 : 985})`}>
-            <text textAnchor="middle" fontSize={vertical ? 70 : 50} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`}
-              fill={theme.ink} stroke={theme.bg} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
-              {active.text}
-            </text>
-          </g>
-        )}
+        {active && (() => {
+          const local = frame - speakFrom;
+          const pop = spring({ frame: local - active.start, fps, config: { damping: 14, stiffness: 220, mass: 0.5 } });
+          const capSize = vertical ? 70 : 50;
+          return (
+            <g opacity={capOpacity} transform={`translate(${world.width / 2},${(vertical ? world.height - 420 : 985) + (1 - pop) * 14}) scale(${0.94 + 0.06 * pop})`}>
+              <text textAnchor="middle" fontSize={capSize} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`}
+                stroke={theme.bg} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
+                {active.words.map((w, i) => {
+                  const spoken = local >= w.start;
+                  const current = spoken && local < w.end;
+                  return (
+                    <tspan key={i} fill={current ? accent : theme.ink} fillOpacity={spoken ? 1 : 0.5}>
+                      {w.text}{i < active.words.length - 1 ? " " : ""}
+                    </tspan>
+                  );
+                })}
+              </text>
+            </g>
+          );
+        })()}
+        </g>
 
-        {v.transition === "wipe" && frame < 10 && (
+        {transition === "wipe" && frame < 10 && (
           <rect x={wipeX} y={0} width={world.width} height={world.height} fill={accent} />
         )}
       </svg>
@@ -227,7 +262,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
       {!muteSfx && v.title && (
         <Sequence from={4} durationInFrames={30}><Audio src={staticFile("audio/text-pop.mp3")} volume={0.25} /></Sequence>
       )}
-      {!muteSfx && v.transition === "wipe" && (
+      {!muteSfx && transition !== "cut" && (
         <Sequence durationInFrames={30}><Audio src={staticFile("audio/text-whoosh.mp3")} volume={0.25} /></Sequence>
       )}
     </AbsoluteFill>

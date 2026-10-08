@@ -91,7 +91,8 @@ export const StickmanVisualSchema = z.object({
   camera: z.enum(["none", "push", "pull", "pan-left", "pan-right"]).default("none"),
   // not an animation: a per-scene setting that StickmanScene drives from useCurrentFrame()
   // eslint-disable-next-line @remotion/non-pure-animation
-  transition: z.enum(["cut", "wipe"]).default("cut"),
+  /** "auto" (default) rotates slide / zoom / iris / wipe by scene so consecutive scenes never feel the same; "cut" is a hard cut. */
+  transition: z.enum(["auto", "cut", "wipe", "slide", "zoom", "iris"]).default("auto"),
   accent: z.enum(ACCENTS).default("blue"),
   /** Emotion SFX: "auto" (default) plays the mood's sound when the mood changes from the previous scene. */
   sfx: z.enum(["auto", "none", ...SFX_NAMES]).default("auto"),
