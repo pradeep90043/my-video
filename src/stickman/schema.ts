@@ -168,7 +168,7 @@ export const ShapeSchema = z.discriminatedUnion("t", [
   z.object({ t: z.literal("rect"), x: X, y: Y, w: z.number().min(1).max(1400), h: z.number().min(1).max(800), rx: z.number().min(0).max(200).optional(), ...ShapeBase }),
   z.object({ t: z.literal("circle"), cx: X, cy: Y, r: z.number().min(1).max(500), ...ShapeBase }),
   z.object({ t: z.literal("line"), x1: X, y1: Y, x2: X, y2: Y, arrow: z.boolean().optional(), dash: z.boolean().optional(), ...ShapeBase }),
-  z.object({ t: z.literal("path"), d: z.string().max(400).regex(/^[MLHVCSQTAZmlhvcsqtaz0-9 ,.\-]+$/), ...ShapeBase }),
+  z.object({ t: z.literal("path"), d: z.string().max(400).regex(/^[MLHVCSQTAZmlhvcsqtaz0-9 ,.-]+$/), ...ShapeBase }),
   z.object({ t: z.literal("text"), x: X, y: Y, text: z.string().min(1).max(40), size: z.number().min(24).max(96).default(40), anchor: z.enum(["start", "middle", "end"]).default("middle"), ...ShapeBase }),
 ]);
 export const SvgSchema = z.object({
