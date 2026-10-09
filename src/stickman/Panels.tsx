@@ -1,8 +1,8 @@
 import React from "react";
-import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadFiraCode } from "@remotion/google-fonts/FiraCode";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import type { CodeSpec, ContainerSpec, QuizSpec, StepsSpec } from "./schema";
+import type { BarsSpec, CodeSpec, ContainerSpec, QuizSpec, StatSpec, StepsSpec } from "./schema";
 import type { Theme } from "./theme";
 import { tokenizeLine, type TokKind } from "./code";
 
@@ -160,6 +160,61 @@ export const StepsPanel: React.FC<{ spec: StepsSpec; theme: Theme; accent: strin
             <circle cx={60} cy={y} r={rowH * 0.3} fill={f} />
             <text x={60} y={y + font * 0.35} textAnchor="middle" fontSize={font * 0.9} fontWeight={800} fontFamily={sans} fill={done || active ? "#fff" : theme.ink}>{done ? "✓" : i + 1}</text>
             <text x={60 + rowH * 0.3 + 28} y={y + font * 0.35} fontSize={active ? font : font * 0.92} fontWeight={800} fontFamily={sans} fill={theme.ink}>{item}</text>
+          </g>
+        );
+      })}
+    </g>
+  );
+};
+
+// ── Stat (count-up) ─────────────────────────────────────────────────────────
+// Design reference: remocn's rolling-number (eased count with a fast start and a long settle). Own SVG implementation.
+export const StatPanel: React.FC<{ spec: StatSpec; durationFrames: number; theme: Theme; accent: string }> = ({ spec, durationFrames, theme, accent }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const s = pop(frame, fps, 2);
+  const t = interpolate(frame, [8, Math.min(durationFrames * 0.5, 75)], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.poly(4)) });
+  const v = spec.from + (spec.value - spec.from) * t;
+  const text = `${spec.prefix}${v.toLocaleString("en-US", { minimumFractionDigits: spec.decimals, maximumFractionDigits: spec.decimals })}${spec.suffix}`;
+  const size = Math.min(300, (PANEL.w - 80) / (Math.max(text.length, 3) * 0.62));
+  const landed = interpolate(frame, [Math.min(durationFrames * 0.5, 75), Math.min(durationFrames * 0.5, 75) + 10], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const bump = 1 + 0.06 * Math.sin(landed * Math.PI); // small pulse when the number lands
+  return (
+    <g transform={`translate(${PANEL.x + PANEL.w / 2},${PANEL.y + PANEL.h / 2 + (1 - s) * 40})`} opacity={Math.min(1, s * 2)}>
+      <g transform={`scale(${bump})`}>
+        <text textAnchor="middle" y={size * 0.25} fontSize={size} fontWeight={800} fontFamily={sans} fill={accent} stroke={theme.bg} strokeWidth={size * 0.06} paintOrder="stroke" strokeLinejoin="round">{text}</text>
+      </g>
+      {spec.label && <text textAnchor="middle" y={size * 0.25 + 90} fontSize={54} fontWeight={800} fontFamily={sans} fill={theme.ink}>{spec.label}</text>}
+    </g>
+  );
+};
+
+// ── Bars ────────────────────────────────────────────────────────────────────
+// Design reference: remocn's animated-bar-chart (staggered spring-in bars). Own SVG implementation.
+export const BarsPanel: React.FC<{ spec: BarsSpec; theme: Theme; accent: string }> = ({ spec, theme, accent }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const s = pop(frame, fps, 2);
+  const n = spec.data.length;
+  const max = Math.max(...spec.data, 1);
+  const top = spec.title ? 90 : 30;
+  const base = PANEL.h - 80;
+  const gap = 28;
+  const bw = (PANEL.w - 120 - gap * (n - 1)) / n;
+  const maxIdx = spec.data.indexOf(max);
+  return (
+    <g transform={`translate(${PANEL.x},${PANEL.y + (1 - s) * 40})`} opacity={Math.min(1, s * 2)}>
+      {spec.title && <text x={PANEL.w / 2} y={52} textAnchor="middle" fontSize={50} fontWeight={800} fontFamily={sans} fill={theme.ink}>{spec.title}</text>}
+      <path d={`M40,${base + 6} H${PANEL.w - 40}`} stroke={theme.ink} strokeWidth={6} strokeLinecap="round" />
+      {spec.data.map((d, i) => {
+        const g = spring({ frame: frame - (10 + i * 6), fps, config: { damping: 13, stiffness: 120, mass: 0.8 } });
+        const h = ((base - top) * d / max) * Math.max(0, g);
+        const x = 60 + i * (bw + gap);
+        return (
+          <g key={i}>
+            <rect x={x} y={base - h} width={bw} height={h} rx={14} fill={i === maxIdx ? accent : theme.ink} fillOpacity={i === maxIdx ? 1 : 0.82} />
+            {spec.labels[i] && <text x={x + bw / 2} y={base + 50} textAnchor="middle" fontSize={34} fontWeight={800} fontFamily={sans} fill={theme.ink}>{spec.labels[i]}</text>}
+            <text x={x + bw / 2} y={base - h - 14} textAnchor="middle" fontSize={36} fontWeight={800} fontFamily={sans} fill={theme.ink} opacity={Math.min(1, g)}>{Math.round(d * Math.min(1, g))}</text>
           </g>
         );
       })}

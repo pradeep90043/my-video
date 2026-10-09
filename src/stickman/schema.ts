@@ -69,6 +69,23 @@ export const StepsSchema = z.object({
   current: z.number().int().min(0).default(0),
 });
 
+export const StatSchema = z.object({
+  /** the number to count up to */
+  value: z.number(),
+  from: z.number().default(0),
+  prefix: z.string().max(4).default(""),
+  suffix: z.string().max(6).default(""),
+  label: z.string().max(48).default(""),
+  /** digits after the decimal point */
+  decimals: z.number().int().min(0).max(2).default(0),
+});
+
+export const BarsSchema = z.object({
+  data: z.array(z.number().min(0)).min(2).max(8),
+  labels: z.array(z.string().max(14)).default([]),
+  title: z.string().max(40).optional(),
+});
+
 export const StickmanVisualSchema = z.object({
   pose: z.enum(POSES).default("idle"),
   mood: z.enum(MOODS).default("neutral"),
@@ -85,6 +102,10 @@ export const StickmanVisualSchema = z.object({
   quiz: QuizSchema.optional(),
   container: ContainerSchema.optional(),
   steps: StepsSchema.optional(),
+  /** big count-up number (pattern interrupt for key stats) */
+  stat: StatSchema.optional(),
+  /** animated bar chart */
+  bars: BarsSchema.optional(),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),
@@ -108,6 +129,8 @@ export type CodeSpec = z.infer<typeof CodeSchema>;
 export type QuizSpec = z.infer<typeof QuizSchema>;
 export type ContainerSpec = z.infer<typeof ContainerSchema>;
 export type StepsSpec = z.infer<typeof StepsSchema>;
+export type StatSpec = z.infer<typeof StatSchema>;
+export type BarsSpec = z.infer<typeof BarsSchema>;
 export type StickmanVisual = z.infer<typeof StickmanVisualSchema>;
 export type PoseName = (typeof POSES)[number];
 export type SfxName = (typeof SFX_NAMES)[number];

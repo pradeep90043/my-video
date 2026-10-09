@@ -8,7 +8,7 @@ import { Figure, blendedPose } from "./Figure";
 import { ScreenFx, cameraPunch } from "./Emotion";
 import { PropDrawing } from "./Props";
 import { buildCaptions, type SpokenWord } from "./captions";
-import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
+import { BarsPanel, CodePanel, ContainerPanel, QuizPanel, StatPanel, StepsPanel } from "./Panels";
 
 // Load only what is used (latin, weights 800/900) — the defaults fetch every subset and weight.
 const montserrat = loadMontserrat("normal", { weights: ["900"], subsets: ["latin"] });
@@ -122,7 +122,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
 
   const pose = blendedPose(prevPose, v.pose, frame, fps);
   const hop = v.pose === "celebrate" || v.pose === "laugh" ? Math.abs(Math.sin(frame * 0.2)) * (v.pose === "laugh" ? 12 : 26) : 0;
-  const hasPanel = Boolean(v.code || v.quiz || v.container || v.steps);
+  const hasPanel = Boolean(v.code || v.quiz || v.container || v.steps || v.stat || v.bars);
   // With a panel on the right the figure shrinks and tucks into the left strip.
   const figureScale = v.figureScale ?? (hasPanel ? 0.8 : vertical ? 1.9 : FIGURE_SCALE);
   const figureXFrac = hasPanel && v.figureX === 0.3 ? 0.14 : vertical && v.figureX === 0.3 ? 0.5 : v.figureX;
@@ -230,6 +230,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {v.quiz && <QuizPanel spec={v.quiz} durationFrames={durationFrames} theme={theme} accent={accent} />}
         {v.container && <ContainerPanel spec={v.container} theme={theme} accent={accent} />}
         {v.steps && <StepsPanel spec={v.steps} theme={theme} accent={accent} />}
+        {v.stat && <StatPanel spec={v.stat} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.bars && <BarsPanel spec={v.bars} theme={theme} accent={accent} />}
 
         {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
         {v.callouts.length > 0 && <CalloutRow items={v.callouts} color={accent} centerX={figureX < world.width / 2 ? 1280 : 640} world={world} />}
