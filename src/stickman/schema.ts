@@ -6,6 +6,7 @@
  */
 import { z } from "zod";
 import { SCENE_ASSETS, SCENE_BACKGROUNDS, SCENE_TINTS } from "./doodle/catalog";
+import { CODE_LANGUAGES } from "./code";
 
 export const POSES = [
   "idle", "point", "present", "shrug", "think",
@@ -47,10 +48,20 @@ export const PropSchema = z.object({
 });
 
 export const CodeSchema = z.object({
+  /** file name shown in the editor title bar, e.g. "PaymentGateway.java" */
   title: z.string().max(40).optional(),
   lines: z.array(z.string().max(56)).min(1).max(14),
   /** 0-based line numbers to emphasise */
   highlight: z.array(z.number().int().min(0)).default([]),
+  /** syntax colouring */
+  language: z.enum(CODE_LANGUAGES).default("java"),
+  /**
+   * Progressive building: lines before this index are shown at once (they were already on screen in the previous
+   * scene), only the lines from here on animate in. Repeat the earlier lines and set revealFrom to the first new one.
+   */
+  revealFrom: z.number().int().min(0).default(0),
+  /** how new lines appear: "lines" slide in one by one, "type" is typed out character by character */
+  animate: z.enum(["lines", "type"]).default("lines"),
 });
 
 export const QuizSchema = z.object({
@@ -304,6 +315,7 @@ export function validateStickmanScenes(scenes: { id: string; visual?: unknown }[
     if (v.quiz && v.quiz.answer >= v.quiz.options.length) problems.push(`scene ${s.id} visual.quiz.answer: index out of range`);
     if (v.steps && v.steps.current >= v.steps.items.length) problems.push(`scene ${s.id} visual.steps.current: index out of range`);
     if (v.code && v.code.highlight.some((h) => h >= v.code!.lines.length)) problems.push(`scene ${s.id} visual.code.highlight: line out of range`);
+    if (v.code && v.code.revealFrom >= v.code.lines.length) problems.push(`scene ${s.id} visual.code.revealFrom: must be a line index (0-${v.code.lines.length - 1})`);
     if (PANEL_KEYS.filter((k) => v[k]).length > 1) problems.push(`scene ${s.id}: use only one panel (${PANEL_KEYS.join(" / ")}) per scene`);
     if (v.chart && v.chart.labels.length !== v.chart.values.length) problems.push(`scene ${s.id} visual.chart: labels and values must have the same length`);
     if (v.chart?.highlight !== undefined && v.chart.highlight >= v.chart.values.length) problems.push(`scene ${s.id} visual.chart.highlight: index out of range`);
