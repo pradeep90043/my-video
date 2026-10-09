@@ -13,7 +13,7 @@ export interface StickmanProjectData {
   theme?: ThemeName;
   totalFrames?: number;
   orientation?: "horizontal" | "vertical";
-  /** optional music files under public/ (e.g. "audio/music-2.mp3"); a new one starts at every chapter scene, crossfaded. Default: audio/background-music.mp3 */
+  /** optional music files under public/ (e.g. "audio/music-2.mp3"); a new one starts at every chapter scene, crossfaded. No default: the old bundled track matched a commercial song (Content ID risk), so music is opt-in and must be copyright-cleared. */
   music?: string[];
   /** Lip-sync: mouth level 0..1 per video frame (voiceover.env.json); absent = generic flap */
   mouth?: number[];
@@ -45,9 +45,9 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
     if (ch !== "" && ch !== prevChapter && i > 0) chapterStarts.push(sc.startFrame ?? 0);
     if (ch !== "") prevChapter = ch;
   });
-  const tracks = data.music?.length ? data.music : ["audio/background-music.mp3"];
+  const tracks = data.music?.length ? data.music : [];
   const bounds = [0, ...(tracks.length > 1 ? chapterStarts : []), total];
-  const musicSections = bounds.slice(0, -1).map((from, i) => ({ from, to: bounds[i + 1], src: tracks[i % tracks.length] }));
+  const musicSections = tracks.length === 0 ? [] : bounds.slice(0, -1).map((from, i) => ({ from, to: bounds[i + 1], src: tracks[i % tracks.length] }));
   const risers = chapterStarts.map((f) => Math.max(0, f - RISER_FRAMES + 6));
 
   let prevPose: PoseName = "idle";

@@ -48,8 +48,9 @@ export const MusicBed: React.FC<{ windows: SpeechWindow[]; volume: number; src: 
 };
 
 /** One ducked music bed for a whole video: drop-in replacement for `<Audio src=music volume loop />`. */
-export const DuckedMusic: React.FC<{ scenes: TimedScene[]; volume: number; src?: string }> = ({ scenes, volume, src = "audio/background-music.mp3" }) => {
+export const DuckedMusic: React.FC<{ scenes: TimedScene[]; volume: number; src?: string }> = ({ scenes, volume, src }) => {
   const { fps, durationInFrames } = useVideoConfig();
+  if (!src) return null; // no bundled default: the old one matched a commercial song
   return (
     <Sequence durationInFrames={durationInFrames} name="music">
       <MusicBed windows={speechWindows(scenes, fps)} volume={volume} src={src} from={0} to={durationInFrames} first last />
