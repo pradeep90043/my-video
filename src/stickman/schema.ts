@@ -5,6 +5,7 @@
  * Pure zod (no React) so scripts can validate it too.
  */
 import { z } from "zod";
+import { SCENE_ASSETS, SCENE_BACKGROUNDS, SCENE_TINTS } from "./doodle/catalog";
 
 export const POSES = [
   "idle", "point", "present", "shrug", "think",
@@ -179,10 +180,38 @@ export const SvgSchema = z.object({
   shapes: z.array(ShapeSchema).min(2).max(40),
 });
 
+/**
+ * Illustration composed from the hand-drawn doodle asset library (see doodle/catalog.ts): "a server, a fan and a water
+ * drop with arrows between them". Positions are percentages of the illustration card (x 0..100 left to right,
+ * y 0..100 top to bottom), `size` is the asset height as a percentage of the card height.
+ */
+export const SceneItemSchema = z.object({
+  asset: z.enum(SCENE_ASSETS),
+  x: z.number().min(0).max(100),
+  y: z.number().min(0).max(100),
+  size: z.number().min(8).max(90).default(34),
+  flip: z.boolean().default(false),
+  /** colour of the asset's key part; omit for the asset's own default colours */
+  tint: z.enum(SCENE_TINTS).optional(),
+  /** hand-lettered caption under the asset */
+  label: z.string().max(22).optional(),
+});
+const Pct = z.number().min(0).max(100);
+export const SceneArrowSchema = z.object({
+  from: z.tuple([Pct, Pct]),
+  to: z.tuple([Pct, Pct]),
+  label: z.string().max(20).optional(),
+});
+export const SceneSchema = z.object({
+  background: z.enum(SCENE_BACKGROUNDS).default("paper"),
+  items: z.array(SceneItemSchema).min(1).max(8),
+  arrows: z.array(SceneArrowSchema).max(6).default([]),
+});
+
 /** Every panel key. A scene may use only one. */
 export const PANEL_KEYS = [
   "code", "quiz", "container", "steps",
-  "compare", "flow", "terminal", "browser", "counter", "chart", "progress", "table", "alert", "svg",
+  "compare", "flow", "terminal", "browser", "counter", "chart", "progress", "table", "alert", "svg", "scene",
 ] as const;
 
 export const StickmanVisualSchema = z.object({
@@ -219,6 +248,7 @@ export const StickmanVisualSchema = z.object({
   table: TableSchema.optional(),
   alert: AlertSchema.optional(),
   svg: SvgSchema.optional(),
+  scene: SceneSchema.optional(),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),
@@ -252,6 +282,7 @@ export type ProgressSpec = z.infer<typeof ProgressSchema>;
 export type TableSpec = z.infer<typeof TableSchema>;
 export type AlertSpec = z.infer<typeof AlertSchema>;
 export type SvgSpec = z.infer<typeof SvgSchema>;
+export type SceneSpec = z.infer<typeof SceneSchema>;
 export type Shape = z.infer<typeof ShapeSchema>;
 export type StickmanVisual = z.infer<typeof StickmanVisualSchema>;
 export type PoseName = (typeof POSES)[number];

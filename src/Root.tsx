@@ -16,6 +16,7 @@ import maaKiDiaryData from "../public/content/MaaKiDiary/video.json";
 import collageData from "../public/content/collage-animation/video.json";
 import { StickmanVideo, stickmanSchema, type StickmanProjectData } from "./stickman/StickmanVideo";
 import { staticFile } from "remotion";
+import { DoodleCatalog } from "./stickman/doodle/DoodleCatalog";
 import {
   CollageAnimationVideo,
   collageAnimationSchema,
@@ -134,6 +135,9 @@ export const RemotionRoot: React.FC = () => {
           };
         }}
       />
+
+      {/* Dev preview: contact sheet of every doodle asset (npx remotion still DoodleCatalog out/doodle-catalog.png) */}
+      <Composition id="DoodleCatalog" component={DoodleCatalog} fps={30} width={1760} height={1180} durationInFrames={1} />
     </>
   );
 };

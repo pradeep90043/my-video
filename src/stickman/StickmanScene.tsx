@@ -11,6 +11,7 @@ import { ScreenFx, cameraPunch } from "./Emotion";
 import { PropDrawing } from "./Props";
 import { buildCaptions, type SpokenWord } from "./captions";
 import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
+import { ScenePanel } from "./doodle/ScenePanel";
 import {
   AlertPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
   ProgressPanel, SvgPanel, TablePanel, TerminalPanel,
@@ -273,6 +274,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {v.table && <TablePanel spec={v.table} theme={theme} accent={accent} />}
         {v.alert && <AlertPanel spec={v.alert} theme={theme} accent={accent} />}
         {v.svg && <SvgPanel spec={v.svg} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.scene && <ScenePanel spec={v.scene} durationFrames={durationFrames} theme={theme} accent={accent} />}
         </g>
 
         {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
