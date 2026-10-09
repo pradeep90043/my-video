@@ -1,5 +1,6 @@
 import React from "react";
-import { AbsoluteFill, Audio, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
+import { MusicBed, speechWindows } from "../shared/components/DuckedMusic";
 import { z } from "zod";
 import { StickmanScene } from "./StickmanScene";
 import { THEMES, type ThemeName } from "./theme";
@@ -26,44 +27,13 @@ export const stickmanSchema = z.object({
 
 export type StickmanVideoProps = z.infer<typeof stickmanSchema> & { data?: StickmanProjectData };
 
-type SpeechWindow = [number, number];
 const RISER_FRAMES = 36; // public/audio/sfx/riser.mp3 is 1.2 s at 30 fps
-
-/**
- * Background music that ducks under the voice. Speech windows come from the scene timing
- * (startFrame + pauseBefore .. + duration), so no audio analysis is needed. `volume` is the level
- * under speech; the bed swells to ~2.2x in pauses. It fades in/out over 1 s at section edges
- * (2 s at the very start/end of the video), so consecutive sections crossfade.
- */
-const MusicBed: React.FC<{ windows: SpeechWindow[]; volume: number; src: string; from: number; to: number; first: boolean; last: boolean }> = ({ windows, volume, src, from, to, first, last }) => {
-  const local = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const frame = from + local;
-  const attack = Math.round(fps * 0.25);
-  const release = Math.round(fps * 0.7);
-  let level = 1; // 1 = open (no speech), 0 = fully ducked
-  for (const [a, b] of windows) {
-    if (frame < a - attack || frame > b + release) continue;
-    level = Math.min(level, interpolate(frame, [a - attack, a, b, b + release], [1, 0, 0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }));
-  }
-  const gain = volume * (1 + 1.2 * level);
-  const len = to - from;
-  const inLen = Math.round(fps * (first ? 1 : 1.2));
-  const outLen = Math.round(fps * (last ? 2 : 1.2));
-  const fade = interpolate(local, [0, inLen, Math.max(inLen + 1, len - outLen), len], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  return <Audio src={staticFile(src)} volume={Math.max(0, Math.min(1, gain * fade))} loop />;
-};
 
 export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgMusicVolume, voVolume }) => {
   if (!data) throw new Error("StickmanVideo needs project data (loaded by calculateMetadata).");
   const theme = THEMES[data.theme ?? "light"];
 
-  const speech: SpeechWindow[] = data.scenes.map((sc) => {
-    const a = (sc.startFrame ?? 0) + Math.round((sc.pauseBefore ?? 0) * data.fps);
-    const len = sc.duration !== undefined ? Math.round(sc.duration * data.fps) : (sc.durationFrames ?? 150) - Math.round((sc.pauseBefore ?? 0) * data.fps);
-    return [a, a + Math.max(1, len)];
-  });
-
+  const speech = speechWindows(data.scenes, data.fps);
   const total = data.totalFrames ?? Math.max(...data.scenes.map((sc) => (sc.startFrame ?? 0) + (sc.durationFrames ?? 150)));
   // a chapter "starts" where the chapter tag changes (consecutive scenes often repeat the same tag)
   const chapterStarts: number[] = [];

@@ -1,3 +1,4 @@
+import { DuckedMusic } from "../../shared/components/DuckedMusic";
 import React from "react";
 import {
   AbsoluteFill,
@@ -317,11 +318,7 @@ export const MaaKiDiaryVideo: React.FC<MaaKiDiaryProps> = ({
         volume={voVolume}
       />
       {/* Background music */}
-      <Audio
-        src={staticFile("audio/background-music.mp3")}
-        volume={bgMusicVolume}
-        loop
-      />
+      <DuckedMusic scenes={scenes} volume={bgMusicVolume} />
     </AbsoluteFill>
   );
 };
