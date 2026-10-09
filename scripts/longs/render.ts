@@ -12,6 +12,13 @@
  *   npm run longform:render -- --project AivsSWE --concurrency 4 --out out/custom.mp4 [--no-branding]
  *   npm run longform:render -- --project AivsSWE --resolution 1080     (default is 720 → 1280x720)
  *   npm run longform:render -- --project AivsSWE --draft                (fast 640x360 review render, no logo)
+ *
+ * Split rendering (used by the GitHub Actions workflow to render on several runners in parallel):
+ *   --audio-only          render just the composition's mixed audio to out/<slug>.audio.aac
+ *   --chunk i/N           render only the i-th of N frame ranges, muted, to out/<slug>.chunk<i>.mp4
+ *   --audio-chunk i/N     render only the i-th of N frame ranges of the mixed audio to out/<slug>.audio<i>.wav
+ *   --combine N           join the N chunks + audio (audio.aac, or --audio-chunks M wavs), then QA; chunks are
+ *                         already branded by --chunk so no second encode happens
  */
 
 import * as fs from "fs";
@@ -57,6 +64,60 @@ function main() {
     );
   }
 
+  const audioOnly = hasFlag("audio-only");
+  const chunkArg = getArg("chunk");
+  const combineArg = getArg("combine");
+  const partBase = path.join(outDir, slug);
+
+  const audioChunkArg = getArg("audio-chunk");
+  const audioChunksN = Number(getArg("audio-chunks") ?? 0);
+
+  if (audioOnly || chunkArg || audioChunkArg) {
+    const partArgs = [`--concurrency=${concurrency}`];
+    let partPath: string;
+    if (audioChunkArg) {
+      // lossless wav slice: 1600 samples/frame at 48k/30fps, so slices join sample-accurately with no AAC seams
+      const [iStr, nStr] = audioChunkArg.split("/");
+      const i = Number(iStr), n = Number(nStr);
+      const total = data.totalFrames;
+      if (!total || !Number.isInteger(i) || !Number.isInteger(n) || n < 1 || i < 0 || i >= n) {
+        fail("--audio-chunk needs i/N and a video.json with totalFrames");
+      }
+      const size = Math.ceil(total! / n);
+      partPath = `${partBase}.audio${i}.wav`;
+      partArgs.push("--codec=wav", `--frames=${i * size}-${Math.min(total! - 1, (i + 1) * size - 1)}`);
+      console.log(`🔊 [${slug}] audio slice ${i + 1}/${n}`);
+    } else if (audioOnly) {
+      partPath = `${partBase}.audio.aac`;
+      partArgs.push("--codec=aac");
+    } else {
+      const [iStr, nStr] = chunkArg!.split("/");
+      const i = Number(iStr), n = Number(nStr);
+      const total = data.totalFrames;
+      if (!total || !Number.isInteger(i) || !Number.isInteger(n) || n < 1 || i < 0 || i >= n) {
+        fail("--chunk needs i/N and a video.json with totalFrames");
+      }
+      const size = Math.ceil(total! / n);
+      const start = i * size;
+      const end = Math.min(total! - 1, (i + 1) * size - 1);
+      partPath = `${partBase}.chunk${i}.mp4`;
+      partArgs.push(`--scale=${scale}`, "--codec=h264", `--crf=${draft ? 28 : 16}`, "--pixel-format=yuv420p", "--muted", `--frames=${start}-${end}`);
+      console.log(`🎬 [${slug}] chunk ${i + 1}/${n}: frames ${start}-${end} of ${total}`);
+    }
+    const propsPart = getArg("props") ?? templateProps;
+    if (propsPart) partArgs.push(`--props=${propsPart}`);
+    fs.rmSync(partPath, { force: true });
+    const pr = spawnSync("npx", ["remotion", "render", compositionId, partPath, ...partArgs], { stdio: "inherit", cwd: process.cwd() });
+    if (pr.status !== 0 || !fs.existsSync(partPath)) fail(`Remotion part render failed (exit ${pr.status}).`);
+    if (chunkArg && !audioOnly) {
+      // brand each chunk here, in parallel on its own runner, so the combine job only has to join files
+      if (!draft && !hasFlag("no-branding") && !addBranding(partPath, { skipLogo: false, preset: "veryfast", crf: 20 })) fail("Chunk branding failed.");
+      else if ((draft || hasFlag("no-branding")) && !addBranding(partPath, { skipLogo: true, preset: "veryfast", crf: 20 })) fail("Chunk colour conversion failed.");
+    }
+    console.log(`✅ ${path.basename(partPath)} (${(fs.statSync(partPath).size / (1024 * 1024)).toFixed(1)} MB)`);
+    return;
+  }
+
   const mins = ((data.totalDuration ?? 0) / 60).toFixed(1);
   console.log(`🎬 [${slug}] Rendering composition "${compositionId}" at ${outWidth}x${outHeight} (~${mins} min)…`);
 
@@ -69,14 +130,40 @@ function main() {
   if (propsArg) args.push(`--props=${propsArg}`);
 
   fs.rmSync(workPath, { force: true });
-  const r = spawnSync("npx", args, { stdio: "inherit", cwd: process.cwd() });
+  let r: { status: number | null };
+  if (combineArg) {
+    const n = Number(combineArg);
+    const parts = Array.from({ length: n }, (_, i) => `${partBase}.chunk${i}.mp4`);
+    const audio = `${partBase}.audio.aac`;
+    if (audioChunksN > 0) {
+      const wavs = Array.from({ length: audioChunksN }, (_, i) => `${partBase}.audio${i}.wav`);
+      for (const f of wavs) if (!fs.existsSync(f)) fail(`Missing audio slice: ${f}`);
+      const wavList = `${partBase}.audio.txt`;
+      fs.writeFileSync(wavList, wavs.map((f) => `file '${f}'`).join("\n"));
+      console.log(`🔊 [${slug}] Joining ${audioChunksN} audio slice(s) → AAC…`);
+      const ar = spawnSync("ffmpeg", ["-y", "-f", "concat", "-safe", "0", "-i", wavList, "-c:a", "aac", "-b:a", "192k", audio], { stdio: "inherit" });
+      if (ar.status !== 0) fail("Audio join failed.");
+    }
+    for (const f of [...parts, audio]) if (!fs.existsSync(f)) fail(`Missing part for --combine: ${f}`);
+    const listFile = `${partBase}.chunks.txt`;
+    fs.writeFileSync(listFile, parts.map((f) => `file '${f}'`).join("\n"));
+    console.log(`🧩 [${slug}] Joining ${n} chunk(s) + audio…`);
+    r = spawnSync(
+      "ffmpeg",
+      ["-y", "-f", "concat", "-safe", "0", "-i", listFile, "-i", audio, "-map", "0:v:0", "-map", "1:a:0", "-c", "copy", "-movflags", "+faststart", workPath],
+      { stdio: "inherit" },
+    );
+  } else {
+    r = spawnSync("npx", args, { stdio: "inherit", cwd: process.cwd() });
+  }
   if (r.status !== 0 || !fs.existsSync(workPath)) {
     fs.rmSync(workPath, { force: true });
     fail(`Remotion render failed (exit ${r.status}).`);
   }
 
-  // Always runs: besides the logo it converts Remotion's full-range yuvj420p to broadcast yuv420p.
-  if (!addBranding(workPath, { skipLogo: draft || hasFlag("no-branding") })) {
+  // Always runs (except after --combine, whose chunks were branded individually): besides the logo
+  // it converts Remotion's full-range yuvj420p to broadcast yuv420p.
+  if (!combineArg && !addBranding(workPath, { skipLogo: draft || hasFlag("no-branding") })) {
     fs.rmSync(workPath, { force: true });
     fail("Final encode/branding failed — refusing to output an unfinished video. Re-run, or pass --no-branding to skip the logo.");
   }

@@ -81,6 +81,8 @@ interface FigureProps {
   prevMood?: Mood;
   /** false while the narrator is silent (before / after the line) — mouth rests */
   talking?: boolean;
+  /** 0..1 mouth opening from the voiceover loudness (lip sync); undefined = generic flap while `talking` */
+  mouthLevel?: number;
   look?: Look;
   frame: number;
   theme: Theme;
@@ -93,7 +95,7 @@ interface FigureProps {
   calm?: boolean;
 }
 
-export const Figure: React.FC<FigureProps> = ({ x, ground, pose, mood, prevMood, talking = true, look = "auto", frame, theme, accent, flip, hop = 0, scale = 1, calm = false }) => {
+export const Figure: React.FC<FigureProps> = ({ x, ground, pose, mood, prevMood, talking = true, mouthLevel, look = "auto", frame, theme, accent, flip, hop = 0, scale = 1, calm = false }) => {
   const breathe = Math.sin(frame * 0.12) * 2.5;
   const legLen = L.thigh + L.shin;
   const hip = { x: 0, y: -legLen + breathe * 0.4 - hop };
@@ -134,7 +136,7 @@ export const Figure: React.FC<FigureProps> = ({ x, ground, pose, mood, prevMood,
       </g>
       <g transform={`translate(${headC.x},${headC.y}) rotate(${pose.head - pose.lean * 0.4})`}>
         <circle r={hr} fill={theme.bg} stroke={theme.ink} strokeWidth={11} />
-        <Face mood={mood} prevMood={prevMood} frame={frame} theme={theme} accent={accent} gaze={gaze} talking={talking} />
+        <Face mood={mood} prevMood={prevMood} frame={frame} theme={theme} accent={accent} gaze={gaze} talking={talking} mouthLevel={mouthLevel} />
         <HeadExtras mood={mood} frame={frame} accent={accent} theme={theme} />
       </g>
     </g>

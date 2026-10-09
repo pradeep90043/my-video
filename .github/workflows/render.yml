@@ -1,0 +1,352 @@
+name: Remotion Cloud Video Renderer
+
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "Project slug (e.g. stickman-demo, single-income-trap, or dynamic lv-* slug)"
+        required: true
+        default: "stickman-demo"
+      bundle_url:
+        description: "Optional URL to download project bundle (video.json + audio) if dynamically generated"
+        required: false
+        default: ""
+      resolution:
+        description: "Output resolution (720 or 1080, or 360 for fast draft)"
+        required: true
+        type: choice
+        options:
+          - "720"
+          - "1080"
+          - "360"
+        default: "720"
+      progress_url:
+        description: "Optional URL the runner POSTs live frame progress to"
+        required: false
+        default: ""
+      progress_token:
+        description: "Per-job token for progress_url"
+        required: false
+        default: ""
+      chunks:
+        description: "Number of parallel runners to split the render across (1-16)"
+        required: false
+        default: "2"
+      draft:
+        description: "Draft mode (fast 360p review render, skips logo/branding)"
+        type: boolean
+        default: false
+      no_branding:
+        description: "Skip logo watermark overlay"
+        type: boolean
+        default: false
+
+  repository_dispatch:
+    types: [render_video]
+
+concurrency:
+  group: render-${{ github.event.inputs.project || github.event.client_payload.project }}
+  cancel-in-progress: false
+
+jobs:
+  # 1) Voiceover, audio mix and the composition's final audio track — done once.
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      project: ${{ steps.args.outputs.project }}
+      render_flags: ${{ steps.args.outputs.render_flags }}
+      progress_url: ${{ steps.args.outputs.progress_url }}
+      progress_token: ${{ steps.args.outputs.progress_token }}
+      chunks: ${{ steps.plan.outputs.chunks }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+      audio_chunks: ${{ steps.plan.outputs.audio_chunks }}
+      audio_matrix: ${{ steps.plan.outputs.audio_matrix }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 with npm Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install ffmpeg
+        timeout-minutes: 8
+        uses: ./.github/actions/ffmpeg
+
+      - name: Check ffmpeg
+        run: ffmpeg -version | head -1
+
+      - name: Restore node_modules cache
+        id: nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: nm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Node Dependencies
+        if: steps.nm.outputs.cache-hit != 'true'
+        run: npm install --include=optional
+
+      - name: Determine Render Arguments
+        id: args
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            PROJECT="${{ github.event.client_payload.project }}"
+            BUNDLE_URL="${{ github.event.client_payload.bundle_url }}"
+            RESOLUTION="${{ github.event.client_payload.resolution || '720' }}"
+            DRAFT="${{ github.event.client_payload.draft || 'false' }}"
+            NO_BRANDING="${{ github.event.client_payload.no_branding || 'false' }}"
+            CHUNKS="${{ github.event.client_payload.chunks || '2' }}"
+          else
+            PROJECT="${{ inputs.project }}"
+            BUNDLE_URL="${{ inputs.bundle_url }}"
+            RESOLUTION="${{ inputs.resolution }}"
+            DRAFT="${{ inputs.draft }}"
+            NO_BRANDING="${{ inputs.no_branding }}"
+            CHUNKS="${{ inputs.chunks || '2' }}"
+          fi
+
+          FLAGS="--project ${PROJECT} --resolution ${RESOLUTION} --concurrency 2"
+          [ "$DRAFT" = "true" ] && FLAGS="$FLAGS --draft"
+          [ "$NO_BRANDING" = "true" ] && FLAGS="$FLAGS --no-branding"
+
+          echo "project=$PROJECT" >> "$GITHUB_OUTPUT"
+          echo "bundle_url=$BUNDLE_URL" >> "$GITHUB_OUTPUT"
+          echo "render_flags=$FLAGS" >> "$GITHUB_OUTPUT"
+          echo "want_chunks=$CHUNKS" >> "$GITHUB_OUTPUT"
+          echo "progress_url=${{ inputs.progress_url }}" >> "$GITHUB_OUTPUT"
+          echo "progress_token=${{ inputs.progress_token }}" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch Dynamic Project Bundle if Provided
+        if: steps.args.outputs.bundle_url != ''
+        run: |
+          PROJECT="${{ steps.args.outputs.project }}"
+          BUNDLE_URL="${{ steps.args.outputs.bundle_url }}"
+          echo "📥 Fetching dynamic project bundle from ${BUNDLE_URL}..."
+          mkdir -p "public/content/${PROJECT}"
+          curl -sSL "$BUNDLE_URL" -o bundle.tar.gz
+          tar -xzf bundle.tar.gz -C "public/content/${PROJECT}"
+          ls -la "public/content/${PROJECT}"
+
+      - name: Generate Voiceover and Merge Audio if Bundle Has None
+        if: steps.args.outputs.bundle_url != ''
+        run: |
+          PROJECT="${{ steps.args.outputs.project }}"
+          if ls "public/content/${PROJECT}/audio/"*.mp3 >/dev/null 2>&1; then
+            echo "Audio already present in bundle, skipping TTS."
+          else
+            pip install --user edge-tts
+            export PATH="$HOME/.local/bin:$PATH"
+            npm run longform:audio -- --project "${PROJECT}"
+            npm run longform:merge -- --project "${PROJECT}"
+          fi
+
+      - name: Plan frame chunks
+        id: plan
+        run: |
+          PROJECT="${{ steps.args.outputs.project }}"
+          TOTAL=$(node -e "console.log(require('./public/content/${PROJECT}/video.json').totalFrames||0)")
+          N=${{ steps.args.outputs.want_chunks }}
+          case "$N" in ''|*[!0-9]*) N=2 ;; esac
+          [ "$N" -lt 1 ] && N=2
+          [ "$N" -gt 16 ] && N=16
+          # splitting only pays off with enough frames: ~2800 frames (1.5 min of video) per runner
+          NEED=$(( (TOTAL + 2799) / 2800 ))
+          [ "$NEED" -lt 1 ] && NEED=1
+          [ "$N" -gt "$NEED" ] && N=$NEED
+          MATRIX="[$(seq -s, 0 $((N-1)))]"
+          echo "total frames=$TOTAL chunks=$N matrix=$MATRIX"
+          echo "chunks=$N" >> "$GITHUB_OUTPUT"
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+          # the audio walk costs about as much runner time as the frames: slice it too, but keep the job count under GitHub's 20 concurrent runners
+          A=$N; [ "$A" -gt 8 ] && A=8
+          echo "audio_chunks=$A" >> "$GITHUB_OUTPUT"
+          echo "audio_matrix=[$(seq -s, 0 $((A-1)))]" >> "$GITHUB_OUTPUT"
+
+      - name: Upload prepared project (voiceover, audio track)
+        uses: actions/upload-artifact@v4
+        with:
+          name: prep-${{ steps.args.outputs.project }}-${{ github.run_id }}
+          path: public/content/${{ steps.args.outputs.project }}
+          retention-days: 1
+
+  # 2b) The composition's mixed audio track (voiceover + music + effects). It walks the
+  # timeline without drawing frames, so it runs beside the frame chunks instead of before them.
+  audio-track:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: true
+      matrix:
+        chunk: ${{ fromJSON(needs.prepare.outputs.audio_matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 with npm Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Restore node_modules cache
+        id: nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: nm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Node Dependencies
+        if: steps.nm.outputs.cache-hit != 'true'
+        run: npm install --include=optional
+
+      - name: Download prepared project
+        uses: actions/download-artifact@v4
+        with:
+          name: prep-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+          path: public/content/${{ needs.prepare.outputs.project }}
+
+      - name: Render the composition's audio track
+        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --audio-chunk ${{ matrix.chunk }}/${{ needs.prepare.outputs.audio_chunks }}
+
+      - name: Upload audio track
+        uses: actions/upload-artifact@v4
+        with:
+          name: audio-${{ needs.prepare.outputs.project }}-${{ github.run_id }}-${{ matrix.chunk }}
+          path: out/${{ needs.prepare.outputs.project }}.audio${{ matrix.chunk }}.wav
+          retention-days: 1
+
+  # 2) The frames, split across parallel runners.
+  render-chunk:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: true
+      matrix:
+        chunk: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 with npm Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install ffmpeg
+        timeout-minutes: 8
+        uses: ./.github/actions/ffmpeg
+
+      - name: Restore node_modules cache
+        id: nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: nm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Node Dependencies
+        if: steps.nm.outputs.cache-hit != 'true'
+        run: npm install --include=optional
+
+      - name: Download prepared project
+        uses: actions/download-artifact@v4
+        with:
+          name: prep-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+          path: public/content/${{ needs.prepare.outputs.project }}
+
+      - name: Render frame chunk
+        run: |
+          PROGRESS_URL="${{ needs.prepare.outputs.progress_url }}"
+          if [ -n "$PROGRESS_URL" ]; then
+            # Report "Rendered X/Y" for this chunk every 10s so the Studio shows live frame counts.
+            (
+              while true; do
+                sleep 10
+                L=$(tr '\r' '\n' < render.log 2>/dev/null | grep -o 'Rendered [0-9]*/[0-9]*' | tail -1)
+                [ -n "$L" ] || continue
+                D=${L#Rendered }; DONE=${D%/*}; TOTAL=${D#*/}
+                curl -s -m 8 -X POST "$PROGRESS_URL" -H 'Content-Type: application/json' \
+                  -d "{\"slug\":\"${{ needs.prepare.outputs.project }}\",\"token\":\"${{ needs.prepare.outputs.progress_token }}\",\"chunk\":${{ matrix.chunk }},\"done\":$DONE,\"total\":$TOTAL}" >/dev/null || true
+              done
+            ) &
+          fi
+          npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --chunk ${{ matrix.chunk }}/${{ needs.prepare.outputs.chunks }} 2>&1 | tee render.log
+
+      - name: Upload chunk
+        uses: actions/upload-artifact@v4
+        with:
+          name: chunk-${{ needs.prepare.outputs.project }}-${{ github.run_id }}-${{ matrix.chunk }}
+          path: out/${{ needs.prepare.outputs.project }}.chunk${{ matrix.chunk }}.mp4
+          retention-days: 1
+
+  # 3) Join the (already branded) chunks + audio slices, QA.
+  combine:
+    needs: [prepare, audio-track, render-chunk]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20 with npm Cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install ffmpeg
+        timeout-minutes: 8
+        uses: ./.github/actions/ffmpeg
+
+      - name: Check ffmpeg
+        run: ffmpeg -version | head -1
+
+      - name: Restore node_modules cache
+        id: nm
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: nm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Node Dependencies
+        if: steps.nm.outputs.cache-hit != 'true'
+        run: npm install --include=optional
+
+      - name: Download prepared project
+        uses: actions/download-artifact@v4
+        with:
+          name: prep-${{ needs.prepare.outputs.project }}-${{ github.run_id }}
+          path: public/content/${{ needs.prepare.outputs.project }}
+
+      - name: Download chunks
+        uses: actions/download-artifact@v4
+        with:
+          pattern: chunk-${{ needs.prepare.outputs.project }}-${{ github.run_id }}-*
+          path: out
+          merge-multiple: true
+
+      - name: Download audio slices
+        uses: actions/download-artifact@v4
+        with:
+          pattern: audio-${{ needs.prepare.outputs.project }}-${{ github.run_id }}-*
+          path: out
+          merge-multiple: true
+
+      - name: Join, brand and QA
+        run: npx tsx scripts/longs/render.ts ${{ needs.prepare.outputs.render_flags }} --combine ${{ needs.prepare.outputs.chunks }} --audio-chunks ${{ needs.prepare.outputs.audio_chunks }}
+
+      - name: List Output Files
+        run: ls -lh out/
+
+      - name: Upload Video Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-${{ needs.prepare.outputs.project }}-${{ github.run_number }}
+          path: out/${{ needs.prepare.outputs.project }}.mp4
+          retention-days: 14

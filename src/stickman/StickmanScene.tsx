@@ -1,14 +1,20 @@
 import React, { useMemo } from "react";
+import { Backdrop } from "./Backdrop";
 import { AbsoluteFill, Audio, Easing, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadMontserrat } from "@remotion/google-fonts/Montserrat";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { GROUNDED_PROP_BOTTOM, MOOD_SFX, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
+import { layoutScene } from "./layout";
+import { GROUNDED_PROP_BOTTOM, MOOD_SFX, PANEL_KEYS, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
 import { WORLD, WORLD_VERTICAL, type Theme, type World } from "./theme";
 import { Figure, blendedPose } from "./Figure";
 import { ScreenFx, cameraPunch } from "./Emotion";
 import { PropDrawing } from "./Props";
 import { buildCaptions, type SpokenWord } from "./captions";
-import { BarsPanel, CodePanel, ContainerPanel, QuizPanel, StatPanel, StepsPanel } from "./Panels";
+import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
+import {
+  AlertPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
+  ProgressPanel, SvgPanel, TablePanel, TerminalPanel,
+} from "./PanelsExtra";
 
 // Load only what is used (latin, weights 800/900) — the defaults fetch every subset and weight.
 const montserrat = loadMontserrat("normal", { weights: ["900"], subsets: ["latin"] });
@@ -30,10 +36,11 @@ interface SceneProps {
   index?: number;
   /** TTS word timings (seconds from the start of the line) for exact karaoke captions */
   words?: SpokenWord[];
+  /** first frame of this scene on the video timeline, and the lip-sync track (mouth level per video frame) */
+  startFrame?: number;
+  mouth?: number[];
 }
 
-const PROP_BASE_SCALE = 1.7;
-const FIGURE_SCALE = 1.15; // keeps arms-up poses clear of the title
 
 const useSpring = (delay: number, config = { damping: 13, stiffness: 140, mass: 0.7 }) => {
   const frame = useCurrentFrame();
@@ -72,13 +79,13 @@ const Callout: React.FC<{ text: string; width: number; delay: number; color: str
   return (
     <g transform={`translate(${width / 2},38) scale(${Math.max(0.001, s)}) translate(${-width / 2},-38)`} opacity={Math.min(1, s * 2)}>
       <rect width={width} height={76} rx={38} fill={color} />
-      <text x={width / 2} y={51} textAnchor="middle" fontSize={36} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`} fill="#fff">{text}</text>
+      <text x={width / 2} y={51} textAnchor="middle" fontSize={Math.max(20, Math.min(36, Math.floor((width - 36) / (0.6 * Math.max(1, text.length)))))} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`} fill="#fff">{text}</text>
     </g>
   );
 };
 
-/** Centred over `centerX` (the side of the frame the figure is not on). */
-const CalloutRow: React.FC<{ items: string[]; color: string; centerX: number; world: World }> = ({ items, color, centerX, world }) => {
+/** Laid out inside `range` (the screen side the figure is not on); stacked when one row does not fit. */
+const CalloutRow: React.FC<{ items: string[]; color: string; range: [number, number]; world: World }> = ({ items, color, range, world }) => {
   if (world.width < world.height) {
     // vertical: stack the pills in a centred column
     return (
@@ -94,10 +101,25 @@ const CalloutRow: React.FC<{ items: string[]; color: string; centerX: number; wo
       </g>
     );
   }
-  const widths = items.map((t) => Math.max(240, t.length * 26 + 70));
+  const [lo, hi] = range;
+  const avail = hi - lo;
+  const widths = items.map((t) => Math.min(avail, Math.max(240, t.length * 26 + 70)));
   const gap = 28;
   const total = widths.reduce((a, b) => a + b, 0) + gap * (items.length - 1);
-  let x = Math.max(40, Math.min(world.width - 40 - total, centerX - total / 2));
+  if (total > avail) {
+    // too wide for one row: stack them
+    const left = lo + (avail - Math.max(...widths)) / 2;
+    return (
+      <g transform="translate(0,262)">
+        {items.map((t, i) => (
+          <g key={i} transform={`translate(${left},${i * 96})`}>
+            <Callout text={t} width={widths[i]} delay={18 + i * 10} color={color} />
+          </g>
+        ))}
+      </g>
+    );
+  }
+  let x = lo + (avail - total) / 2;
   return (
     <g transform="translate(0,262)">
       {items.map((t, i) => {
@@ -113,7 +135,7 @@ const CalloutRow: React.FC<{ items: string[]; color: string; centerX: number; wo
   );
 };
 
-export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, index = 0, words }) => {
+export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, startFrame = 0, mouth, index = 0, words }) => {
   const world: World = vertical ? WORLD_VERTICAL : WORLD;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -122,11 +144,15 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
 
   const pose = blendedPose(prevPose, v.pose, frame, fps);
   const hop = v.pose === "celebrate" || v.pose === "laugh" ? Math.abs(Math.sin(frame * 0.2)) * (v.pose === "laugh" ? 12 : 26) : 0;
-  const hasPanel = Boolean(v.code || v.quiz || v.container || v.steps || v.stat || v.bars);
-  // With a panel on the right the figure shrinks and tucks into the left strip.
-  const figureScale = v.figureScale ?? (hasPanel ? 0.8 : vertical ? 1.9 : FIGURE_SCALE);
-  const figureXFrac = hasPanel && v.figureX === 0.3 ? 0.14 : vertical && v.figureX === 0.3 ? 0.5 : v.figureX;
-  const figureX = (v.flip ? 1 - figureXFrac : figureXFrac) * world.width;
+  const hasPanel = PANEL_KEYS.some((k) => v[k]);
+  // The panel owns one side of the frame, the figure stands on the other; props and callouts keep clear of it.
+  const layout = layoutScene({
+    world, vertical, hasPanel, side: v.side, figureX: v.figureX, flip: v.flip, figureScale: v.figureScale,
+    hasCallouts: v.callouts.length > 0, calloutCount: v.callouts.length,
+    props: v.props.map((pr) => ({ type: pr.type, x: pr.x, y: pr.y, scale: pr.scale })),
+  });
+  const { figureX, figureScale } = layout;
+  const panelT = layout.panel ? `translate(${layout.panel.tx},${layout.panel.ty}) scale(${layout.panel.scale})` : undefined;
 
   // Camera
   const p = interpolate(frame, [0, durationFrames], [0, 1], { extrapolateRight: "clamp", easing: Easing.inOut(Easing.sin) });
@@ -149,6 +175,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
     for (let x = 0; x <= world.width; x += 160) pts.push(`${x},${world.ground + 4 + Math.sin(x * 0.013 + seed * 1.7) * 2.2}`);
     return `M${pts.join(" L")}`;
   })();
+  // real speech loudness when the project has a lip-sync track; undefined = generic flap
+  const mouthLevel = mouth ? mouth[startFrame + frame] ?? 0 : undefined;
   const talking = frame >= speakFrom && (speakFrames === undefined || frame < speakFrom + speakFrames);
   const captions = useMemo(() => buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7, words, fps), [text, speakFrames, durationFrames, speakFrom, vertical, words, fps]);
   const active = captions.find((c) => frame - speakFrom >= c.start && frame - speakFrom < c.end);
@@ -198,22 +226,26 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         <g clipPath={transition === "iris" && tr < 1 ? "url(#irisClip)" : undefined} transform={sceneTransform}>
         <rect x={-60} y={-60} width={world.width + 120} height={world.height + 120} fill="url(#dots)" opacity={0.7} transform={`translate(${-drift},${-drift})`} />
 
+        {v.setting !== "none" && <g opacity={hasPanel ? 0.5 : 1}><Backdrop setting={v.setting} t={frame} theme={theme} world={world} accent={theme.accents[v.accent]} /></g>}
+
         <g transform={`translate(${world.width / 2 + cam.x},${world.height / 2}) scale(${cam.s}) translate(${-world.width / 2},${-world.height / 2})`}>
           {/* ground line drawn outside the filter (a full-width filter region is the costliest part of a frame); jittered by hand instead */}
           <path d={groundPath} stroke={theme.ink} strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" fill="none" />
           <g filter="url(#rough)">
             {v.props.map((pr, i) => {
-              const size = pr.scale * PROP_BASE_SCALE;
+              const pl = layout.props[i];
+              if (pl.hidden) return null;
+              const size = pl.scale;
               const bottom = GROUNDED_PROP_BOTTOM[pr.type];
               const y = pr.y !== undefined ? pr.y * world.height : bottom !== undefined ? world.ground - bottom * size : 500;
               return (
-              <Pop key={i} delay={pr.delay} x={pr.x * world.width} y={y} scale={size}>
+              <Pop key={i} delay={pr.delay} x={pl.x} y={y} scale={size}>
                 <PropDrawing type={pr.type} t={Math.max(0, frame - pr.delay)} theme={theme} color={theme.accents[pr.accent ?? v.accent]} />
               </Pop>
               );
             })}
             {!v.hideFigure && (
-              <Figure x={figureX} ground={world.ground} pose={pose} mood={v.mood} prevMood={prevMood} talking={talking} look={v.look} frame={frame} theme={theme} accent={accent} flip={v.flip} hop={hop} scale={figureScale} calm={v.calm} />
+              <Figure x={figureX} ground={world.ground} pose={pose} mood={v.mood} prevMood={prevMood} talking={talking} mouthLevel={mouthLevel} look={v.look} frame={frame} theme={theme} accent={accent} flip={layout.flip} hop={hop} scale={figureScale} calm={v.calm} />
             )}
           </g>
         </g>
@@ -226,15 +258,25 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
             <text x={28} y={36} fontSize={28} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`} fill={theme.bg}>{v.chapter}</text>
           </g>
         )}
+        <g transform={panelT}>
         {v.code && <CodePanel spec={v.code} durationFrames={durationFrames} accent={accent} />}
         {v.quiz && <QuizPanel spec={v.quiz} durationFrames={durationFrames} theme={theme} accent={accent} />}
         {v.container && <ContainerPanel spec={v.container} theme={theme} accent={accent} />}
         {v.steps && <StepsPanel spec={v.steps} theme={theme} accent={accent} />}
-        {v.stat && <StatPanel spec={v.stat} durationFrames={durationFrames} theme={theme} accent={accent} />}
-        {v.bars && <BarsPanel spec={v.bars} theme={theme} accent={accent} />}
+        {v.compare && <ComparePanel spec={v.compare} theme={theme} accent={accent} />}
+        {v.flow && <FlowPanel spec={v.flow} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.terminal && <TerminalPanel spec={v.terminal} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.browser && <BrowserPanel spec={v.browser} theme={theme} accent={accent} />}
+        {v.counter && <CounterPanel spec={v.counter} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.chart && <ChartPanel spec={v.chart} theme={theme} accent={accent} />}
+        {v.progress && <ProgressPanel spec={v.progress} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.table && <TablePanel spec={v.table} theme={theme} accent={accent} />}
+        {v.alert && <AlertPanel spec={v.alert} theme={theme} accent={accent} />}
+        {v.svg && <SvgPanel spec={v.svg} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        </g>
 
         {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
-        {v.callouts.length > 0 && <CalloutRow items={v.callouts} color={accent} centerX={figureX < world.width / 2 ? 1280 : 640} world={world} />}
+        {v.callouts.length > 0 && !hasPanel && <CalloutRow items={v.callouts} color={accent} range={layout.calloutRange} world={world} />}
 
         {active && (() => {
           const local = frame - speakFrom;

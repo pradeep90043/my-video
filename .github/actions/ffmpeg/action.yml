@@ -1,0 +1,32 @@
+name: Install ffmpeg
+description: Static ffmpeg/ffprobe, cached, with retries (16 runners hitting one external host at once made the old action fail with "fetch failed")
+runs:
+  using: composite
+  steps:
+    - id: cache
+      uses: actions/cache@v4
+      with:
+        path: ~/ffmpeg-static
+        key: ffmpeg-btbn-linux64-gpl-v1
+
+    - name: Download ffmpeg (GitHub-hosted build, retried)
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        mkdir -p "$HOME/ffmpeg-static" && cd "$HOME/ffmpeg-static"
+        URL="https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz"
+        ok=0
+        for i in 1 2 3 4 5 6; do
+          if curl -fsSL --retry 3 --retry-delay 3 -o ff.tar.xz "$URL" && tar -tf ff.tar.xz >/dev/null 2>&1; then ok=1; break; fi
+          echo "ffmpeg download attempt $i failed; retrying"; sleep $((i * 6))
+        done
+        [ "$ok" = 1 ] || { echo "::error::could not download ffmpeg"; exit 1; }
+        tar -xf ff.tar.xz --strip-components=2 --wildcards '*/bin/ffmpeg' '*/bin/ffprobe'
+        rm -f ff.tar.xz
+        chmod +x ffmpeg ffprobe
+
+    - name: Put ffmpeg on PATH
+      shell: bash
+      run: |
+        echo "$HOME/ffmpeg-static" >> "$GITHUB_PATH"
+        "$HOME/ffmpeg-static/ffmpeg" -version | head -1

@@ -116,6 +116,16 @@ export const RemotionRoot: React.FC = () => {
           const res = await fetch(staticFile(`content/${props.project}/video.json`));
           if (!res.ok) throw new Error(`Cannot load content/${props.project}/video.json (${res.status})`);
           const data = (await res.json()) as StickmanProjectData;
+          try {
+            // optional lip-sync track written by `longform:merge`
+            const env = await fetch(staticFile(`content/${props.project}/audio/voiceover.env.json`));
+            if (env.ok) {
+              const j = (await env.json()) as { fps: number; levels: number[] };
+              if (j.fps === data.fps && Array.isArray(j.levels)) data.mouth = j.levels;
+            }
+          } catch {
+            /* no envelope: the mouth falls back to the generic flap */
+          }
           return {
             fps: data.fps,
             ...(data.orientation === "vertical" ? { width: 1080, height: 1920 } : {}),

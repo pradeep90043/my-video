@@ -15,6 +15,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { audioDir, loadVideoJson, resolveProject } from "./lib";
 import { fail, getArg, probeDuration, run } from "./util";
+import { writeMouthEnvelope } from "./mouth-envelope";
 
 const TARGET_LUFS = -16;
 
@@ -75,6 +76,12 @@ function main() {
   }
 
   fs.renameSync(tmpPath, outputPath);
+  try {
+    // lip-sync data for the stickman template; the video still renders (with a generic flap) without it
+    writeMouthEnvelope(outputPath, path.join(dir, "voiceover.env.json"), data.fps);
+  } catch (e: any) {
+    console.warn(`⚠ lip-sync envelope skipped: ${e.message}`);
+  }
   console.log(
     `✅ [${slug}] Voiceover ready → public/content/${slug}/audio/voiceover.mp3 ` +
       `(${actual.toFixed(1)}s, ${TARGET_LUFS} LUFS)`,

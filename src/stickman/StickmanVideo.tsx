@@ -15,6 +15,8 @@ export interface StickmanProjectData {
   orientation?: "horizontal" | "vertical";
   /** optional music files under public/ (e.g. "audio/music-2.mp3"); a new one starts at every chapter scene, crossfaded. Default: audio/background-music.mp3 */
   music?: string[];
+  /** Lip-sync: mouth level 0..1 per video frame (voiceover.env.json); absent = generic flap */
+  mouth?: number[];
   scenes: { id: string; text: string; startFrame?: number; durationFrames?: number; duration?: number; pauseBefore?: number; visual?: unknown; words?: SpokenWord[] }[];
 }
 
@@ -58,7 +60,7 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
         const visual = StickmanVisualSchema.parse(scene.visual ?? {});
         const el = (
           <Sequence key={scene.id} from={from} durationInFrames={duration} name={scene.id}>
-            <StickmanScene index={index} words={scene.words} text={scene.text} visual={visual} durationFrames={duration} theme={theme} prevPose={prevPose} prevMood={prevMood} vertical={data.orientation === "vertical"}
+            <StickmanScene index={index} words={scene.words} text={scene.text} visual={visual} durationFrames={duration} startFrame={from} mouth={data.mouth} theme={theme} prevPose={prevPose} prevMood={prevMood} vertical={data.orientation === "vertical"}
               speakFrom={Math.round((scene.pauseBefore ?? 0) * data.fps)}
               speakFrames={scene.duration !== undefined ? Math.round(scene.duration * data.fps) : undefined} />
           </Sequence>

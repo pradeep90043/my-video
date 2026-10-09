@@ -78,6 +78,7 @@
     "longform:natural-audio": "tsx scripts/longs/generate-natural-audio.ts",
     "longform:images": "tsx scripts/longs/generate-images.ts",
     "longform:merge": "tsx scripts/longs/merge-audio.ts",
+    "longform:envelope": "tsx scripts/longs/envelope.ts",
     "longform:render": "tsx scripts/longs/render.ts",
     "bake:intro-outro": "tsx scripts/longs/bake-intro-outro.ts",
     "stitch": "tsx scripts/longs/stitch.ts",
