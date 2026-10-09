@@ -1,3 +1,4 @@
+import { DuckedMusic } from "../../shared/components/DuckedMusic";
 import React from "react";
 import {
   AbsoluteFill,
@@ -397,11 +398,7 @@ export const CollageAnimationVideo: React.FC<CollageAnimationProps> = ({
         src={staticFile("content/collage-animation/audio/voiceover.mp3")}
         volume={voVolume}
       />
-      <Audio
-        src={staticFile("audio/background-music.mp3")}
-        volume={bgMusicVolume}
-        loop
-      />
+      <DuckedMusic scenes={scenes} volume={bgMusicVolume} />
     </AbsoluteFill>
   );
 };

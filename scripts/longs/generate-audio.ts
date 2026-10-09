@@ -15,7 +15,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import { createHash } from "crypto";
-import { spawn } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import {
   audioDir,
   loadVideoJson,
@@ -37,15 +37,23 @@ function sceneHash(text: string, voice: string, rate: string, pitch: string, vol
   return createHash("sha256").update(parts.join("\u0000")).digest("hex");
 }
 
-/** One edge-tts call, non-blocking so several scenes can be generated at once. `--opt=value` form: values such as "-5%" or text starting with "-" would otherwise be parsed as flags. */
-function synthesizeAsync(text: string, voice: string, rate: string, pitch: string, volume: string, outPath: string): Promise<void> {
+const WORDS_SCRIPT = path.join(__dirname, "edge_words.py");
+
+/** Word timings (edge-tts Python API) need the `edge_tts` module; without it captions fall back to estimated timing. */
+const wordsSupported = spawnSync("python3", ["-c", "import edge_tts"], { stdio: "ignore" }).status === 0;
+
+/**
+ * One edge-tts call, non-blocking so several scenes can be generated at once. `--opt=value` form: values such as
+ * "-5%" or text starting with "-" would otherwise be parsed as flags. With word timings available the call goes through
+ * edge_words.py, which also writes `wordsPath` (word start/end in seconds); otherwise the plain CLI is used.
+ */
+function synthesizeAsync(text: string, voice: string, rate: string, pitch: string, volume: string, outPath: string, wordsPath: string): Promise<void> {
   const tmp = `${outPath}.part.mp3`;
+  fs.rmSync(wordsPath, { force: true });
   return new Promise<void>((resolve, reject) => {
-    const p = spawn(
-      "edge-tts",
-      [`--voice=${voice}`, `--rate=${rate}`, `--pitch=${pitch}`, `--volume=${volume}`, `--text=${text}`, `--write-media=${tmp}`],
-      { stdio: ["ignore", "ignore", "pipe"] },
-    );
+    const p = wordsSupported
+      ? spawn("python3", [WORDS_SCRIPT, `--voice=${voice}`, `--rate=${rate}`, `--pitch=${pitch}`, `--volume=${volume}`, `--text=${text}`, `--media=${tmp}`, `--words=${wordsPath}`], { stdio: ["ignore", "ignore", "pipe"] })
+      : spawn("edge-tts", [`--voice=${voice}`, `--rate=${rate}`, `--pitch=${pitch}`, `--volume=${volume}`, `--text=${text}`, `--write-media=${tmp}`], { stdio: ["ignore", "ignore", "pipe"] });
     let err = "";
     p.stderr.on("data", (d) => { err += String(d); });
     const timer = setTimeout(() => p.kill("SIGKILL"), 180_000);
@@ -54,11 +62,13 @@ function synthesizeAsync(text: string, voice: string, rate: string, pitch: strin
       clearTimeout(timer);
       if (code !== 0) {
         fs.rmSync(tmp, { force: true });
+        fs.rmSync(wordsPath, { force: true });
         return reject(new Error(`edge-tts exit ${code}: ${err.trim().split("\n").pop()}`));
       }
       const dur = probeDuration(tmp);
       if (dur < MIN_SEGMENT_SECS) {
         fs.rmSync(tmp, { force: true });
+        fs.rmSync(wordsPath, { force: true });
         return reject(new Error(`generated audio is only ${dur.toFixed(2)}s — TTS likely returned nothing`));
       }
       fs.renameSync(tmp, outPath);
@@ -112,8 +122,9 @@ async function main() {
     );
     const spoken: string = scene.ttsText || scene.text;
     const hash = sceneHash(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume);
-    const cached = !force && cache[segmentName] === hash && fs.existsSync(segmentPath);
-    return { scene, i, segmentName, segmentPath, sceneVoice, sceneRate, scenePitch, sceneVolume, spoken, hash, cached };
+    const wordsPath = segmentPath.replace(/\.mp3$/, ".words.json");
+    const cached = !force && cache[segmentName] === hash && fs.existsSync(segmentPath) && (!wordsSupported || fs.existsSync(wordsPath));
+    return { scene, i, segmentName, segmentPath, wordsPath, sceneVoice, sceneRate, scenePitch, sceneVolume, spoken, hash, cached };
   });
   const todo = plan.filter((x) => !x.cached);
   const limit = Math.max(1, Number(process.env.TTS_CONCURRENCY) || 8);
@@ -127,8 +138,8 @@ async function main() {
       // two tries with the scene's emotion, then fall back to the neutral prosody so one scene can never kill a 100+ scene render
       await retry(`TTS for ${t.scene.id}`, 6, (attempt) =>
         attempt <= 2
-          ? synthesizeAsync(t.spoken, t.sceneVoice, t.sceneRate, t.scenePitch, t.sceneVolume, t.segmentPath)
-          : synthesizeAsync(t.spoken, t.sceneVoice, rate, pitch, "+0%", t.segmentPath),
+          ? synthesizeAsync(t.spoken, t.sceneVoice, t.sceneRate, t.scenePitch, t.sceneVolume, t.segmentPath, t.wordsPath)
+          : synthesizeAsync(t.spoken, t.sceneVoice, rate, pitch, "+0%", t.segmentPath, t.wordsPath),
       );
       cache[t.segmentName] = t.hash;
       fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2)); // persist progress per scene
@@ -140,7 +151,7 @@ async function main() {
   let currentStartFrame = 0;
   let totalDurationSec = 0;
   for (const t of plan) {
-    const { scene, segmentName, segmentPath } = t;
+    const { scene, segmentName, segmentPath, wordsPath } = t;
     if (t.cached) console.log(`  -> Scene ${t.i}: ${scene.id} (cached)`);
     const actualDurationSec = probeDuration(segmentPath);
     const pause = Math.max(0, Number(scene.pauseBefore) || 0);
@@ -150,6 +161,11 @@ async function main() {
     scene.startFrame = currentStartFrame;
     scene.durationFrames = durationFrames;
     scene.audioFile = segmentName;
+    try {
+      scene.words = JSON.parse(fs.readFileSync(wordsPath, "utf-8")); // seconds from the start of the line's audio
+    } catch {
+      delete scene.words;
+    }
 
     currentStartFrame += durationFrames;
     totalDurationSec += actualDurationSec + pause;
@@ -160,7 +176,7 @@ async function main() {
   // Drop stale segments from removed/renamed scenes so they can't leak into merges.
   const keep = new Set(data.scenes.map((s: any) => s.audioFile));
   for (const f of fs.readdirSync(outDir)) {
-    if (/^segment_.*\.mp3$/.test(f) && !keep.has(f)) {
+    if (/^segment_.*\.(mp3|words\.json)$/.test(f) && !keep.has(f.replace(/\.words\.json$/, ".mp3"))) {
       fs.rmSync(path.join(outDir, f));
       delete cache[f];
     }
