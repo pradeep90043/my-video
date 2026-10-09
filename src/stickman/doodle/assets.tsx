@@ -265,7 +265,7 @@ export const ASSET_DRAW: Record<SceneAsset, (t: P) => React.ReactNode> = {
       <path d="M70,130 Q72,152 92,160" fill="none" stroke={C.white} strokeWidth={8} />
     </g>
   ),
-  fire: (t) => (
+  fire: () => (
     <g {...ln}>
       <path d="M100,10 C108,44 150,62 150,114 C150,152 126,184 100,184 C74,184 50,152 50,114 C50,88 66,76 72,56 C84,72 90,70 92,62 C94,44 94,28 100,10 Z" fill="#EB2D2D" />
       <path d="M100,86 C106,108 128,116 128,144 C128,164 114,178 100,178 C86,178 72,164 72,144 C72,124 90,116 100,86 Z" fill="#F5B419" />
@@ -331,7 +331,7 @@ export const ASSET_DRAW: Record<SceneAsset, (t: P) => React.ReactNode> = {
       <ellipse cx={100} cy={100} rx={34} ry={80} fill="none" strokeWidth={3} opacity={0.5} />
     </g>
   ),
-  tree: (t) => (
+  tree: () => (
     <g {...ln}>
       <path d="M90,186 V120 H112 V186 Z" fill={C.brown} />
       <circle cx={100} cy={84} r={48} fill={C.leaf} />
@@ -340,7 +340,7 @@ export const ASSET_DRAW: Record<SceneAsset, (t: P) => React.ReactNode> = {
       <path d="M80,70 Q92,60 104,70" fill="none" stroke={C.white} strokeWidth={5} opacity={0.7} />
     </g>
   ),
-  sun: (t) => (
+  sun: () => (
     <g {...ln}>
       {Array.from({ length: 10 }, (_, i) => {
         const a = (i * Math.PI) / 5;
