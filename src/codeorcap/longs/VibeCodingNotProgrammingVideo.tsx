@@ -1324,12 +1324,6 @@ const MainStoryContent: React.FC<VibeCodingProps> = ({
         src={staticFile("content/VibeCodingNotProgramming/audio/voiceover.mp3")}
         volume={0.9}
       />
-      {/* Background music track */}
-      <Audio
-        src={staticFile("audio/background-music.mp3")}
-        volume={0.12}
-        loop
-      />
       {/* Render active scene component */}
       {scenes.map((scene: any) => {
         const frame = useCurrentFrame();
