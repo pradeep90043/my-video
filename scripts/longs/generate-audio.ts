@@ -36,11 +36,29 @@ function sceneHash(text: string, voice: string, rate: string, pitch: string, vol
   return createHash("sha256").update(parts.join("\u0000")).digest("hex");
 }
 
-function synthesize(text: string, voice: string, rate: string, pitch: string, volume: string, outPath: string): void {
+const WORDS_SCRIPT = path.join(__dirname, "edge_words.py");
+
+/** Synthesize via the Python API to get word-level timings; returns undefined if unavailable (CLI fallback). */
+function synthesizeWithWords(text: string, voice: string, rate: string, pitch: string, volume: string, tmp: string, wordsPath: string): boolean {
+  const r = run(
+    "python3",
+    [WORDS_SCRIPT, `--voice=${voice}`, `--rate=${rate}`, `--pitch=${pitch}`, `--volume=${volume}`, `--text=${text}`, `--media=${tmp}`, `--words=${wordsPath}`],
+    180_000,
+  );
+  return r.status === 0 && fs.existsSync(tmp) && fs.existsSync(wordsPath);
+}
+
+function synthesize(text: string, voice: string, rate: string, pitch: string, volume: string, outPath: string, wordsPath: string): void {
   // `--opt=value` form: values such as "-5%" or text starting with "-" would
   // otherwise be parsed by edge-tts's argparse as flags.
   const tmp = `${outPath}.part.mp3`;
-  const r = run(
+  fs.rmSync(wordsPath, { force: true });
+  if (!synthesizeWithWords(text, voice, rate, pitch, volume, tmp, wordsPath)) {
+    fs.rmSync(tmp, { force: true });
+    fs.rmSync(wordsPath, { force: true });
+    console.warn("     (word timings unavailable — falling back to the edge-tts CLI; captions will use estimated timing)");
+  }
+  const r = fs.existsSync(tmp) ? { status: 0, stderr: "" } : run(
     "edge-tts",
     [`--voice=${voice}`, `--rate=${rate}`, `--pitch=${pitch}`, `--volume=${volume}`, `--text=${text}`, `--write-media=${tmp}`],
     180_000,
@@ -67,6 +85,8 @@ async function main() {
 
   const outDir = audioDir(slug);
   fs.mkdirSync(outDir, { recursive: true });
+  // word-level timings need the edge-tts Python module; without it captions fall back to estimated timing
+  const wordsSupported = run("python3", ["-c", "import edge_tts"], 20_000).status === 0;
 
   const voice = data.voice;
   const rate = data.rate || "+0%";
@@ -106,13 +126,14 @@ async function main() {
     const spoken: string = scene.ttsText || scene.text;
     const hash = sceneHash(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume);
 
-    const cached = !force && cache[segmentName] === hash && fs.existsSync(segmentPath);
+    const wordsPath = segmentPath.replace(/\.mp3$/, ".words.json");
+    const cached = !force && cache[segmentName] === hash && fs.existsSync(segmentPath) && (!wordsSupported || fs.existsSync(wordsPath));
     if (cached) {
       console.log(`  -> Scene ${i}: ${scene.id} (cached)`);
     } else {
       console.log(`  -> Scene ${i}: ${scene.id} (voice: ${sceneVoice}, ${scene.visual?.mood ?? "neutral"}: ${sceneRate} ${scenePitch} ${sceneVolume})`);
       await retry(`TTS for ${scene.id}`, 3, () =>
-        synthesize(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume, segmentPath),
+        synthesize(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume, segmentPath, wordsPath),
       );
       cache[segmentName] = hash;
       fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2)); // persist progress per scene
@@ -127,6 +148,11 @@ async function main() {
     scene.startFrame = currentStartFrame;
     scene.durationFrames = durationFrames;
     scene.audioFile = segmentName;
+    try {
+      scene.words = JSON.parse(fs.readFileSync(wordsPath, "utf-8")); // seconds from the start of the line's audio
+    } catch {
+      delete scene.words;
+    }
 
     currentStartFrame += durationFrames;
     totalDurationSec += actualDurationSec + pause;
@@ -137,7 +163,7 @@ async function main() {
   // Drop stale segments from removed/renamed scenes so they can't leak into merges.
   const keep = new Set(data.scenes.map((s: any) => s.audioFile));
   for (const f of fs.readdirSync(outDir)) {
-    if (/^segment_.*\.mp3$/.test(f) && !keep.has(f)) {
+    if (/^segment_.*\.(mp3|words\.json)$/.test(f) && !keep.has(f.replace(/\.words\.json$/, ".mp3"))) {
       fs.rmSync(path.join(outDir, f));
       delete cache[f];
     }

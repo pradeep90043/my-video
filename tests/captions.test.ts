@@ -26,3 +26,21 @@ test("no chunk exceeds maxWords and words are preserved in order", () => {
 test("single short sentence yields one chunk", () => {
   assert.equal(buildCaptions("Hello there", 60).length, 1);
 });
+
+test("real word timings drive chunk and word timing, dashes ride along", () => {
+  const spoken = [
+    { text: "Har", start: 0.1, end: 0.35 }, { text: "dusra", start: 0.4, end: 0.9 },
+    { text: "video", start: 0.9, end: 1.3 }, { text: "bol", start: 1.3, end: 1.6 },
+  ];
+  const chunks = buildCaptions("Har dusra video bol —", 90, 7, spoken, 30);
+  assert.equal(chunks.length, 1);
+  const w = chunks[0].words;
+  assert.equal(w.length, 5);
+  assert.equal(w[1].start, 12); // 0.4s * 30
+  assert.equal(w[4].start, w[4].end); // the dash has no time of its own
+});
+
+test("falls back to proportional timing when word counts differ", () => {
+  const chunks = buildCaptions("Har dusra video", 60, 7, [{ text: "x", start: 0, end: 1 }], 30);
+  assert.equal(chunks[0].words.length, 3);
+});

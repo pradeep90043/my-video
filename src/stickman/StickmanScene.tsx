@@ -7,7 +7,7 @@ import { WORLD, WORLD_VERTICAL, type Theme, type World } from "./theme";
 import { Figure, blendedPose } from "./Figure";
 import { ScreenFx, cameraPunch } from "./Emotion";
 import { PropDrawing } from "./Props";
-import { buildCaptions } from "./captions";
+import { buildCaptions, type SpokenWord } from "./captions";
 import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
 
 // Load only what is used (latin, weights 800/900) — the defaults fetch every subset and weight.
@@ -28,6 +28,8 @@ interface SceneProps {
   vertical?: boolean;
   /** position in the video; drives the "auto" transition rotation */
   index?: number;
+  /** TTS word timings (seconds from the start of the line) for exact karaoke captions */
+  words?: SpokenWord[];
 }
 
 const PROP_BASE_SCALE = 1.7;
@@ -111,7 +113,7 @@ const CalloutRow: React.FC<{ items: string[]; color: string; centerX: number; wo
   );
 };
 
-export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, index = 0 }) => {
+export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, index = 0, words }) => {
   const world: World = vertical ? WORLD_VERTICAL : WORLD;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -142,8 +144,13 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
   const sfx = v.sfx === "auto" ? (prevMood !== undefined && prevMood !== v.mood ? MOOD_SFX[v.mood] : undefined) : v.sfx === "none" ? undefined : v.sfx;
 
   const seed = Math.floor(frame / 4); // "boiling line" hand-drawn wobble
+  const groundPath = (() => {
+    const pts: string[] = [];
+    for (let x = 0; x <= world.width; x += 160) pts.push(`${x},${world.ground + 4 + Math.sin(x * 0.013 + seed * 1.7) * 2.2}`);
+    return `M${pts.join(" L")}`;
+  })();
   const talking = frame >= speakFrom && (speakFrames === undefined || frame < speakFrom + speakFrames);
-  const captions = useMemo(() => buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7), [text, speakFrames, durationFrames, speakFrom, vertical]);
+  const captions = useMemo(() => buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7, words, fps), [text, speakFrames, durationFrames, speakFrom, vertical, words, fps]);
   const active = captions.find((c) => frame - speakFrom >= c.start && frame - speakFrom < c.end);
   const capOpacity = (() => {
     if (!active) return 0;
@@ -172,7 +179,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
       <svg viewBox={`0 0 ${world.width} ${world.height}`} width="100%" height="100%" style={{ opacity: fadeIn }}>
         <defs>
           <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves={2} seed={seed % 50} result="n" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves={1} seed={seed % 50} result="n" />
             <feDisplacementMap in="SourceGraphic" in2="n" scale={4} />
           </filter>
           <pattern id="dots" width="60" height="60" patternUnits="userSpaceOnUse">
@@ -187,13 +194,14 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
           </clipPath>
         </defs>
 
+        <rect width={world.width} height={world.height} fill="url(#vignette)" />
         <g clipPath={transition === "iris" && tr < 1 ? "url(#irisClip)" : undefined} transform={sceneTransform}>
         <rect x={-60} y={-60} width={world.width + 120} height={world.height + 120} fill="url(#dots)" opacity={0.7} transform={`translate(${-drift},${-drift})`} />
-        <rect width={world.width} height={world.height} fill="url(#vignette)" />
 
         <g transform={`translate(${world.width / 2 + cam.x},${world.height / 2}) scale(${cam.s}) translate(${-world.width / 2},${-world.height / 2})`}>
+          {/* ground line drawn outside the filter (a full-width filter region is the costliest part of a frame); jittered by hand instead */}
+          <path d={groundPath} stroke={theme.ink} strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" fill="none" />
           <g filter="url(#rough)">
-            <path d={`M0,${world.ground + 4} H${world.width}`} stroke={theme.ink} strokeWidth={6} strokeLinecap="round" />
             {v.props.map((pr, i) => {
               const size = pr.scale * PROP_BASE_SCALE;
               const bottom = GROUNDED_PROP_BOTTOM[pr.type];
