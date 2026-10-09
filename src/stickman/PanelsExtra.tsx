@@ -2,8 +2,9 @@ import React from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadFiraCode } from "@remotion/google-fonts/FiraCode";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
+import { loadFont as loadPlayfair } from "@remotion/google-fonts/PlayfairDisplay";
 import type {
-  AlertSpec, BrowserSpec, ChartSpec, CompareSpec, CounterSpec, FlowSpec,
+  AlertSpec, BrowserSpec, ChartSpec, CompareSpec, CounterSpec, FlowSpec, NewsSpec,
   ProgressSpec, Shape, SvgSpec, TableSpec, TerminalSpec,
 } from "./schema";
 import type { Theme } from "./theme";
@@ -11,6 +12,8 @@ import { PANEL } from "./Panels";
 
 const fira = loadFiraCode("normal", { weights: ["500"], subsets: ["latin"] });
 const inter = loadInter("normal", { weights: ["800"], subsets: ["latin"] });
+const playfair = loadPlayfair("normal", { weights: ["700", "900"], subsets: ["latin"] });
+const serif = `${playfair.fontFamily}, Georgia, serif`;
 const sans = `${inter.fontFamily}, sans-serif`;
 const mono = `${fira.fontFamily}, monospace`;
 
@@ -489,6 +492,73 @@ export const SvgPanel: React.FC<{ spec: SvgSpec; durationFrames: number } & Comm
     <Shell>
       {spec.title && <text x={PANEL.w / 2} y={52} textAnchor="middle" fontSize={fit(spec.title, PANEL.w - 160, 52, 28)} fontWeight={800} fontFamily={sans} fill={theme.ink}>{spec.title}</text>}
       {body}
+    </Shell>
+  );
+};
+
+// ── News (newspaper clipping: masthead, headline with highlighted words, optional stamp) ───────
+/** Greedy word wrap using an average serif glyph width (Playfair 900 is ~0.52em per glyph). */
+const wrapWords = (text: string, size: number, width: number): string[][] => {
+  const lines: string[][] = [[]];
+  let w = 0;
+  for (const word of text.split(/\s+/).filter(Boolean)) {
+    const ww = (word.length + 1) * size * 0.52;
+    if (w + ww > width && lines[lines.length - 1].length) { lines.push([]); w = 0; }
+    lines[lines.length - 1].push(word);
+    w += ww;
+  }
+  return lines;
+};
+
+export const NewsPanel: React.FC<{ spec: NewsSpec } & Common> = ({ spec, theme }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const paper = "#F3ECDD";
+  const ink = "#1A1712";
+  const W = PANEL.w - 160, X0 = 80, H = PANEL.h - 70;
+  const innerW = W - 100;
+  // headline: the largest size (<= 74) that wraps into at most 4 lines
+  let size = 74, lines = wrapWords(spec.headline, size, innerW);
+  while (lines.length > 4 && size > 40) { size -= 4; lines = wrapWords(spec.headline, size, innerW); }
+  const lineH = size * 1.18;
+  const markWords = new Set((spec.mark ?? "").toLowerCase().split(/\s+/).filter(Boolean).map((w) => w.replace(/[^a-z0-9]/g, "")));
+  const enter = pop(frame, fps, 3);
+  const tilt = -1.2 + (1 - enter) * 4;
+  const headTop = 235;
+  const stampP = pop(frame, fps, 22);
+  const red = theme.accents.red;
+  return (
+    <Shell>
+      <g transform={`translate(${X0 + W / 2},${35 + H / 2}) rotate(${tilt}) scale(${0.94 + enter * 0.06}) translate(${-W / 2},${-H / 2})`}>
+        <rect x={10} y={14} width={W} height={H} rx={6} fill="#000" opacity={0.18} />
+        <rect width={W} height={H} rx={6} fill={paper} stroke={ink} strokeWidth={3} />
+        <text x={W / 2} y={84} textAnchor="middle" fontSize={fit(spec.outlet, W - 160, 76, 36)} fontWeight={900} fontFamily={serif} fill={ink}>{spec.outlet}</text>
+        <rect x={40} y={104} width={W - 80} height={4} fill={ink} />
+        <rect x={40} y={114} width={W - 80} height={1.5} fill={ink} />
+        {spec.date && <text x={46} y={156} fontSize={26} fontWeight={700} fontFamily={serif} fill={ink} opacity={0.7}>{spec.date.toUpperCase()}</text>}
+        {lines.map((ln, li) => {
+          const y = headTop + 40 + li * lineH;
+          const lp = clamp01((frame - 8 - li * 5) / 10);
+          return (
+            <text key={li} x={50} y={y} fontSize={size} fontWeight={900} fontFamily={serif} fill={ink} opacity={lp} transform={`translate(0,${(1 - lp) * 14})`}>
+              {ln.map((word, wi) => {
+                const hit = markWords.has(word.toLowerCase().replace(/[^a-z0-9]/g, ""));
+                const k = clamp01((frame - 24 - li * 4 - wi * 2) / 8);
+                return <tspan key={wi} fill={hit ? red : ink} fillOpacity={hit ? 0.35 + 0.65 * k : 1}>{word}{wi < ln.length - 1 ? " " : ""}</tspan>;
+              })}
+            </text>
+          );
+        })}
+        {spec.deck && (
+          <text x={50} y={headTop + 40 + lines.length * lineH + 20} fontSize={fit(spec.deck, innerW, 34, 22)} fontWeight={700} fontFamily={serif} fill={ink} opacity={clamp01((frame - 16) / 12) * 0.78}>{spec.deck}</text>
+        )}
+        {spec.stamp && (
+          <g transform={`translate(${W - 230},152) rotate(-7) scale(${Math.max(0.001, 1.6 - stampP * 0.6)})`} opacity={clamp01(stampP * 1.5)}>
+            <rect x={-150} y={-36} width={300} height={72} rx={8} fill={paper} fillOpacity={0.85} stroke={red} strokeWidth={8} />
+            <text textAnchor="middle" y={19} fontSize={fit(spec.stamp, 260, 50, 26)} fontWeight={900} fontFamily={sans} fill={red}>{spec.stamp.toUpperCase()}</text>
+          </g>
+        )}
+      </g>
     </Shell>
   );
 };
