@@ -5,7 +5,7 @@ import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import type { CodeSpec, ContainerSpec, QuizSpec, StepsSpec } from "./schema";
 import type { Theme } from "./theme";
 import { PANEL } from "./PanelGeometry";
-import { tokenizeLine, type TokKind } from "./code";
+import { sliceTokens, tokenizeLine, type TokKind } from "./code";
 
 const fira = loadFiraCode("normal", { weights: ["500"], subsets: ["latin"] });
 const inter = loadInter("normal", { weights: ["800"], subsets: ["latin"] });
@@ -19,18 +19,27 @@ const pop = (frame: number, fps: number, delay: number) =>
 // ── Code ────────────────────────────────────────────────────────────────────
 const CODE_COLORS: Record<TokKind, string> = {
   ann: "#F5B419", kw: "#C792EA", str: "#7FD18B", com: "#7A869A", type: "#6CC4FF", plain: "#E6EDF7",
+  key: "#82AAFF", num: "#F78C6C", tag: "#F07178", attr: "#FFCB6B", prompt: "#7FD18B",
 };
 
 export const CodePanel: React.FC<{ spec: CodeSpec; durationFrames: number; accent: string }> = ({ spec, durationFrames, accent }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const s = pop(frame, fps, 2);
-  // Fit the text to the panel: bigger for short snippets, capped by the widest line.
+  // Fit the text to the panel: bigger for short snippets, capped by the widest line. Up to 14 lines always fit.
   const maxLen = Math.max(...spec.lines.map((l) => l.length), 1);
-  const lineH = Math.max(46, Math.min(66, Math.floor((PANEL.h - 150) / spec.lines.length)));
+  const lineH = Math.max(36, Math.min(66, Math.floor((PANEL.h - 130) / spec.lines.length)));
   const fontSize = Math.floor(Math.min(lineH * 0.76, (PANEL.w - 100) / (0.6 * maxLen)));
+  const charW = fontSize * 0.6; // Fira Code is 0.6em wide
+  const first = Math.min(spec.revealFrom, spec.lines.length - 1); // lines before this are already on screen
+  const newCount = spec.lines.length - first;
   const revealSpan = Math.max(20, durationFrames * 0.55);
-  const per = revealSpan / spec.lines.length;
+  const per = revealSpan / newCount;
+  // typing: new lines are typed one after another at a speed that finishes within the reveal span
+  const typed = spec.animate === "type";
+  const newChars = Math.max(1, spec.lines.slice(first).reduce((a, l) => a + l.length + 3, 0));
+  const speed = Math.min(3.5, Math.max(0.6, newChars / (revealSpan * 0.9)));
+  const startOf = (i: number) => 6 + spec.lines.slice(first, i).reduce((a, l) => a + (l.length + 3) / speed, 0);
   return (
     <g transform={`translate(${PANEL.x},${PANEL.y + (1 - s) * 40})`} opacity={Math.min(1, s * 2)}>
       <rect width={PANEL.w} height={PANEL.h} rx={26} fill="#1B1F2B" stroke="#0B0B0B" strokeWidth={6} />
@@ -42,15 +51,31 @@ export const CodePanel: React.FC<{ spec: CodeSpec; durationFrames: number; accen
       )}
       <g transform={`translate(40,${96 + lineH * 0.8})`}>
         {spec.lines.map((line, i) => {
-          const t = interpolate(frame, [6 + i * per, 6 + i * per + 10], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+          const isNew = i >= first;
+          const k = i - first;
+          const toks = tokenizeLine(line, spec.language);
+          let t = 1;
+          let shown = toks;
+          let caret = false;
+          if (isNew && typed) {
+            const chars = (frame - startOf(i)) * speed;
+            t = chars <= 0 ? 0 : 1;
+            shown = sliceTokens(toks, chars);
+            caret = chars > 0 && chars < line.length + 3 || (frame - startOf(i) > 0 && i === spec.lines.length - 1 && Math.floor(frame / 15) % 2 === 0);
+          } else if (isNew) {
+            t = interpolate(frame, [6 + k * per, 6 + k * per + 10], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+          }
+          // a highlight lights up once its line is on screen
           const hl = spec.highlight.includes(i);
+          const slide = isNew && !typed ? (1 - t) * -24 : 0;
           return (
-            <g key={i} opacity={t} transform={`translate(${(1 - t) * -24},${i * lineH})`}>
+            <g key={i} opacity={isNew && typed ? (t > 0 ? 1 : 0) : t} transform={`translate(${slide},${i * lineH})`}>
               {hl && <rect x={-20} y={-lineH * 0.78} width={PANEL.w - 40} height={lineH} rx={8} fill={accent} opacity={0.28} />}
               {hl && <rect x={-20} y={-lineH * 0.78} width={8} height={lineH} rx={4} fill={accent} />}
               <text fontSize={fontSize} fontFamily={`${fira.fontFamily}, monospace`} style={{ whiteSpace: "pre" }} xmlSpace="preserve">
-                {tokenizeLine(line).map((tk, j) => <tspan key={j} fill={CODE_COLORS[tk.kind]}>{tk.text}</tspan>)}
+                {shown.map((tk, j) => <tspan key={j} fill={CODE_COLORS[tk.kind]}>{tk.text}</tspan>)}
               </text>
+              {caret && <rect x={shown.reduce((a, tk) => a + tk.text.length, 0) * charW + 2} y={-fontSize * 0.82} width={Math.max(3, fontSize * 0.1)} height={fontSize * 1.05} fill="#E6EDF7" />}
             </g>
           );
         })}
