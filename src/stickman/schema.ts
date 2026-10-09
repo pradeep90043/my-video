@@ -163,6 +163,21 @@ export const AlertSchema = z.object({
 });
 
 
+/** Newspaper clipping (an original graphic with a real headline, quoted and attributed to its outlet). */
+export const NewsSchema = z.object({
+  /** outlet name shown as the masthead, e.g. "Reuters" */
+  outlet: z.string().min(1).max(28),
+  /** e.g. "Oct 8, 2026" */
+  date: z.string().max(24).optional(),
+  headline: z.string().min(1).max(110),
+  /** sub-headline / standfirst under the headline */
+  deck: z.string().max(140).optional(),
+  /** words of the headline to highlight with a marker swipe */
+  mark: z.string().max(60).optional(),
+  /** rotated stamp over the clipping, e.g. "ALLEGED", "REPORTED", "UNCONFIRMED" */
+  stamp: z.string().max(16).optional(),
+});
+
 /**
  * Free-form diagram drawn from a small shape language (an AI "draws" the visual for concepts no
  * ready-made panel fits). Coordinates are in panel space: x 0..1300, y 0..700. Shapes appear in
@@ -222,7 +237,7 @@ export const SceneSchema = z.object({
 /** Every panel key. A scene may use only one. */
 export const PANEL_KEYS = [
   "code", "quiz", "container", "steps",
-  "compare", "flow", "terminal", "browser", "counter", "chart", "progress", "table", "alert", "svg", "scene",
+  "compare", "flow", "terminal", "browser", "counter", "chart", "progress", "table", "alert", "svg", "scene", "news",
 ] as const;
 
 export const StickmanVisualSchema = z.object({
@@ -260,6 +275,7 @@ export const StickmanVisualSchema = z.object({
   alert: AlertSchema.optional(),
   svg: SvgSchema.optional(),
   scene: SceneSchema.optional(),
+  news: NewsSchema.optional(),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),
@@ -293,6 +309,7 @@ export type ProgressSpec = z.infer<typeof ProgressSchema>;
 export type TableSpec = z.infer<typeof TableSchema>;
 export type AlertSpec = z.infer<typeof AlertSchema>;
 export type SvgSpec = z.infer<typeof SvgSchema>;
+export type NewsSpec = z.infer<typeof NewsSchema>;
 export type SceneSpec = z.infer<typeof SceneSchema>;
 export type Shape = z.infer<typeof ShapeSchema>;
 export type StickmanVisual = z.infer<typeof StickmanVisualSchema>;
