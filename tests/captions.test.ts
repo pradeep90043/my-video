@@ -44,3 +44,20 @@ test("falls back to proportional timing when word counts differ", () => {
   const chunks = buildCaptions("Har dusra video", 60, 7, [{ text: "x", start: 0, end: 1 }], 30);
   assert.equal(chunks[0].words.length, 3);
 });
+
+test("maxChars keeps every chunk inside the frame width, words stay in order", () => {
+  // the sentence that ran off the 1080px vertical frame in real "how it works" clips
+  const text = "This myth-busting involves contrasting public perception of emerging technologies against real-world architecture, operational constraints and algorithmic boundaries.";
+  const chunks = buildCaptions(text, 300, 4, undefined, 30, 22);
+  for (const c of chunks) assert.ok(c.text.length <= 22 || !c.text.includes(" "), `too wide: "${c.text}"`);
+  assert.equal(chunks.map((c) => c.text).join(" "), text);
+  assert.ok(chunks.length >= 8, "long words need more chunks than the word limit alone would give");
+});
+
+test("maxChars does not change short text or the default behaviour", () => {
+  assert.equal(buildCaptions("Hello there", 60, 4, undefined, 30, 22).length, 1);
+  assert.deepEqual(
+    buildCaptions("one two three four five", 100, 5, undefined, 30).map((c) => c.text),
+    buildCaptions("one two three four five", 100, 5, undefined, 30, undefined).map((c) => c.text),
+  );
+});

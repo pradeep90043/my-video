@@ -27,15 +27,43 @@ export interface SpokenWord {
 
 const SPOKEN = /[\p{L}\p{N}]/u;
 
-function splitPieces(text: string, maxWords: number): string[][] {
+/**
+ * One sentence as balanced chunks of at most `maxWords` words AND (when given) `maxChars` characters, so a chunk of long
+ * words still fits the frame width instead of running off the screen.
+ */
+function chunkWords(words: string[], maxWords: number, maxChars?: number): string[][] {
+  if (!maxChars) {
+    const parts = Math.ceil(words.length / maxWords);
+    const size = Math.ceil(words.length / parts); // balanced chunks, no 1-word orphans
+    const out: string[][] = [];
+    for (let i = 0; i < words.length; i += size) out.push(words.slice(i, i + size));
+    return out;
+  }
+  const len = (w: string[]) => w.join(" ").length;
+  // fewest chunks that respect both limits (greedy)...
+  const greedy: string[][] = [];
+  let cur: string[] = [];
+  for (const w of words) {
+    if (cur.length && (cur.length >= maxWords || len([...cur, w]) > maxChars)) { greedy.push(cur); cur = []; }
+    cur.push(w);
+  }
+  if (cur.length) greedy.push(cur);
+  if (greedy.length <= 1) return greedy;
+  // ...then spread the words evenly over that many chunks (no lone orphan at the end), if every chunk still fits
+  const size = Math.ceil(words.length / greedy.length);
+  const balanced: string[][] = [];
+  for (let i = 0; i < words.length; i += size) balanced.push(words.slice(i, i + size));
+  const fits = balanced.length === greedy.length && balanced.every((c) => c.length <= maxWords && (len(c) <= maxChars || c.length === 1));
+  return fits ? balanced : greedy;
+}
+
+function splitPieces(text: string, maxWords: number, maxChars?: number): string[][] {
   const sentences = text.replace(/\s+/g, " ").trim().match(/[^.!?…—]+[.!?…—]*/g) ?? [text];
   const pieces: string[][] = [];
   for (const sentence of sentences) {
     const words = sentence.trim().split(" ").filter(Boolean);
     if (!words.length) continue;
-    const parts = Math.ceil(words.length / maxWords);
-    const size = Math.ceil(words.length / parts); // balanced chunks, no 1-word orphans
-    for (let i = 0; i < words.length; i += size) pieces.push(words.slice(i, i + size));
+    pieces.push(...chunkWords(words, maxWords, maxChars));
   }
   return pieces;
 }
@@ -59,8 +87,9 @@ function alignSpoken(tokens: string[], spoken: SpokenWord[], fps: number): Capti
   return out;
 }
 
-export function buildCaptions(text: string, durationFrames: number, maxWords = 7, spoken?: SpokenWord[], fps = 30): CaptionChunk[] {
-  const pieces = splitPieces(text, maxWords);
+/** `maxChars`: longest chunk in characters (vertical frames are narrow; long words would otherwise run off the screen). */
+export function buildCaptions(text: string, durationFrames: number, maxWords = 7, spoken?: SpokenWord[], fps = 30, maxChars?: number): CaptionChunk[] {
+  const pieces = splitPieces(text, maxWords, maxChars);
   const aligned = spoken ? alignSpoken(pieces.flat(), spoken, fps) : undefined;
 
   if (aligned) {

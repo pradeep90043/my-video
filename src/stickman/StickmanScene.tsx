@@ -179,7 +179,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
   // real speech loudness when the project has a lip-sync track; undefined = generic flap
   const mouthLevel = mouth ? mouth[startFrame + frame] ?? 0 : undefined;
   const talking = frame >= speakFrom && (speakFrames === undefined || frame < speakFrom + speakFrames);
-  const captions = useMemo(() => buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7, words, fps), [text, speakFrames, durationFrames, speakFrom, vertical, words, fps]);
+  const captions = useMemo(() => buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7, words, fps, vertical ? 22 : 52), [text, speakFrames, durationFrames, speakFrom, vertical, words, fps]);
   const active = captions.find((c) => frame - speakFrom >= c.start && frame - speakFrom < c.end);
   const capOpacity = (() => {
     if (!active) return 0;
@@ -284,7 +284,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {active && (() => {
           const local = frame - speakFrom;
           const pop = spring({ frame: local - active.start, fps, config: { damping: 14, stiffness: 220, mass: 0.5 } });
-          const capSize = vertical ? 70 : 50;
+          // never wider than the frame: shrink the font for a chunk that is still too long (Inter 800 is ~0.62em per glyph)
+          const capSize = Math.max(36, Math.min(vertical ? 70 : 50, (world.width - 100) / (Math.max(1, active.text.length) * 0.62)));
           return (
             <g opacity={capOpacity} transform={`translate(${world.width / 2},${(vertical ? world.height - 420 : 985) + (1 - pop) * 14}) scale(${0.94 + 0.06 * pop})`}>
               <text textAnchor="middle" fontSize={capSize} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`}
