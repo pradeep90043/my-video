@@ -69,6 +69,42 @@ export const StepsSchema = z.object({
   current: z.number().int().min(0).default(0),
 });
 
+/** Animated Noto emoji (Lottie). `emoji` is the hex codepoint, e.g. "1f525" 🔥 — fetched by `npm run longform:assets`. */
+export const StickerSchema = z.object({
+  emoji: z.string().regex(/^[0-9a-f]{4,6}(_[0-9a-f]{4,6})*$/i, "hex codepoint(s), e.g. 1f525"),
+  x: z.number().min(0).max(1).default(0.8),
+  y: z.number().min(0).max(1).default(0.3),
+  /** size in world units (px of the 1920/1080 canvas) */
+  size: z.number().min(60).max(900).default(220),
+  delay: z.number().int().min(0).default(10),
+});
+
+/** Stock / local footage shown behind or beside the figure. */
+export const BrollSchema = z.object({
+  /** path under public/ (e.g. "content/<slug>/broll/s1.mp4"). Filled in by `longform:assets` when `query` is set. */
+  src: z.string().optional(),
+  /** search term for Pexels (needs PEXELS_API_KEY) */
+  query: z.string().max(60).optional(),
+  /** "full" = dimmed full-bleed backdrop; "card" = rounded card on the right */
+  mode: z.enum(["full", "card"]).default("full"),
+  opacity: z.number().min(0.1).max(1).default(0.45),
+  /** start offset into the clip, seconds */
+  startFrom: z.number().min(0).default(0),
+});
+
+/** A rigged Rive character / animation (.riv under public/). */
+export const RiveSchema = z.object({
+  src: z.string(),
+  x: z.number().min(0).max(1).default(0.78),
+  y: z.number().min(0).max(1).default(0.55),
+  size: z.number().min(100).max(1200).default(520),
+  artboard: z.string().optional(),
+  animation: z.string().optional(),
+});
+
+export const TRANSITIONS = ["auto", "cut", "wipe", "slide", "fade", "flip", "clock", "iris"] as const;
+export const BACKDROPS = ["dots", "aurora", "grid", "particles"] as const;
+
 export const StickmanVisualSchema = z.object({
   pose: z.enum(POSES).default("idle"),
   mood: z.enum(MOODS).default("neutral"),
@@ -88,10 +124,18 @@ export const StickmanVisualSchema = z.object({
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),
-  camera: z.enum(["none", "push", "pull", "pan-left", "pan-right"]).default("none"),
-  // not an animation: a per-scene setting that StickmanScene drives from useCurrentFrame()
-  // eslint-disable-next-line @remotion/non-pure-animation
-  transition: z.enum(["cut", "wipe"]).default("cut"),
+  camera: z.enum(["none", "push", "pull", "pan-left", "pan-right", "zoom-in", "drift", "shake", "whip"]).default("none"),
+  /** camera target for push/zoom-in, in 0..1 frame coordinates (default: centre) */
+  cameraFocus: z.object({ x: z.number().min(0).max(1), y: z.number().min(0).max(1) }).optional(),
+  /** how this scene is entered. "auto" picks by context (chapter change → wipe, mood change → flip, else slide/fade). */
+  transition: z.enum(TRANSITIONS).default("auto"),
+  /** animated background style */
+  backdrop: z.enum(BACKDROPS).default("dots"),
+  stickers: z.array(StickerSchema).max(6).default([]),
+  broll: BrollSchema.optional(),
+  rive: RiveSchema.optional(),
+  /** cinematic light-leak flash over the scene opening (auto-on for "excited" mood changes) */
+  leak: z.boolean().optional(),
   accent: z.enum(ACCENTS).default("blue"),
   /** Emotion SFX: "auto" (default) plays the mood's sound when the mood changes from the previous scene. */
   sfx: z.enum(["auto", "none", ...SFX_NAMES]).default("auto"),
@@ -103,6 +147,8 @@ export const StickmanVisualSchema = z.object({
   calm: z.boolean().default(false),
 });
 
+export type StickerSpec = z.infer<typeof StickerSchema>;
+export type TransitionName = (typeof TRANSITIONS)[number];
 export type CodeSpec = z.infer<typeof CodeSchema>;
 export type QuizSpec = z.infer<typeof QuizSchema>;
 export type ContainerSpec = z.infer<typeof ContainerSchema>;

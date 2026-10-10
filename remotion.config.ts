@@ -13,3 +13,6 @@ Config.overrideWebpackConfig(enableTailwind);
 try {
   Config.setWatermark("ignore");
 } catch(e) {}
+
+// Light leaks (@remotion/light-leaks) are WebGL2 effects.
+Config.setChromiumOpenGlRenderer("angle");

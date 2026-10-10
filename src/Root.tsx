@@ -14,6 +14,7 @@ import vibeCodingData from "../public/content/VibeCodingNotProgramming/video.jso
 import vibeShortData from "../public/content/VibeCodingNotProgrammingShort/video.json";
 import maaKiDiaryData from "../public/content/MaaKiDiary/video.json";
 import collageData from "../public/content/collage-animation/video.json";
+import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import { StickmanVideo, stickmanSchema, type StickmanProjectData } from "./stickman/StickmanVideo";
 import { staticFile } from "remotion";
 import {
@@ -116,6 +117,12 @@ export const RemotionRoot: React.FC = () => {
           const res = await fetch(staticFile(`content/${props.project}/video.json`));
           if (!res.ok) throw new Error(`Cannot load content/${props.project}/video.json (${res.status})`);
           const data = (await res.json()) as StickmanProjectData;
+          // Length of the looping music bed: the composition tiles it so ducking can follow the voice.
+          try {
+            data.musicFrames = Math.round((await getAudioDurationInSeconds(staticFile("audio/background-music.mp3"))) * data.fps);
+          } catch {
+            /* falls back to a single un-looped pass */
+          }
           return {
             fps: data.fps,
             ...(data.orientation === "vertical" ? { width: 1080, height: 1920 } : {}),

@@ -69,8 +69,8 @@ export const QuizPanel: React.FC<{ spec: QuizSpec; durationFrames: number; theme
   const timerStart = 14;
   const remaining = interpolate(frame, [timerStart, revealFrame], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const green = theme.accents.green;
-  const rowH = spec.options.length > 3 ? 126 : 148;
-  const top = 250;
+  const rowH = spec.options.length > 3 ? 108 : 148;
+  const top = spec.options.length > 3 ? 228 : 250;
   return (
     <g transform={`translate(${PANEL.x},${PANEL.y + (1 - s) * 40})`} opacity={Math.min(1, s * 2)}>
       <rect width={PANEL.w} height={PANEL.h} rx={26} fill={theme.bg} stroke={theme.ink} strokeWidth={7} />

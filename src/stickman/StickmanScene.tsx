@@ -1,13 +1,17 @@
 import React from "react";
-import { AbsoluteFill, Audio, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, interpolate, random, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadMontserrat } from "@remotion/google-fonts/Montserrat";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
-import { GROUNDED_PROP_BOTTOM, MOOD_SFX, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
+import { GROUNDED_PROP_BOTTOM, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
 import { WORLD, WORLD_VERTICAL, type Theme, type World } from "./theme";
 import { Figure, blendedPose } from "./Figure";
+import { figureFraction } from "./fx/timeline";
 import { ScreenFx, cameraPunch } from "./Emotion";
 import { PropDrawing } from "./Props";
-import { buildCaptions } from "./captions";
+import { Backdrop } from "./fx/Backdrop";
+import { Broll } from "./fx/Broll";
+import { RiveLayer } from "./fx/RiveLayer";
+import { Stickers } from "./fx/Stickers";
 import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
 
 // Load only what is used (latin, weights 800/900) — the defaults fetch every subset and weight.
@@ -24,8 +28,11 @@ interface SceneProps {
   /** frames of silence before the line starts (scene.pauseBefore) and how long the line itself lasts */
   speakFrom?: number;
   speakFrames?: number;
-  muteSfx?: boolean;
+  /** word-level speaking windows (scene-relative frames); overrides speakFrom/speakFrames for the mouth */
+  talkRanges?: [number, number][];
   vertical?: boolean;
+  /** stable per-scene id (seeds the animated backdrop) */
+  sceneId?: string;
 }
 
 const PROP_BASE_SCALE = 1.7;
@@ -109,7 +116,7 @@ const CalloutRow: React.FC<{ items: string[]; color: string; centerX: number; wo
   );
 };
 
-export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false }) => {
+export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, talkRanges, vertical = false, sceneId = "scene" }) => {
   const world: World = vertical ? WORLD_VERTICAL : WORLD;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -121,56 +128,49 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
   const hasPanel = Boolean(v.code || v.quiz || v.container || v.steps);
   // With a panel on the right the figure shrinks and tucks into the left strip.
   const figureScale = v.figureScale ?? (hasPanel ? 0.8 : vertical ? 1.9 : FIGURE_SCALE);
-  const figureXFrac = hasPanel && v.figureX === 0.3 ? 0.14 : vertical && v.figureX === 0.3 ? 0.5 : v.figureX;
-  const figureX = (v.flip ? 1 - figureXFrac : figureXFrac) * world.width;
+  const talking = talkRanges
+    ? talkRanges.some(([a, b]) => frame >= a && frame < b)
+    : frame >= speakFrom && (speakFrames === undefined || frame < speakFrom + speakFrames);
+  const targetX = figureFraction(v, vertical) * world.width;
+
+  const figureX = targetX;
 
   // Camera
   const p = interpolate(frame, [0, durationFrames], [0, 1], { extrapolateRight: "clamp" });
   const punch = v.calm ? 0 : cameraPunch(v.mood, frame);
+  const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+  const shake = Math.max(0, 1 - frame / 14);
   const cam0 = {
-    none: { s: 1, x: 0 },
-    push: { s: 1 + 0.07 * p, x: 0 },
-    pull: { s: 1.07 - 0.07 * p, x: 0 },
-    "pan-left": { s: 1.05, x: 40 - 80 * p },
-    "pan-right": { s: 1.05, x: -40 + 80 * p },
+    none: { s: 1, x: 0, y: 0 },
+    push: { s: 1 + 0.07 * p, x: 0, y: 0 },
+    pull: { s: 1.07 - 0.07 * p, x: 0, y: 0 },
+    "pan-left": { s: 1.05, x: 40 - 80 * p, y: 0 },
+    "pan-right": { s: 1.05, x: -40 + 80 * p, y: 0 },
+    "zoom-in": { s: 1 + 0.22 * ease(p), x: 0, y: 0 },
+    drift: { s: 1.05, x: Math.sin(frame * 0.015) * 34, y: Math.cos(frame * 0.012) * 18 },
+    shake: { s: 1.03, x: (random(`${sceneId}-sx-${frame}`) - 0.5) * 36 * shake, y: (random(`${sceneId}-sy-${frame}`) - 0.5) * 36 * shake },
+    // fast whip-pan settle: arrives from the side and eases to rest
+    whip: { s: 1 + 0.05 * (1 - ease(Math.min(1, frame / 12))), x: 160 * (1 - ease(Math.min(1, frame / 12))), y: 0 },
   }[v.camera];
   const cam = { ...cam0, s: cam0.s + punch };
-
-  // Emotion SFX: explicit, or the mood's sound when the mood changes between scenes.
-  const sfx = v.sfx === "auto" ? (prevMood !== undefined && prevMood !== v.mood ? MOOD_SFX[v.mood] : undefined) : v.sfx === "none" ? undefined : v.sfx;
+  const focus = { x: (v.cameraFocus?.x ?? 0.5) * world.width, y: (v.cameraFocus?.y ?? 0.5) * world.height };
 
   const seed = Math.floor(frame / 4); // "boiling line" hand-drawn wobble
-  const talking = frame >= speakFrom && (speakFrames === undefined || frame < speakFrom + speakFrames);
-  const captions = buildCaptions(text, speakFrames ?? Math.max(1, durationFrames - speakFrom), vertical ? 4 : 7);
-  const active = captions.find((c) => frame - speakFrom >= c.start && frame - speakFrom < c.end);
-  const capOpacity = (() => {
-    if (!active) return 0;
-    const local = frame - speakFrom;
-    const dur = active.end - active.start;
-    if (dur <= 0) return 0;
-    if (dur < 8) return 1;
-    return interpolate(local, [active.start, active.start + 4, active.end - 3, active.end], [0, 1, 1, 0.85], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  })();
-
-  const fadeIn = interpolate(frame, [0, 5], [0, 1], { extrapolateRight: "clamp" });
-  const wipeX = interpolate(frame, [0, 10], [-world.width, world.width], { extrapolateRight: "clamp" });
 
   return (
     <AbsoluteFill style={{ backgroundColor: theme.bg }}>
-      <svg viewBox={`0 0 ${world.width} ${world.height}`} width="100%" height="100%" style={{ opacity: fadeIn }}>
+      {v.broll && <Broll spec={v.broll} durationFrames={durationFrames} width={world.width} height={world.height} theme={theme} />}
+      <svg viewBox={`0 0 ${world.width} ${world.height}`} width="100%" height="100%" style={{ position: "absolute", inset: 0, zIndex: 1 }}>
         <defs>
           <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
             <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves={2} seed={seed % 50} result="n" />
             <feDisplacementMap in="SourceGraphic" in2="n" scale={4} />
           </filter>
-          <pattern id="dots" width="60" height="60" patternUnits="userSpaceOnUse">
-            <circle cx="30" cy="30" r="2.2" fill={theme.faint} />
-          </pattern>
         </defs>
 
-        <rect width={world.width} height={world.height} fill="url(#dots)" opacity={0.7} />
+        <Backdrop style={v.backdrop} theme={theme} world={world} accent={accent} seed={sceneId} />
 
-        <g transform={`translate(${world.width / 2 + cam.x},${world.height / 2}) scale(${cam.s}) translate(${-world.width / 2},${-world.height / 2})`}>
+        <g transform={`translate(${focus.x + cam.x},${focus.y + cam.y}) scale(${cam.s}) translate(${-focus.x},${-focus.y})`}>
           <g filter="url(#rough)">
             <path d={`M0,${world.ground + 4} H${world.width}`} stroke={theme.ink} strokeWidth={6} strokeLinecap="round" />
             {v.props.map((pr, i) => {
@@ -203,33 +203,12 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {v.steps && <StepsPanel spec={v.steps} theme={theme} accent={accent} />}
 
         {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
-        {v.callouts.length > 0 && <CalloutRow items={v.callouts} color={accent} centerX={figureX < world.width / 2 ? 1280 : 640} world={world} />}
+        {v.callouts.length > 0 && <CalloutRow items={v.callouts} color={accent} centerX={targetX < world.width / 2 ? 1280 : 640} world={world} />}
 
-        {active && (
-          <g opacity={capOpacity} transform={`translate(${world.width / 2},${vertical ? world.height - 420 : 985})`}>
-            <text textAnchor="middle" fontSize={vertical ? 70 : 50} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`}
-              fill={theme.ink} stroke={theme.bg} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
-              {active.text}
-            </text>
-          </g>
-        )}
-
-        {v.transition === "wipe" && frame < 10 && (
-          <rect x={wipeX} y={0} width={world.width} height={world.height} fill={accent} />
-        )}
       </svg>
 
-      {!muteSfx && sfx && (
-        <Sequence from={v.sfxDelay} durationInFrames={Math.max(1, durationFrames - v.sfxDelay)}>
-          <Audio src={staticFile(`audio/sfx/${sfx}.mp3`)} volume={0.5} />
-        </Sequence>
-      )}
-      {!muteSfx && v.title && (
-        <Sequence from={4} durationInFrames={30}><Audio src={staticFile("audio/text-pop.mp3")} volume={0.25} /></Sequence>
-      )}
-      {!muteSfx && v.transition === "wipe" && (
-        <Sequence durationInFrames={30}><Audio src={staticFile("audio/text-whoosh.mp3")} volume={0.25} /></Sequence>
-      )}
+      {v.rive && <RiveLayer spec={v.rive} width={world.width} height={world.height} />}
+      {v.stickers.length > 0 && <Stickers items={v.stickers} width={world.width} height={world.height} />}
     </AbsoluteFill>
   );
 };

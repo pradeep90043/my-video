@@ -23,6 +23,8 @@ export interface LongformScene {
   ttsText?: string;
   /** seconds of silence before the line (a dramatic beat); counted in durationFrames */
   pauseBefore?: number;
+  /** seconds of silence after the line (e.g. quiz think-time); counted in durationFrames */
+  pauseAfter?: number;
   /** volume override, e.g. "+10%" */
   volume?: string;
   /** template-specific visual spec (see src/stickman/schema.ts) */

@@ -36,15 +36,18 @@ function sceneHash(text: string, voice: string, rate: string, pitch: string, vol
   return createHash("sha256").update(parts.join("\u0000")).digest("hex");
 }
 
+interface WordTiming {
+  w: string;
+  s: number;
+  d: number;
+}
+
+/** Synthesizes via scripts/longs/tts_words.py so we also get per-word timings (for karaoke captions). */
 function synthesize(text: string, voice: string, rate: string, pitch: string, volume: string, outPath: string): void {
-  // `--opt=value` form: values such as "-5%" or text starting with "-" would
-  // otherwise be parsed by edge-tts's argparse as flags.
   const tmp = `${outPath}.part.mp3`;
-  const r = run(
-    "edge-tts",
-    [`--voice=${voice}`, `--rate=${rate}`, `--pitch=${pitch}`, `--volume=${volume}`, `--text=${text}`, `--write-media=${tmp}`],
-    180_000,
-  );
+  const wordsTmp = `${outPath}.part.words.json`;
+  const helper = path.join(__dirname, "tts_words.py");
+  const r = run("python3", [helper, voice, rate, pitch, volume, text, tmp, wordsTmp], 180_000);
   if (r.status !== 0) {
     fs.rmSync(tmp, { force: true });
     throw new Error(`edge-tts exit ${r.status}: ${r.stderr.trim().split("\n").pop()}`);
@@ -55,6 +58,7 @@ function synthesize(text: string, voice: string, rate: string, pitch: string, vo
     throw new Error(`generated audio is only ${dur.toFixed(2)}s — TTS likely returned nothing`);
   }
   fs.renameSync(tmp, outPath); // atomic: never leave a half-written segment
+  if (fs.existsSync(wordsTmp)) fs.renameSync(wordsTmp, outPath.replace(/\.mp3$/, ".words.json"));
 }
 
 async function main() {
@@ -106,7 +110,8 @@ async function main() {
     const spoken: string = scene.ttsText || scene.text;
     const hash = sceneHash(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume);
 
-    const cached = !force && cache[segmentName] === hash && fs.existsSync(segmentPath);
+    const wordsPath = segmentPath.replace(/\.mp3$/, ".words.json");
+    const cached = !force && cache[segmentName] === hash && fs.existsSync(segmentPath) && fs.existsSync(wordsPath);
     if (cached) {
       console.log(`  -> Scene ${i}: ${scene.id} (cached)`);
     } else {
@@ -121,15 +126,21 @@ async function main() {
 
     const actualDurationSec = probeDuration(segmentPath);
     const pause = Math.max(0, Number(scene.pauseBefore) || 0);
-    const durationFrames = Math.ceil((actualDurationSec + pause) * fps);
+    const pauseAfter = Math.max(0, Number(scene.pauseAfter) || 0);
+    const durationFrames = Math.ceil((actualDurationSec + pause + pauseAfter) * fps);
 
-    scene.duration = actualDurationSec; // speech only; pauseBefore is added on top
+    scene.duration = actualDurationSec; // speech only; pauseBefore/pauseAfter are added on top
     scene.startFrame = currentStartFrame;
     scene.durationFrames = durationFrames;
     scene.audioFile = segmentName;
+    try {
+      scene.words = JSON.parse(fs.readFileSync(wordsPath, "utf-8")) as WordTiming[];
+    } catch {
+      delete scene.words; // renderer falls back to estimated word timings
+    }
 
     currentStartFrame += durationFrames;
-    totalDurationSec += actualDurationSec + pause;
+    totalDurationSec += actualDurationSec + pause + pauseAfter;
 
     console.log(`     ${actualDurationSec.toFixed(2)}s (${durationFrames} frames)`);
   }
@@ -138,6 +149,7 @@ async function main() {
   const keep = new Set(data.scenes.map((s: any) => s.audioFile));
   for (const f of fs.readdirSync(outDir)) {
     if (/^segment_.*\.mp3$/.test(f) && !keep.has(f)) {
+      fs.rmSync(path.join(outDir, f.replace(/\.mp3$/, ".words.json")), { force: true });
       fs.rmSync(path.join(outDir, f));
       delete cache[f];
     }

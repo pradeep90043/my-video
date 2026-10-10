@@ -29,6 +29,7 @@ const ALL: Step[] = [
     ? [{ name: "images", script: "generate-images.ts", extra: ["--provider", getArg("image-provider") ?? "pollinations"] }]
     : []),
   { name: "merge", script: "merge-audio.ts" },
+  { name: "assets", script: "fetch-assets.ts" },
   { name: "render", script: "render.ts", extra: hasFlag("no-branding") ? ["--no-branding"] : [] },
 ];
 
