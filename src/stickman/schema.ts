@@ -71,6 +71,11 @@ export const QuizSchema = z.object({
   answer: z.number().int().min(0),
   /** fraction of the scene at which the answer is revealed (viewer "pause and think" time before it) */
   revealAt: z.number().min(0.3).max(0.95).default(0.6),
+  /**
+   * "Pause the video" mode: the answer is revealed this many seconds before the scene ends, and the countdown starts when the
+   * narration has finished. Pair it with the scene's `pauseAfter` (the thinking time), see quizTiming.ts. Replaces revealAt.
+   */
+  revealBeforeEnd: z.number().min(0.5).max(5).optional(),
 });
 
 export const ContainerSchema = z.object({
