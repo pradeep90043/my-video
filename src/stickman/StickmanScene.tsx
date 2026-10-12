@@ -3,6 +3,7 @@ import { Backdrop } from "./Backdrop";
 import { AbsoluteFill, Audio, Easing, Sequence, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadMontserrat } from "@remotion/google-fonts/Montserrat";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
+import { withDevanagari } from "./fonts";
 import { layoutScene } from "./layout";
 import { GROUNDED_PROP_BOTTOM, MOOD_SFX, PANEL_KEYS, StickmanVisualSchema, type Mood, type PoseName, type StickmanVisual } from "./schema";
 import { WORLD, WORLD_VERTICAL, type Theme, type World } from "./theme";
@@ -68,7 +69,7 @@ const Title: React.FC<{ text: string; theme: Theme; color: string; world: World 
   return (
     <g opacity={Math.min(1, s * 2)} transform={`translate(${world.width / 2},${(vertical ? 190 : 150) + (1 - s) * -40})`}>
       <rect x={-width / 2} y={30} width={width * s} height={16} rx={8} fill={color} opacity={0.9} />
-      <text textAnchor="middle" fontSize={size} fontWeight={900} fontFamily={`${montserrat.fontFamily}, sans-serif`} fill={theme.ink} letterSpacing={-1}>
+      <text textAnchor="middle" fontSize={size} fontWeight={900} fontFamily={withDevanagari(montserrat.fontFamily)} fill={theme.ink} letterSpacing={-1}>
         {text}
       </text>
     </g>
@@ -80,7 +81,7 @@ const Callout: React.FC<{ text: string; width: number; delay: number; color: str
   return (
     <g transform={`translate(${width / 2},38) scale(${Math.max(0.001, s)}) translate(${-width / 2},-38)`} opacity={Math.min(1, s * 2)}>
       <rect width={width} height={76} rx={38} fill={color} />
-      <text x={width / 2} y={51} textAnchor="middle" fontSize={Math.max(20, Math.min(36, Math.floor((width - 36) / (0.6 * Math.max(1, text.length)))))} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`} fill="#fff">{text}</text>
+      <text x={width / 2} y={51} textAnchor="middle" fontSize={Math.max(20, Math.min(36, Math.floor((width - 36) / (0.6 * Math.max(1, text.length)))))} fontWeight={800} fontFamily={withDevanagari(inter.fontFamily)} fill="#fff">{text}</text>
     </g>
   );
 };
@@ -256,7 +257,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {v.chapter && (
           <g transform="translate(48,48)" opacity={Math.min(1, frame / 8)}>
             <rect width={v.chapter.length * 17 + 56} height={52} rx={26} fill={theme.ink} />
-            <text x={28} y={36} fontSize={28} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`} fill={theme.bg}>{v.chapter}</text>
+            <text x={28} y={36} fontSize={28} fontWeight={800} fontFamily={withDevanagari(inter.fontFamily)} fill={theme.bg}>{v.chapter}</text>
           </g>
         )}
         <g transform={panelT}>
@@ -288,7 +289,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
           const capSize = Math.max(36, Math.min(vertical ? 70 : 50, (world.width - 100) / (Math.max(1, active.text.length) * 0.62)));
           return (
             <g opacity={capOpacity} transform={`translate(${world.width / 2},${(vertical ? world.height - 420 : 985) + (1 - pop) * 14}) scale(${0.94 + 0.06 * pop})`}>
-              <text textAnchor="middle" fontSize={capSize} fontWeight={800} fontFamily={`${inter.fontFamily}, sans-serif`}
+              <text textAnchor="middle" fontSize={capSize} fontWeight={800} fontFamily={withDevanagari(inter.fontFamily)}
                 stroke={theme.bg} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
                 {active.words.map((w, i) => {
                   const spoken = local >= w.start;
