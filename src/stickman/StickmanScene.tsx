@@ -262,7 +262,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         )}
         <g transform={panelT}>
         {v.code && <CodePanel spec={v.code} durationFrames={durationFrames} accent={accent} />}
-        {v.quiz && <QuizPanel spec={v.quiz} durationFrames={durationFrames} theme={theme} accent={accent} />}
+        {v.quiz && <QuizPanel spec={v.quiz} durationFrames={durationFrames} theme={theme} accent={accent} speakEnd={speakFrames !== undefined ? speakFrom + speakFrames : undefined} />}
         {v.container && <ContainerPanel spec={v.container} theme={theme} accent={accent} />}
         {v.steps && <StepsPanel spec={v.steps} theme={theme} accent={accent} />}
         {v.compare && <ComparePanel spec={v.compare} theme={theme} accent={accent} />}

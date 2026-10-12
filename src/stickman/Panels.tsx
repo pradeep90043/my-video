@@ -3,6 +3,7 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadFiraCode } from "@remotion/google-fonts/FiraCode";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
 import { withDevanagari } from "./fonts";
+import { quizTiming } from "./quizTiming";
 import type { CodeSpec, ContainerSpec, QuizSpec, StepsSpec } from "./schema";
 import type { Theme } from "./theme";
 import { PANEL } from "./PanelGeometry";
@@ -86,13 +87,12 @@ export const CodePanel: React.FC<{ spec: CodeSpec; durationFrames: number; accen
 };
 
 // ── Quiz ────────────────────────────────────────────────────────────────────
-export const QuizPanel: React.FC<{ spec: QuizSpec; durationFrames: number; theme: Theme; accent: string }> = ({ spec, durationFrames, theme, accent }) => {
+export const QuizPanel: React.FC<{ spec: QuizSpec; durationFrames: number; theme: Theme; accent: string; speakEnd?: number }> = ({ spec, durationFrames, theme, accent, speakEnd }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const s = pop(frame, fps, 2);
-  const revealFrame = Math.round(durationFrames * spec.revealAt);
+  const { timerStart, revealFrame } = quizTiming({ durationFrames, revealAt: spec.revealAt, revealBeforeEnd: spec.revealBeforeEnd, speakEnd, fps });
   const revealed = frame >= revealFrame;
-  const timerStart = 14;
   const remaining = interpolate(frame, [timerStart, revealFrame], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const green = theme.accents.green;
   const rowH = spec.options.length > 3 ? 126 : 148;

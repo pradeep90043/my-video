@@ -169,9 +169,10 @@ async function main() {
     if (t.cached) console.log(`  -> Scene ${t.i}: ${scene.id} (${external ? "supplied" : "cached"})`);
     const actualDurationSec = probeDuration(segmentPath);
     const pause = Math.max(0, Number(scene.pauseBefore) || 0);
-    const durationFrames = Math.ceil((actualDurationSec + pause) * fps);
+    const pauseAfter = Math.max(0, Math.min(60, Number(scene.pauseAfter) || 0)); // silence after the line: the merge pads the scene's audio up to its length
+    const durationFrames = Math.ceil((actualDurationSec + pause + pauseAfter) * fps);
 
-    scene.duration = actualDurationSec; // speech only; pauseBefore is added on top
+    scene.duration = actualDurationSec; // speech only; pauseBefore and pauseAfter are added on top
     scene.startFrame = currentStartFrame;
     scene.durationFrames = durationFrames;
     scene.audioFile = segmentName;
@@ -182,7 +183,7 @@ async function main() {
     }
 
     currentStartFrame += durationFrames;
-    totalDurationSec += actualDurationSec + pause;
+    totalDurationSec += actualDurationSec + pause + pauseAfter;
 
     console.log(`     ${scene.id}: ${actualDurationSec.toFixed(2)}s (${durationFrames} frames)`);
   }
