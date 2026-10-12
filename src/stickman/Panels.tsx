@@ -95,7 +95,10 @@ export const QuizPanel: React.FC<{ spec: QuizSpec; durationFrames: number; theme
   const revealed = frame >= revealFrame;
   const remaining = interpolate(frame, [timerStart, revealFrame], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const green = theme.accents.green;
-  const rowH = spec.options.length > 3 ? 126 : 148;
+  const rowH = spec.options.length > 3 ? 108 : 148;
+  // long questions and answers (Hindi, or long English ones) shrink to the panel width instead of running off it (a character is up to ~0.6 em wide in bold sans)
+  const fitSize = (text: string, width: number, max: number, min: number) => Math.max(min, Math.min(max, Math.floor(width / (Math.max(1, text.length) * 0.6))));
+  const questionSize = fitSize(spec.question, PANEL.w - 80, 56, 34);
   const top = 250;
   return (
     <g transform={`translate(${PANEL.x},${PANEL.y + (1 - s) * 40})`} opacity={Math.min(1, s * 2)}>
@@ -105,7 +108,7 @@ export const QuizPanel: React.FC<{ spec: QuizSpec; durationFrames: number; theme
       <text x={PANEL.w - 40} y={68} textAnchor="end" fontSize={30} fontWeight={800} fontFamily={sans} fill={theme.ink} opacity={0.6}>
         {revealed ? "Answer" : "Thinking…"}
       </text>
-      <text x={PANEL.w / 2} y={170} textAnchor="middle" fontSize={56} fontWeight={800} fontFamily={sans} fill={theme.ink}>{spec.question}</text>
+      <text x={PANEL.w / 2} y={170} textAnchor="middle" fontSize={questionSize} fontWeight={800} fontFamily={sans} fill={theme.ink}>{spec.question}</text>
       <rect x={60} y={196} width={(PANEL.w - 120) * remaining} height={10} rx={5} fill={accent} opacity={revealed ? 0 : 1} />
       {spec.options.map((opt, i) => {
         const o = pop(frame, fps, 8 + i * 5);
@@ -117,7 +120,7 @@ export const QuizPanel: React.FC<{ spec: QuizSpec; durationFrames: number; theme
             <rect width={PANEL.w - 120} height={rowH - 18} rx={20} fill={fill} />
             <circle cx={56} cy={(rowH - 18) / 2} r={32} fill={revealed && correct ? "#fff" : theme.ink} />
             <text x={56} y={(rowH - 18) / 2 + 14} textAnchor="middle" fontSize={40} fontWeight={800} fontFamily={sans} fill={revealed && correct ? green : theme.bg}>{"ABCD"[i]}</text>
-            <text x={116} y={(rowH - 18) / 2 + 16} fontSize={46} fontWeight={800} fontFamily={sans} fill={textFill}>{opt}</text>
+            <text x={116} y={(rowH - 18) / 2 + 16} fontSize={fitSize(opt, PANEL.w - 120 - 116 - 150, 46, 30)} fontWeight={800} fontFamily={sans} fill={textFill}>{opt}</text>
             {revealed && correct && <text x={PANEL.w - 200} y={(rowH - 18) / 2 + 18} fontSize={54} fontWeight={800} fontFamily={sans} fill="#fff">✓</text>}
           </g>
         );
