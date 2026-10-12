@@ -136,7 +136,11 @@ jobs:
         run: |
           PROJECT="${{ steps.args.outputs.project }}"
           if ls "public/content/${PROJECT}/audio/"*.mp3 >/dev/null 2>&1; then
-            echo "Audio already present in bundle, skipping TTS."
+            # The bundle carries its own narration (e.g. Voicebox): measure it and build the timeline and the merged
+            # voiceover from it, without synthesising anything.
+            echo "Narration already present in bundle: measuring and merging it (no TTS)."
+            npm run longform:audio -- --project "${PROJECT}" --external
+            npm run longform:merge -- --project "${PROJECT}"
           else
             pip install --user edge-tts
             export PATH="$HOME/.local/bin:$PATH"

@@ -2,6 +2,7 @@ import React from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadFiraCode } from "@remotion/google-fonts/FiraCode";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
+import { withDevanagari } from "./fonts";
 import type { CodeSpec, ContainerSpec, QuizSpec, StepsSpec } from "./schema";
 import type { Theme } from "./theme";
 import { PANEL } from "./PanelGeometry";
@@ -9,7 +10,7 @@ import { sliceTokens, tokenizeLine, type TokKind } from "./code";
 
 const fira = loadFiraCode("normal", { weights: ["500"], subsets: ["latin"] });
 const inter = loadInter("normal", { weights: ["800"], subsets: ["latin"] });
-const sans = `${inter.fontFamily}, sans-serif`;
+const sans = withDevanagari(inter.fontFamily);
 
 export { PANEL };
 

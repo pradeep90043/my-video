@@ -9,7 +9,13 @@
  * Scenes whose text/voice/rate/pitch are unchanged since the last run are
  * reused (hash cache in audio/.cache.json). Failed TTS calls are retried.
  *
- * Usage: npm run longform:audio -- --project AivsSWE [--force]
+ * External audio (--external, or LONGFORM_EXTERNAL_AUDIO=1): the narration was made by something else (Voicebox, a recording)
+ * and already sits in audio/ as segment_<i>_<sceneId>.mp3. Nothing is synthesised; each file is measured and the same
+ * startFrame / durationFrames / totalFrames timeline is written, so the visuals follow the real audio exactly. Optional
+ * segment_<i>_<sceneId>.words.json (word start/end in seconds) gives exact captions; without it captions are spread over the
+ * scene by character count.
+ *
+ * Usage: npm run longform:audio -- --project AivsSWE [--force] [--external]
  */
 
 import * as fs from "fs";
@@ -80,6 +86,7 @@ function synthesizeAsync(text: string, voice: string, rate: string, pitch: strin
 async function main() {
   const slug = resolveProject(getArg("project"));
   const force = hasFlag("force");
+  const external = hasFlag("external") || process.env.LONGFORM_EXTERNAL_AUDIO === "1";
   const data = loadVideoJson(slug);
 
   const problems = validateVideoJson(data);
@@ -93,7 +100,7 @@ async function main() {
   const pitch = data.pitch || "+0Hz";
   const fps = data.fps;
 
-  const settingProblems = data.scenes.flatMap((s: any) => {
+  const settingProblems = external ? [] : data.scenes.flatMap((s: any) => {
     const v = voiceForScene(s.visual?.mood, { rate, pitch }, { rate: s.rate, pitch: s.pitch });
     return validateEdgeTtsSettings(s.voice || voice, v.rate, v.pitch).map((p) => `scene ${s.id}: ${p}`);
   });
@@ -107,7 +114,9 @@ async function main() {
     /* no cache yet */
   }
 
-  console.log(`🎙  [${slug}] Generating audio — voice: ${voice}, rate: ${rate}`);
+  console.log(external
+    ? `🎙  [${slug}] Using the supplied narration audio (${data.scenes.length} scenes) — nothing is synthesised`
+    : `🎙  [${slug}] Generating audio — voice: ${voice}, rate: ${rate}`);
 
   let generated = 0;
   // Pass 1: work out what each scene needs, then synthesise the missing ones in parallel
@@ -123,10 +132,15 @@ async function main() {
     const spoken: string = scene.ttsText || scene.text;
     const hash = sceneHash(spoken, sceneVoice, sceneRate, scenePitch, sceneVolume);
     const wordsPath = segmentPath.replace(/\.mp3$/, ".words.json");
-    const cached = !force && cache[segmentName] === hash && fs.existsSync(segmentPath) && (!wordsSupported || fs.existsSync(wordsPath));
+    const cached = external
+      ? fs.existsSync(segmentPath)
+      : !force && cache[segmentName] === hash && fs.existsSync(segmentPath) && (!wordsSupported || fs.existsSync(wordsPath));
     return { scene, i, segmentName, segmentPath, wordsPath, sceneVoice, sceneRate, scenePitch, sceneVolume, spoken, hash, cached };
   });
   const todo = plan.filter((x) => !x.cached);
+  if (external && todo.length) {
+    fail(`Supplied narration is missing for ${todo.length} scene(s): ${todo.slice(0, 8).map((t) => t.segmentName).join(", ")}${todo.length > 8 ? ", ..." : ""}`);
+  }
   const limit = Math.max(1, Number(process.env.TTS_CONCURRENCY) || 8);
   let nextTask = 0;
   await Promise.all(Array.from({ length: Math.min(limit, todo.length) }, async () => {
@@ -152,7 +166,7 @@ async function main() {
   let totalDurationSec = 0;
   for (const t of plan) {
     const { scene, segmentName, segmentPath, wordsPath } = t;
-    if (t.cached) console.log(`  -> Scene ${t.i}: ${scene.id} (cached)`);
+    if (t.cached) console.log(`  -> Scene ${t.i}: ${scene.id} (${external ? "supplied" : "cached"})`);
     const actualDurationSec = probeDuration(segmentPath);
     const pause = Math.max(0, Number(scene.pauseBefore) || 0);
     const durationFrames = Math.ceil((actualDurationSec + pause) * fps);

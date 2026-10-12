@@ -2,6 +2,7 @@ import React from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { loadFont as loadFiraCode } from "@remotion/google-fonts/FiraCode";
 import { loadFont as loadInter } from "@remotion/google-fonts/Inter";
+import { withDevanagari } from "./fonts";
 import { loadFont as loadPlayfair } from "@remotion/google-fonts/PlayfairDisplay";
 import type {
   AlertSpec, BrowserSpec, ChartSpec, CompareSpec, CounterSpec, FlowSpec, NewsSpec,
@@ -14,7 +15,7 @@ const fira = loadFiraCode("normal", { weights: ["500"], subsets: ["latin"] });
 const inter = loadInter("normal", { weights: ["800"], subsets: ["latin"] });
 const playfair = loadPlayfair("normal", { weights: ["700", "900"], subsets: ["latin"] });
 const serif = `${playfair.fontFamily}, Georgia, serif`;
-const sans = `${inter.fontFamily}, sans-serif`;
+const sans = withDevanagari(inter.fontFamily);
 const mono = `${fira.fontFamily}, monospace`;
 
 const pop = (frame: number, fps: number, delay: number) =>
