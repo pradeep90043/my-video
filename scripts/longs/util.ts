@@ -7,6 +7,10 @@ import * as fs from "fs";
 import { spawnSync } from "child_process";
 
 export function getArg(name: string): string | undefined {
+  const prefix = `--${name}=`;
+  for (const a of process.argv) {
+    if (a.startsWith(prefix)) return a.slice(prefix.length);
+  }
   const i = process.argv.indexOf(`--${name}`);
   return i !== -1 ? process.argv[i + 1] : undefined;
 }

@@ -30,6 +30,38 @@ import { fail, getArg, hasFlag } from "./util";
 import { qaVideo, reportQa } from "./qa";
 import { writeStamp } from "../shared/qa-stamp";
 
+function getBrowserExecutableArgs(): string[] {
+  const explicit = getArg("browser-executable");
+  if (explicit) return [`--browser-executable=${explicit}`];
+
+  // If Remotion has its own managed chrome-headless-shell downloaded, let Remotion use it
+  const remotionManaged = path.join(process.cwd(), "node_modules", ".remotion", "chrome-headless-shell");
+  if (fs.existsSync(remotionManaged)) {
+    return [];
+  }
+
+  // If not downloaded yet, fall back to pre-installed system Chrome/Chromium
+  // (/usr/bin/google-chrome is pre-installed on GitHub Actions ubuntu-latest runners)
+  const candidates = [
+    process.env.PUPPETEER_EXECUTABLE_PATH,
+    process.env.CHROME_BIN,
+    "/usr/bin/google-chrome",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/chromium",
+    "/usr/bin/chromium-browser",
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  ].filter(Boolean) as string[];
+
+  for (const c of candidates) {
+    if (fs.existsSync(c)) {
+      console.log(`🌐 [remotion] Using system browser: ${c}`);
+      return [`--browser-executable=${c}`];
+    }
+  }
+
+  return [];
+}
+
 function main() {
   const slug = resolveProject(getArg("project"));
   const data = loadVideoJson(slug);
@@ -106,8 +138,13 @@ function main() {
     }
     const propsPart = getArg("props") ?? templateProps;
     if (propsPart) partArgs.push(`--props=${propsPart}`);
+    partArgs.push(...getBrowserExecutableArgs());
     fs.rmSync(partPath, { force: true });
-    const pr = spawnSync("npx", ["remotion", "render", compositionId, partPath, ...partArgs], { stdio: "inherit", cwd: process.cwd() });
+    const pr = spawnSync("npx", ["remotion", "render", compositionId, partPath, ...partArgs], {
+      stdio: "inherit",
+      cwd: process.cwd(),
+      env: { ...process.env, NODE_OPTIONS: `${process.env.NODE_OPTIONS ?? ""} --dns-result-order=ipv4first`.trim() },
+    });
     if (pr.status !== 0 || !fs.existsSync(partPath)) fail(`Remotion part render failed (exit ${pr.status}).`);
     if (chunkArg && !audioOnly) {
       // brand each chunk here, in parallel on its own runner, so the combine job only has to join files
@@ -125,6 +162,7 @@ function main() {
     "remotion", "render", compositionId, workPath,
     `--concurrency=${concurrency}`,
     `--scale=${scale}`, "--codec=h264", `--crf=${draft ? 28 : 16}`, "--pixel-format=yuv420p",
+    ...getBrowserExecutableArgs(),
   ];
   const propsArg = getArg("props") ?? templateProps;
   if (propsArg) args.push(`--props=${propsArg}`);
@@ -154,7 +192,11 @@ function main() {
       { stdio: "inherit" },
     );
   } else {
-    r = spawnSync("npx", args, { stdio: "inherit", cwd: process.cwd() });
+    r = spawnSync("npx", args, {
+      stdio: "inherit",
+      cwd: process.cwd(),
+      env: { ...process.env, NODE_OPTIONS: `${process.env.NODE_OPTIONS ?? ""} --dns-result-order=ipv4first`.trim() },
+    });
   }
   if (r.status !== 0 || !fs.existsSync(workPath)) {
     fs.rmSync(workPath, { force: true });

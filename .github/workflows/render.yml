@@ -48,6 +48,9 @@ concurrency:
   group: render-${{ github.event.inputs.project || github.event.client_payload.project }}
   cancel-in-progress: false
 
+env:
+  NODE_OPTIONS: "--dns-result-order=ipv4first"
+
 jobs:
   # 1) Voiceover, audio mix and the composition's final audio track — done once.
   prepare:
@@ -89,6 +92,21 @@ jobs:
       - name: Install Node Dependencies
         if: steps.nm.outputs.cache-hit != 'true'
         run: npm install --include=optional
+
+      - name: Cache Remotion browser binary
+        id: remotion-browser
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.remotion
+          key: remotion-browser-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-v1
+
+      - name: Ensure Remotion browser
+        if: steps.remotion-browser.outputs.cache-hit != 'true'
+        run: |
+          for i in 1 2 3; do
+            echo "Ensuring Remotion browser (attempt $i)..."
+            npx remotion browser ensure && break || sleep 5
+          done
 
       - name: Determine Render Arguments
         id: args
@@ -208,6 +226,12 @@ jobs:
         if: steps.nm.outputs.cache-hit != 'true'
         run: npm install --include=optional
 
+      - name: Restore Remotion browser cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.remotion
+          key: remotion-browser-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-v1
+
       - name: Download prepared project
         uses: actions/download-artifact@v4
         with:
@@ -257,6 +281,12 @@ jobs:
       - name: Install Node Dependencies
         if: steps.nm.outputs.cache-hit != 'true'
         run: npm install --include=optional
+
+      - name: Restore Remotion browser cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.remotion
+          key: remotion-browser-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-v1
 
       - name: Download prepared project
         uses: actions/download-artifact@v4
@@ -321,6 +351,12 @@ jobs:
       - name: Install Node Dependencies
         if: steps.nm.outputs.cache-hit != 'true'
         run: npm install --include=optional
+
+      - name: Restore Remotion browser cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.remotion
+          key: remotion-browser-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-v1
 
       - name: Download prepared project
         uses: actions/download-artifact@v4
