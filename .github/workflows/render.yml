@@ -28,6 +28,10 @@ on:
         description: "Per-job token for progress_url"
         required: false
         default: ""
+      publish_url:
+        description: "Optional dashboard URL the runner asks for a short-lived YouTube upload token (uses progress_token to identify the job)"
+        required: false
+        default: ""
       chunks:
         description: "Number of parallel runners to split the render across (1-16)"
         required: false
@@ -61,6 +65,7 @@ jobs:
       render_flags: ${{ steps.args.outputs.render_flags }}
       progress_url: ${{ steps.args.outputs.progress_url }}
       progress_token: ${{ steps.args.outputs.progress_token }}
+      publish_url: ${{ steps.args.outputs.publish_url }}
       chunks: ${{ steps.plan.outputs.chunks }}
       matrix: ${{ steps.plan.outputs.matrix }}
       audio_chunks: ${{ steps.plan.outputs.audio_chunks }}
@@ -137,6 +142,7 @@ jobs:
           echo "want_chunks=$CHUNKS" >> "$GITHUB_OUTPUT"
           echo "progress_url=${{ inputs.progress_url }}" >> "$GITHUB_OUTPUT"
           echo "progress_token=${{ inputs.progress_token }}" >> "$GITHUB_OUTPUT"
+          echo "publish_url=${{ inputs.publish_url }}" >> "$GITHUB_OUTPUT"
 
       - name: Fetch Dynamic Project Bundle if Provided
         if: steps.args.outputs.bundle_url != ''
@@ -383,6 +389,17 @@ jobs:
 
       - name: List Output Files
         run: ls -lh out/
+
+      # Upload straight to YouTube from the runner so the dashboard VM never has to download and unpack
+      # the video. Best effort: on any failure the mp4 is still uploaded as the artifact below.
+      - name: Publish to YouTube (token from dashboard)
+        if: needs.prepare.outputs.publish_url != '' && needs.prepare.outputs.progress_token != ''
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          PUBLISH_URL: ${{ needs.prepare.outputs.publish_url }}
+          PUBLISH_TOKEN: ${{ needs.prepare.outputs.progress_token }}
+        run: npx tsx scripts/longs/publish-youtube.ts --project "${{ needs.prepare.outputs.project }}"
 
       - name: Upload Video Artifact
         uses: actions/upload-artifact@v4
