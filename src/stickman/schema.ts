@@ -251,6 +251,8 @@ export const PhotoSchema = z.object({
   caption: z.string().max(70).optional(),
   /** true when `url` is a short video clip (mp4/webm) instead of a still */
   video: z.boolean().default(false),
+  /** seconds to skip at the start of a clip (agency clips open on a title slate) */
+  startFrom: z.number().min(0).max(300).default(0),
 });
 
 /** Every panel key. A scene may use only one. */

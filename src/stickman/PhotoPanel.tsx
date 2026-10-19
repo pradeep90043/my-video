@@ -37,7 +37,7 @@ export const PhotoPanel: React.FC<{ spec: PhotoSpec; theme: Theme; accent: strin
         <rect width={W} height={H} fill={theme.bg} />
         {ok && spec.video && (
           <foreignObject x={0} y={0} width={W} height={H}>
-            <OffthreadVideo src={spec.url} muted style={{ width: W, height: H, objectFit: "cover", transform: `scale(${zoom})` }} />
+            <OffthreadVideo src={spec.url} muted startFrom={Math.round(spec.startFrom * fps)} style={{ width: W, height: H, objectFit: "cover", transform: `scale(${zoom})` }} />
           </foreignObject>
         )}
         {ok && !spec.video && (
