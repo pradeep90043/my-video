@@ -137,7 +137,7 @@ export const RemotionRoot: React.FC = () => {
       />
 
       {/* Dev preview: contact sheet of every doodle asset (npx remotion still DoodleCatalog out/doodle-catalog.png) */}
-      <Composition id="DoodleCatalog" component={DoodleCatalog} fps={30} width={1760} height={1180} durationInFrames={1} />
+      <Composition id="DoodleCatalog" component={DoodleCatalog} fps={30} width={1760} height={2900} durationInFrames={1} />
     </>
   );
 };
