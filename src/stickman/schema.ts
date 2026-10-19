@@ -249,6 +249,8 @@ export const PhotoSchema = z.object({
   license: z.string().max(40).optional(),
   /** short line under the picture */
   caption: z.string().max(70).optional(),
+  /** true when `url` is a short video clip (mp4/webm) instead of a still */
+  video: z.boolean().default(false),
 });
 
 /** Every panel key. A scene may use only one. */

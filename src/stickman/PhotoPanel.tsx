@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { continueRender, delayRender, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { OffthreadVideo, continueRender, delayRender, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import type { PhotoSpec } from "./schema";
 import type { Theme } from "./theme";
 import { PANEL } from "./PanelGeometry";
@@ -15,6 +15,7 @@ export const PhotoPanel: React.FC<{ spec: PhotoSpec; theme: Theme; accent: strin
   const [handle] = useState(() => delayRender(`photo ${spec.url}`, { timeoutInMilliseconds: 45000 }));
   const [ok, setOk] = useState(false);
   useEffect(() => {
+    if (spec.video) { setOk(true); continueRender(handle); return; } // OffthreadVideo waits for its own frames
     const img = new Image();
     img.crossOrigin = "anonymous";
     const done = (good: boolean) => { setOk(good); continueRender(handle); };
@@ -34,7 +35,12 @@ export const PhotoPanel: React.FC<{ spec: PhotoSpec; theme: Theme; accent: strin
       <defs><clipPath id="photo-card-clip"><rect width={W} height={H} rx={40} /></clipPath></defs>
       <g clipPath="url(#photo-card-clip)">
         <rect width={W} height={H} fill={theme.bg} />
-        {ok && (
+        {ok && spec.video && (
+          <foreignObject x={0} y={0} width={W} height={H}>
+            <OffthreadVideo src={spec.url} muted style={{ width: W, height: H, objectFit: "cover", transform: `scale(${zoom})` }} />
+          </foreignObject>
+        )}
+        {ok && !spec.video && (
           <image href={spec.url} x={panX} y={0} width={W} height={H} preserveAspectRatio="xMidYMid slice"
             transform={`translate(${W / 2},${H / 2}) scale(${zoom}) translate(${-W / 2},${-H / 2})`} />
         )}
