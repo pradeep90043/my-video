@@ -13,6 +13,7 @@ import { PropDrawing } from "./Props";
 import { buildCaptions, type SpokenWord } from "./captions";
 import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
 import { ScenePanel } from "./doodle/ScenePanel";
+import { PhotoPanel } from "./PhotoPanel";
 import {
   AlertPanel, NewsPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
   ProgressPanel, SvgPanel, TablePanel, TerminalPanel,
@@ -276,6 +277,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
         {v.alert && <AlertPanel spec={v.alert} theme={theme} accent={accent} />}
         {v.svg && <SvgPanel spec={v.svg} durationFrames={durationFrames} theme={theme} accent={accent} />}
         {v.news && <NewsPanel spec={v.news} theme={theme} accent={accent} />}
+        {v.photo && <PhotoPanel spec={v.photo} theme={theme} accent={accent} durationFrames={durationFrames} />}
         {v.scene && <ScenePanel spec={v.scene} durationFrames={durationFrames} theme={theme} accent={accent} />}
         </g>
 

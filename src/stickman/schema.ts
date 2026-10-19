@@ -239,10 +239,22 @@ export const SceneSchema = z.object({
   arrows: z.array(SceneArrowSchema).max(6).default([]),
 });
 
+/** A real, licensed photo (Wikimedia Commons / Pexels) shown as a framed picture with its credit. */
+export const PhotoSchema = z.object({
+  /** https URL of the image file itself */
+  url: z.string().url().max(600),
+  /** who to credit, e.g. "Photo: Jane Doe / Wikimedia Commons" */
+  credit: z.string().min(1).max(100),
+  /** e.g. "CC BY-SA 4.0", "Public domain", "Pexels License" */
+  license: z.string().max(40).optional(),
+  /** short line under the picture */
+  caption: z.string().max(70).optional(),
+});
+
 /** Every panel key. A scene may use only one. */
 export const PANEL_KEYS = [
   "code", "quiz", "container", "steps",
-  "compare", "flow", "terminal", "browser", "counter", "chart", "progress", "table", "alert", "svg", "scene", "news",
+  "compare", "flow", "terminal", "browser", "counter", "chart", "progress", "table", "alert", "svg", "scene", "news", "photo",
 ] as const;
 
 export const StickmanVisualSchema = z.object({
@@ -281,6 +293,7 @@ export const StickmanVisualSchema = z.object({
   svg: SvgSchema.optional(),
   scene: SceneSchema.optional(),
   news: NewsSchema.optional(),
+  photo: PhotoSchema.optional(),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),
@@ -316,6 +329,7 @@ export type AlertSpec = z.infer<typeof AlertSchema>;
 export type SvgSpec = z.infer<typeof SvgSchema>;
 export type NewsSpec = z.infer<typeof NewsSchema>;
 export type SceneSpec = z.infer<typeof SceneSchema>;
+export type PhotoSpec = z.infer<typeof PhotoSchema>;
 export type Shape = z.infer<typeof ShapeSchema>;
 export type StickmanVisual = z.infer<typeof StickmanVisualSchema>;
 export type PoseName = (typeof POSES)[number];
