@@ -181,8 +181,10 @@ jobs:
           case "$N" in ''|*[!0-9]*) N=2 ;; esac
           [ "$N" -lt 1 ] && N=2
           [ "$N" -gt 16 ] && N=16
-          # splitting only pays off with enough frames: ~2800 frames (1.5 min of video) per runner
-          NEED=$(( (TOTAL + 2799) / 2800 ))
+          # A runner has ~60 s of set-up, so splitting pays off from ~450 frames (15 s of video): a 25 s "how it works" clip rendered on ONE
+          # runner took 155 s of frames; on 2-3 runners it is about 60 s. (It used to wait for ~2800 frames per runner.)
+          PER=450
+          NEED=$(( (TOTAL + PER - 1) / PER ))
           [ "$NEED" -lt 1 ] && NEED=1
           [ "$N" -gt "$NEED" ] && N=$NEED
           MATRIX="[$(seq -s, 0 $((N-1)))]"
