@@ -1,5 +1,5 @@
 import React from "react";
-import { Easing, interpolate } from "remotion";
+import { STORY_FONT } from "./font";import { Easing, interpolate } from "remotion";
 import { StoryBackground } from "./Backgrounds";
 import { Character, CHARACTER_HEIGHT } from "./Character";
 import { DEFAULT_CAST, type CastMember, type StagedChar, type StoryBgName, type StoryLook, type StoryTime } from "./cast";
@@ -45,14 +45,14 @@ const LookOverlay: React.FC<{ look: StoryLook; headline?: string; stat?: { label
       <g transform={`translate(0,${slide})`}>
         <g transform="translate(40,60)">
           <rect width={210} height={58} rx={10} fill="#C0392B" /><circle cx={30} cy={29} r={9} fill="#fff" opacity={0.6 + 0.4 * Math.sin(frame * 0.3)} />
-          <text x={50} y={40} fontSize={30} fontWeight={900} fill="#fff" fontFamily="Inter, sans-serif">BREAKING</text>
-          {place && <g transform="translate(224,0)"><rect width={place.length * 24 + 44} height={58} rx={10} fill="#0A1B3F" stroke="#3B6FD4" strokeWidth={3} /><text x={22} y={40} fontSize={30} fontWeight={800} fill="#fff" fontFamily="Inter, sans-serif">📍 {place}</text></g>}
+          <text x={50} y={40} fontSize={30} fontWeight={900} fill="#fff" fontFamily={STORY_FONT}>BREAKING</text>
+          {place && <g transform="translate(224,0)"><rect width={place.length * 24 + 44} height={58} rx={10} fill="#0A1B3F" stroke="#3B6FD4" strokeWidth={3} /><text x={22} y={40} fontSize={30} fontWeight={800} fill="#fff" fontFamily={STORY_FONT}>📍 {place}</text></g>}
         </g>
         {lines.length > 0 && (
           <g transform="translate(40,140)">
             <rect width={w - 80} height={lines.length * (size + 14) + 36} rx={14} fill="#0A1B3F" stroke="#3B6FD4" strokeWidth={4} opacity={0.96} />
             <rect width={14} height={lines.length * (size + 14) + 36} rx={7} fill="#F1C40F" />
-            {lines.map((l, i) => <text key={i} x={40} y={26 + size + i * (size + 14)} fontSize={size} fontWeight={900} fill="#fff" fontFamily="Inter, sans-serif">{l}</text>)}
+            {lines.map((l, i) => <text key={i} x={40} y={26 + size + i * (size + 14)} fontSize={size} fontWeight={900} fill="#fff" fontFamily={STORY_FONT}>{l}</text>)}
           </g>
         )}
       </g>
@@ -65,14 +65,14 @@ const LookOverlay: React.FC<{ look: StoryLook; headline?: string; stat?: { label
         {lines.length > 0 && (
           <g transform="translate(40,70)">
             <rect width={w - 80} height={lines.length * (size + 12) + 30} rx={16} fill="#0B6E4F" />
-            {lines.map((l, i) => <text key={i} x={36} y={20 + size + i * (size + 12)} fontSize={size} fontWeight={900} fill="#fff" fontFamily="Inter, sans-serif">{l}</text>)}
+            {lines.map((l, i) => <text key={i} x={36} y={20 + size + i * (size + 12)} fontSize={size} fontWeight={900} fill="#fff" fontFamily={STORY_FONT}>{l}</text>)}
           </g>
         )}
         {stat && (
           <g transform={`translate(${w - (vertical ? 350 : 460)},${vertical ? 120 + lines.length * (size + 12) + 60 : 200}) scale(${pop})`} opacity={Math.min(1, pop * 1.4)}>
             <rect width={vertical ? 310 : 420} height={170} rx={22} fill="#fff" stroke="#0B6E4F" strokeWidth={6} />
-            <text x={(vertical ? 310 : 420) / 2} y={92} textAnchor="middle" fontSize={stat.value.length > 7 ? 54 : 74} fontWeight={900} fill="#0B6E4F" fontFamily="Inter, sans-serif">{stat.value}</text>
-            <text x={(vertical ? 310 : 420) / 2} y={142} textAnchor="middle" fontSize={30} fontWeight={800} fill="#2B2B2B" fontFamily="Inter, sans-serif">{stat.label}</text>
+            <text x={(vertical ? 310 : 420) / 2} y={92} textAnchor="middle" fontSize={stat.value.length > 7 ? 54 : 74} fontWeight={900} fill="#0B6E4F" fontFamily={STORY_FONT}>{stat.value}</text>
+            <text x={(vertical ? 310 : 420) / 2} y={142} textAnchor="middle" fontSize={30} fontWeight={800} fill="#2B2B2B" fontFamily={STORY_FONT}>{stat.label}</text>
           </g>
         )}
       </g>
@@ -87,7 +87,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
   const cam = camera === "pull" ? 1.06 - 0.06 * p : camera === "none" ? 1 : 1 + 0.06 * p;
   const camX = camera === "pan-left" ? 30 - 60 * p : camera === "pan-right" ? -30 + 60 * p : 0;
   const crowd = chars.length >= 4 ? 0.8 : chars.length === 3 ? 0.9 : 1;
-  const base = (h * (w < h ? 0.4 : 0.5)) / CHARACTER_HEIGHT;
+  const base = (h * (w < h ? 0.4 : 0.62)) / CHARACTER_HEIGHT;
   const anySpeaker = chars.some((c) => c.speaking);
   // painter's order: the ones lower in z (further right in a pair) are drawn last; a bigger scale stands in front
   const order = [...chars].sort((a, b) => a.scale - b.scale);
@@ -114,7 +114,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
             {nameOn && (
               <g transform={`translate(0,${-(510 + 64 * (member.age === "child" ? 1.22 : member.age === "teen" ? 1.08 : 1)) * (member.age === "child" ? 0.62 : member.age === "teen" ? 0.86 : 1) - 62})`} opacity={interpolate(local, [0, 8, 56, 70], [0, 1, 1, 0], { extrapolateRight: "clamp" })}>
                 <rect x={-(member.name!.length * 17 + 30)} y={-34} width={member.name!.length * 34 + 60} height={60} rx={30} fill="#fff" stroke="#2B2B2B" strokeWidth={4} />
-                <text textAnchor="middle" y={9} fontSize={36} fontWeight={800} fill="#2B2B2B" fontFamily="Inter, sans-serif">{member.name}</text>
+                <text textAnchor="middle" y={9} fontSize={36} fontWeight={800} fill="#2B2B2B" fontFamily={STORY_FONT}>{member.name}</text>
               </g>
             )}
           </g>
