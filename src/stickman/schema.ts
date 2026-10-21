@@ -240,6 +240,26 @@ export const SceneSchema = z.object({
 });
 
 /** A real, licensed photo (Wikimedia Commons / Pexels) shown as a framed picture with its credit. */
+import { CHAR_MOODS, CHAR_POSES, STORY_BGS, STORY_TIMES } from "./story/cast";
+
+/** Storyboard scene: the story's background plus the characters (by cast id) standing in it. */
+export const StoryCharSchema = z.object({
+  id: z.string(),
+  x: z.number().min(0).max(100).default(50),
+  pose: z.enum(CHAR_POSES).default("stand"),
+  mood: z.enum(CHAR_MOODS).default("neutral"),
+  flip: z.boolean().default(false),
+  scale: z.number().min(0.5).max(1.4).default(1),
+  delay: z.number().min(0).max(120).default(0),
+  speaking: z.boolean().default(false),
+});
+export const StorySchema = z.object({
+  bg: z.enum(STORY_BGS),
+  time: z.enum(STORY_TIMES).default("day"),
+  chars: z.array(StoryCharSchema).min(1).max(5),
+});
+export type StorySpec = z.infer<typeof StorySchema>;
+
 export const PhotoSchema = z.object({
   /** https URL of the image file itself */
   url: z.string().url().max(600),
@@ -298,6 +318,8 @@ export const StickmanVisualSchema = z.object({
   scene: SceneSchema.optional(),
   news: NewsSchema.optional(),
   photo: PhotoSchema.optional(),
+  /** storyboard template: replaces the stickman, backdrop and panels of the scene */
+  story: StorySchema.optional(),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),

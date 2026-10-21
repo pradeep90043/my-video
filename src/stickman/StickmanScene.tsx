@@ -14,6 +14,8 @@ import { buildCaptions, type SpokenWord } from "./captions";
 import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
 import { ScenePanel } from "./doodle/ScenePanel";
 import { PhotoPanel } from "./PhotoPanel";
+import { StoryStage } from "./story/StoryStage";
+import type { CastMember } from "./story/cast";
 import {
   AlertPanel, NewsPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
   ProgressPanel, SvgPanel, TablePanel, TerminalPanel,
@@ -42,6 +44,8 @@ interface SceneProps {
   /** first frame of this scene on the video timeline, and the lip-sync track (mouth level per video frame) */
   startFrame?: number;
   mouth?: number[];
+  /** the storyboard cast (project level); scenes with a `story` place these characters */
+  cast?: CastMember[];
 }
 
 
@@ -138,7 +142,7 @@ const CalloutRow: React.FC<{ items: string[]; color: string; range: [number, num
   );
 };
 
-export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, startFrame = 0, mouth, index = 0, words }) => {
+export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, startFrame = 0, mouth, index = 0, words }) => {
   const world: World = vertical ? WORLD_VERTICAL : WORLD;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -227,6 +231,11 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
 
         <rect width={world.width} height={world.height} fill="url(#vignette)" />
         <g clipPath={transition === "iris" && tr < 1 ? "url(#irisClip)" : undefined} transform={sceneTransform}>
+        {v.story && (
+          <StoryStage bg={v.story.bg} time={v.story.time} chars={v.story.chars} cast={cast ?? []} frame={frame} durationFrames={durationFrames}
+            talking={talking} mouthLevel={mouthLevel} w={world.width} h={world.height} ground={world.ground} camera={v.camera} />
+        )}
+        {!v.story && (<>
         <rect x={-60} y={-60} width={world.width + 120} height={world.height + 120} fill="url(#dots)" opacity={0.7} transform={`translate(${-drift},${-drift})`} />
 
         {v.setting !== "none" && <g opacity={hasPanel ? 0.5 : 1}><Backdrop setting={v.setting} t={frame} theme={theme} world={world} accent={theme.accents[v.accent]} /></g>}
@@ -253,7 +262,9 @@ export const StickmanScene: React.FC<SceneProps> = ({ text, visual, durationFram
           </g>
         </g>
 
-        {!v.calm && <ScreenFx mood={v.mood} frame={frame} w={world.width} h={world.height} accent={accent} />}
+        </>)}
+
+        {!v.calm && !v.story && <ScreenFx mood={v.mood} frame={frame} w={world.width} h={world.height} accent={accent} />}
 
         {v.chapter && (
           <g transform="translate(48,48)" opacity={Math.min(1, frame / 8)}>

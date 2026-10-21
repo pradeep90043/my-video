@@ -1,0 +1,250 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "story demo",
+ "description": "",
+ "tags": [],
+ "cast": [
+  {
+   "id": "raju",
+   "name": "राजू",
+   "age": "child",
+   "skin": "#D39A68",
+   "hair": "short",
+   "hairColor": "#1B1B1B",
+   "outfit": "shirt",
+   "color": "#F39C12",
+   "color2": "#2D3436"
+  },
+  {
+   "id": "maa",
+   "name": "माँ",
+   "age": "adult",
+   "skin": "#E7B07F",
+   "hair": "bun",
+   "hairColor": "#1B1B1B",
+   "outfit": "saree",
+   "color": "#E84393",
+   "color2": "#F1C40F",
+   "bindi": true
+  },
+  {
+   "id": "dada",
+   "name": "दादाजी",
+   "age": "elder",
+   "skin": "#B9794A",
+   "hair": "bald",
+   "hairColor": "#D5D8DC",
+   "outfit": "dhoti",
+   "color": "#F5F1E6",
+   "color2": "#E67E22",
+   "glasses": true,
+   "beard": true
+  },
+  {
+   "id": "teacher",
+   "name": "टीचर",
+   "age": "adult",
+   "skin": "#F3C9A0",
+   "hair": "long",
+   "hairColor": "#2B1A12",
+   "outfit": "dress",
+   "color": "#16A085",
+   "color2": "#2D3436",
+   "glasses": true
+  }
+ ],
+ "scenes": [
+  {
+   "id": "s1",
+   "text": "गाँव के एक छोटे से घर में राजू अपनी माँ के साथ रहता था।",
+   "startFrame": 0,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "chars": [
+      {
+       "id": "raju",
+       "x": 30,
+       "pose": "talk",
+       "mood": "happy",
+       "speaking": true
+      },
+      {
+       "id": "maa",
+       "x": 68,
+       "pose": "stand",
+       "mood": "happy"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s2",
+   "text": "एक दिन स्कूल में टीचर ने सबके सामने उससे सवाल पूछा।",
+   "startFrame": 105,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "bg": "school",
+     "time": "day",
+     "chars": [
+      {
+       "id": "raju",
+       "x": 28,
+       "pose": "scared",
+       "mood": "scared"
+      },
+      {
+       "id": "teacher",
+       "x": 72,
+       "pose": "point",
+       "mood": "neutral",
+       "speaking": true,
+       "flip": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s3",
+   "text": "राजू को जवाब नहीं आता था, उसकी आँखों में आँसू आ गए।",
+   "startFrame": 210,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "bg": "school",
+     "time": "dusk",
+     "chars": [
+      {
+       "id": "raju",
+       "x": 50,
+       "pose": "sad",
+       "mood": "sad",
+       "speaking": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s4",
+   "text": "घर लौटकर दादाजी ने उसे प्यार से समझाया।",
+   "startFrame": 315,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "bg": "home",
+     "time": "night",
+     "chars": [
+      {
+       "id": "dada",
+       "x": 66,
+       "pose": "talk",
+       "mood": "happy",
+       "speaking": true,
+       "flip": true
+      },
+      {
+       "id": "raju",
+       "x": 32,
+       "pose": "think",
+       "mood": "worried"
+      },
+      {
+       "id": "maa",
+       "x": 88,
+       "pose": "stand",
+       "mood": "worried",
+       "scale": 0.9,
+       "flip": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s5",
+   "text": "अगले दिन राजू ने सबको चौंका दिया और पूरे गाँव ने तालियाँ बजाईं।",
+   "startFrame": 420,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "raju",
+       "x": 30,
+       "pose": "happy",
+       "mood": "laugh"
+      },
+      {
+       "id": "teacher",
+       "x": 58,
+       "pose": "wave",
+       "mood": "happy"
+      },
+      {
+       "id": "dada",
+       "x": 82,
+       "pose": "happy",
+       "mood": "happy",
+       "flip": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s6",
+   "text": "बाज़ार में हर कोई उसकी कहानी सुनाने लगा।",
+   "startFrame": 525,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "bg": "market",
+     "time": "day",
+     "chars": [
+      {
+       "id": "maa",
+       "x": 32,
+       "pose": "talk",
+       "mood": "happy",
+       "speaking": true
+      },
+      {
+       "id": "dada",
+       "x": 70,
+       "pose": "stand",
+       "mood": "surprised",
+       "flip": true
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "totalFrames": 630
+}
