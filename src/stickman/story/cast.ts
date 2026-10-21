@@ -2,7 +2,13 @@
 export const STORY_BGS = [
   "village", "forest", "home", "room_night", "school", "street", "market", "palace", "temple", "hospital",
   "river", "road", "office", "farm", "mountain", "beach",
+  // finance and news looks
+  "bank", "stock", "newsroom", "govt", "studio",
 ] as const;
+
+/** The frame around a story: plain storyboard, finance (header strip + figure card) or news (breaking badge + headline bar). */
+export const STORY_LOOKS = ["story", "finance", "news"] as const;
+export type StoryLook = (typeof STORY_LOOKS)[number];
 export type StoryBgName = (typeof STORY_BGS)[number];
 
 export const STORY_TIMES = ["day", "dusk", "night"] as const;

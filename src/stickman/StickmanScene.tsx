@@ -233,7 +233,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
         <g clipPath={transition === "iris" && tr < 1 ? "url(#irisClip)" : undefined} transform={sceneTransform}>
         {v.story && (
           <StoryStage bg={v.story.bg} time={v.story.time} chars={v.story.chars} cast={cast ?? []} frame={frame} durationFrames={durationFrames}
-            talking={talking} mouthLevel={mouthLevel} w={world.width} h={world.height} ground={world.ground} camera={v.camera} />
+            talking={talking} mouthLevel={mouthLevel} w={world.width} h={world.height} ground={world.ground} camera={v.camera}
+            look={v.story.look} headline={v.story.headline} stat={v.story.stat} place={v.story.place} />
         )}
         {!v.story && (<>
         <rect x={-60} y={-60} width={world.width + 120} height={world.height + 120} fill="url(#dots)" opacity={0.7} transform={`translate(${-drift},${-drift})`} />

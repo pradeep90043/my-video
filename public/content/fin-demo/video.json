@@ -1,0 +1,103 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "fin-demo",
+ "description": "",
+ "tags": [],
+ "cast": [
+  {
+   "id": "adv",
+   "name": "सलाहकार",
+   "age": "adult",
+   "skin": "#D39A68",
+   "hair": "short",
+   "hairColor": "#1B1B1B",
+   "outfit": "suit",
+   "color": "#0B6E4F",
+   "glasses": true
+  },
+  {
+   "id": "cus",
+   "name": "रमेश",
+   "age": "adult",
+   "skin": "#B9794A",
+   "hair": "short",
+   "hairColor": "#1B1B1B",
+   "outfit": "kurta",
+   "color": "#F39C12"
+  }
+ ],
+ "scenes": [
+  {
+   "id": "s1",
+   "text": "रेपो रेट बढ़ने से आपकी ईएमआई महंगी हो जाती है।",
+   "startFrame": 0,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "look": "finance",
+     "bg": "bank",
+     "time": "day",
+     "headline": "रेपो रेट बढ़ी, ईएमआई महंगी",
+     "stat": {
+      "label": "नया रेपो रेट",
+      "value": "5.50%"
+     },
+     "chars": [
+      {
+       "id": "adv",
+       "x": 32,
+       "pose": "talk",
+       "mood": "neutral",
+       "speaking": true
+      },
+      {
+       "id": "cus",
+       "x": 72,
+       "pose": "scared",
+       "mood": "worried",
+       "flip": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s2",
+   "text": "शेयर बाज़ार में आज सेंसेक्स 800 अंक गिर गया।",
+   "startFrame": 105,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "look": "finance",
+     "bg": "stock",
+     "time": "day",
+     "headline": "सेंसेक्स में बड़ी गिरावट",
+     "stat": {
+      "label": "गिरावट",
+      "value": "-800"
+     },
+     "chars": [
+      {
+       "id": "cus",
+       "x": 50,
+       "pose": "scared",
+       "mood": "scared",
+       "speaking": true
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "totalFrames": 210
+}

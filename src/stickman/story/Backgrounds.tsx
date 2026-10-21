@@ -24,7 +24,7 @@ export const StoryBackground: React.FC<Props> = ({ bg, time, frame, w, h, ground
   const id = `sky-${bg}-${time}`;
   const drift = (speed: number, span: number, off = 0) => ((frame * speed + off) % span);
   const star = (i: number) => 0.3 + 0.7 * Math.abs(Math.sin(frame * 0.05 + i * 1.9));
-  const interior = bg === "home" || bg === "room_night" || bg === "office";
+  const interior = bg === "home" || bg === "room_night" || bg === "office" || bg === "bank" || bg === "stock" || bg === "newsroom" || bg === "studio";
 
   const sky = (
     <g>
@@ -164,6 +164,36 @@ export const StoryBackground: React.FC<Props> = ({ bg, time, frame, w, h, ground
         <g transform={`translate(${w * 0.62},${ground - 600})`}><rect width={280} height={320} fill="#0B1533" stroke="#8892B0" strokeWidth={6} /><circle cx={190} cy={90} r={48} fill="#F7F3D0" />{[0, 1, 2, 3, 4, 5].map((i) => <circle key={i} cx={30 + i * 44} cy={40 + (i % 3) * 70} r={3} fill="#fff" opacity={star(i)} />)}</g>
         <g transform={`translate(${w * 0.22},${ground + 20})`}><rect x={-210} y={-150} width={420} height={130} rx={14} fill="#34495E" stroke={OUT} strokeWidth={3} /><rect x={-210} y={-230} width={90} height={90} rx={14} fill="#ECF0F1" /><rect x={-120} y={-170} width={330} height={40} rx={14} fill="#5DADE2" /></g>
         <circle cx={w * 0.45} cy={ground - 140} r={140} fill="#F7DC6F" opacity={0.10 + 0.04 * Math.sin(frame * 0.05)} /></g>); break;
+    case "bank":
+      body = (<g><rect width={w} height={ground} fill={c("#EAF2F8")} />{floor(c("#C8B79A"))}<rect x={0} y={ground - 20} width={w} height={20} fill={c("#8B7355")} />
+        <g transform={`translate(${w / 2},${ground - 700})`}><rect x={-260} y={-20} width={520} height={110} rx={14} fill={c("#1F618D")} stroke={OUT} strokeWidth={4} /><text textAnchor="middle" y={62} fontSize={78} fontWeight={900} fill="#fff" fontFamily="Inter, sans-serif">BANK</text></g>
+        {[0.12, 0.88].map((p, i) => <g key={i} transform={`translate(${w * p},${ground})`}><rect x={-34} y={-520} width={68} height={520} fill={c("#F5F1E6")} stroke={OUT} strokeWidth={3} /><rect x={-48} y={-540} width={96} height={26} fill={c("#F5F1E6")} stroke={OUT} strokeWidth={3} /></g>)}
+        <g transform={`translate(${w * 0.5},${ground + 40})`}><rect x={-330} y={-150} width={660} height={150} rx={10} fill={c("#8E5A2B")} stroke={OUT} strokeWidth={4} /><rect x={-330} y={-250} width={660} height={100} fill="#D6EAF8" opacity={0.6} stroke={OUT} strokeWidth={3} />
+          {[0, 1, 2].map((i) => <circle key={i} cx={-120 + i * 120} cy={-176 + Math.sin(frame * 0.1 + i) * 4} r={22} fill="#F4D03F" stroke={OUT} strokeWidth={3} />)}</g></g>); break;
+    case "stock":
+      body = (<g><rect width={w} height={ground} fill="#0E1726" />{floor("#1B2638")}
+        {[0, 1, 2].flatMap((r) => [0, 1].map((cc) => ({ r, cc }))).map(({ r, cc }, i) => {
+          const x = w * (0.06 + cc * 0.48), y = ground - 900 + r * 270;
+          const pts = Array.from({ length: 14 }, (_, k) => `${k * 30},${120 - 60 * Math.sin(k * 0.7 + i + frame * 0.03) - k * (i % 2 ? -3 : 3)}`).join(" ");
+          return (<g key={i} transform={`translate(${x},${y})`}><rect width={w * 0.42} height={230} rx={10} fill="#0B1220" stroke="#2E4057" strokeWidth={3} />
+            <g transform="translate(30,20)"><polyline points={pts} fill="none" stroke={i % 2 ? "#E74C3C" : "#2ECC71"} strokeWidth={6} strokeLinejoin="round" /></g>
+            <text x={24} y={216} fontSize={28} fontWeight={800} fill={i % 2 ? "#E74C3C" : "#2ECC71"} fontFamily="Inter, sans-serif">{i % 2 ? "▼" : "▲"} {["SENSEX", "NIFTY", "BANKNIFTY", "GOLD", "USD/INR", "CRUDE"][i]}</text></g>);
+        })}</g>); break;
+    case "newsroom":
+      body = (<g><defs><linearGradient id="nr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#12264A" /><stop offset="1" stopColor="#0A1630" /></linearGradient></defs><rect width={w} height={ground} fill="url(#nr)" />{floor("#0B1226")}
+        <g transform={`translate(${w * 0.1},${ground - 980})`}><rect width={w * 0.8} height={560} rx={18} fill="#0A1B3F" stroke="#3B6FD4" strokeWidth={5} />
+          {Array.from({ length: 36 }, (_, i) => <circle key={i} cx={60 + (i % 9) * ((w * 0.8 - 120) / 8)} cy={70 + Math.floor(i / 9) * 120} r={7 + (i % 3) * 2} fill="#3B6FD4" opacity={0.35 + 0.5 * Math.abs(Math.sin(frame * 0.04 + i))} />)}
+          <text x={w * 0.4} y={300} textAnchor="middle" fontSize={120} fontWeight={900} fill="#fff" opacity={0.9} fontFamily="Inter, sans-serif">NEWS</text></g>
+        <g transform={`translate(${w * 0.5},${ground + 50})`}><rect x={-420} y={-180} width={840} height={180} rx={14} fill="#1B2B50" stroke="#3B6FD4" strokeWidth={4} /><rect x={-420} y={-196} width={840} height={20} fill="#C0392B" /></g></g>); break;
+    case "studio":
+      body = (<g><defs><radialGradient id="sg" cx="50%" cy="40%" r="70%"><stop offset="0" stopColor="#3A5BA0" /><stop offset="1" stopColor="#101A38" /></radialGradient></defs><rect width={w} height={ground} fill="url(#sg)" />{floor("#0D1530")}
+        <path d={`M${w * 0.3},0 L${w * 0.7},0 L${w * 0.95},${ground} L${w * 0.05},${ground} Z`} fill="#fff" opacity={0.05 + 0.02 * Math.sin(frame * 0.05)} /></g>); break;
+    case "govt":
+      body = (<g>{hills(c(P.far), ground - 20, 40, 11)}{floor(c("#CFC3A8"))}
+        <g transform={`translate(${w / 2},${ground + 12})`}><rect x={-420} y={-300} width={840} height={300} fill={c("#F5E6C8")} stroke={OUT} strokeWidth={3} />
+          {[-340, -250, -160, -70, 20, 110, 200, 290].map((x, i) => <rect key={i} x={x} y={-260} width={30} height={240} fill={c("#FFF8E7")} stroke={OUT} strokeWidth={2.5} />)}
+          <path d="M-140,-300 Q0,-560 140,-300 Z" fill={c("#E5B96B")} stroke={OUT} strokeWidth={3} /><line x1={0} y1={-520} x2={0} y2={-620} stroke={OUT} strokeWidth={5} /><path d={`M0,-620 l70,${10 + Math.sin(frame * 0.25) * 5} l-70,26 z`} fill="#FF9933" /><path d={`M0,-594 l70,${10 + Math.sin(frame * 0.25) * 5} l-70,-12 z`} fill="#fff" opacity={0.0} />
+          {[0, 1, 2, 3, 4, 5].map((i) => <rect key={i} x={-420 + i * 10} y={-i * 12} width={840 - i * 20} height={12} fill={c("#D7C3A0")} stroke={OUT} strokeWidth={2} />)}</g></g>); break;
   }
   return <g>{interior ? null : sky}{body}</g>;
 };

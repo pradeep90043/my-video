@@ -1,0 +1,97 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "news-demo",
+ "description": "",
+ "tags": [],
+ "cast": [
+  {
+   "id": "anchor",
+   "name": "",
+   "age": "adult",
+   "skin": "#E7B07F",
+   "hair": "side",
+   "hairColor": "#1B1B1B",
+   "outfit": "suit",
+   "color": "#1F3A5F",
+   "glasses": true
+  },
+  {
+   "id": "rep",
+   "name": "",
+   "age": "adult",
+   "skin": "#D39A68",
+   "hair": "ponytail",
+   "hairColor": "#2B1A12",
+   "outfit": "dress",
+   "color": "#C0392B"
+  }
+ ],
+ "scenes": [
+  {
+   "id": "s1",
+   "text": "आरबीआई ने रेपो रेट में 0.25 प्रतिशत की बढ़ोतरी की है।",
+   "startFrame": 0,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "look": "news",
+     "bg": "newsroom",
+     "time": "day",
+     "headline": "आरबीआई ने बढ़ाई रेपो रेट",
+     "place": "मुंबई",
+     "chars": [
+      {
+       "id": "anchor",
+       "x": 50,
+       "pose": "talk",
+       "mood": "neutral",
+       "speaking": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s2",
+   "text": "संसद के बाहर आज भारी भीड़ जमा हो गई।",
+   "startFrame": 105,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "push",
+    "story": {
+     "look": "news",
+     "bg": "govt",
+     "time": "day",
+     "headline": "संसद के बाहर भारी भीड़",
+     "place": "दिल्ली",
+     "chars": [
+      {
+       "id": "rep",
+       "x": 35,
+       "pose": "point",
+       "mood": "worried",
+       "speaking": true
+      },
+      {
+       "id": "anchor",
+       "x": 72,
+       "pose": "stand",
+       "mood": "worried",
+       "flip": true
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "totalFrames": 210
+}

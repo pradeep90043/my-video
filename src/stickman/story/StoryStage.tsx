@@ -2,7 +2,7 @@ import React from "react";
 import { Easing, interpolate } from "remotion";
 import { StoryBackground } from "./Backgrounds";
 import { Character, CHARACTER_HEIGHT } from "./Character";
-import { DEFAULT_CAST, type CastMember, type StagedChar, type StoryBgName, type StoryTime } from "./cast";
+import { DEFAULT_CAST, type CastMember, type StagedChar, type StoryBgName, type StoryLook, type StoryTime } from "./cast";
 
 interface Props {
   bg: StoryBgName;
@@ -17,10 +17,72 @@ interface Props {
   h: number;
   ground: number;
   camera: string;
+  look?: StoryLook;
+  headline?: string;
+  stat?: { label: string; value: string };
+  place?: string;
 }
 
+const wrap = (text: string, per: number): string[] => {
+  const lines: string[] = [];
+  let cur = "";
+  for (const word of text.split(/\s+/).filter(Boolean)) {
+    if ((cur + " " + word).trim().length > per && cur) { lines.push(cur); cur = word; } else cur = (cur + " " + word).trim();
+  }
+  if (cur) lines.push(cur);
+  return lines.slice(0, 3);
+};
+
+/** The niche frame drawn over the scene: news = breaking badge + place + headline bar; finance = heading strip + one big figure. */
+const LookOverlay: React.FC<{ look: StoryLook; headline?: string; stat?: { label: string; value: string }; place?: string; frame: number; w: number }> = ({ look, headline, stat, place, frame, w }) => {
+  const slide = interpolate(frame, [0, 14], [-260, 0], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+  const vertical = w < 1400;
+  const per = vertical ? 17 : 34;
+  const size = vertical ? 54 : 50;
+  const lines = headline ? wrap(headline, per) : [];
+  if (look === "news") {
+    return (
+      <g transform={`translate(0,${slide})`}>
+        <g transform="translate(40,60)">
+          <rect width={210} height={58} rx={10} fill="#C0392B" /><circle cx={30} cy={29} r={9} fill="#fff" opacity={0.6 + 0.4 * Math.sin(frame * 0.3)} />
+          <text x={50} y={40} fontSize={30} fontWeight={900} fill="#fff" fontFamily="Inter, sans-serif">BREAKING</text>
+          {place && <g transform="translate(224,0)"><rect width={place.length * 24 + 44} height={58} rx={10} fill="#0A1B3F" stroke="#3B6FD4" strokeWidth={3} /><text x={22} y={40} fontSize={30} fontWeight={800} fill="#fff" fontFamily="Inter, sans-serif">📍 {place}</text></g>}
+        </g>
+        {lines.length > 0 && (
+          <g transform="translate(40,140)">
+            <rect width={w - 80} height={lines.length * (size + 14) + 36} rx={14} fill="#0A1B3F" stroke="#3B6FD4" strokeWidth={4} opacity={0.96} />
+            <rect width={14} height={lines.length * (size + 14) + 36} rx={7} fill="#F1C40F" />
+            {lines.map((l, i) => <text key={i} x={40} y={26 + size + i * (size + 14)} fontSize={size} fontWeight={900} fill="#fff" fontFamily="Inter, sans-serif">{l}</text>)}
+          </g>
+        )}
+      </g>
+    );
+  }
+  if (look === "finance") {
+    const pop = interpolate(frame, [6, 22], [0.6, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.back(1.8)) });
+    return (
+      <g transform={`translate(0,${slide})`}>
+        {lines.length > 0 && (
+          <g transform="translate(40,70)">
+            <rect width={w - 80} height={lines.length * (size + 12) + 30} rx={16} fill="#0B6E4F" />
+            {lines.map((l, i) => <text key={i} x={36} y={20 + size + i * (size + 12)} fontSize={size} fontWeight={900} fill="#fff" fontFamily="Inter, sans-serif">{l}</text>)}
+          </g>
+        )}
+        {stat && (
+          <g transform={`translate(${w - (vertical ? 350 : 460)},${vertical ? 120 + lines.length * (size + 12) + 60 : 200}) scale(${pop})`} opacity={Math.min(1, pop * 1.4)}>
+            <rect width={vertical ? 310 : 420} height={170} rx={22} fill="#fff" stroke="#0B6E4F" strokeWidth={6} />
+            <text x={(vertical ? 310 : 420) / 2} y={92} textAnchor="middle" fontSize={stat.value.length > 7 ? 54 : 74} fontWeight={900} fill="#0B6E4F" fontFamily="Inter, sans-serif">{stat.value}</text>
+            <text x={(vertical ? 310 : 420) / 2} y={142} textAnchor="middle" fontSize={30} fontWeight={800} fill="#2B2B2B" fontFamily="Inter, sans-serif">{stat.label}</text>
+          </g>
+        )}
+      </g>
+    );
+  }
+  return null;
+};
+
 /** A storyboard frame: the story's background and the people in it, placed left to right, entering with a short walk. */
-export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, durationFrames, talking, mouthLevel, w, h, ground, camera }) => {
+export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, durationFrames, talking, mouthLevel, w, h, ground, camera, look = "story", headline, stat, place }) => {
   const p = interpolate(frame, [0, durationFrames], [0, 1], { extrapolateRight: "clamp", easing: Easing.inOut(Easing.sin) });
   const cam = camera === "pull" ? 1.06 - 0.06 * p : camera === "none" ? 1 : 1 + 0.06 * p;
   const camX = camera === "pan-left" ? 30 - 60 * p : camera === "pan-right" ? -30 + 60 * p : 0;
@@ -32,6 +94,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
   const lookup = (id: string): CastMember => cast.find((m) => m.id === id) ?? DEFAULT_CAST[0];
 
   return (
+    <g>
     <g transform={`translate(${w / 2 + camX},${ground}) scale(${cam}) translate(${-w / 2},${-ground})`}>
       <StoryBackground bg={bg} time={time} frame={frame} w={w} h={h} ground={ground} />
       {order.map((c, i) => {
@@ -57,6 +120,8 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
           </g>
         );
       })}
+    </g>
+    {look !== "story" && <LookOverlay look={look} headline={headline} stat={stat} place={place} frame={frame} w={w} />}
     </g>
   );
 };

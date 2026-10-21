@@ -240,7 +240,7 @@ export const SceneSchema = z.object({
 });
 
 /** A real, licensed photo (Wikimedia Commons / Pexels) shown as a framed picture with its credit. */
-import { CHAR_MOODS, CHAR_POSES, STORY_BGS, STORY_TIMES } from "./story/cast";
+import { CHAR_MOODS, CHAR_POSES, STORY_BGS, STORY_LOOKS, STORY_TIMES } from "./story/cast";
 
 /** Storyboard scene: the story's background plus the characters (by cast id) standing in it. */
 export const StoryCharSchema = z.object({
@@ -257,6 +257,14 @@ export const StorySchema = z.object({
   bg: z.enum(STORY_BGS),
   time: z.enum(STORY_TIMES).default("day"),
   chars: z.array(StoryCharSchema).min(1).max(5),
+  /** the niche's frame: "finance" / "news" add a header, a figure card or a breaking-news headline bar */
+  look: z.enum(STORY_LOOKS).default("story"),
+  /** news: the headline shown in the bar (about 8 words); finance: the card's heading */
+  headline: z.string().max(80).optional(),
+  /** finance: one figure to show big ("8.5%", "₹ 50,000") with its label ("Repo rate") */
+  stat: z.object({ label: z.string().max(40), value: z.string().max(20) }).optional(),
+  /** news: where it happens ("दिल्ली") */
+  place: z.string().max(30).optional(),
 });
 export type StorySpec = z.infer<typeof StorySchema>;
 
