@@ -64,4 +64,5 @@ export interface StagedChar {
   /** frames before the character walks / pops in */
   delay: number;
   speaking: boolean;
+  fromX?: number;
 }

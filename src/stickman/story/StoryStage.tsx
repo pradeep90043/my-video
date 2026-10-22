@@ -17,6 +17,13 @@ interface Props {
   h: number;
   ground: number;
   camera: string;
+  /** same shot as the previous beat: people stay (walking to their new spot), nothing re-enters */
+  cont?: boolean;
+  /** spoken words (seconds from the start of the line), the line's first frame and the video frame the scene starts at: gestures and lips follow the voice */
+  words?: { text: string; start: number; end: number }[];
+  speakFrom?: number;
+  startFrame?: number;
+  fps?: number;
   look?: StoryLook;
   headline?: string;
   stat?: { label: string; value: string };
@@ -82,13 +89,23 @@ const LookOverlay: React.FC<{ look: StoryLook; headline?: string; stat?: { label
 };
 
 /** A storyboard frame: the story's background and the people in it, placed left to right, entering with a short walk. */
-export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, durationFrames, talking, mouthLevel, w, h, ground, camera, look = "story", headline, stat, place }) => {
+export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, durationFrames, talking, mouthLevel, w, h, ground, camera, cont = false, words, speakFrom = 0, startFrame = 0, fps = 30, look = "story", headline, stat, place }) => {
   const p = interpolate(frame, [0, durationFrames], [0, 1], { extrapolateRight: "clamp", easing: Easing.inOut(Easing.sin) });
-  const cam = camera === "pull" ? 1.06 - 0.06 * p : camera === "none" ? 1 : 1 + 0.06 * p;
-  const camX = camera === "pan-left" ? 30 - 60 * p : camera === "pan-right" ? -30 + 60 * p : 0;
+  // a storyboard shot does not zoom: every beat restarting the push looked like the frame jumping
+  void p; void camera;
+  const cam = 1;
+  const camX = 0;
   const crowd = chars.length >= 4 ? 0.8 : chars.length === 3 ? 0.9 : 1;
   const base = (h * (w < h ? 0.4 : 0.62)) / CHARACTER_HEIGHT;
   const anySpeaker = chars.some((c) => c.speaking);
+  // the voice: each word gives the speaker a push; the lips open while a word is being said
+  const wf = (words ?? []).map((wd) => ({ s: speakFrom + wd.start * fps, e: speakFrom + wd.end * fps }));
+  const spoken = wf.filter((x) => x.s <= frame);
+  const energy = Math.min(1, spoken.reduce((a, x) => a + Math.exp(-(frame - x.s) / 6), 0));
+  const gestureStep = Math.floor(spoken.length / 4);
+  const inWord = wf.find((x) => frame >= x.s && frame < x.e);
+  const voiceMouth = wf.length ? (inWord ? 0.35 + 0.55 * Math.abs(Math.sin((frame - inWord.s) * 0.9)) : 0.04) : mouthLevel;
+  const clock = frame + startFrame; // the world's own clock: clouds, stars and breathing carry on across beats
   // painter's order: the ones lower in z (further right in a pair) are drawn last; a bigger scale stands in front
   const order = [...chars].sort((a, b) => a.scale - b.scale);
   const lookup = (id: string): CastMember => cast.find((m) => m.id === id) ?? DEFAULT_CAST[0];
@@ -96,21 +113,26 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
   return (
     <g>
     <g transform={`translate(${w / 2 + camX},${ground}) scale(${cam}) translate(${-w / 2},${-ground})`}>
-      <StoryBackground bg={bg} time={time} frame={frame} w={w} h={h} ground={ground} />
+      <StoryBackground bg={bg} time={time} frame={clock} w={w} h={h} ground={ground} />
       {order.map((c, i) => {
         const member = lookup(c.id);
         const tx = (c.x / 100) * w;
         const local = frame - c.delay;
-        const enter = interpolate(local, [0, 20], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
-        const fromX = c.x < 50 ? -w * 0.2 : w * 1.2;
-        const x = fromX + (tx - fromX) * enter;
-        const walking = enter < 1 && local >= 0;
-        const speaks = talking && (c.speaking || (!anySpeaker && i === 0));
+        // a new shot: everybody walks in; the same shot: they stay and walk from where they stood to where they stand now
+        const stays = cont && c.fromX !== undefined;
+        const fx = stays ? (c.fromX! / 100) * w : c.x < 50 ? -w * 0.2 : w * 1.2;
+        const dur = stays ? 16 : 20;
+        const enter = interpolate(local, [0, dur], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.inOut(Easing.cubic) });
+        const popIn = cont && c.fromX === undefined ? interpolate(local, [0, 8], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 1;
+        const x = cont && c.fromX === undefined ? tx : fx + (tx - fx) * enter;
+        const walking = enter < 1 && local >= 0 && Math.abs(tx - fx) > 30;
+        const isSpeaker = c.speaking || (!anySpeaker && i === 0);
+        const speaks = talking && isSpeaker;
         const s = base * crowd * c.scale;
-        const nameOn = member.name && local >= 0 && local < 70;
+        const nameOn = member.name && !cont && local >= 0 && local < 70;
         return (
-          <g key={c.id + i} transform={`translate(${x},${ground + 6 + (c.scale > 1 ? 14 : 0)}) scale(${s})`} opacity={local < 0 ? 0 : 1}>
-            <Character member={member} pose={walking ? "walk" : c.pose} mood={c.mood} frame={Math.max(0, local)} talking={speaks} mouthLevel={speaks ? mouthLevel : undefined} flip={c.flip} />
+          <g key={c.id + i} transform={`translate(${x},${ground + 6 + (c.scale > 1 ? 14 : 0)}) scale(${s})`} opacity={local < 0 ? 0 : popIn}>
+            <Character member={member} pose={walking ? "walk" : c.pose} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={c.flip} energy={speaks ? energy : 0} gesture={gestureStep + i} listening={talking && !isSpeaker} />
             {nameOn && (
               <g transform={`translate(0,${-(510 + 64 * (member.age === "child" ? 1.22 : member.age === "teen" ? 1.08 : 1)) * (member.age === "child" ? 0.62 : member.age === "teen" ? 0.86 : 1) - 62})`} opacity={interpolate(local, [0, 8, 56, 70], [0, 1, 1, 0], { extrapolateRight: "clamp" })}>
                 <rect x={-(member.name!.length * 17 + 30)} y={-34} width={member.name!.length * 34 + 60} height={60} rx={30} fill="#fff" stroke="#2B2B2B" strokeWidth={4} />

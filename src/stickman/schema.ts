@@ -252,11 +252,15 @@ export const StoryCharSchema = z.object({
   scale: z.number().min(0.5).max(1.4).default(1),
   delay: z.number().min(0).max(120).default(0),
   speaking: z.boolean().default(false),
+  /** where this person stood in the previous beat of the same shot: they walk from there instead of walking in */
+  fromX: z.number().min(0).max(100).optional(),
 });
 export const StorySchema = z.object({
   bg: z.enum(STORY_BGS),
   time: z.enum(STORY_TIMES).default("day"),
   chars: z.array(StoryCharSchema).min(1).max(5),
+  /** same place and people as the previous beat: no transition, no re-entrance, the shot just goes on */
+  cont: z.boolean().default(false),
   /** the niche's frame: "finance" / "news" add a header, a figure card or a breaking-news headline bar */
   look: z.enum(STORY_LOOKS).default("story"),
   /** news: the headline shown in the bar (about 8 words); finance: the card's heading */

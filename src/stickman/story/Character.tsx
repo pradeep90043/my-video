@@ -14,6 +14,12 @@ interface Props {
   /** 0..1 loudness of the spoken line (lip-sync); undefined = generic flap */
   mouthLevel?: number;
   flip?: boolean;
+  /** 0..1 pulse that peaks at each spoken word: drives the gesture and the nod of whoever is speaking */
+  energy?: number;
+  /** changes every few words: picks the next gesture of the speaker */
+  gesture?: number;
+  /** someone else is speaking: nods, looks, breathes */
+  listening?: boolean;
 }
 
 const OUT = "#2B2B2B";
@@ -38,7 +44,7 @@ const POSES: Record<CharPose, PoseSpec> = {
   bow: { rt: 6, rf: 8, lt: 6, lf: 8, tilt: 0, lean: 24, headDrop: 10 },
 };
 
-export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, flip }) => {
+export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, flip, energy = 0, gesture = 0, listening = false }) => {
   const child = m.age === "child", teen = m.age === "teen", elder = m.age === "elder";
   const bodyK = child ? 0.62 : teen ? 0.86 : 1;
   const headK = child ? 1.22 : teen ? 1.08 : 1;
@@ -47,11 +53,17 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   const swing = pose === "walk" ? Math.sin(frame * 0.32) : 0;
   const talkSwing = pose === "talk" || (talking && pose === "stand") ? Math.sin(frame * 0.27) : 0;
   const waveSwing = pose === "wave" ? Math.sin(frame * 0.45) : 0;
-  const hop = pose === "happy" ? -Math.abs(Math.sin(frame * 0.2)) * 22 : 0;
+  const hop = (pose === "happy" ? -Math.abs(Math.sin(frame * 0.2)) * 22 : 0) - (talking ? energy * 5 : 0);
   const lean = P.lean + (elder ? 5 : 0);
 
-  const rArm = { t: P.rt + talkSwing * 14 + waveSwing * 18 - swing * 28, f: P.rf + talkSwing * 12 };
-  const lArm = { t: P.lt + (pose === "angry" || pose === "scared" ? 0 : swing * 28), f: P.lf };
+  // A speaker does a different gesture every few words and each word gives it a push; a listener nods now and then.
+  const speaking = talking && (pose === "talk" || pose === "stand");
+  const SPEAK: [number, number, number, number][] = [[45, 80, 8, 10], [55, 70, 55, 70], [8, 10, 45, 80], [112, 22, 8, 10], [35, 100, 35, 100]];
+  const g = SPEAK[Math.abs(Math.floor(gesture)) % SPEAK.length];
+  const push = energy * 16;
+  const rArm = speaking ? { t: g[0] + (g[0] > 20 ? push : 0), f: g[1] + energy * 10 } : { t: P.rt + talkSwing * 14 + waveSwing * 18 - swing * 28, f: P.rf + talkSwing * 12 };
+  const lArm = speaking ? { t: g[2] + (g[2] > 20 ? push : 0), f: g[3] + energy * 10 } : { t: P.lt + (pose === "angry" || pose === "scared" ? 0 : swing * 28), f: P.lf };
+  const nod = speaking ? energy * 6 : listening ? Math.max(0, Math.sin(frame * 0.045)) ** 3 * 7 : 0;
 
   // face
   const blink = frame % 120 > 114 ? 0.1 : 1;
@@ -159,7 +171,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
           {arm(-1, lArm)}
           {torso}
           <rect x={-14} y={-452} width={28} height={40} rx={10} fill={skinD} stroke={OUT} strokeWidth={3} />
-          <g transform={`translate(0,${P.headDrop + breathe * 0.3}) rotate(${P.tilt} 0 -450)`}>
+          <g transform={`translate(0,${P.headDrop + nod + breathe * 0.3}) rotate(${P.tilt + (listening ? Math.sin(frame * 0.03) * 2 : 0)} 0 -450)`}>
             <circle cx={cx} cy={cy} r={R} fill={skin} stroke={OUT} strokeWidth={3.5} />
             <ellipse cx={cx - R + 2} cy={cy + 8} rx={9} ry={14} fill={skinD} stroke={OUT} strokeWidth={3} />
             <ellipse cx={cx + R - 2} cy={cy + 8} rx={9} ry={14} fill={skinD} stroke={OUT} strokeWidth={3} />

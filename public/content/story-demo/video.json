@@ -67,15 +67,16 @@
    "durationFrames": 105,
    "duration": 3.2,
    "visual": {
-    "camera": "push",
+    "camera": "none",
     "story": {
      "bg": "village",
      "time": "day",
+     "cont": false,
      "chars": [
       {
        "id": "raju",
        "x": 30,
-       "pose": "talk",
+       "pose": "stand",
        "mood": "happy",
        "speaking": true
       },
@@ -83,168 +84,248 @@
        "id": "maa",
        "x": 68,
        "pose": "stand",
-       "mood": "happy"
+       "mood": "happy",
+       "speaking": false,
+       "flip": true
       }
      ]
     }
-   }
+   },
+   "words": [
+    {
+     "text": "गाँव",
+     "start": 0.15,
+     "end": 0.31
+    },
+    {
+     "text": "के",
+     "start": 0.36,
+     "end": 0.53
+    },
+    {
+     "text": "एक",
+     "start": 0.58,
+     "end": 0.74
+    },
+    {
+     "text": "छोटे",
+     "start": 0.79,
+     "end": 0.96
+    },
+    {
+     "text": "से",
+     "start": 1.01,
+     "end": 1.17
+    },
+    {
+     "text": "घर",
+     "start": 1.22,
+     "end": 1.39
+    },
+    {
+     "text": "में",
+     "start": 1.44,
+     "end": 1.6
+    },
+    {
+     "text": "राजू",
+     "start": 1.65,
+     "end": 1.81
+    },
+    {
+     "text": "अपनी",
+     "start": 1.86,
+     "end": 2.03
+    },
+    {
+     "text": "माँ",
+     "start": 2.08,
+     "end": 2.24
+    },
+    {
+     "text": "के",
+     "start": 2.29,
+     "end": 2.46
+    },
+    {
+     "text": "साथ",
+     "start": 2.51,
+     "end": 2.67
+    },
+    {
+     "text": "रहता",
+     "start": 2.72,
+     "end": 2.89
+    },
+    {
+     "text": "था",
+     "start": 2.94,
+     "end": 3.1
+    }
+   ]
   },
   {
    "id": "s2",
-   "text": "एक दिन स्कूल में टीचर ने सबके सामने उससे सवाल पूछा।",
+   "text": "हर सुबह राजू स्कूल जाने के लिए जल्दी उठ जाता था।",
    "startFrame": 105,
    "durationFrames": 105,
    "duration": 3.2,
    "visual": {
-    "camera": "push",
+    "camera": "none",
     "story": {
-     "bg": "school",
+     "bg": "village",
      "time": "day",
-     "chars": [
-      {
-       "id": "raju",
-       "x": 28,
-       "pose": "scared",
-       "mood": "scared"
-      },
-      {
-       "id": "teacher",
-       "x": 72,
-       "pose": "point",
-       "mood": "neutral",
-       "speaking": true,
-       "flip": true
-      }
-     ]
-    }
-   }
-  },
-  {
-   "id": "s3",
-   "text": "राजू को जवाब नहीं आता था, उसकी आँखों में आँसू आ गए।",
-   "startFrame": 210,
-   "durationFrames": 105,
-   "duration": 3.2,
-   "visual": {
-    "camera": "push",
-    "story": {
-     "bg": "school",
-     "time": "dusk",
-     "chars": [
-      {
-       "id": "raju",
-       "x": 50,
-       "pose": "sad",
-       "mood": "sad",
-       "speaking": true
-      }
-     ]
-    }
-   }
-  },
-  {
-   "id": "s4",
-   "text": "घर लौटकर दादाजी ने उसे प्यार से समझाया।",
-   "startFrame": 315,
-   "durationFrames": 105,
-   "duration": 3.2,
-   "visual": {
-    "camera": "push",
-    "story": {
-     "bg": "home",
-     "time": "night",
-     "chars": [
-      {
-       "id": "dada",
-       "x": 66,
-       "pose": "talk",
-       "mood": "happy",
-       "speaking": true,
-       "flip": true
-      },
-      {
-       "id": "raju",
-       "x": 32,
-       "pose": "think",
-       "mood": "worried"
-      },
-      {
-       "id": "maa",
-       "x": 88,
-       "pose": "stand",
-       "mood": "worried",
-       "scale": 0.9,
-       "flip": true
-      }
-     ]
-    }
-   }
-  },
-  {
-   "id": "s5",
-   "text": "अगले दिन राजू ने सबको चौंका दिया और पूरे गाँव ने तालियाँ बजाईं।",
-   "startFrame": 420,
-   "durationFrames": 105,
-   "duration": 3.2,
-   "visual": {
-    "camera": "push",
-    "story": {
-     "bg": "forest",
-     "time": "day",
+     "cont": true,
      "chars": [
       {
        "id": "raju",
        "x": 30,
-       "pose": "happy",
-       "mood": "laugh"
-      },
-      {
-       "id": "teacher",
-       "x": 58,
-       "pose": "wave",
-       "mood": "happy"
-      },
-      {
-       "id": "dada",
-       "x": 82,
-       "pose": "happy",
+       "pose": "stand",
        "mood": "happy",
-       "flip": true
+       "speaking": false,
+       "fromX": 30
+      },
+      {
+       "id": "maa",
+       "x": 68,
+       "pose": "stand",
+       "mood": "happy",
+       "speaking": true,
+       "flip": true,
+       "fromX": 68
       }
      ]
     }
-   }
+   },
+   "words": [
+    {
+     "text": "हर",
+     "start": 0.15,
+     "end": 0.37
+    },
+    {
+     "text": "सुबह",
+     "start": 0.42,
+     "end": 0.65
+    },
+    {
+     "text": "राजू",
+     "start": 0.7,
+     "end": 0.92
+    },
+    {
+     "text": "स्कूल",
+     "start": 0.97,
+     "end": 1.19
+    },
+    {
+     "text": "जाने",
+     "start": 1.24,
+     "end": 1.46
+    },
+    {
+     "text": "के",
+     "start": 1.51,
+     "end": 1.74
+    },
+    {
+     "text": "लिए",
+     "start": 1.79,
+     "end": 2.01
+    },
+    {
+     "text": "जल्दी",
+     "start": 2.06,
+     "end": 2.28
+    },
+    {
+     "text": "उठ",
+     "start": 2.33,
+     "end": 2.55
+    },
+    {
+     "text": "जाता",
+     "start": 2.6,
+     "end": 2.83
+    },
+    {
+     "text": "था",
+     "start": 2.88,
+     "end": 3.1
+    }
+   ]
   },
   {
-   "id": "s6",
-   "text": "बाज़ार में हर कोई उसकी कहानी सुनाने लगा।",
-   "startFrame": 525,
+   "id": "s3",
+   "text": "माँ उसके लिए रोटी बाँधकर रखती थी।",
+   "startFrame": 210,
    "durationFrames": 105,
    "duration": 3.2,
    "visual": {
-    "camera": "push",
+    "camera": "none",
     "story": {
-     "bg": "market",
+     "bg": "village",
      "time": "day",
+     "cont": true,
      "chars": [
       {
-       "id": "maa",
-       "x": 32,
-       "pose": "talk",
+       "id": "raju",
+       "x": 30,
+       "pose": "stand",
        "mood": "happy",
-       "speaking": true
+       "speaking": true,
+       "fromX": 30
       },
       {
-       "id": "dada",
-       "x": 70,
+       "id": "maa",
+       "x": 68,
        "pose": "stand",
-       "mood": "surprised",
-       "flip": true
+       "mood": "happy",
+       "speaking": false,
+       "flip": true,
+       "fromX": 68
       }
      ]
     }
-   }
+   },
+   "words": [
+    {
+     "text": "माँ",
+     "start": 0.15,
+     "end": 0.53
+    },
+    {
+     "text": "उसके",
+     "start": 0.58,
+     "end": 0.96
+    },
+    {
+     "text": "लिए",
+     "start": 1.01,
+     "end": 1.39
+    },
+    {
+     "text": "रोटी",
+     "start": 1.44,
+     "end": 1.81
+    },
+    {
+     "text": "बाँधकर",
+     "start": 1.86,
+     "end": 2.24
+    },
+    {
+     "text": "रखती",
+     "start": 2.29,
+     "end": 2.67
+    },
+    {
+     "text": "थी",
+     "start": 2.72,
+     "end": 3.1
+    }
+   ]
   }
  ],
- "totalFrames": 630
+ "totalFrames": 315
 }

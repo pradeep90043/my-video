@@ -197,10 +197,10 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
   })();
 
   const AUTO_ROTATION = ["slide", "zoom", "iris", "wipe"] as const;
-  const transition = v.transition === "auto" ? (index === 0 ? "cut" : AUTO_ROTATION[(index - 1) % AUTO_ROTATION.length]) : v.transition;
+  const transition = v.story?.cont ? "cut" : v.transition === "auto" ? (index === 0 ? "cut" : AUTO_ROTATION[(index - 1) % AUTO_ROTATION.length]) : v.transition;
   const TR_FRAMES = 12;
   const tr = interpolate(frame, [0, TR_FRAMES], [0, 1], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
-  const fadeIn = transition === "cut" ? interpolate(frame, [0, 5], [0, 1], { extrapolateRight: "clamp" }) : transition === "wipe" || transition === "iris" ? 1 : Math.min(1, tr * 1.6);
+  const fadeIn = v.story?.cont ? 1 : transition === "cut" ? interpolate(frame, [0, 5], [0, 1], { extrapolateRight: "clamp" }) : transition === "wipe" || transition === "iris" ? 1 : Math.min(1, tr * 1.6);
   const wipeX = interpolate(frame, [0, 10], [-world.width, world.width], { extrapolateRight: "clamp" });
   const sceneTransform =
     transition === "slide" ? `translate(${(1 - tr) * world.width * 0.07},0)` :
@@ -234,6 +234,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
         {v.story && (
           <StoryStage bg={v.story.bg} time={v.story.time} chars={v.story.chars} cast={cast ?? []} frame={frame} durationFrames={durationFrames}
             talking={talking} mouthLevel={mouthLevel} w={world.width} h={world.height} ground={world.ground} camera={v.camera}
+            cont={v.story.cont} words={words} speakFrom={speakFrom} startFrame={startFrame} fps={fps}
             look={v.story.look} headline={v.story.headline} stat={v.story.stat} place={v.story.place} />
         )}
         {!v.story && (<>
