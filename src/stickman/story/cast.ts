@@ -14,7 +14,9 @@ export type StoryBgName = (typeof STORY_BGS)[number];
 export const STORY_TIMES = ["day", "dusk", "night"] as const;
 export type StoryTime = (typeof STORY_TIMES)[number];
 
-export const CHAR_POSES = ["stand", "talk", "point", "wave", "sad", "happy", "angry", "scared", "walk", "think", "bow"] as const;
+export const CHAR_POSES = ["stand", "talk", "point", "wave", "sad", "happy", "angry", "scared", "walk", "think", "bow", "run", "cry", "pray", "hug", "give", "eat", "sleep", "dance", "fight", "carry"] as const;
+/** poses that ARE the action (running, hugging, giving...): held for the whole beat, never replaced by talking gestures */
+export const ACTION_POSES: readonly string[] = ["walk", "run", "cry", "pray", "hug", "give", "eat", "sleep", "dance", "fight", "carry"];
 export type CharPose = (typeof CHAR_POSES)[number];
 
 export const CHAR_MOODS = ["neutral", "happy", "sad", "angry", "scared", "surprised", "laugh", "worried"] as const;
@@ -65,4 +67,6 @@ export interface StagedChar {
   delay: number;
   speaking: boolean;
   fromX?: number;
+  /** an object in the character's hand (a gift being given, a book being read, food being eaten) */
+  holds?: string;
 }

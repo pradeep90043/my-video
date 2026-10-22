@@ -1,5 +1,6 @@
 import React from "react";
-import { STORY_FONT } from "./font";import { Easing, interpolate } from "remotion";
+import { STORY_FONT } from "./font";
+import { StoryFxLayer, StoryPropArt, type StoryFx, type StoryPropName } from "./StoryProps";import { Easing, interpolate } from "remotion";
 import { StoryBackground } from "./Backgrounds";
 import { Character, CHARACTER_HEIGHT } from "./Character";
 import { DEFAULT_CAST, type CastMember, type StagedChar, type StoryBgName, type StoryLook, type StoryTime } from "./cast";
@@ -25,6 +26,8 @@ interface Props {
   startFrame?: number;
   fps?: number;
   look?: StoryLook;
+  props?: { type: string; x: number; air: number; scale: number; anim: string; delay: number }[];
+  fx?: StoryFx;
   headline?: string;
   stat?: { label: string; value: string };
   place?: string;
@@ -89,7 +92,7 @@ const LookOverlay: React.FC<{ look: StoryLook; headline?: string; stat?: { label
 };
 
 /** A storyboard frame: the story's background and the people in it, placed left to right, entering with a short walk. */
-export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, durationFrames, talking, mouthLevel, w, h, ground, camera, cont = false, words, speakFrom = 0, startFrame = 0, fps = 30, look = "story", headline, stat, place }) => {
+export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, durationFrames, talking, mouthLevel, w, h, ground, camera, cont = false, words, speakFrom = 0, startFrame = 0, fps = 30, look = "story", props = [], fx = "none", headline, stat, place }) => {
   const p = interpolate(frame, [0, durationFrames], [0, 1], { extrapolateRight: "clamp", easing: Easing.inOut(Easing.sin) });
   // a storyboard shot does not zoom: every beat restarting the push looked like the frame jumping
   void p; void camera;
@@ -114,6 +117,16 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
     <g>
     <g transform={`translate(${w / 2 + camX},${ground}) scale(${cam}) translate(${-w / 2},${-ground})`}>
       <StoryBackground bg={bg} time={time} frame={clock} w={w} h={h} ground={ground} />
+      {props.map((pr, k) => {
+        const px = (pr.x / 100) * w;
+        const py = ground + 6 - pr.air * 260;
+        const sc = (h * (w < h ? 0.4 : 0.62) / 590) * pr.scale * 1.15;
+        return (
+          <g key={`p${k}`} transform={`translate(${px},${py}) scale(${sc})`}>
+            <StoryPropArt type={pr.type as StoryPropName} anim={pr.anim as never} frame={clock} delay={pr.delay} />
+          </g>
+        );
+      })}
       {order.map((c, i) => {
         const member = lookup(c.id);
         const tx = (c.x / 100) * w;
@@ -135,7 +148,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
         const nameOn = member.name && !cont && local >= 0 && local < 70;
         return (
           <g key={c.id + i} transform={`translate(${x},${ground + 6 + (c.scale > 1 ? 14 : 0)}) scale(${s})`} opacity={local < 0 ? 0 : popIn}>
-            <Character member={member} pose={walking ? "walk" : c.pose} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={c.flip} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && !isSpeaker} envelope={envelope} poseWeight={poseWeight} />
+            <Character member={member} pose={walking ? "walk" : c.pose} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={c.flip} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && !isSpeaker} envelope={envelope} poseWeight={poseWeight} holds={c.holds as StoryPropName | undefined} />
             {nameOn && (
               <g transform={`translate(0,${-(510 + 64 * (member.age === "child" ? 1.22 : member.age === "teen" ? 1.08 : 1)) * (member.age === "child" ? 0.62 : member.age === "teen" ? 0.86 : 1) - 62})`} opacity={interpolate(local, [0, 8, 56, 70], [0, 1, 1, 0], { extrapolateRight: "clamp" })}>
                 <rect x={-(member.name!.length * 17 + 30)} y={-34} width={member.name!.length * 34 + 60} height={60} rx={30} fill="#fff" stroke="#2B2B2B" strokeWidth={4} />
@@ -145,6 +158,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
           </g>
         );
       })}
+      <StoryFxLayer fx={fx} frame={clock} w={w} h={h} />
     </g>
     {look !== "story" && <LookOverlay look={look} headline={headline} stat={stat} place={place} frame={frame} w={w} />}
     </g>

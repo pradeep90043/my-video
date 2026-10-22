@@ -1,5 +1,6 @@
 import React from "react";
-import type { CastMember, CharMood, CharPose } from "./cast";
+import { ACTION_POSES, type CastMember, type CharMood, type CharPose } from "./cast";
+import { StoryPropArt, type StoryPropName } from "./StoryProps";
 
 /**
  * A flat-vector storyboard character. Origin = the point between the feet; the body grows upwards (negative y).
@@ -24,6 +25,8 @@ interface Props {
   envelope?: number;
   /** 0..1: how much of the staged pose (arms up, hands on hips...) is still held; it fades after about a second into gestures / rest */
   poseWeight?: number;
+  /** an object in the hand */
+  holds?: StoryPropName;
 }
 
 const OUT = "#2B2B2B";
@@ -46,28 +49,43 @@ const POSES: Record<CharPose, PoseSpec> = {
   walk: { rt: 25, rf: 10, lt: 25, lf: 10, tilt: 0, lean: 2, headDrop: 0 },
   think: { rt: 8, rf: 10, lt: 35, lf: 150, tilt: 5, lean: 0, headDrop: 4 },
   bow: { rt: 6, rf: 8, lt: 6, lf: 8, tilt: 0, lean: 24, headDrop: 10 },
+  run: { rt: 35, rf: 70, lt: 35, lf: 70, tilt: 0, lean: 14, headDrop: 0 },
+  cry: { rt: 36, rf: 145, lt: 36, lf: 145, tilt: -3, lean: 3, headDrop: 12 },
+  pray: { rt: 14, rf: 150, lt: 14, lf: 150, tilt: 0, lean: 2, headDrop: 8 },
+  hug: { rt: 72, rf: 35, lt: 72, lf: 35, tilt: 0, lean: 8, headDrop: 0 },
+  give: { rt: 88, rf: 6, lt: 8, lf: 10, tilt: 0, lean: 5, headDrop: 0 },
+  eat: { rt: 22, rf: 148, lt: 8, lf: 10, tilt: 0, lean: 2, headDrop: 3 },
+  sleep: { rt: 6, rf: 8, lt: 6, lf: 8, tilt: 0, lean: 0, headDrop: 0 },
+  dance: { rt: 140, rf: 20, lt: 140, lf: 20, tilt: 0, lean: 0, headDrop: 0 },
+  fight: { rt: 80, rf: 30, lt: 30, lf: 100, tilt: 0, lean: 6, headDrop: 0 },
+  carry: { rt: 62, rf: 82, lt: 62, lf: 82, tilt: 0, lean: 4, headDrop: 0 },
 };
 
-export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, flip, energy = 0, gesture = 0, listening = false, envelope = 1, poseWeight = 1 }) => {
+export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, flip, energy = 0, gesture = 0, listening = false, envelope = 1, poseWeight = 1, holds }) => {
   const child = m.age === "child", teen = m.age === "teen", elder = m.age === "elder";
   const bodyK = child ? 0.62 : teen ? 0.86 : 1;
   const headK = child ? 1.22 : teen ? 1.08 : 1;
   const mix = (a: number, b: number, k: number) => a + (b - a) * k;
   const smooth = (k: number) => { const c = Math.max(0, Math.min(1, k)); return c * c * (3 - 2 * c); };
-  const walking = pose === "walk";
-  const held = walking ? 1 : poseWeight * envelope; // how much of the staged pose is shown right now
+  const sticky = ACTION_POSES.includes(pose); // the action is the acting: held for the whole beat
+  const walking = pose === "walk" || pose === "run";
+  const held = sticky ? Math.max(envelope, 0.85) : poseWeight * envelope; // how much of the staged pose is shown right now
   const EXP = POSES[pose], REST = POSES.stand;
   const P: PoseSpec = { rt: mix(REST.rt, EXP.rt, held), rf: mix(REST.rf, EXP.rf, held), lt: mix(REST.lt, EXP.lt, held), lf: mix(REST.lf, EXP.lf, held), tilt: EXP.tilt * held, lean: EXP.lean * held, headDrop: EXP.headDrop * held };
   const breathe = Math.sin(frame * 0.09) * 3;
-  const swing = pose === "walk" ? Math.sin(frame * 0.32) : 0;
+  const swing = pose === "walk" ? Math.sin(frame * 0.32) : pose === "run" ? Math.sin(frame * 0.55) : 0;
+  const dance = pose === "dance" ? Math.sin(frame * 0.3) : 0;
+  const punch = pose === "fight" ? Math.sin(frame * 0.55) : 0;
+  const eatBite = pose === "eat" ? Math.sin(frame * 0.4) : 0;
+  const asleep = pose === "sleep";
   const talkSwing = pose === "talk" || (talking && pose === "stand") ? Math.sin(frame * 0.27) : 0;
   const waveSwing = pose === "wave" ? Math.sin(frame * 0.45) : 0;
-  const hop = (pose === "happy" ? -Math.abs(Math.sin(frame * 0.2)) * 22 : 0) - (talking ? energy * 5 : 0);
+  const hop = (pose === "happy" ? -Math.abs(Math.sin(frame * 0.2)) * 22 : 0) - (pose === "dance" ? Math.abs(dance) * 22 : 0) - (talking ? energy * 5 : 0);
   const lean = P.lean + (elder ? 5 : 0);
 
   // A speaker does a different gesture every few words (gliding from one to the next) and each word gives it a push; between
   // sentences the arms settle back to rest.
-  const speaking = talking && (pose === "talk" || pose === "stand" || poseWeight < 0.9 || true);
+  const speaking = talking && !sticky;
   const SPEAK: [number, number, number, number][] = [[45, 80, 8, 10], [55, 70, 55, 70], [8, 10, 45, 80], [112, 22, 8, 10], [35, 100, 35, 100]];
   const gi = Math.floor(gesture), gf = gesture - gi;
   const A = SPEAK[((gi % 5) + 5) % 5], B = SPEAK[(((gi + 1) % 5) + 5) % 5], bl = smooth((gf - 0.7) / 0.3);
@@ -78,19 +96,19 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   // the speaker: staged pose first, then gestures; always eased in and out of the sentence by the envelope
   const rArm = speaking && !walking
     ? { t: mix(REST.rt, mix(gestureR.t, EXP.rt, poseWeight), envelope), f: mix(REST.rf, mix(gestureR.f, EXP.rf, poseWeight), envelope) }
-    : { t: P.rt + talkSwing * 14 + waveSwing * 18 - swing * 28, f: P.rf + talkSwing * 12 };
+    : { t: P.rt + talkSwing * 14 + waveSwing * 18 - swing * (pose === "run" ? 45 : 28) + dance * 26 + (pose === "fight" ? 20 + punch * 18 : 0), f: P.rf + talkSwing * 12 + eatBite * 8 - (pose === "fight" ? 18 + punch * 18 : 0) };
   const lArm = speaking && !walking
     ? { t: mix(REST.lt, mix(gestureL.t, EXP.lt, poseWeight), envelope), f: mix(REST.lf, mix(gestureL.f, EXP.lf, poseWeight), envelope) }
-    : { t: P.lt + (pose === "angry" || pose === "scared" ? 0 : swing * 28), f: P.lf };
+    : { t: P.lt + (pose === "angry" || pose === "scared" ? 0 : swing * (pose === "run" ? 45 : 28)) - dance * 26 - (pose === "fight" ? punch * 18 : 0), f: P.lf };
   const nod = speaking ? energy * 6 : listening ? Math.max(0, Math.sin(frame * 0.045)) ** 3 * 7 : 0;
 
   // face
-  const blink = frame % 120 > 114 ? 0.1 : 1;
+  const blink = asleep || frame % 120 > 114 ? 0.1 : 1;
   const skin = m.skin, skinD = shade(skin, 0.86);
   const cx = 0, cy = -510, R = 64 * headK;
   const eyeY = cy - 6 * headK, eyeX = 23 * headK;
   const wide = mood === "scared" || mood === "surprised";
-  const open = talking ? Math.min(1, (mouthLevel ?? 0.45 + 0.45 * Math.abs(Math.sin(frame * 0.5))) * 1.6) : mood === "laugh" ? 0.8 : mood === "surprised" ? 0.9 : mood === "scared" ? 0.5 : 0;
+  const open = pose === "eat" ? Math.abs(eatBite) * 0.7 : pose === "cry" ? 0.55 + 0.3 * Math.sin(frame * 0.8) : talking ? Math.min(1, (mouthLevel ?? 0.45 + 0.45 * Math.abs(Math.sin(frame * 0.5))) * 1.6) : mood === "laugh" ? 0.8 : mood === "surprised" ? 0.9 : mood === "scared" ? 0.5 : 0;
   const mY = cy + 26 * headK;
   const mouth = (() => {
     if (open > 0.15) return <ellipse cx={cx} cy={mY + 2} rx={11 * headK + open * 3} ry={3 + open * 11} fill="#7A1F2B" stroke={OUT} strokeWidth={2.5} />;
@@ -144,7 +162,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
     const longBottom = m.outfit === "saree" || m.outfit === "dress";
     const lx = -26, rx = 26;
     const L = (x: number, k: number) => (
-      <g transform={`translate(${x},${hip}) rotate(${k * swing * 18})`}>
+      <g transform={`translate(${x},${hip}) rotate(${k * swing * (pose === "run" ? 30 : 18)})`}>
         <rect x={-15} y={0} width={30} height={236} rx={12} fill={longBottom ? skin : m.outfit === "kurta" || m.outfit === "dhoti" ? (m.outfit === "dhoti" ? "#F5F1E6" : c2) : c2} stroke={OUT} strokeWidth={3} />
         <ellipse cx={0} cy={246} rx={28} ry={13} fill={shade(c2, 0.55)} stroke={OUT} strokeWidth={3} />
       </g>
@@ -181,7 +199,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   );
 
   return (
-    <g transform={`scale(${(flip ? -1 : 1) * bodyK},${bodyK}) translate(0,${hop})`}>
+    <g transform={`scale(${(flip ? -1 : 1) * bodyK},${bodyK}) translate(0,${hop}) ${asleep ? "translate(0,-105) rotate(-88)" : ""}`}>
       <ellipse cx={0} cy={6} rx={78} ry={12} fill="#000" opacity={0.18} />
       <g transform={`translate(0,${breathe * 0.4})`}>
         {legs}
@@ -206,10 +224,14 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
             {hairFront}
           </g>
           {arm(1, rArm)}
+          {holds && (<g transform={`translate(${sleeveRight(pose)},${pose === "eat" ? -440 : pose === "carry" ? -300 : pose === "give" ? -330 : -270}) scale(0.55)`}><StoryPropArt type={holds} frame={frame} /></g>)}
+          {asleep && <text x={70} y={-560} fontSize={64} fontWeight={900} fill="#5DADE2" fontFamily="sans-serif" opacity={0.5 + 0.5 * Math.sin(frame * 0.1)}>Zz</text>}
         </g>
       </g>
     </g>
   );
 };
+
+const sleeveRight = (pose: CharPose): number => (pose === "give" ? 190 : pose === "carry" ? 90 : pose === "eat" ? 40 : 100);
 
 export const CHARACTER_HEIGHT = 590;

@@ -241,6 +241,7 @@ export const SceneSchema = z.object({
 
 /** A real, licensed photo (Wikimedia Commons / Pexels) shown as a framed picture with its credit. */
 import { CHAR_MOODS, CHAR_POSES, STORY_BGS, STORY_LOOKS, STORY_TIMES } from "./story/cast";
+import { PROP_ANIMS, STORY_FX, STORY_PROPS } from "./story/StoryProps";
 
 /** Storyboard scene: the story's background plus the characters (by cast id) standing in it. */
 export const StoryCharSchema = z.object({
@@ -254,6 +255,17 @@ export const StoryCharSchema = z.object({
   speaking: z.boolean().default(false),
   /** where this person stood in the previous beat of the same shot: they walk from there instead of walking in */
   fromX: z.number().min(0).max(100).optional(),
+  /** an object in the hand */
+  holds: z.enum(STORY_PROPS).optional(),
+});
+export const StoryPropSchema = z.object({
+  type: z.enum(STORY_PROPS),
+  x: z.number().min(0).max(100).default(50),
+  /** 0 = on the ground, 1 = floating in the air */
+  air: z.number().min(0).max(1).default(0),
+  scale: z.number().min(0.4).max(2.4).default(1),
+  anim: z.enum(PROP_ANIMS).default("none"),
+  delay: z.number().min(0).max(120).default(0),
 });
 export const StorySchema = z.object({
   bg: z.enum(STORY_BGS),
@@ -261,6 +273,10 @@ export const StorySchema = z.object({
   chars: z.array(StoryCharSchema).min(1).max(5),
   /** same place and people as the previous beat: no transition, no re-entrance, the shot just goes on */
   cont: z.boolean().default(false),
+  /** what the narration says is there: objects, animals, vehicles... */
+  props: z.array(StoryPropSchema).max(5).default([]),
+  /** weather / mood layer */
+  fx: z.enum(STORY_FX).default("none"),
   /** the niche's frame: "finance" / "news" add a header, a figure card or a breaking-news headline bar */
   look: z.enum(STORY_LOOKS).default("story"),
   /** news: the headline shown in the bar (about 8 words); finance: the card's heading */
