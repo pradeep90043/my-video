@@ -76,7 +76,7 @@
       {
        "id": "raju",
        "x": 30,
-       "pose": "stand",
+       "pose": "happy",
        "mood": "happy",
        "speaking": true
       },
@@ -180,7 +180,7 @@
       {
        "id": "raju",
        "x": 30,
-       "pose": "stand",
+       "pose": "happy",
        "mood": "happy",
        "speaking": false,
        "fromX": 30
@@ -271,7 +271,7 @@
       {
        "id": "raju",
        "x": 30,
-       "pose": "stand",
+       "pose": "happy",
        "mood": "happy",
        "speaking": true,
        "fromX": 30
