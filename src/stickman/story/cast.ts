@@ -74,4 +74,8 @@ export interface StagedChar {
   fromX?: number;
   /** an object in the character's hand (a gift being given, a book being read, food being eaten) */
   holds?: string;
+  /** a short line shown in a speech bubble ("नहीं!") */
+  says?: string;
+  /** a head movement answering someone: no (shake), yes (nod), shrug, surprise, laugh */
+  react?: string;
 }

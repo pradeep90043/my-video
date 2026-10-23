@@ -3,6 +3,7 @@ import { STORY_FONT } from "./font";
 import { StoryFxLayer, StoryPropArt, type StoryFx, type StoryPropName } from "./StoryProps";import { Easing, interpolate } from "remotion";
 import { StoryBackground } from "./Backgrounds";
 import { Character, CHARACTER_HEIGHT } from "./Character";
+import { animalHeight } from "./Animal";
 import { DEFAULT_CAST, type CastMember, type StagedChar, type StoryBgName, type StoryLook, type StoryTime } from "./cast";
 
 interface Props {
@@ -149,13 +150,32 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
         const nameOn = member.name && !cont && local >= 0 && local < 70;
         return (
           <g key={c.id + i} transform={`translate(${x},${ground + 6 + (c.scale > 1 ? 14 : 0)}) scale(${s})`} opacity={local < 0 ? 0 : popIn}>
-            <Character member={member} pose={walking ? "walk" : c.pose} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={c.flip} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && (anySpeaker || look !== "story") && !isSpeaker} envelope={envelope} poseWeight={poseWeight} holds={c.holds as StoryPropName | undefined} />
-            {nameOn && (
-              <g transform={`translate(0,${-(510 + 64 * (member.age === "child" ? 1.22 : member.age === "teen" ? 1.08 : 1)) * (member.age === "child" ? 0.62 : member.age === "teen" ? 0.86 : 1) - 62})`} opacity={interpolate(local, [0, 8, 56, 70], [0, 1, 1, 0], { extrapolateRight: "clamp" })}>
-                <rect x={-(member.name!.length * 17 + 30)} y={-34} width={member.name!.length * 34 + 60} height={60} rx={30} fill="#fff" stroke="#2B2B2B" strokeWidth={4} />
-                <text textAnchor="middle" y={9} fontSize={36} fontWeight={800} fill="#2B2B2B" fontFamily={STORY_FONT}>{member.name}</text>
-              </g>
-            )}
+            <Character member={member} pose={walking ? "walk" : c.pose} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={c.flip} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && (anySpeaker || look !== "story") && !isSpeaker} envelope={envelope} poseWeight={poseWeight} holds={c.holds as StoryPropName | undefined} react={c.react ? (local >= 4 && local < 80 ? c.react : undefined) : undefined} />
+            {(() => {
+              const animal = !!member.species && member.species !== "monkey";
+              const topY = animal
+                ? -(animalHeight(member.species!) * 0.92 + 12)
+                : -((510 + 64 * (member.age === "child" ? 1.22 : member.age === "teen" ? 1.08 : 1)) * (member.age === "child" ? 0.62 : member.age === "teen" ? 0.86 : 1) + 62);
+              const saysText = c.says && local >= 8 && local < 100 ? c.says : "";
+              return (
+                <g>
+                  {nameOn && (
+                    <g transform={`translate(0,${topY})`} opacity={interpolate(local, [0, 8, 56, 70], [0, 1, 1, 0], { extrapolateRight: "clamp" })}>
+                      <rect x={-(member.name!.length * 17 + 30)} y={-34} width={member.name!.length * 34 + 60} height={60} rx={30} fill="#fff" stroke="#2B2B2B" strokeWidth={4} />
+                      <text textAnchor="middle" y={9} fontSize={36} fontWeight={800} fill="#2B2B2B" fontFamily={STORY_FONT}>{member.name}</text>
+                    </g>
+                  )}
+                  {saysText && (
+                    <g transform={`translate(0,${topY - (nameOn ? 74 : 8)}) scale(${interpolate(local, [8, 14], [0.4, 1], { extrapolateRight: "clamp" })})`} opacity={interpolate(local, [8, 12, 92, 100], [0, 1, 1, 0], { extrapolateRight: "clamp" })}>
+                      <path d={`M-14,24 L0,58 L18,24 Z`} fill="#fff" stroke="#2B2B2B" strokeWidth={5} strokeLinejoin="round" />
+                      <rect x={-(saysText.length * 20 + 36)} y={-52} width={saysText.length * 40 + 72} height={86} rx={40} fill="#fff" stroke="#2B2B2B" strokeWidth={5} />
+                      <rect x={-14} y={22} width={32} height={8} fill="#fff" />
+                      <text textAnchor="middle" y={14} fontSize={50} fontWeight={900} fill="#2B2B2B" fontFamily={STORY_FONT}>{saysText}</text>
+                    </g>
+                  )}
+                </g>
+              );
+            })()}
           </g>
         );
       })}

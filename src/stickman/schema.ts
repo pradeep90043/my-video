@@ -257,6 +257,10 @@ export const StoryCharSchema = z.object({
   fromX: z.number().min(0).max(100).optional(),
   /** an object in the hand */
   holds: z.enum(STORY_PROPS).optional(),
+  /** a short spoken line shown as a speech bubble */
+  says: z.string().max(40).optional(),
+  /** a reaction: "no" shakes the head, "yes" nods */
+  react: z.enum(["no", "yes", "shrug", "surprise", "laugh"]).optional(),
 });
 export const StoryPropSchema = z.object({
   type: z.enum(STORY_PROPS),

@@ -1,6 +1,7 @@
 import React from "react";
 import { ACTION_POSES, type CastMember, type CharMood, type CharPose } from "./cast";
 import { StoryPropArt, type StoryPropName } from "./StoryProps";
+import { AnimalCharacter } from "./Animal";
 
 /**
  * A flat-vector storyboard character. Origin = the point between the feet; the body grows upwards (negative y).
@@ -27,6 +28,8 @@ interface Props {
   poseWeight?: number;
   /** an object in the hand */
   holds?: StoryPropName;
+  /** no / yes / shrug / surprise / laugh: a head movement answering someone */
+  react?: string;
 }
 
 const OUT = "#2B2B2B";
@@ -66,7 +69,11 @@ const POSES: Record<CharPose, PoseSpec> = {
   jump: { rt: 150, rf: 12, lt: 150, lf: 12, tilt: 0, lean: 0, headDrop: 0 },
 };
 
-export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, flip, energy = 0, gesture = 0, listening = false, envelope = 1, poseWeight = 1, holds }) => {
+export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, flip, energy = 0, gesture = 0, listening = false, envelope = 1, poseWeight = 1, holds, react }) => {
+  // a real animal is drawn as one: four legs, a tail, a snout (a monkey stays upright)
+  if (m.species && m.species !== "monkey") {
+    return <g transform="scale(1.05)"><AnimalCharacter member={m} pose={pose} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} energy={energy} react={react} holds={holds} envelope={envelope} /></g>;
+  }
   const child = m.age === "child", teen = m.age === "teen", elder = m.age === "elder";
   const bodyK = child ? 0.62 : teen ? 0.86 : 1;
   const headK = child ? 1.22 : teen ? 1.08 : 1;
@@ -107,7 +114,11 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   const lArm = speaking && !walking
     ? { t: mix(REST.lt, mix(gestureL.t, EXP.lt, poseWeight), envelope), f: mix(REST.lf, mix(gestureL.f, EXP.lf, poseWeight), envelope) }
     : { t: P.lt + (pose === "angry" || pose === "scared" ? 0 : swing * (pose === "run" ? 45 : 28)) - dance * 26 - thrash * 42 + shove * 6 - (pose === "fight" ? punch * 18 : 0), f: P.lf - thrash * 20 };
-  const nod = speaking ? energy * 6 : listening ? Math.max(0, Math.sin(frame * 0.045)) ** 3 * 7 : 0;
+  const rf0 = frame % 90, rAmt = react ? Math.max(0, 1 - rf0 / 70) : 0;
+  const headNo = react === "no" ? Math.sin(frame * 0.6) * 14 * rAmt : 0;
+  const headYes = react === "yes" ? Math.sin(frame * 0.5) * 9 * rAmt : 0;
+  const shrugUp = react === "shrug" ? rAmt * 14 : 0;
+  const nod = headYes + shrugUp * 0 + (speaking ? energy * 6 : listening ? Math.max(0, Math.sin(frame * 0.045)) ** 3 * 7 : 0);
 
   // face
   const blink = asleep || frame % 120 > 114 ? 0.1 : 1;
@@ -141,7 +152,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   );
 
   // ---- animal characters: the same body, a furry head with ears and a snout, and a tail
-  const sp = m.species;
+  const sp = m.species as string | undefined;
   const fur = skin, furD = shade(skin, 0.62), furL = shade(skin, 1.28);
   const animalBack = sp ? (() => {
     const earTri = (side: number, h: number, w2: number) => `M${cx + side * R * 0.8},${cy - R * 0.4} L${cx + side * R * (0.55 + w2)},${cy - R - h} L${cx + side * R * 0.05},${cy - R * 0.85} Z`;
@@ -267,7 +278,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
           {arm(-1, lArm)}
           {torso}
           <rect x={-14} y={-452} width={28} height={40} rx={10} fill={skinD} stroke={OUT} strokeWidth={3} />
-          <g transform={`translate(0,${P.headDrop + nod + breathe * 0.3}) rotate(${P.tilt + (listening ? Math.sin(frame * 0.03) * 2 : 0)} 0 -450)`}>
+          <g transform={`translate(0,${P.headDrop + nod + breathe * 0.3}) rotate(${P.tilt + headNo + (listening ? Math.sin(frame * 0.03) * 2 : 0)} 0 -450)`}>
             {animalBack}
             <circle cx={cx} cy={cy} r={R} fill={skin} stroke={OUT} strokeWidth={3.5} />
             {!sp && <ellipse cx={cx - R + 2} cy={cy + 8} rx={9} ry={14} fill={skinD} stroke={OUT} strokeWidth={3} />}
