@@ -133,6 +133,54 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
     </g>
   );
 
+  // ---- animal characters: the same body, a furry head with ears and a snout, and a tail
+  const sp = m.species;
+  const fur = skin, furD = shade(skin, 0.62), furL = shade(skin, 1.28);
+  const animalBack = sp ? (() => {
+    const earTri = (side: number, h: number, w2: number) => `M${cx + side * R * 0.8},${cy - R * 0.4} L${cx + side * R * (0.55 + w2)},${cy - R - h} L${cx + side * R * 0.05},${cy - R * 0.85} Z`;
+    switch (sp) {
+      case "wolf": return <g>{[-1, 1].map((sd) => <g key={sd}><path d={earTri(sd, 52, 0.0)} fill={fur} stroke={OUT} strokeWidth={3.5} strokeLinejoin="round" /><path d={earTri(sd, 30, 0.0)} fill={furD} transform={`translate(${sd * 4},4) scale(0.7) translate(${-sd * 4 * 0.3},${cy * 0.3})`} opacity={0.0} /></g>)}</g>;
+      case "fox": return <g>{[-1, 1].map((sd) => <g key={sd}><path d={earTri(sd, 58, 0.05)} fill={fur} stroke={OUT} strokeWidth={3.5} strokeLinejoin="round" /><path d={`M${cx + sd * R * 0.6},${cy - R - 28} L${cx + sd * R * 0.62},${cy - R - 58} L${cx + sd * R * 0.4},${cy - R - 34} Z`} fill="#1B1B1B" /></g>)}</g>;
+      case "lion": return <g><circle cx={cx} cy={cy + 6} r={R * 1.48} fill="#B9770E" stroke={OUT} strokeWidth={3.5} />{[-1, 1].map((sd) => <circle key={sd} cx={cx + sd * R * 0.72} cy={cy - R * 0.86} r={20} fill={fur} stroke={OUT} strokeWidth={3.5} />)}</g>;
+      case "tiger": case "bear": case "monkey": return <g>{[-1, 1].map((sd) => <g key={sd}><circle cx={cx + sd * R * (sp === "monkey" ? 1.02 : 0.74)} cy={cy - R * (sp === "monkey" ? 0.1 : 0.78)} r={sp === "monkey" ? 24 : 22} fill={fur} stroke={OUT} strokeWidth={3.5} /><circle cx={cx + sd * R * (sp === "monkey" ? 1.02 : 0.74)} cy={cy - R * (sp === "monkey" ? 0.1 : 0.78)} r={11} fill={sp === "monkey" ? "#F5B7B1" : furD} /></g>)}</g>;
+      case "dog": return <g>{[-1, 1].map((sd) => <ellipse key={sd} cx={cx + sd * R * 0.98} cy={cy + 8} rx={21} ry={44} fill={furD} stroke={OUT} strokeWidth={3.5} transform={`rotate(${sd * 8} ${cx + sd * R * 0.98} ${cy - 20})`} />)}</g>;
+      case "cat": return <g>{[-1, 1].map((sd) => <path key={sd} d={earTri(sd, 36, 0.12)} fill={fur} stroke={OUT} strokeWidth={3.5} strokeLinejoin="round" />)}</g>;
+      case "rabbit": return <g>{[-1, 1].map((sd) => <g key={sd}><ellipse cx={cx + sd * 24} cy={cy - R - 46} rx={19} ry={64} fill={fur} stroke={OUT} strokeWidth={3.5} transform={`rotate(${sd * 8} ${cx + sd * 24} ${cy - R})`} /><ellipse cx={cx + sd * 24} cy={cy - R - 44} rx={9} ry={46} fill="#F5B7B1" transform={`rotate(${sd * 8} ${cx + sd * 24} ${cy - R})`} /></g>)}</g>;
+      case "elephant": return <g>{[-1, 1].map((sd) => <ellipse key={sd} cx={cx + sd * R * 1.02} cy={cy + 2} rx={42} ry={58} fill={furL} stroke={OUT} strokeWidth={3.5} transform={`rotate(${sd * -10} ${cx + sd * R * 0.9} ${cy})`} />)}</g>;
+      case "deer": return <g>{[-1, 1].map((sd) => <g key={sd}><path d={`M${cx + sd * 26},${cy - R + 6} L${cx + sd * 40},${cy - R - 66} M${cx + sd * 36},${cy - R - 34} L${cx + sd * 66},${cy - R - 56} M${cx + sd * 40},${cy - R - 66} L${cx + sd * 30},${cy - R - 96}`} fill="none" stroke="#6B4A2B" strokeWidth={8} strokeLinecap="round" /><ellipse cx={cx + sd * R * 0.92} cy={cy - R * 0.36} rx={26} ry={13} fill={fur} stroke={OUT} strokeWidth={3.5} transform={`rotate(${sd * 28} ${cx + sd * R * 0.92} ${cy - R * 0.36})`} /></g>)}</g>;
+      case "goat": return <g>{[-1, 1].map((sd) => <g key={sd}><path d={`M${cx + sd * 24},${cy - R + 6} Q${cx + sd * 56},${cy - R - 48} ${cx + sd * 26},${cy - R - 70}`} fill="none" stroke="#7F8C8D" strokeWidth={12} strokeLinecap="round" /><ellipse cx={cx + sd * R * 0.98} cy={cy - R * 0.2} rx={30} ry={11} fill={fur} stroke={OUT} strokeWidth={3.5} transform={`rotate(${sd * 14} ${cx + sd * R * 0.98} ${cy - R * 0.2})`} /></g>)}</g>;
+      default: return null;
+    }
+  })() : null;
+  const animalFront = sp ? (() => {
+    const snout = (rx: number, ry: number, col: string, dy = 24) => <ellipse cx={cx} cy={cy + dy * headK} rx={rx} ry={ry} fill={col} stroke={OUT} strokeWidth={3} />;
+    const nose = (col = "#1B1B1B", dy = 8, w2 = 12) => <ellipse cx={cx} cy={cy + dy * headK} rx={w2} ry={w2 * 0.66} fill={col} stroke={OUT} strokeWidth={2.5} />;
+    const teeth = open > 0.25 ? <g fill="#fff" stroke={OUT} strokeWidth={1.5}><path d={`M${cx - 10},${mY - 2} l5,10 l5,-10 Z`} /><path d={`M${cx + 0},${mY - 2} l5,10 l5,-10 Z`} /></g> : null;
+    switch (sp) {
+      case "wolf": return <g>{snout(38, 28, furL, 26)}{nose()}{teeth}<path d={`M${cx - R + 4},${cy + 6} Q${cx - R * 0.6},${cy + 40} ${cx - 26},${cy + 16} M${cx + R - 4},${cy + 6} Q${cx + R * 0.6},${cy + 40} ${cx + 26},${cy + 16}`} fill="none" stroke={furD} strokeWidth={5} strokeLinecap="round" /></g>;
+      case "fox": return <g>{[-1, 1].map((sd) => <ellipse key={sd} cx={cx + sd * 36} cy={cy + 24} rx={28} ry={22} fill="#fff" stroke={OUT} strokeWidth={2.5} />)}{snout(30, 24, "#fff", 28)}{nose()}{teeth}</g>;
+      case "lion": return <g>{snout(36, 26, "#F5CBA7", 26)}{nose("#6B3A1E", 8, 13)}{teeth}</g>;
+      case "tiger": return <g>{[-1, 1].map((sd) => <path key={sd} d={`M${cx + sd * 22},${cy - R + 6} l${sd * 4},22 M${cx + sd * 40},${cy - R + 14} l${sd * 6},20 M${cx + sd * (R - 8)},${cy - 6} l${sd * -22},6 M${cx + sd * (R - 8)},${cy + 14} l${sd * -22},-2`} stroke="#1B1B1B" strokeWidth={6} strokeLinecap="round" />)}{snout(34, 25, "#fff", 26)}{nose("#C0392B", 8, 12)}{teeth}</g>;
+      case "dog": return <g>{snout(36, 27, furL, 26)}{nose("#1B1B1B", 8, 14)}{teeth}</g>;
+      case "cat": return <g>{snout(26, 20, furL, 26)}{nose("#E88FA3", 10, 8)}<path d={`M${cx - 30},${cy + 22} l-38,-8 M${cx - 30},${cy + 30} l-40,4 M${cx + 30},${cy + 22} l38,-8 M${cx + 30},${cy + 30} l40,4`} stroke="#fff" strokeWidth={3} />{teeth}</g>;
+      case "monkey": return <g><ellipse cx={cx} cy={cy + 16} rx={46} ry={40} fill="#F5CBA7" stroke={OUT} strokeWidth={3} />{nose("#6B3A1E", 12, 8)}{teeth}</g>;
+      case "rabbit": return <g>{snout(28, 22, "#fff", 26)}{nose("#E88FA3", 12, 9)}<g fill="#fff" stroke={OUT} strokeWidth={2}><rect x={cx - 11} y={mY + 2} width={10} height={16} rx={3} /><rect x={cx + 1} y={mY + 2} width={10} height={16} rx={3} /></g></g>;
+      case "bear": return <g>{snout(34, 26, "#E5C9A3", 26)}{nose("#1B1B1B", 8, 13)}{teeth}</g>;
+      case "elephant": return <g><path d={`M${cx},${cy + 10} Q${cx + 4},${cy + 70} ${cx + 30},${cy + 96} Q${cx + 40},${cy + 100} ${cx + 38},${cy + 88}`} fill="none" stroke={OUT} strokeWidth={34} strokeLinecap="round" /><path d={`M${cx},${cy + 10} Q${cx + 4},${cy + 70} ${cx + 30},${cy + 96} Q${cx + 40},${cy + 100} ${cx + 38},${cy + 88}`} fill="none" stroke={fur} strokeWidth={27} strokeLinecap="round" /></g>;
+      case "deer": return <g>{snout(30, 24, furL, 26)}{nose("#1B1B1B", 10, 10)}{teeth}<circle cx={cx - 26} cy={cy - 30} r={3} fill="#fff" /><circle cx={cx + 20} cy={cy - 40} r={3} fill="#fff" /></g>;
+      case "goat": return <g>{snout(28, 24, furL, 26)}{nose("#6B3A1E", 10, 9)}<path d={`M${cx - 8},${cy + 44} Q${cx},${cy + 80} ${cx + 8},${cy + 44}`} fill="#fff" stroke={OUT} strokeWidth={3} />{teeth}</g>;
+      default: return null;
+    }
+  })() : null;
+  const tail = sp ? (() => {
+    switch (sp) {
+      case "wolf": case "fox": case "dog": case "cat": case "lion": case "tiger": case "monkey":
+        return <path d={`M-20,-262 Q${-120 - Math.sin(frame * 0.1) * 12},-250 ${-128},-170 Q${-104 - Math.sin(frame * 0.1) * 6},-214 -34,-236 Z`} fill={sp === "lion" ? fur : fur} stroke={OUT} strokeWidth={3.5} strokeLinejoin="round" />;
+      case "rabbit": return <circle cx={-34} cy={-250} r={20} fill="#fff" stroke={OUT} strokeWidth={3.5} />;
+      default: return <path d={`M-20,-258 Q-60,-250 -54,-226`} fill="none" stroke={OUT} strokeWidth={14} strokeLinecap="round" />;
+    }
+  })() : null;
+
   // hair (back layer + front layer)
   const hc = m.hairColor, hcD = shade(hc, 0.8);
   const hairBack = (() => {
@@ -163,8 +211,8 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
     const lx = -26, rx = 26;
     const L = (x: number, k: number) => (
       <g transform={`translate(${x},${hip}) rotate(${k * swing * (pose === "run" ? 30 : 18)})`}>
-        <rect x={-15} y={0} width={30} height={236} rx={12} fill={longBottom ? skin : m.outfit === "kurta" || m.outfit === "dhoti" ? (m.outfit === "dhoti" ? "#F5F1E6" : c2) : c2} stroke={OUT} strokeWidth={3} />
-        <ellipse cx={0} cy={246} rx={28} ry={13} fill={shade(c2, 0.55)} stroke={OUT} strokeWidth={3} />
+        <rect x={-15} y={0} width={30} height={236} rx={12} fill={sp ? furD : longBottom ? skin : m.outfit === "kurta" || m.outfit === "dhoti" ? (m.outfit === "dhoti" ? "#F5F1E6" : c2) : c2} stroke={OUT} strokeWidth={3} />
+        <ellipse cx={0} cy={246} rx={28} ry={13} fill={sp ? furD : shade(c2, 0.55)} stroke={OUT} strokeWidth={3} />
       </g>
     );
     return <g>{L(lx, 1)}{L(rx, -1)}</g>;
@@ -183,6 +231,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
       case "uniform": return (<g><path d={`M${-w},${top} L${w},${top} L${w + 8},${hip + 6} L${-w - 8},${hip + 6} Z`} fill="#F4F6F7" stroke={OUT} strokeWidth={3} /><path d={`M-12,${top} L0,${top + 36} L12,${top} Z`} fill={c1} /><line x1={0} y1={top + 36} x2={0} y2={top + 120} stroke={c1} strokeWidth={9} /></g>);
       case "suit": return (<g><path d={`M${-w - 2},${top} L${w + 2},${top} L${w + 10},${hip + 10} L${-w - 10},${hip + 10} Z`} fill={c1} stroke={OUT} strokeWidth={3} /><path d={`M-14,${top} L0,${top + 70} L14,${top} Z`} fill="#fff" /><path d={`M0,${top + 8} L-6,${top + 24} L0,${top + 98} L6,${top + 24} Z`} fill="#C0392B" /></g>);
       case "hoodie": return (<g><path d={`M${-w - 2},${top} L${w + 2},${top} L${w + 12},${hip + 16} L${-w - 12},${hip + 16} Z`} fill={c1} stroke={OUT} strokeWidth={3} /><path d={`M-34,${top} Q0,${top - 26} 34,${top} Q0,${top + 18} -34,${top} Z`} fill={shade(c1, 0.8)} stroke={OUT} strokeWidth={3} /><rect x={-26} y={top + 92} width={52} height={42} rx={8} fill={shade(c1, 0.85)} /></g>);
+      case "fur": return (<g><path d={`M${-w},${top} L${w},${top} L${w + 8},${hip + 6} L${-w - 8},${hip + 6} Z`} fill={fur} stroke={OUT} strokeWidth={3} /><ellipse cx={0} cy={top + 80} rx={36} ry={62} fill={furL} /></g>);
       case "shirt": default: return (<g><path d={`M${-w},${top} L${w},${top} L${w + 8},${hip + 6} L${-w - 8},${hip + 6} Z`} fill={c1} stroke={OUT} strokeWidth={3} /><path d={`M-14,${top} L0,${top + 22} L14,${top} Z`} fill={shade(c1, 0.75)} /></g>);
     }
   })();
@@ -204,20 +253,23 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
       <g transform={`translate(0,${breathe * 0.4})`}>
         {legs}
         <g transform={`rotate(${P.lean + (elder ? 4 : 0)} 0 ${hip}) rotate(${lean - P.lean} 0 ${hip})`}>
+          {tail}
           {hairBack && <g transform={`rotate(${P.tilt} 0 -450)`}>{hairBack}</g>}
           {arm(-1, lArm)}
           {torso}
           <rect x={-14} y={-452} width={28} height={40} rx={10} fill={skinD} stroke={OUT} strokeWidth={3} />
           <g transform={`translate(0,${P.headDrop + nod + breathe * 0.3}) rotate(${P.tilt + (listening ? Math.sin(frame * 0.03) * 2 : 0)} 0 -450)`}>
+            {animalBack}
             <circle cx={cx} cy={cy} r={R} fill={skin} stroke={OUT} strokeWidth={3.5} />
-            <ellipse cx={cx - R + 2} cy={cy + 8} rx={9} ry={14} fill={skinD} stroke={OUT} strokeWidth={3} />
-            <ellipse cx={cx + R - 2} cy={cy + 8} rx={9} ry={14} fill={skinD} stroke={OUT} strokeWidth={3} />
+            {!sp && <ellipse cx={cx - R + 2} cy={cy + 8} rx={9} ry={14} fill={skinD} stroke={OUT} strokeWidth={3} />}
+            {!sp && <ellipse cx={cx + R - 2} cy={cy + 8} rx={9} ry={14} fill={skinD} stroke={OUT} strokeWidth={3} />}
             {m.beard && <path d={`M${cx - R + 6},${cy + 10} Q${cx},${cy + R + 40} ${cx + R - 6},${cy + 10} Q${cx},${cy + 28} ${cx - R + 6},${cy + 10} Z`} fill={elder ? "#D5D8DC" : hc} stroke={OUT} strokeWidth={3} />}
             {eye(-1)}{eye(1)}
             {brow(-1)}{brow(1)}
             {m.glasses && (<g fill="none" stroke={OUT} strokeWidth={3.5}><circle cx={cx - eyeX} cy={eyeY} r={17} /><circle cx={cx + eyeX} cy={eyeY} r={17} /><line x1={cx - eyeX + 17} y1={eyeY} x2={cx + eyeX - 17} y2={eyeY} /></g>)}
             <path d={`M${cx},${cy + 2} q-4,12 4,14`} fill="none" stroke={skinD} strokeWidth={3} strokeLinecap="round" />
-            {mouth}
+            {animalFront}
+            {!sp || sp === "elephant" || true ? mouth : null}
             {m.bindi && <circle cx={cx} cy={cy - 24 * headK} r={4.5} fill="#C0392B" />}
             {mood === "sad" && <path d={`M${cx - eyeX - 4},${eyeY + 14} q-3,16 0,24 q4,-6 4,-16 z`} fill="#7EC8E3" opacity={0.8 + 0.2 * Math.sin(frame * 0.2)} />}
             {mood === "angry" && <circle cx={cx + R - 6} cy={cy - R + 10} r={5} fill="#E74C3C" opacity={0.7} />}

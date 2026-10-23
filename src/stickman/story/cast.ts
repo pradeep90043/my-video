@@ -25,7 +25,10 @@ export type CharMood = (typeof CHAR_MOODS)[number];
 export const HAIR_STYLES = ["short", "side", "long", "bun", "ponytail", "bald", "curly", "turban", "cap"] as const;
 export type HairStyle = (typeof HAIR_STYLES)[number];
 
-export const OUTFITS = ["shirt", "kurta", "saree", "dress", "uniform", "suit", "hoodie", "dhoti"] as const;
+export const OUTFITS = ["shirt", "kurta", "saree", "dress", "uniform", "suit", "hoodie", "dhoti", "fur"] as const;
+/** animal characters (fairy-tale animals that stand and talk like people): the fur colour is `skin` */
+export const SPECIES = ["wolf", "fox", "lion", "tiger", "dog", "cat", "monkey", "rabbit", "bear", "elephant", "deer", "goat"] as const;
+export type Species = (typeof SPECIES)[number];
 export type Outfit = (typeof OUTFITS)[number];
 
 export interface CastMember {
@@ -43,8 +46,8 @@ export interface CastMember {
   glasses?: boolean;
   beard?: boolean;
   bindi?: boolean;
-  /** animal / creature characters are drawn as a simple round friend */
-  kind?: "person";
+  /** an animal character: `skin` is its fur, `outfit` "fur" (or clothes for a dressed-up animal) */
+  species?: Species;
 }
 
 export const SKINS = ["#F3C9A0", "#E7B07F", "#D39A68", "#B9794A", "#8D5A3B", "#6B4128"] as const;

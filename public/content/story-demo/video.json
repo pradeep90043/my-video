@@ -11,251 +11,289 @@
  "tags": [],
  "cast": [
   {
-   "id": "raju",
-   "name": "राजू",
-   "age": "child",
-   "skin": "#D39A68",
-   "hair": "short",
-   "hairColor": "#1B1B1B",
-   "outfit": "shirt",
-   "color": "#F39C12",
-   "color2": "#2D3436"
-  },
-  {
-   "id": "maa",
-   "name": "माँ",
+   "id": "wolf",
+   "name": "",
    "age": "adult",
-   "skin": "#E7B07F",
-   "hair": "bun",
-   "hairColor": "#1B1B1B",
-   "outfit": "saree",
-   "color": "#E84393",
-   "color2": "#F1C40F",
-   "bindi": true
-  },
-  {
-   "id": "dada",
-   "name": "दादाजी",
-   "age": "elder",
-   "skin": "#B9794A",
+   "skin": "#8E9AA6",
    "hair": "bald",
-   "hairColor": "#D5D8DC",
-   "outfit": "dhoti",
-   "color": "#F5F1E6",
-   "color2": "#E67E22",
-   "glasses": true,
-   "beard": true
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#8E9AA6",
+   "species": "wolf"
   },
   {
-   "id": "teacher",
-   "name": "टीचर",
+   "id": "fox",
+   "name": "",
    "age": "adult",
-   "skin": "#F3C9A0",
-   "hair": "long",
-   "hairColor": "#2B1A12",
-   "outfit": "dress",
-   "color": "#16A085",
-   "color2": "#2D3436",
-   "glasses": true
+   "skin": "#E67E22",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#E67E22",
+   "species": "fox"
+  },
+  {
+   "id": "lion",
+   "name": "",
+   "age": "adult",
+   "skin": "#E0A33A",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#E0A33A",
+   "species": "lion"
+  },
+  {
+   "id": "tiger",
+   "name": "",
+   "age": "adult",
+   "skin": "#E88B2E",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#E88B2E",
+   "species": "tiger"
+  },
+  {
+   "id": "dog",
+   "name": "",
+   "age": "adult",
+   "skin": "#C68642",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#C68642",
+   "species": "dog"
+  },
+  {
+   "id": "cat",
+   "name": "",
+   "age": "adult",
+   "skin": "#9B9B9B",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#9B9B9B",
+   "species": "cat"
+  },
+  {
+   "id": "monkey",
+   "name": "",
+   "age": "adult",
+   "skin": "#A0693A",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#A0693A",
+   "species": "monkey"
+  },
+  {
+   "id": "rabbit",
+   "name": "",
+   "age": "adult",
+   "skin": "#F2F2F2",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#F2F2F2",
+   "species": "rabbit"
+  },
+  {
+   "id": "bear",
+   "name": "",
+   "age": "adult",
+   "skin": "#7B5230",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#7B5230",
+   "species": "bear"
+  },
+  {
+   "id": "elephant",
+   "name": "",
+   "age": "adult",
+   "skin": "#9AA5B1",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#9AA5B1",
+   "species": "elephant"
+  },
+  {
+   "id": "deer",
+   "name": "",
+   "age": "adult",
+   "skin": "#B9814A",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#B9814A",
+   "species": "deer"
+  },
+  {
+   "id": "goat",
+   "name": "",
+   "age": "adult",
+   "skin": "#E5DCCB",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#E5DCCB",
+   "species": "goat"
   }
  ],
  "scenes": [
   {
-   "id": "t0",
-   "text": "राजू ने माँ को तोहफ़ा दिया।",
+   "id": "a0",
+   "text": "जंगल में सब जानवर इकट्ठे हुए।",
    "startFrame": 0,
    "durationFrames": 105,
    "duration": 3.2,
    "visual": {
     "camera": "none",
     "story": {
-     "bg": "home",
+     "bg": "forest",
      "time": "day",
-     "fx": "hearts",
-     "props": [
-      {
-       "type": "table",
-       "x": 50,
-       "scale": 1
-      }
-     ],
+     "fx": "none",
+     "props": [],
      "chars": [
       {
-       "id": "raju",
-       "x": 28,
-       "pose": "give",
+       "id": "wolf",
+       "x": 14,
+       "pose": "talk",
        "mood": "happy",
-       "holds": "gift",
+       "scale": 0.82,
        "speaking": true
       },
       {
-       "id": "maa",
-       "x": 72,
-       "pose": "happy",
+       "id": "fox",
+       "x": 38,
+       "pose": "stand",
        "mood": "happy",
-       "flip": true
+       "scale": 0.82,
+       "speaking": false
+      },
+      {
+       "id": "lion",
+       "x": 62,
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 0.82,
+       "speaking": false
+      },
+      {
+       "id": "tiger",
+       "x": 86,
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 0.82,
+       "speaking": false
       }
      ]
     }
    }
   },
   {
-   "id": "t1",
-   "text": "तभी बारिश में कुत्ता उसके पीछे भागा।",
+   "id": "a1",
+   "text": "जंगल में सब जानवर इकट्ठे हुए।",
    "startFrame": 105,
    "durationFrames": 105,
    "duration": 3.2,
    "visual": {
     "camera": "none",
     "story": {
-     "bg": "road",
-     "time": "dusk",
-     "fx": "rain",
-     "props": [
-      {
-       "type": "dog",
-       "x": 78,
-       "scale": 0.9,
-       "anim": "bounce"
-      },
-      {
-       "type": "umbrella",
-       "x": 14,
-       "scale": 0.9
-      }
-     ],
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "props": [],
      "chars": [
       {
-       "id": "raju",
-       "x": 40,
-       "pose": "run",
-       "mood": "scared",
+       "id": "dog",
+       "x": 14,
+       "pose": "talk",
+       "mood": "happy",
+       "scale": 0.82,
        "speaking": true
+      },
+      {
+       "id": "cat",
+       "x": 38,
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 0.82,
+       "speaking": false
+      },
+      {
+       "id": "monkey",
+       "x": 62,
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 0.82,
+       "speaking": false
+      },
+      {
+       "id": "rabbit",
+       "x": 86,
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 0.82,
+       "speaking": false
       }
      ]
     }
    }
   },
   {
-   "id": "t2",
-   "text": "माँ ने राजू को गरम खाना खिलाया।",
+   "id": "a2",
+   "text": "जंगल में सब जानवर इकट्ठे हुए।",
    "startFrame": 210,
    "durationFrames": 105,
    "duration": 3.2,
    "visual": {
     "camera": "none",
     "story": {
-     "bg": "home",
-     "time": "night",
+     "bg": "forest",
+     "time": "day",
      "fx": "none",
-     "props": [
-      {
-       "type": "candle",
-       "x": 50,
-       "scale": 1,
-       "anim": "none"
-      },
-      {
-       "type": "table",
-       "x": 50,
-       "scale": 1.1
-      }
-     ],
+     "props": [],
      "chars": [
       {
-       "id": "raju",
-       "x": 28,
-       "pose": "eat",
+       "id": "bear",
+       "x": 14,
+       "pose": "talk",
        "mood": "happy",
-       "holds": "food"
+       "scale": 0.82,
+       "speaking": true
       },
       {
-       "id": "maa",
-       "x": 74,
+       "id": "elephant",
+       "x": 38,
        "pose": "stand",
        "mood": "happy",
-       "flip": true,
-       "speaking": true
-      }
-     ]
-    }
-   }
-  },
-  {
-   "id": "t3",
-   "text": "दादाजी रोने लगे और सबने उन्हें गले लगाया।",
-   "startFrame": 315,
-   "durationFrames": 105,
-   "duration": 3.2,
-   "visual": {
-    "camera": "none",
-    "story": {
-     "bg": "temple",
-     "time": "day",
-     "fx": "sparkle",
-     "props": [
-      {
-       "type": "diya",
-       "x": 16,
-       "scale": 0.9
+       "scale": 0.82,
+       "speaking": false
       },
       {
-       "type": "bell",
-       "x": 84,
-       "air": 0.4,
-       "scale": 0.8
-      }
-     ],
-     "chars": [
-      {
-       "id": "dada",
-       "x": 38,
-       "pose": "cry",
-       "mood": "sad",
-       "flip": false,
-       "speaking": true
-      },
-      {
-       "id": "raju",
+       "id": "deer",
        "x": 62,
-       "pose": "hug",
-       "mood": "sad",
-       "flip": true
-      }
-     ]
-    }
-   }
-  },
-  {
-   "id": "t4",
-   "text": "रात को राजू सो गया।",
-   "startFrame": 420,
-   "durationFrames": 105,
-   "duration": 3.2,
-   "visual": {
-    "camera": "none",
-    "story": {
-     "bg": "room_night",
-     "time": "night",
-     "fx": "stars",
-     "props": [
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 0.82,
+       "speaking": false
+      },
       {
-       "type": "bed",
-       "x": 50,
-       "scale": 1.4
-      }
-     ],
-     "chars": [
-      {
-       "id": "raju",
-       "x": 50,
-       "pose": "sleep",
-       "mood": "neutral"
+       "id": "goat",
+       "x": 86,
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 0.82,
+       "speaking": false
       }
      ]
     }
    }
   }
  ],
- "totalFrames": 525
+ "totalFrames": 315
 }
