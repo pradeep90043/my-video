@@ -147,6 +147,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
         const poseWeight = interpolate(local, [0, 6, 28, 46], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const speaks = talking && isSpeaker;
         const s = base * crowd * c.scale;
+        const s2 = s;
         const nameOn = member.name && !cont && local >= 0 && local < 70;
         return (
           <g key={c.id + i} transform={`translate(${x},${ground + 6 + (c.scale > 1 ? 14 : 0)}) scale(${s})`} opacity={local < 0 ? 0 : popIn}>
@@ -166,7 +167,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
                     </g>
                   )}
                   {saysText && (
-                    <g transform={`translate(0,${topY - (nameOn ? 74 : 8)}) scale(${interpolate(local, [8, 14], [0.4, 1], { extrapolateRight: "clamp" })})`} opacity={interpolate(local, [8, 12, 92, 100], [0, 1, 1, 0], { extrapolateRight: "clamp" })}>
+                    <g transform={`translate(${(() => { const half = (saysText.length * 40 + 72) / 2 * s2; const left = x - half, right = x + half; return left < 24 ? (24 - left) / s2 : right > w - 24 ? (w - 24 - right) / s2 : 0; })()},${topY - (nameOn ? 74 : 8)}) scale(${interpolate(local, [8, 14], [0.4, 1], { extrapolateRight: "clamp" })})`} opacity={interpolate(local, [8, 12, 92, 100], [0, 1, 1, 0], { extrapolateRight: "clamp" })}>
                       <path d={`M-14,24 L0,58 L18,24 Z`} fill="#fff" stroke="#2B2B2B" strokeWidth={5} strokeLinejoin="round" />
                       <rect x={-(saysText.length * 20 + 36)} y={-52} width={saysText.length * 40 + 72} height={86} rx={40} fill="#fff" stroke="#2B2B2B" strokeWidth={5} />
                       <rect x={-14} y={22} width={32} height={8} fill="#fff" />
