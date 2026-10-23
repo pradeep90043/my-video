@@ -139,7 +139,8 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
         const popIn = cont && c.fromX === undefined ? interpolate(local, [0, 8], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 1;
         const x = cont && c.fromX === undefined ? tx : fx + (tx - fx) * enter;
         const walking = enter < 1 && local >= 0 && Math.abs(tx - fx) > 30;
-        const isSpeaker = c.speaking || (!anySpeaker && i === 0);
+        // in a story the narrator is off screen: a character talks only in a beat where someone really speaks; presenters (finance, news) always do
+        const isSpeaker = c.speaking || (look !== "story" && !anySpeaker && i === 0);
         // acting: eases in over the first frames of the sentence and relaxes towards its end; the staged pose lasts about a second
         const envelope = interpolate(local, [0, 8, Math.max(9, durationFrames - 10), durationFrames], [0, 1, 1, 0.4], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const poseWeight = interpolate(local, [0, 6, 28, 46], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
@@ -148,7 +149,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
         const nameOn = member.name && !cont && local >= 0 && local < 70;
         return (
           <g key={c.id + i} transform={`translate(${x},${ground + 6 + (c.scale > 1 ? 14 : 0)}) scale(${s})`} opacity={local < 0 ? 0 : popIn}>
-            <Character member={member} pose={walking ? "walk" : c.pose} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={c.flip} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && !isSpeaker} envelope={envelope} poseWeight={poseWeight} holds={c.holds as StoryPropName | undefined} />
+            <Character member={member} pose={walking ? "walk" : c.pose} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={c.flip} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && (anySpeaker || look !== "story") && !isSpeaker} envelope={envelope} poseWeight={poseWeight} holds={c.holds as StoryPropName | undefined} />
             {nameOn && (
               <g transform={`translate(0,${-(510 + 64 * (member.age === "child" ? 1.22 : member.age === "teen" ? 1.08 : 1)) * (member.age === "child" ? 0.62 : member.age === "teen" ? 0.86 : 1) - 62})`} opacity={interpolate(local, [0, 8, 56, 70], [0, 1, 1, 0], { extrapolateRight: "clamp" })}>
                 <rect x={-(member.name!.length * 17 + 30)} y={-34} width={member.name!.length * 34 + 60} height={60} rx={30} fill="#fff" stroke="#2B2B2B" strokeWidth={4} />

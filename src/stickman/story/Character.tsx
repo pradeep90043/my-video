@@ -59,6 +59,11 @@ const POSES: Record<CharPose, PoseSpec> = {
   dance: { rt: 140, rf: 20, lt: 140, lf: 20, tilt: 0, lean: 0, headDrop: 0 },
   fight: { rt: 80, rf: 30, lt: 30, lf: 100, tilt: 0, lean: 6, headDrop: 0 },
   carry: { rt: 62, rf: 82, lt: 62, lf: 82, tilt: 0, lean: 4, headDrop: 0 },
+  struggle: { rt: 70, rf: 40, lt: 70, lf: 40, tilt: 0, lean: 6, headDrop: 0 },
+  push: { rt: 82, rf: 8, lt: 82, lf: 8, tilt: 0, lean: 18, headDrop: 0 },
+  shout: { rt: 40, rf: 125, lt: 40, lf: 125, tilt: -6, lean: -3, headDrop: -4 },
+  tired: { rt: 14, rf: 18, lt: 14, lf: 18, tilt: 3, lean: 14, headDrop: 18 },
+  jump: { rt: 150, rf: 12, lt: 150, lf: 12, tilt: 0, lean: 0, headDrop: 0 },
 };
 
 export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, flip, energy = 0, gesture = 0, listening = false, envelope = 1, poseWeight = 1, holds }) => {
@@ -78,9 +83,11 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   const punch = pose === "fight" ? Math.sin(frame * 0.55) : 0;
   const eatBite = pose === "eat" ? Math.sin(frame * 0.4) : 0;
   const asleep = pose === "sleep";
+  const thrash = pose === "struggle" ? Math.sin(frame * 0.95) : 0; // flailing arms, shaking body
+  const shove = pose === "push" ? Math.sin(frame * 0.5) : 0;
   const talkSwing = pose === "talk" || (talking && pose === "stand") ? Math.sin(frame * 0.27) : 0;
   const waveSwing = pose === "wave" ? Math.sin(frame * 0.45) : 0;
-  const hop = (pose === "happy" ? -Math.abs(Math.sin(frame * 0.2)) * 22 : 0) - (pose === "dance" ? Math.abs(dance) * 22 : 0) - (talking ? energy * 5 : 0);
+  const hop = (pose === "happy" ? -Math.abs(Math.sin(frame * 0.2)) * 22 : 0) - (pose === "dance" ? Math.abs(dance) * 22 : 0) - (pose === "jump" ? Math.abs(Math.sin(frame * 0.26)) * 70 : 0) + (pose === "struggle" ? Math.abs(thrash) * 6 : 0) - (talking ? energy * 5 : 0);
   const lean = P.lean + (elder ? 5 : 0);
 
   // A speaker does a different gesture every few words (gliding from one to the next) and each word gives it a push; between
@@ -96,10 +103,10 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   // the speaker: staged pose first, then gestures; always eased in and out of the sentence by the envelope
   const rArm = speaking && !walking
     ? { t: mix(REST.rt, mix(gestureR.t, EXP.rt, poseWeight), envelope), f: mix(REST.rf, mix(gestureR.f, EXP.rf, poseWeight), envelope) }
-    : { t: P.rt + talkSwing * 14 + waveSwing * 18 - swing * (pose === "run" ? 45 : 28) + dance * 26 + (pose === "fight" ? 20 + punch * 18 : 0), f: P.rf + talkSwing * 12 + eatBite * 8 - (pose === "fight" ? 18 + punch * 18 : 0) };
+    : { t: P.rt + talkSwing * 14 + waveSwing * 18 - swing * (pose === "run" ? 45 : 28) + dance * 26 + thrash * 42 + shove * 6 + (pose === "fight" ? 20 + punch * 18 : 0), f: P.rf + talkSwing * 12 + eatBite * 8 + thrash * 26 + (pose === "shout" ? Math.sin(frame * 0.4) * 8 : 0) - (pose === "fight" ? 18 + punch * 18 : 0) };
   const lArm = speaking && !walking
     ? { t: mix(REST.lt, mix(gestureL.t, EXP.lt, poseWeight), envelope), f: mix(REST.lf, mix(gestureL.f, EXP.lf, poseWeight), envelope) }
-    : { t: P.lt + (pose === "angry" || pose === "scared" ? 0 : swing * (pose === "run" ? 45 : 28)) - dance * 26 - (pose === "fight" ? punch * 18 : 0), f: P.lf };
+    : { t: P.lt + (pose === "angry" || pose === "scared" ? 0 : swing * (pose === "run" ? 45 : 28)) - dance * 26 - thrash * 42 + shove * 6 - (pose === "fight" ? punch * 18 : 0), f: P.lf - thrash * 20 };
   const nod = speaking ? energy * 6 : listening ? Math.max(0, Math.sin(frame * 0.045)) ** 3 * 7 : 0;
 
   // face
@@ -108,7 +115,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   const cx = 0, cy = -510, R = 64 * headK;
   const eyeY = cy - 6 * headK, eyeX = 23 * headK;
   const wide = mood === "scared" || mood === "surprised";
-  const open = pose === "eat" ? Math.abs(eatBite) * 0.7 : pose === "cry" ? 0.55 + 0.3 * Math.sin(frame * 0.8) : talking ? Math.min(1, (mouthLevel ?? 0.45 + 0.45 * Math.abs(Math.sin(frame * 0.5))) * 1.6) : mood === "laugh" ? 0.8 : mood === "surprised" ? 0.9 : mood === "scared" ? 0.5 : 0;
+  const open = pose === "shout" ? 1 : pose === "struggle" ? 0.5 + 0.4 * Math.abs(thrash) : pose === "tired" ? 0.3 + 0.3 * Math.abs(Math.sin(frame * 0.3)) : pose === "eat" ? Math.abs(eatBite) * 0.7 : pose === "cry" ? 0.55 + 0.3 * Math.sin(frame * 0.8) : talking ? Math.min(1, (mouthLevel ?? 0.45 + 0.45 * Math.abs(Math.sin(frame * 0.5))) * 1.6) : mood === "laugh" ? 0.8 : mood === "surprised" ? 0.9 : mood === "scared" ? 0.5 : 0;
   const mY = cy + 26 * headK;
   const mouth = (() => {
     if (open > 0.15) return <ellipse cx={cx} cy={mY + 2} rx={11 * headK + open * 3} ry={3 + open * 11} fill="#7A1F2B" stroke={OUT} strokeWidth={2.5} />;
@@ -250,7 +257,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   );
 
   return (
-    <g transform={`scale(${(flip ? -1 : 1) * bodyK},${bodyK}) translate(0,${hop}) ${asleep ? "translate(0,-105) rotate(-88)" : ""}`}>
+    <g transform={`scale(${(flip ? -1 : 1) * bodyK},${bodyK}) translate(${pose === "struggle" ? Math.sin(frame * 1.3) * 7 : 0},${hop}) ${asleep ? "translate(0,-105) rotate(-88)" : ""}`}>
       <ellipse cx={0} cy={6} rx={78} ry={12} fill="#000" opacity={0.18} />
       <g transform={`translate(0,${breathe * 0.4})`}>
         {legs}
@@ -274,6 +281,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
             {!sp || sp === "elephant" || true ? mouth : null}
             {m.bindi && <circle cx={cx} cy={cy - 24 * headK} r={4.5} fill="#C0392B" />}
             {mood === "sad" && <path d={`M${cx - eyeX - 4},${eyeY + 14} q-3,16 0,24 q4,-6 4,-16 z`} fill="#7EC8E3" opacity={0.8 + 0.2 * Math.sin(frame * 0.2)} />}
+            {(pose === "struggle" || pose === "tired") && <g fill="#7EC8E3" opacity={0.8}><path d={`M${cx + R - 4},${cy - 40} q-6,14 0,22 q6,-8 0,-22 z`} /><path d={`M${cx - R + 6},${cy - 20 + Math.sin(frame * 0.2) * 4} q-6,14 0,22 q6,-8 0,-22 z`} /></g>}
             {mood === "angry" && <circle cx={cx + R - 6} cy={cy - R + 10} r={5} fill="#E74C3C" opacity={0.7} />}
             {hairFront}
           </g>

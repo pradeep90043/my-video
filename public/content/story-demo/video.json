@@ -12,7 +12,7 @@
  "cast": [
   {
    "id": "wolf",
-   "name": "",
+   "name": "भेड़िया",
    "age": "adult",
    "skin": "#8E9AA6",
    "hair": "bald",
@@ -22,131 +22,21 @@
    "species": "wolf"
   },
   {
-   "id": "fox",
+   "id": "bull",
    "name": "",
    "age": "adult",
-   "skin": "#E67E22",
+   "skin": "#4A4A52",
    "hair": "bald",
    "hairColor": "#1B1B1B",
    "outfit": "fur",
-   "color": "#E67E22",
-   "species": "fox"
-  },
-  {
-   "id": "lion",
-   "name": "",
-   "age": "adult",
-   "skin": "#E0A33A",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#E0A33A",
-   "species": "lion"
-  },
-  {
-   "id": "tiger",
-   "name": "",
-   "age": "adult",
-   "skin": "#E88B2E",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#E88B2E",
-   "species": "tiger"
-  },
-  {
-   "id": "dog",
-   "name": "",
-   "age": "adult",
-   "skin": "#C68642",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#C68642",
-   "species": "dog"
-  },
-  {
-   "id": "cat",
-   "name": "",
-   "age": "adult",
-   "skin": "#9B9B9B",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#9B9B9B",
-   "species": "cat"
-  },
-  {
-   "id": "monkey",
-   "name": "",
-   "age": "adult",
-   "skin": "#A0693A",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#A0693A",
-   "species": "monkey"
-  },
-  {
-   "id": "rabbit",
-   "name": "",
-   "age": "adult",
-   "skin": "#F2F2F2",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#F2F2F2",
-   "species": "rabbit"
-  },
-  {
-   "id": "bear",
-   "name": "",
-   "age": "adult",
-   "skin": "#7B5230",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#7B5230",
-   "species": "bear"
-  },
-  {
-   "id": "elephant",
-   "name": "",
-   "age": "adult",
-   "skin": "#9AA5B1",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#9AA5B1",
-   "species": "elephant"
-  },
-  {
-   "id": "deer",
-   "name": "",
-   "age": "adult",
-   "skin": "#B9814A",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#B9814A",
-   "species": "deer"
-  },
-  {
-   "id": "goat",
-   "name": "",
-   "age": "adult",
-   "skin": "#E5DCCB",
-   "hair": "bald",
-   "hairColor": "#1B1B1B",
-   "outfit": "fur",
-   "color": "#E5DCCB",
-   "species": "goat"
+   "color": "#4A4A52",
+   "species": "buffalo"
   }
  ],
  "scenes": [
   {
-   "id": "a0",
-   "text": "जंगल में सब जानवर इकट्ठे हुए।",
+   "id": "w0",
+   "text": "भेड़िया बैल के अंदर चला गया।",
    "startFrame": 0,
    "durationFrames": 105,
    "duration": 3.2,
@@ -160,140 +50,98 @@
      "chars": [
       {
        "id": "wolf",
-       "x": 14,
-       "pose": "talk",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": true
+       "x": 30,
+       "pose": "walk",
+       "mood": "happy"
       },
       {
-       "id": "fox",
-       "x": 38,
+       "id": "bull",
+       "x": 68,
        "pose": "stand",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": false
-      },
-      {
-       "id": "lion",
-       "x": 62,
-       "pose": "stand",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": false
-      },
-      {
-       "id": "tiger",
-       "x": 86,
-       "pose": "stand",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": false
+       "mood": "neutral",
+       "flip": true,
+       "scale": 1.15
       }
      ]
     }
    }
   },
   {
-   "id": "a1",
-   "text": "जंगल में सब जानवर इकट्ठे हुए।",
+   "id": "w1",
+   "text": "अंदर धूप से खाल सूखकर सख़्त हो गई।",
    "startFrame": 105,
    "durationFrames": 105,
    "duration": 3.2,
    "visual": {
     "camera": "none",
     "story": {
-     "bg": "forest",
+     "bg": "belly",
      "time": "day",
      "fx": "none",
      "props": [],
      "chars": [
       {
-       "id": "dog",
-       "x": 14,
-       "pose": "talk",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": true
-      },
-      {
-       "id": "cat",
-       "x": 38,
-       "pose": "stand",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": false
-      },
-      {
-       "id": "monkey",
-       "x": 62,
-       "pose": "stand",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": false
-      },
-      {
-       "id": "rabbit",
-       "x": 86,
-       "pose": "stand",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": false
+       "id": "wolf",
+       "x": 50,
+       "pose": "push",
+       "mood": "scared"
       }
      ]
     }
    }
   },
   {
-   "id": "a2",
-   "text": "जंगल में सब जानवर इकट्ठे हुए।",
+   "id": "w2",
+   "text": "भेड़िया बाहर निकलने के लिए छटपटाने लगा।",
    "startFrame": 210,
    "durationFrames": 105,
    "duration": 3.2,
    "visual": {
     "camera": "none",
     "story": {
-     "bg": "forest",
+     "bg": "belly",
      "time": "day",
      "fx": "none",
      "props": [],
+     "cont": true,
      "chars": [
       {
-       "id": "bear",
-       "x": 14,
-       "pose": "talk",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": true
-      },
+       "id": "wolf",
+       "x": 50,
+       "fromX": 50,
+       "pose": "struggle",
+       "mood": "scared"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "w3",
+   "text": "वह मदद के लिए चिल्लाया।",
+   "startFrame": 315,
+   "durationFrames": 105,
+   "duration": 3.2,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "belly",
+     "time": "day",
+     "fx": "none",
+     "props": [],
+     "cont": true,
+     "chars": [
       {
-       "id": "elephant",
-       "x": 38,
-       "pose": "stand",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": false
-      },
-      {
-       "id": "deer",
-       "x": 62,
-       "pose": "stand",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": false
-      },
-      {
-       "id": "goat",
-       "x": 86,
-       "pose": "stand",
-       "mood": "happy",
-       "scale": 0.82,
-       "speaking": false
+       "id": "wolf",
+       "x": 50,
+       "fromX": 50,
+       "pose": "shout",
+       "mood": "scared"
       }
      ]
     }
    }
   }
  ],
- "totalFrames": 315
+ "totalFrames": 420
 }

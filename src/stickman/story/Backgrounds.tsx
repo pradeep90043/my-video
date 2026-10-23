@@ -24,7 +24,7 @@ export const StoryBackground: React.FC<Props> = ({ bg, time, frame, w, h, ground
   const id = `sky-${bg}-${time}`;
   const drift = (speed: number, span: number, off = 0) => ((frame * speed + off) % span);
   const star = (i: number) => 0.3 + 0.7 * Math.abs(Math.sin(frame * 0.05 + i * 1.9));
-  const interior = bg === "home" || bg === "room_night" || bg === "office" || bg === "bank" || bg === "stock" || bg === "newsroom" || bg === "studio";
+  const interior = bg === "home" || bg === "room_night" || bg === "office" || bg === "bank" || bg === "stock" || bg === "newsroom" || bg === "studio" || bg === "belly" || bg === "cave";
 
   const sky = (
     <g>
@@ -194,6 +194,19 @@ export const StoryBackground: React.FC<Props> = ({ bg, time, frame, w, h, ground
           {[-340, -250, -160, -70, 20, 110, 200, 290].map((x, i) => <rect key={i} x={x} y={-260} width={30} height={240} fill={c("#FFF8E7")} stroke={OUT} strokeWidth={2.5} />)}
           <path d="M-140,-300 Q0,-560 140,-300 Z" fill={c("#E5B96B")} stroke={OUT} strokeWidth={3} /><line x1={0} y1={-520} x2={0} y2={-620} stroke={OUT} strokeWidth={5} /><path d={`M0,-620 l70,${10 + Math.sin(frame * 0.25) * 5} l-70,26 z`} fill="#FF9933" /><path d={`M0,-594 l70,${10 + Math.sin(frame * 0.25) * 5} l-70,-12 z`} fill="#fff" opacity={0.0} />
           {[0, 1, 2, 3, 4, 5].map((i) => <rect key={i} x={-420 + i * 10} y={-i * 12} width={840 - i * 20} height={12} fill={c("#D7C3A0")} stroke={OUT} strokeWidth={2} />)}</g></g>); break;
+    case "belly":
+      body = (<g><defs><radialGradient id="bl" cx="50%" cy="45%" r="75%"><stop offset="0" stopColor="#E88A8A" /><stop offset="1" stopColor="#7B2D3A" /></radialGradient></defs><rect width={w} height={h} fill="url(#bl)" />
+        {Array.from({ length: 7 }, (_, i) => <path key={i} d={`M${-40 + i * (w / 5.5)},${ground * 0.1} Q${w * 0.12 + i * (w / 5.5)},${ground * 0.55} ${-40 + i * (w / 5.5) + 40},${ground}`} fill="none" stroke="#F5B7B1" strokeWidth={26} opacity={0.35} strokeLinecap="round" />)}
+        {Array.from({ length: 12 }, (_, i) => <ellipse key={i} cx={(i * 211) % w} cy={((frame * 2.2 + i * 130) % (ground + 60)) - 20} rx={6} ry={12} fill="#F1948A" opacity={0.5} />)}
+        <rect x={0} y={ground} width={w} height={h - ground} fill="#5B1F2A" /><path d={`M0,${ground} Q${w * 0.25},${ground - 26} ${w * 0.5},${ground} T${w},${ground} L${w},${ground + 24} L0,${ground + 24} Z`} fill="#8E3B49" />
+        <ellipse cx={w * 0.5} cy={ground + 30} rx={w * 0.34} ry={26} fill="#C0392B" opacity={0.25 + 0.12 * Math.sin(frame * 0.2)} />
+        <rect width={w} height={h} fill="#000" opacity={0.18} /></g>); break;
+    case "cave":
+      body = (<g><defs><linearGradient id="cv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#2B2B33" /><stop offset="1" stopColor="#4A4A55" /></linearGradient></defs><rect width={w} height={h} fill="url(#cv)" />
+        {Array.from({ length: 9 }, (_, i) => <path key={i} d={`M${i * (w / 8) - 30},0 L${i * (w / 8) + 40},${70 + ((i * 53) % 150)} L${i * (w / 8) + 90},0 Z`} fill="#1E1E25" stroke="#14141A" strokeWidth={3} />)}
+        <path d={`M${w * 0.62},${ground} Q${w * 0.8},${ground - 380} ${w * 0.95},${ground} Z`} fill="#F7DC6F" opacity={0.10 + 0.04 * Math.sin(frame * 0.07)} />
+        <rect x={0} y={ground} width={w} height={h - ground} fill="#3A3A44" /><path d={`M0,${ground} Q${w * 0.3},${ground - 18} ${w * 0.6},${ground} T${w},${ground} L${w},${ground + 20} L0,${ground + 20} Z`} fill="#55555F" />
+        {[0.18, 0.44].map((p, i) => <ellipse key={i} cx={w * p} cy={ground + 6} rx={60 + i * 20} ry={20} fill="#2E2E37" />)}</g>); break;
   }
   return <g>{interior ? null : sky}{body}</g>;
 };
