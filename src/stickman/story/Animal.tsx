@@ -31,6 +31,7 @@ const SPECS: Record<string, Spec> = {
   deer: { leg: 111, bw: 118, bh: 48, hr: 34, neck: 70, size: 1.1, snout: [38, 20], ears: "point", tail: "short", extra: "antlers" },
   goat: { leg: 67, bw: 100, bh: 48, hr: 36, neck: 30, size: 0.85, snout: [32, 22], ears: "floppy", tail: "short", extra: "beard" },
   buffalo: { leg: 74, bw: 168, bh: 86, hr: 52, neck: 26, size: 1.25, snout: [44, 34], ears: "floppy", tail: "thin", extra: "wide-horns" },
+  crow: { leg: 50, bw: 54, bh: 34, hr: 22, neck: 20, size: 0.8, snout: [30, 14], ears: "none", tail: "short" },
   cow: { leg: 73, bw: 160, bh: 80, hr: 50, neck: 26, size: 1.15, snout: [44, 32], ears: "floppy", tail: "thin", extra: "spots" },
 };
 
@@ -55,7 +56,86 @@ interface Props {
   envelope?: number;
 }
 
-export const AnimalCharacter: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, energy = 0, react, holds, envelope = 1 }) => {
+
+/** A crow drawn as a bird: oval body, flapping wing, thin legs that hop and walk, a beak that opens, a head that pecks, droops or cocks. Origin between the feet, facing right. */
+const CrowBird: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, react, holds }) => {
+  const fur = m.skin, furD = shade(fur, 0.7), furL = shade(fur, 1.5);
+  const sinf = (k: number) => Math.sin(frame * k);
+  const flying = pose === "jump" || pose === "dance" || pose === "run";
+  const gait = pose === "walk" ? 0.32 : pose === "run" ? 0.6 : 0;
+  const swing = gait ? Math.sin(frame * gait) : 0;
+  const hopY = (pose === "jump" || pose === "dance" ? Math.abs(sinf(0.3)) * 70 : pose === "happy" ? Math.abs(sinf(0.3)) * 16 : pose === "walk" ? Math.abs(sinf(0.32)) * 5 : 0) + (react === "surprise" ? Math.max(0, 1 - (frame % 90) / 14) * 26 : 0);
+  const lying = pose === "sleep";
+  const shake = pose === "struggle" ? sinf(1.2) * 8 : pose === "scared" ? sinf(1.6) * 3 : 0;
+  let headA = 0; // + = head down (peck, sad)
+  if (pose === "eat") headA = 55 + Math.max(0, sinf(0.45)) * 20;
+  else if (pose === "sad" || pose === "cry" || pose === "tired") headA = 28;
+  else if (pose === "shout" || pose === "wave") headA = -26 + (talking || pose === "shout" ? sinf(0.4) * 5 : 0);
+  else if (pose === "think") headA = -12 + sinf(0.05) * 4;
+  else if (pose === "struggle") headA = sinf(1.0) * 24;
+  else if (pose === "bow" || pose === "pray") headA = 38;
+  else if (pose === "push" || pose === "carry" || pose === "give") headA = 22;
+  if (lying) headA = 62;
+  const rf = react ? frame % 90 : 999, rAmt = react ? Math.max(0, 1 - rf / 70) : 0;
+  const tilt = (react === "no" ? Math.sin(frame * 0.6) * 18 * rAmt : 0) + (react === "yes" ? Math.sin(frame * 0.5) * 14 * rAmt : 0) + (pose === "think" ? -14 : 0);
+  const open = pose === "shout" ? 1 : talking ? Math.min(1, (mouthLevel ?? 0.5) * 1.5) : pose === "struggle" ? 0.5 : pose === "eat" ? Math.max(0, sinf(0.45)) * 0.7 : mood === "laugh" ? 0.8 : 0;
+  const blink = lying || frame % 120 > 113 ? 0.12 : 1;
+  const flapOn = flying || pose === "struggle" || pose === "shout" || pose === "scared" || (pose === "happy" && mood === "happy");
+  const flap = flapOn ? sinf(pose === "scared" ? 1.3 : 0.7) * 40 : sinf(0.09) * 2;
+  const bodyY = -62 + (lying ? 30 : 0) - hopY + sinf(0.1) * 1.2;
+  const legA = flying ? 25 : swing * 28;
+  const legs = [-1, 1].map((d) => (
+    <g key={d} transform={`translate(${d * 10 - 2},${bodyY + 28}) rotate(${legA * d})`}>
+      <line x1={0} y1={0} x2={0} y2={Math.max(10, -bodyY - 26)} stroke={OUT} strokeWidth={9} strokeLinecap="round" />
+      <line x1={0} y1={0} x2={0} y2={Math.max(10, -bodyY - 26)} stroke="#555" strokeWidth={4.5} strokeLinecap="round" />
+      <path d={`M-10,${Math.max(10, -bodyY - 26)} L9,${Math.max(10, -bodyY - 26)} M9,${Math.max(10, -bodyY - 26)} l7,2`} stroke="#555" strokeWidth={5} strokeLinecap="round" fill="none" />
+    </g>
+  ));
+  const nx = 30, ny = bodyY - 24; // neck base (head pivot)
+  const hx = nx + 20, hy = ny - 34, HR = 23;
+  const jaw = open * 16;
+  const head = (
+    <g transform={`rotate(${headA + tilt * 0.4} ${nx} ${ny})`}>
+      <path d={`M${nx - 22},${ny + 24} Q${nx - 4},${ny - 24} ${hx - 14},${hy + 4} L${hx + 10},${hy + 18} Q${nx + 22},${ny + 10} ${nx + 14},${ny + 34} Z`} fill={fur} stroke={OUT} strokeWidth={3.5} strokeLinejoin="round" />
+      <circle cx={hx} cy={hy} r={HR} fill={fur} stroke={OUT} strokeWidth={3.5} />
+      <path d={`M${hx - 18},${hy - 10} Q${hx - 6},${hy - 26} ${hx + 8},${hy - 20}`} fill="none" stroke={furL} strokeWidth={4} strokeLinecap="round" opacity={0.6} />
+      {/* beak: upper, lower (opens) */}
+      <path d={`M${hx + 16},${hy - 12} Q${hx + 52},${hy - 10} ${hx + 58},${hy + 4} Q${hx + 40},${hy + 2} ${hx + 16},${hy + 4} Z`} fill="#3A3A3E" stroke={OUT} strokeWidth={3.5} strokeLinejoin="round" />
+      {jaw > 1.5 && <path d={`M${hx + 16},${hy + 4} L${hx + 46},${hy + 5 + jaw * 0.6} L${hx + 18},${hy + 14 + jaw}Z`} fill="#7A1F2B" stroke={OUT} strokeWidth={3} strokeLinejoin="round" />}
+      <path d={`M${hx + 16},${hy + 5} Q${hx + 40},${hy + 8 + jaw} ${hx + 50},${hy + 5 + jaw * 0.6}`} fill="none" stroke={OUT} strokeWidth={3.5} strokeLinecap="round" />
+      <ellipse cx={hx + 6} cy={hy - 6} rx={8} ry={9 * blink} fill="#fff" stroke={OUT} strokeWidth={2.2} />
+      <circle cx={hx + 8} cy={hy - 5} r={4} fill="#111" opacity={blink > 0.5 ? 1 : 0} />
+      <line x1={hx - 4} y1={hy - 18 + (mood === "sad" || mood === "worried" ? 3 : 0)} x2={hx + 16} y2={hy - 17 + (mood === "angry" ? 7 : mood === "sad" || mood === "worried" ? -3 : 0)} stroke={furL} strokeWidth={4} strokeLinecap="round" />
+      {mood === "sad" && <path d={`M${hx + 8},${hy + 2} q-3,13 0,20 q4,-5 4,-13 z`} fill="#7EC8E3" opacity={0.85} />}
+      {(pose === "struggle" || pose === "tired") && <path d={`M${hx - 8},${hy - HR - 4} q-5,11 0,18 q5,-7 0,-18 z`} fill="#7EC8E3" opacity={0.85} />}
+      {holds && <g transform={`translate(${hx + 54},${hy + 22}) scale(0.22)`}><StoryPropArt type={holds} frame={frame} /></g>}
+    </g>
+  );
+  return (
+    <g transform={`translate(${shake},0)`}>
+      <ellipse cx={0} cy={6} rx={46} ry={8} fill="#000" opacity={0.18} transform={`scale(${1 - hopY / 260},1)`} />
+      {legs}
+      {/* tail feathers */}
+      <path d={`M-44,${bodyY - 4} L-96,${bodyY + 8 + sinf(0.12) * 3} L-92,${bodyY + 24} L-40,${bodyY + 20} Z`} fill={furD} stroke={OUT} strokeWidth={3.5} strokeLinejoin="round" />
+      <ellipse cx={0} cy={bodyY} rx={56} ry={36} fill={fur} stroke={OUT} strokeWidth={3.5} transform={`rotate(-14 0 ${bodyY})`} />
+      <ellipse cx={8} cy={bodyY + 14} rx={36} ry={16} fill={furL} opacity={0.35} />
+      {head}
+      {/* wing */}
+      <g transform={`translate(-6,${bodyY - 8}) rotate(${flapOn ? -30 - flap : 4 + flap * 0.5})`}>
+        <path d="M24,0 Q-6,-30 -56,-12 Q-72,0 -78,22 Q-40,18 -20,26 Q4,24 24,0 Z" fill={furD} stroke={OUT} strokeWidth={3.5} strokeLinejoin="round" />
+        <path d="M-20,2 L-58,6 M-14,12 L-52,18" stroke={furL} strokeWidth={3} strokeLinecap="round" opacity={0.5} />
+      </g>
+      {lying && <text x={40} y={bodyY - 60} fontSize={56} fontWeight={900} fill="#5DADE2" fontFamily="sans-serif" opacity={0.5 + 0.5 * sinf(0.1)}>Zz</text>}
+    </g>
+  );
+};
+
+export const AnimalCharacter: React.FC<Props> = (props) => {
+  if (props.member.species === "crow") return <CrowBird {...props} />;
+  return <FourLegged {...props} />;
+};
+
+const FourLegged: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, energy = 0, react, holds, envelope = 1 }) => {
   const sp = SPECS[m.species ?? "wolf"] ?? SPECS.wolf;
   const fur = m.skin, furD = shade(fur, 0.68), furL = shade(fur, 1.22);
   const { leg: L, bw: BW, bh: BH, hr: HR } = sp;

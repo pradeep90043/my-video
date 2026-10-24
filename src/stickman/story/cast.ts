@@ -29,7 +29,7 @@ export type HairStyle = (typeof HAIR_STYLES)[number];
 
 export const OUTFITS = ["shirt", "kurta", "saree", "dress", "uniform", "suit", "hoodie", "dhoti", "fur"] as const;
 /** animal characters (fairy-tale animals that stand and talk like people): the fur colour is `skin` */
-export const SPECIES = ["wolf", "fox", "lion", "tiger", "dog", "cat", "monkey", "rabbit", "bear", "elephant", "deer", "goat", "buffalo", "cow"] as const;
+export const SPECIES = ["wolf", "fox", "lion", "tiger", "dog", "cat", "monkey", "rabbit", "bear", "elephant", "deer", "goat", "buffalo", "cow", "crow"] as const;
 export type Species = (typeof SPECIES)[number];
 export type Outfit = (typeof OUTFITS)[number];
 

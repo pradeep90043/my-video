@@ -8,7 +8,7 @@ import React from "react";
 export const STORY_PROPS = [
   "ball", "book", "bag", "letter", "gift", "food", "tea", "money", "phone", "laptop", "flowers", "tree", "dog", "cat", "cow", "bird", "horse",
   "car", "bus", "bicycle", "boat", "bed", "chair", "table", "lamp", "fire", "crown", "key", "trophy", "cake", "umbrella", "heart", "star",
-  "chest", "diya", "door", "basket", "medicine", "clock", "bell", "sword", "rope", "stone", "candle", "mic", "camera", "cricket",
+  "chest", "diya", "door", "basket", "medicine", "clock", "bell", "sword", "rope", "stone", "candle", "mic", "camera", "cricket", "pot", "pot_mid", "pot_full",
 ] as const;
 export type StoryPropName = (typeof STORY_PROPS)[number];
 
@@ -70,6 +70,10 @@ const art = (name: StoryPropName, t: number): React.ReactNode => {
     case "mic": return <g><rect x={-6} y={-60} width={12} height={60} fill="#7F8C8D" {...sw} /><circle cx={0} cy={-84} r={24} fill="#2C3E50" {...sw} /></g>;
     case "camera": return <g><rect x={-60} y={-90} width={120} height={80} rx={10} fill="#34495E" {...sw} /><circle cx={0} cy={-52} r={26} fill="#85C1E9" {...sw} /><rect x={-24} y={-104} width={30} height={14} rx={4} fill="#34495E" {...sw} /></g>;
     case "cricket": return <g><path d="M-8,-170 L8,-170 L14,-46 L-14,-46 Z" fill="#D4A55A" {...sw} /><rect x={-9} y={-46} width={18} height={46} rx={6} fill="#2C3E50" {...sw} /></g>;
+    case "pot": case "pot_mid": case "pot_full": {
+      const lvl = name === "pot_full" ? 100 : name === "pot_mid" ? 55 : 10;
+      return <g><path d="M-46,-70 Q-82,-110 -56,-150 L-26,-170 L26,-170 L56,-150 Q82,-110 46,-70 L36,0 L-36,0 Z" fill="#C0642B" {...sw} /><ellipse cx={0} cy={-170} rx={28} ry={8} fill="#7A3A12" {...sw} strokeWidth={3} /><path d="M-34,-12 L34,-12" stroke="#E08A52" strokeWidth={6} strokeLinecap="round" /><path d={`M-${30 + lvl * 0.14},${-lvl} L${30 + lvl * 0.14},${-lvl}`} stroke="#5DADE2" strokeWidth={10} strokeLinecap="round" opacity={0.9} /></g>;
+    }
     default: return null;
   }
 };

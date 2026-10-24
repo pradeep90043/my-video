@@ -1,0 +1,891 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "प्यासा कौआ",
+ "description": "",
+ "tags": [],
+ "cast": [
+  {
+   "id": "crow",
+   "name": "कौआ",
+   "age": "adult",
+   "skin": "#23262E",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#23262E",
+   "species": "crow"
+  }
+ ],
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "बहुत पुरानी बात है। गर्मी का मौसम था, और धूप आग की तरह बरस रही थी।",
+   "startFrame": 0,
+   "durationFrames": 159,
+   "duration": 5.29,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 50,
+       "pose": "stand",
+       "mood": "neutral",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": false
+    }
+   }
+  },
+  {
+   "id": "s01",
+   "text": "एक काला कौआ सुबह से आसमान में उड़ रहा था।",
+   "startFrame": 159,
+   "durationFrames": 90,
+   "duration": 3.01,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "mountain",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 50,
+       "pose": "run",
+       "mood": "neutral",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": false
+    }
+   }
+  },
+  {
+   "id": "s02",
+   "text": "उसे बहुत ज़ोर की प्यास लगी थी। गला पूरी तरह सूख चुका था।",
+   "startFrame": 249,
+   "durationFrames": 204,
+   "duration": 6.79,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "farm",
+     "time": "day",
+     "fx": "smoke",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 50,
+       "pose": "tired",
+       "mood": "worried",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": false
+    }
+   }
+  },
+  {
+   "id": "s03",
+   "text": "वो इधर उड़ा, उधर उड़ा, पर उसे कहीं भी पानी नहीं मिला।",
+   "startFrame": 453,
+   "durationFrames": 109,
+   "duration": 3.64,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "road",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 50,
+       "pose": "run",
+       "mood": "worried",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": false
+    }
+   }
+  },
+  {
+   "id": "s04",
+   "text": "नदी सूख चुकी थी, और तालाब में बस मिट्टी बची थी।",
+   "startFrame": 562,
+   "durationFrames": 104,
+   "duration": 3.47,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "river",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 50,
+       "pose": "sad",
+       "mood": "sad",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "stone",
+       "x": 78,
+       "scale": 0.5,
+       "anim": "none"
+      }
+     ],
+     "cont": false
+    }
+   }
+  },
+  {
+   "id": "s05",
+   "text": "कौआ थक कर चूर हो गया। उसके पंख भारी होने लगे।",
+   "startFrame": 666,
+   "durationFrames": 173,
+   "duration": 5.78,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 45,
+       "pose": "tired",
+       "mood": "sad",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": false
+    }
+   }
+  },
+  {
+   "id": "s06",
+   "text": "तभी उसकी नज़र एक घर के आँगन में पड़ी।",
+   "startFrame": 839,
+   "durationFrames": 154,
+   "duration": 5.14,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 35,
+       "pose": "stand",
+       "mood": "surprised",
+       "scale": 1.4,
+       "speaking": false,
+       "react": "surprise",
+       "fromX": 45
+      }
+     ],
+     "props": [
+      {
+       "type": "tree",
+       "x": 85,
+       "scale": 1.0,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s07",
+   "text": "वहाँ एक घड़ा रखा था। कौआ खुशी से नीचे उतरा।",
+   "startFrame": 993,
+   "durationFrames": 224,
+   "duration": 7.48,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "sparkle",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 30,
+       "pose": "walk",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 35
+      }
+     ],
+     "props": [
+      {
+       "type": "pot",
+       "x": 70,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s08",
+   "text": "उसने घड़े में झाँका। पानी तो था, पर बहुत नीचे।",
+   "startFrame": 1217,
+   "durationFrames": 145,
+   "duration": 4.82,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 58,
+       "pose": "think",
+       "mood": "worried",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 30
+      }
+     ],
+     "props": [
+      {
+       "type": "pot",
+       "x": 70,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s09",
+   "text": "उसकी चोंच पानी तक पहुँच ही नहीं रही थी।",
+   "startFrame": 1362,
+   "durationFrames": 79,
+   "duration": 2.62,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 58,
+       "pose": "struggle",
+       "mood": "worried",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 58
+      }
+     ],
+     "props": [
+      {
+       "type": "pot",
+       "x": 70,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s10",
+   "text": "कौए ने घड़े को गिराने की कोशिश की, पर घड़ा बहुत भारी था।",
+   "startFrame": 1441,
+   "durationFrames": 119,
+   "duration": 3.97,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 52,
+       "pose": "push",
+       "mood": "angry",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 58
+      }
+     ],
+     "props": [
+      {
+       "type": "pot",
+       "x": 72,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s11",
+   "text": "वो रोने लगा। उसे लगा कि अब प्यास से जान चली जाएगी।",
+   "startFrame": 1560,
+   "durationFrames": 213,
+   "duration": 7.09,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "dusk",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 40,
+       "pose": "cry",
+       "mood": "sad",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 52
+      }
+     ],
+     "props": [
+      {
+       "type": "pot",
+       "x": 72,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s12",
+   "text": "लेकिन कौए ने हिम्मत नहीं हारी। उसने कहा, रुको, मुझे कुछ सोचना होगा।",
+   "startFrame": 1773,
+   "durationFrames": 289,
+   "duration": 9.64,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 40,
+       "pose": "think",
+       "mood": "neutral",
+       "scale": 1.4,
+       "speaking": false,
+       "says": "सोचना होगा",
+       "fromX": 40
+      }
+     ],
+     "props": [
+      {
+       "type": "pot",
+       "x": 72,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s13",
+   "text": "उसने इधर-उधर देखा, तो ज़मीन पर छोटे-छोटे कंकड़ पड़े थे।",
+   "startFrame": 2062,
+   "durationFrames": 117,
+   "duration": 3.9,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 35,
+       "pose": "point",
+       "mood": "surprised",
+       "scale": 1.4,
+       "speaking": false,
+       "react": "surprise",
+       "fromX": 40
+      }
+     ],
+     "props": [
+      {
+       "type": "stone",
+       "x": 60,
+       "scale": 0.5,
+       "anim": "none"
+      },
+      {
+       "type": "stone",
+       "x": 74,
+       "scale": 0.5,
+       "anim": "none"
+      },
+      {
+       "type": "pot",
+       "x": 88,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s14",
+   "text": "अचानक उसके दिमाग में एक तरकीब आई।",
+   "startFrame": 2179,
+   "durationFrames": 143,
+   "duration": 4.78,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "sparkle",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 40,
+       "pose": "jump",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 35
+      }
+     ],
+     "props": [
+      {
+       "type": "star",
+       "x": 60,
+       "scale": 1.0,
+       "anim": "none"
+      },
+      {
+       "type": "pot",
+       "x": 85,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s15",
+   "text": "वो एक कंकड़ अपनी चोंच में उठाकर लाया, और घड़े में डाल दिया।",
+   "startFrame": 2322,
+   "durationFrames": 167,
+   "duration": 5.57,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 45,
+       "pose": "walk",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "holds": "stone",
+       "fromX": 40
+      }
+     ],
+     "props": [
+      {
+       "type": "pot",
+       "x": 78,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s16",
+   "text": "टप! पानी थोड़ा ऊपर आ गया।",
+   "startFrame": 2489,
+   "durationFrames": 119,
+   "duration": 3.97,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "sparkle",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 42,
+       "pose": "happy",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "react": "yes",
+       "fromX": 45
+      }
+     ],
+     "props": [
+      {
+       "type": "pot_mid",
+       "x": 72,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s17",
+   "text": "फिर वो दूसरा कंकड़ लाया, फिर तीसरा, फिर चौथा।",
+   "startFrame": 2608,
+   "durationFrames": 108,
+   "duration": 3.61,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 50,
+       "pose": "run",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "holds": "stone",
+       "fromX": 42
+      }
+     ],
+     "props": [
+      {
+       "type": "pot_mid",
+       "x": 78,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s18",
+   "text": "धूप तेज़ थी, पसीना बह रहा था, पर कौआ रुका नहीं।",
+   "startFrame": 2716,
+   "durationFrames": 105,
+   "duration": 3.5,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 40,
+       "pose": "tired",
+       "mood": "worried",
+       "scale": 1.4,
+       "speaking": false,
+       "holds": "stone",
+       "fromX": 50
+      }
+     ],
+     "props": [
+      {
+       "type": "pot_mid",
+       "x": 74,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s19",
+   "text": "धीरे-धीरे पानी ऊपर आता गया।",
+   "startFrame": 2821,
+   "durationFrames": 135,
+   "duration": 4.49,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 42,
+       "pose": "carry",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "holds": "stone",
+       "fromX": 40
+      }
+     ],
+     "props": [
+      {
+       "type": "pot_mid",
+       "x": 74,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s20",
+   "text": "आखिर में पानी घड़े के मुँह तक आ गया।",
+   "startFrame": 2956,
+   "durationFrames": 127,
+   "duration": 4.23,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "sparkle",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 40,
+       "pose": "stand",
+       "mood": "surprised",
+       "scale": 1.4,
+       "speaking": false,
+       "react": "surprise",
+       "fromX": 42
+      }
+     ],
+     "props": [
+      {
+       "type": "pot_full",
+       "x": 72,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s21",
+   "text": "कौए ने जी भरकर ठंडा पानी पिया।",
+   "startFrame": 3083,
+   "durationFrames": 131,
+   "duration": 4.36,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 58,
+       "pose": "eat",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 40
+      }
+     ],
+     "props": [
+      {
+       "type": "pot_full",
+       "x": 72,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s22",
+   "text": "उसकी जान में जान आई। वो खुशी से झूम उठा।",
+   "startFrame": 3214,
+   "durationFrames": 171,
+   "duration": 5.71,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "dusk",
+     "fx": "hearts",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 50,
+       "pose": "dance",
+       "mood": "laugh",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 58
+      }
+     ],
+     "props": [
+      {
+       "type": "pot_full",
+       "x": 82,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s23",
+   "text": "कौआ बोला, काँव काँव! हिम्मत और अक्ल से काम लो, तो हर मुश्किल का हल निकल आता है।",
+   "startFrame": 3385,
+   "durationFrames": 165,
+   "duration": 5.51,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "dusk",
+     "fx": "stars",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 50,
+       "pose": "shout",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "says": "काँव काँव!",
+       "fromX": 50
+      }
+     ],
+     "props": [
+      {
+       "type": "pot_full",
+       "x": 82,
+       "scale": 0.75,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s24",
+   "text": "तो दोस्तो, याद रखना, मुसीबत में घबराओ मत, दिमाग लगाओ।",
+   "startFrame": 3550,
+   "durationFrames": 118,
+   "duration": 3.93,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "village",
+     "time": "dusk",
+     "fx": "stars",
+     "chars": [
+      {
+       "id": "crow",
+       "x": 50,
+       "pose": "talk",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "react": "yes",
+       "fromX": 50
+      }
+     ],
+     "props": [
+      {
+       "type": "tree",
+       "x": 20,
+       "scale": 1.0,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  }
+ ],
+ "totalFrames": 3668
+}
