@@ -2,6 +2,7 @@ import React from "react";
 import { ACTION_POSES, type CastMember, type CharMood, type CharPose } from "./cast";
 import { StoryPropArt, type StoryPropName } from "./StoryProps";
 import { AnimalCharacter } from "./Animal";
+import { Puppet } from "./puppet/Puppet";
 
 /**
  * A flat-vector storyboard character. Origin = the point between the feet; the body grows upwards (negative y).
@@ -76,6 +77,10 @@ export const Character: React.FC<Props> = ({ member: m, pose: poseIn, prevPose, 
   const pose: CharPose = prevPose && blend < 0.5 ? prevPose : poseIn; // the pose that dominates right now (face, mouth, props follow it)
   const poseA: CharPose = prevPose ?? poseIn, poseB: CharPose = poseIn;
   const bt = prevPose ? Math.max(0, Math.min(1.25, blend)) : 1;
+  // a drawn (generated) character is animated by the shared puppet rig
+  if (m.puppet) {
+    return <g transform={`scale(${(typeof flip === "number" ? flip : flip ? -1 : 1)},1)`}><Puppet spec={m.puppet} pose={poseIn} prevPose={prevPose} blend={blend} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} react={react} holds={holds} /></g>;
+  }
   // a real animal is drawn as one: four legs, a tail, a snout (a monkey stays upright)
   if (m.species && m.species !== "monkey") {
     return <g transform={`scale(${(typeof flip === "number" ? flip : flip ? -1 : 1) * 1.05},1.05)`}><AnimalCharacter member={m} pose={pose} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} energy={energy} react={react} holds={holds} envelope={envelope} /></g>;

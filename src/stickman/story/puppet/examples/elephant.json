@@ -1,0 +1,150 @@
+{
+ "name": "हाथी",
+ "height": 300,
+ "palette": {
+  "fur": "#9AA5B1",
+  "furD": "#6F7A86",
+  "furL": "#B9C2CC",
+  "belly": "#C9D1D8",
+  "accent": "#F3E9D2",
+  "out": "#2B2B2B",
+  "mouth": "#7A1F2B",
+  "toe": "#E8E0D0"
+ },
+ "bones": [
+  {
+   "id": "body",
+   "parent": null,
+   "at": [
+    0,
+    -150
+   ],
+   "role": "body",
+   "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"122\" ry=\"82\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"-4\" cy=\"40\" rx=\"92\" ry=\"38\" fill=\"$belly\" opacity=\"0.55\"/>"
+  },
+  {
+   "id": "legFF",
+   "parent": "body",
+   "at": [
+    62,
+    42
+   ],
+   "role": "leg",
+   "group": "B",
+   "z": -2,
+   "svg": "<rect x=\"-21\" y=\"0\" width=\"42\" height=\"108\" rx=\"16\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"106\" rx=\"27\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "legBF",
+   "parent": "body",
+   "at": [
+    -62,
+    42
+   ],
+   "role": "leg",
+   "group": "A",
+   "z": -2,
+   "svg": "<rect x=\"-21\" y=\"0\" width=\"42\" height=\"108\" rx=\"16\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"106\" rx=\"27\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "legFN",
+   "parent": "body",
+   "at": [
+    78,
+    42
+   ],
+   "role": "leg",
+   "group": "A",
+   "z": 1,
+   "svg": "<rect x=\"-21\" y=\"0\" width=\"42\" height=\"108\" rx=\"16\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"106\" rx=\"27\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "legBN",
+   "parent": "body",
+   "at": [
+    -78,
+    42
+   ],
+   "role": "leg",
+   "group": "B",
+   "z": 1,
+   "svg": "<rect x=\"-21\" y=\"0\" width=\"42\" height=\"108\" rx=\"16\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"106\" rx=\"27\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "tail",
+   "parent": "body",
+   "at": [
+    -118,
+    -34
+   ],
+   "role": "tail",
+   "z": -1,
+   "svg": "<path d=\"M0,0 Q-24,34 -16,78\" fill=\"none\" stroke=\"$out\" stroke-width=\"13\" stroke-linecap=\"round\"/><path d=\"M0,0 Q-24,34 -16,78\" fill=\"none\" stroke=\"$fur\" stroke-width=\"7\" stroke-linecap=\"round\"/><ellipse cx=\"-16\" cy=\"84\" rx=\"9\" ry=\"14\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "head",
+   "parent": "body",
+   "at": [
+    104,
+    -38
+   ],
+   "role": "head",
+   "svg": "<path d=\"M-30,30 Q-34,-40 30,-72 Q100,-70 98,-8 Q92,36 40,44 Q0,50 -30,30 Z\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\" stroke-linejoin=\"round\"/>"
+  },
+  {
+   "id": "ear",
+   "parent": "head",
+   "at": [
+    8,
+    -28
+   ],
+   "role": "ear",
+   "z": 1,
+   "svg": "<path d=\"M0,-20 Q-62,-38 -66,22 Q-62,76 -4,56 Q10,20 0,-20 Z\" fill=\"$furL\" stroke=\"$out\" stroke-width=\"3.5\" stroke-linejoin=\"round\"/><path d=\"M-12,-4 Q-46,10 -40,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"5\" stroke-linecap=\"round\" opacity=\"0.6\"/>"
+  },
+  {
+   "id": "trunk",
+   "parent": "head",
+   "at": [
+    84,
+    -4
+   ],
+   "role": "trunk",
+   "z": 0,
+   "svg": "<path d=\"M0,0 Q26,58 10,118 Q6,134 -12,128\" fill=\"none\" stroke=\"$out\" stroke-width=\"46\" stroke-linecap=\"round\"/><path d=\"M0,0 Q26,58 10,118 Q6,134 -12,128\" fill=\"none\" stroke=\"$fur\" stroke-width=\"38\" stroke-linecap=\"round\"/><path d=\"M6,28 Q20,34 30,30 M8,62 Q22,68 30,64 M6,94 Q18,100 26,96\" fill=\"none\" stroke=\"$furD\" stroke-width=\"3\" stroke-linecap=\"round\"/>"
+  },
+  {
+   "id": "tusk",
+   "parent": "head",
+   "at": [
+    66,
+    30
+   ],
+   "role": "extra",
+   "amp": 0,
+   "z": 2,
+   "svg": "<path d=\"M0,0 Q36,26 58,-10\" fill=\"none\" stroke=\"$out\" stroke-width=\"15\" stroke-linecap=\"round\"/><path d=\"M0,0 Q36,26 58,-10\" fill=\"none\" stroke=\"$accent\" stroke-width=\"9\" stroke-linecap=\"round\"/>"
+  },
+  {
+   "id": "jaw",
+   "parent": "head",
+   "at": [
+    58,
+    38
+   ],
+   "role": "jaw",
+   "z": -1,
+   "svg": "<path d=\"M0,0 L30,6 L4,24 Z\" fill=\"$mouth\" stroke=\"$out\" stroke-width=\"3\" stroke-linejoin=\"round\"/>"
+  }
+ ],
+ "eyes": [
+  {
+   "bone": "head",
+   "at": [
+    58,
+    -34
+   ],
+   "r": 8
+  }
+ ]
+}

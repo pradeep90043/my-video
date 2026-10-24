@@ -50,6 +50,8 @@ export interface CastMember {
   bindi?: boolean;
   /** an animal character: `skin` is its fur, `outfit` "fur" (or clothes for a dressed-up animal) */
   species?: Species;
+  /** a drawn character (see puppet/spec.ts): used instead of the built-in people and animals */
+  puppet?: import("./puppet/spec").PuppetSpec;
 }
 
 export const SKINS = ["#F3C9A0", "#E7B07F", "#D39A68", "#B9794A", "#8D5A3B", "#6B4128"] as const;

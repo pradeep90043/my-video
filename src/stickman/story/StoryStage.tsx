@@ -185,9 +185,9 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
           <g key={c.id + i} transform={`translate(${x},${ground + 6 + (c.scale > 1 ? 14 : 0)}) scale(${s})`} opacity={local < 0 ? 0 : popIn}>
             <Character member={member} pose={poseNow} prevPose={poseFrom} blend={blendNow} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={faceNow} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && (anySpeaker || look !== "story") && !isSpeaker} envelope={envelope} poseWeight={poseWeight} holds={c.holds as StoryPropName | undefined} react={c.react ? (local >= 4 && local < 80 ? c.react : undefined) : undefined} />
             {(() => {
-              const animal = !!member.species && member.species !== "monkey";
+              const animal = (!!member.species && member.species !== "monkey") || !!member.puppet;
               const topY = animal
-                ? -(animalHeight(member.species!) * 0.92 + 12)
+                ? -((member.puppet ? member.puppet.height : animalHeight(member.species!)) * 0.92 + 12)
                 : -((510 + 64 * (member.age === "child" ? 1.22 : member.age === "teen" ? 1.08 : 1)) * (member.age === "child" ? 0.62 : member.age === "teen" ? 0.86 : 1) + 62);
               const saysText = c.says && local >= 8 && local < 100 ? c.says : "";
               return (
