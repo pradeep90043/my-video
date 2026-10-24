@@ -1,0 +1,1693 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "हाथी और चींटी",
+ "description": "",
+ "tags": [],
+ "cast": [
+  {
+   "id": "ele",
+   "name": "हाथी",
+   "age": "adult",
+   "skin": "#9AA5B1",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#9AA5B1",
+   "puppet": {
+    "name": "हाथी",
+    "height": 300,
+    "palette": {
+     "fur": "#9AA5B1",
+     "furD": "#6F7A86",
+     "furL": "#B9C2CC",
+     "belly": "#C9D1D8",
+     "accent": "#F3E9D2",
+     "out": "#2B2B2B",
+     "mouth": "#7A1F2B",
+     "toe": "#E8E0D0"
+    },
+    "bones": [
+     {
+      "id": "body",
+      "parent": null,
+      "at": [
+       0,
+       -150
+      ],
+      "role": "body",
+      "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"122\" ry=\"82\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"-4\" cy=\"40\" rx=\"92\" ry=\"38\" fill=\"$belly\" opacity=\"0.55\"/>"
+     },
+     {
+      "id": "legFF",
+      "parent": "body",
+      "at": [
+       62,
+       42
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": -2,
+      "svg": "<rect x=\"-21\" y=\"0\" width=\"42\" height=\"108\" rx=\"16\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"106\" rx=\"27\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+     },
+     {
+      "id": "legBF",
+      "parent": "body",
+      "at": [
+       -62,
+       42
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": -2,
+      "svg": "<rect x=\"-21\" y=\"0\" width=\"42\" height=\"108\" rx=\"16\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"106\" rx=\"27\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+     },
+     {
+      "id": "legFN",
+      "parent": "body",
+      "at": [
+       78,
+       42
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": 1,
+      "svg": "<rect x=\"-21\" y=\"0\" width=\"42\" height=\"108\" rx=\"16\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"106\" rx=\"27\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+     },
+     {
+      "id": "legBN",
+      "parent": "body",
+      "at": [
+       -78,
+       42
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": 1,
+      "svg": "<rect x=\"-21\" y=\"0\" width=\"42\" height=\"108\" rx=\"16\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"106\" rx=\"27\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+     },
+     {
+      "id": "tail",
+      "parent": "body",
+      "at": [
+       -118,
+       -34
+      ],
+      "role": "tail",
+      "z": -1,
+      "svg": "<path d=\"M0,0 Q-24,34 -16,78\" fill=\"none\" stroke=\"$out\" stroke-width=\"13\" stroke-linecap=\"round\"/><path d=\"M0,0 Q-24,34 -16,78\" fill=\"none\" stroke=\"$fur\" stroke-width=\"7\" stroke-linecap=\"round\"/><ellipse cx=\"-16\" cy=\"84\" rx=\"9\" ry=\"14\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3\"/>"
+     },
+     {
+      "id": "head",
+      "parent": "body",
+      "at": [
+       104,
+       -38
+      ],
+      "role": "head",
+      "svg": "<path d=\"M-30,30 Q-34,-40 30,-72 Q100,-70 98,-8 Q92,36 40,44 Q0,50 -30,30 Z\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "ear",
+      "parent": "head",
+      "at": [
+       8,
+       -28
+      ],
+      "role": "ear",
+      "z": 1,
+      "svg": "<path d=\"M0,-20 Q-62,-38 -66,22 Q-62,76 -4,56 Q10,20 0,-20 Z\" fill=\"$furL\" stroke=\"$out\" stroke-width=\"3.5\" stroke-linejoin=\"round\"/><path d=\"M-12,-4 Q-46,10 -40,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"5\" stroke-linecap=\"round\" opacity=\"0.6\"/>"
+     },
+     {
+      "id": "trunk",
+      "parent": "head",
+      "at": [
+       84,
+       -4
+      ],
+      "role": "trunk",
+      "z": 0,
+      "svg": "<path d=\"M0,0 Q26,58 10,118 Q6,134 -12,128\" fill=\"none\" stroke=\"$out\" stroke-width=\"46\" stroke-linecap=\"round\"/><path d=\"M0,0 Q26,58 10,118 Q6,134 -12,128\" fill=\"none\" stroke=\"$fur\" stroke-width=\"38\" stroke-linecap=\"round\"/><path d=\"M6,28 Q20,34 30,30 M8,62 Q22,68 30,64 M6,94 Q18,100 26,96\" fill=\"none\" stroke=\"$furD\" stroke-width=\"3\" stroke-linecap=\"round\"/>"
+     },
+     {
+      "id": "tusk",
+      "parent": "head",
+      "at": [
+       66,
+       30
+      ],
+      "role": "extra",
+      "amp": 0,
+      "z": 2,
+      "svg": "<path d=\"M0,0 Q36,26 58,-10\" fill=\"none\" stroke=\"$out\" stroke-width=\"15\" stroke-linecap=\"round\"/><path d=\"M0,0 Q36,26 58,-10\" fill=\"none\" stroke=\"$accent\" stroke-width=\"9\" stroke-linecap=\"round\"/>"
+     },
+     {
+      "id": "jaw",
+      "parent": "head",
+      "at": [
+       58,
+       38
+      ],
+      "role": "jaw",
+      "z": -1,
+      "svg": "<path d=\"M0,0 L30,6 L4,24 Z\" fill=\"$mouth\" stroke=\"$out\" stroke-width=\"3\" stroke-linejoin=\"round\"/>"
+     }
+    ],
+    "eyes": [
+     {
+      "bone": "head",
+      "at": [
+       58,
+       -34
+      ],
+      "r": 8
+     }
+    ]
+   }
+  },
+  {
+   "id": "ant",
+   "name": "चींटी",
+   "age": "adult",
+   "skin": "#8A3B1E",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#8A3B1E",
+   "puppet": {
+    "name": "चींटी",
+    "height": 120,
+    "palette": {
+     "fur": "#8A3B1E",
+     "furD": "#5C2410",
+     "furL": "#B8643A",
+     "accent": "#3A1A0E",
+     "out": "#2B2B2B",
+     "mouth": "#7A1F2B",
+     "toe": "#5C2410"
+    },
+    "bones": [
+     {
+      "id": "body",
+      "parent": null,
+      "at": [
+       0,
+       -50
+      ],
+      "role": "body",
+      "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"27\" ry=\"19\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"2\" cy=\"-6\" rx=\"14\" ry=\"6\" fill=\"$furL\" opacity=\"0.5\"/>"
+     },
+     {
+      "id": "legFarF",
+      "parent": "body",
+      "at": [
+       22,
+       14
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": -3,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legFarM",
+      "parent": "body",
+      "at": [
+       2,
+       14
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": -3,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legFarB",
+      "parent": "body",
+      "at": [
+       -18,
+       14
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": -3,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legNearF",
+      "parent": "body",
+      "at": [
+       26,
+       14
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": 1,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$fur\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legNearM",
+      "parent": "body",
+      "at": [
+       6,
+       14
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": 1,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$fur\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legNearB",
+      "parent": "body",
+      "at": [
+       -14,
+       14
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": 1,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$fur\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "abdomen",
+      "parent": "body",
+      "at": [
+       -22,
+       2
+      ],
+      "role": "tail",
+      "z": -1,
+      "svg": "<ellipse cx=\"-30\" cy=\"6\" rx=\"36\" ry=\"26\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"-34\" cy=\"12\" rx=\"22\" ry=\"10\" fill=\"$furL\" opacity=\"0.4\"/><path d=\"M-52,-8 Q-60,6 -52,22\" fill=\"none\" stroke=\"$furD\" stroke-width=\"3\" opacity=\"0.6\"/>"
+     },
+     {
+      "id": "head",
+      "parent": "body",
+      "at": [
+       28,
+       -4
+      ],
+      "role": "head",
+      "svg": "<circle cx=\"14\" cy=\"-2\" r=\"21\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+     },
+     {
+      "id": "jaw",
+      "parent": "head",
+      "at": [
+       28,
+       6
+      ],
+      "role": "jaw",
+      "z": 1,
+      "svg": "<path d=\"M0,0 Q14,2 14,12 Q6,8 -2,8 Z\" fill=\"$accent\" stroke=\"$out\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "antF",
+      "parent": "head",
+      "at": [
+       20,
+       -18
+      ],
+      "role": "ear",
+      "amp": 2.2,
+      "z": 1,
+      "svg": "<path d=\"M0,0 Q14,-26 36,-30\" fill=\"none\" stroke=\"$out\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M0,0 Q14,-26 36,-30\" fill=\"none\" stroke=\"$fur\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"37\" cy=\"-30\" r=\"4\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"2\"/>"
+     },
+     {
+      "id": "antB",
+      "parent": "head",
+      "at": [
+       10,
+       -20
+      ],
+      "role": "ear",
+      "amp": -1.6,
+      "z": -1,
+      "svg": "<path d=\"M0,0 Q4,-28 22,-38\" fill=\"none\" stroke=\"$out\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M0,0 Q4,-28 22,-38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"23\" cy=\"-38\" r=\"4\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"2\"/>"
+     }
+    ],
+    "eyes": [
+     {
+      "bone": "head",
+      "at": [
+       22,
+       -6
+      ],
+      "r": 6
+     }
+    ]
+   }
+  },
+  {
+   "id": "ant2",
+   "name": "",
+   "age": "adult",
+   "skin": "#6B2D18",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#6B2D18",
+   "puppet": {
+    "name": "चींटी",
+    "height": 120,
+    "palette": {
+     "fur": "#6B2D18",
+     "furD": "#46190B",
+     "furL": "#9A4F2C",
+     "accent": "#3A1A0E",
+     "out": "#2B2B2B",
+     "mouth": "#7A1F2B",
+     "toe": "#5C2410"
+    },
+    "bones": [
+     {
+      "id": "body",
+      "parent": null,
+      "at": [
+       0,
+       -50
+      ],
+      "role": "body",
+      "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"27\" ry=\"19\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"2\" cy=\"-6\" rx=\"14\" ry=\"6\" fill=\"$furL\" opacity=\"0.5\"/>"
+     },
+     {
+      "id": "legFarF",
+      "parent": "body",
+      "at": [
+       22,
+       14
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": -3,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legFarM",
+      "parent": "body",
+      "at": [
+       2,
+       14
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": -3,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legFarB",
+      "parent": "body",
+      "at": [
+       -18,
+       14
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": -3,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legNearF",
+      "parent": "body",
+      "at": [
+       26,
+       14
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": 1,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$fur\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legNearM",
+      "parent": "body",
+      "at": [
+       6,
+       14
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": 1,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$fur\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legNearB",
+      "parent": "body",
+      "at": [
+       -14,
+       14
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": 1,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$fur\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "abdomen",
+      "parent": "body",
+      "at": [
+       -22,
+       2
+      ],
+      "role": "tail",
+      "z": -1,
+      "svg": "<ellipse cx=\"-30\" cy=\"6\" rx=\"36\" ry=\"26\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"-34\" cy=\"12\" rx=\"22\" ry=\"10\" fill=\"$furL\" opacity=\"0.4\"/><path d=\"M-52,-8 Q-60,6 -52,22\" fill=\"none\" stroke=\"$furD\" stroke-width=\"3\" opacity=\"0.6\"/>"
+     },
+     {
+      "id": "head",
+      "parent": "body",
+      "at": [
+       28,
+       -4
+      ],
+      "role": "head",
+      "svg": "<circle cx=\"14\" cy=\"-2\" r=\"21\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+     },
+     {
+      "id": "jaw",
+      "parent": "head",
+      "at": [
+       28,
+       6
+      ],
+      "role": "jaw",
+      "z": 1,
+      "svg": "<path d=\"M0,0 Q14,2 14,12 Q6,8 -2,8 Z\" fill=\"$accent\" stroke=\"$out\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "antF",
+      "parent": "head",
+      "at": [
+       20,
+       -18
+      ],
+      "role": "ear",
+      "amp": 2.2,
+      "z": 1,
+      "svg": "<path d=\"M0,0 Q14,-26 36,-30\" fill=\"none\" stroke=\"$out\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M0,0 Q14,-26 36,-30\" fill=\"none\" stroke=\"$fur\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"37\" cy=\"-30\" r=\"4\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"2\"/>"
+     },
+     {
+      "id": "antB",
+      "parent": "head",
+      "at": [
+       10,
+       -20
+      ],
+      "role": "ear",
+      "amp": -1.6,
+      "z": -1,
+      "svg": "<path d=\"M0,0 Q4,-28 22,-38\" fill=\"none\" stroke=\"$out\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M0,0 Q4,-28 22,-38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"23\" cy=\"-38\" r=\"4\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"2\"/>"
+     }
+    ],
+    "eyes": [
+     {
+      "bone": "head",
+      "at": [
+       22,
+       -6
+      ],
+      "r": 6
+     }
+    ]
+   }
+  },
+  {
+   "id": "ant3",
+   "name": "",
+   "age": "adult",
+   "skin": "#A04A24",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "fur",
+   "color": "#A04A24",
+   "puppet": {
+    "name": "चींटी",
+    "height": 120,
+    "palette": {
+     "fur": "#A04A24",
+     "furD": "#6B2D14",
+     "furL": "#C97A4C",
+     "accent": "#3A1A0E",
+     "out": "#2B2B2B",
+     "mouth": "#7A1F2B",
+     "toe": "#5C2410"
+    },
+    "bones": [
+     {
+      "id": "body",
+      "parent": null,
+      "at": [
+       0,
+       -50
+      ],
+      "role": "body",
+      "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"27\" ry=\"19\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"2\" cy=\"-6\" rx=\"14\" ry=\"6\" fill=\"$furL\" opacity=\"0.5\"/>"
+     },
+     {
+      "id": "legFarF",
+      "parent": "body",
+      "at": [
+       22,
+       14
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": -3,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legFarM",
+      "parent": "body",
+      "at": [
+       2,
+       14
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": -3,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legFarB",
+      "parent": "body",
+      "at": [
+       -18,
+       14
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": -3,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legNearF",
+      "parent": "body",
+      "at": [
+       26,
+       14
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": 1,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$fur\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legNearM",
+      "parent": "body",
+      "at": [
+       6,
+       14
+      ],
+      "role": "leg",
+      "group": "B",
+      "z": 1,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$fur\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "legNearB",
+      "parent": "body",
+      "at": [
+       -14,
+       14
+      ],
+      "role": "leg",
+      "group": "A",
+      "z": 1,
+      "svg": "<path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$out\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0,0 L-7,20 L-13,38\" fill=\"none\" stroke=\"$fur\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "abdomen",
+      "parent": "body",
+      "at": [
+       -22,
+       2
+      ],
+      "role": "tail",
+      "z": -1,
+      "svg": "<ellipse cx=\"-30\" cy=\"6\" rx=\"36\" ry=\"26\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"-34\" cy=\"12\" rx=\"22\" ry=\"10\" fill=\"$furL\" opacity=\"0.4\"/><path d=\"M-52,-8 Q-60,6 -52,22\" fill=\"none\" stroke=\"$furD\" stroke-width=\"3\" opacity=\"0.6\"/>"
+     },
+     {
+      "id": "head",
+      "parent": "body",
+      "at": [
+       28,
+       -4
+      ],
+      "role": "head",
+      "svg": "<circle cx=\"14\" cy=\"-2\" r=\"21\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+     },
+     {
+      "id": "jaw",
+      "parent": "head",
+      "at": [
+       28,
+       6
+      ],
+      "role": "jaw",
+      "z": 1,
+      "svg": "<path d=\"M0,0 Q14,2 14,12 Q6,8 -2,8 Z\" fill=\"$accent\" stroke=\"$out\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/>"
+     },
+     {
+      "id": "antF",
+      "parent": "head",
+      "at": [
+       20,
+       -18
+      ],
+      "role": "ear",
+      "amp": 2.2,
+      "z": 1,
+      "svg": "<path d=\"M0,0 Q14,-26 36,-30\" fill=\"none\" stroke=\"$out\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M0,0 Q14,-26 36,-30\" fill=\"none\" stroke=\"$fur\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"37\" cy=\"-30\" r=\"4\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"2\"/>"
+     },
+     {
+      "id": "antB",
+      "parent": "head",
+      "at": [
+       10,
+       -20
+      ],
+      "role": "ear",
+      "amp": -1.6,
+      "z": -1,
+      "svg": "<path d=\"M0,0 Q4,-28 22,-38\" fill=\"none\" stroke=\"$out\" stroke-width=\"6\" stroke-linecap=\"round\"/><path d=\"M0,0 Q4,-28 22,-38\" fill=\"none\" stroke=\"$furD\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"23\" cy=\"-38\" r=\"4\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"2\"/>"
+     }
+    ],
+    "eyes": [
+     {
+      "bone": "head",
+      "at": [
+       22,
+       -6
+      ],
+      "r": 6
+     }
+    ]
+   }
+  }
+ ],
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "घने जंगल में एक बड़ा सा हाथी रहता था। उसे अपनी ताकत पर बहुत घमंड था।",
+   "startFrame": 0,
+   "durationFrames": 254,
+   "duration": 8.47,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 70,
+       "pose": "walk",
+       "mood": "happy",
+       "scale": 1.0,
+       "speaking": false,
+       "fromX": 20
+      }
+     ],
+     "props": [],
+     "cont": false
+    },
+    "ambient": "forest",
+    "foley": [
+     {
+      "name": "footsteps-grass",
+      "at": 0.3,
+      "volume": 0.5,
+      "duration": 4
+     }
+    ]
+   }
+  },
+  {
+   "id": "s01",
+   "text": "वो हर किसी को अपने सामने छोटा समझता था।",
+   "startFrame": 254,
+   "durationFrames": 90,
+   "duration": 3.01,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 60,
+       "pose": "talk",
+       "mood": "happy",
+       "scale": 1.0,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "tree",
+       "x": 15,
+       "scale": 1.0,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s02",
+   "text": "उसी जंगल में एक छोटी सी चींटी भी रहती थी। वो दिन भर मेहनत करती थी।",
+   "startFrame": 344,
+   "durationFrames": 413,
+   "duration": 13.78,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ant",
+       "x": 55,
+       "pose": "walk",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 15,
+       "holds": "food"
+      }
+     ],
+     "props": [
+      {
+       "type": "tree",
+       "x": 88,
+       "scale": 1.0,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    },
+    "foley": [
+     {
+      "name": "footsteps-grass",
+      "at": 0.3,
+      "volume": 0.25,
+      "duration": 3
+     }
+    ]
+   }
+  },
+  {
+   "id": "s03",
+   "text": "एक दिन हाथी ने रास्ते में चींटी को देखा।",
+   "startFrame": 757,
+   "durationFrames": 141,
+   "duration": 4.69,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 76,
+       "pose": "stand",
+       "mood": "surprised",
+       "scale": 1.0,
+       "speaking": false,
+       "flip": true
+      },
+      {
+       "id": "ant",
+       "x": 28,
+       "pose": "walk",
+       "mood": "neutral",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s04",
+   "text": "वो हँस कर बोला, अरे नन्ही चींटी, तू इतनी छोटी है, तू भला क्या कर लेगी?",
+   "startFrame": 898,
+   "durationFrames": 148,
+   "duration": 4.95,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 76,
+       "pose": "talk",
+       "mood": "laugh",
+       "scale": 1.0,
+       "speaking": true,
+       "flip": true,
+       "says": "तू क्या कर लेगी?",
+       "react": "laugh"
+      },
+      {
+       "id": "ant",
+       "x": 30,
+       "pose": "stand",
+       "mood": "sad",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": true
+    },
+    "foley": [
+     {
+      "name": "laughter",
+      "at": 1.0,
+      "volume": 0.3,
+      "duration": 3
+     }
+    ]
+   }
+  },
+  {
+   "id": "s05",
+   "text": "चींटी को बुरा तो लगा, पर उसने शांति से कहा, कभी वक्त आएगा तो मैं भी काम आऊँगी।",
+   "startFrame": 1046,
+   "durationFrames": 160,
+   "duration": 5.34,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 76,
+       "pose": "stand",
+       "mood": "neutral",
+       "scale": 1.0,
+       "speaking": false,
+       "flip": true
+      },
+      {
+       "id": "ant",
+       "x": 30,
+       "pose": "talk",
+       "mood": "neutral",
+       "scale": 1.4,
+       "speaking": true,
+       "says": "मैं भी काम आऊँगी"
+      }
+     ],
+     "props": [],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s06",
+   "text": "हाथी ज़ोर से हँसा और अपनी सूंड हिलाता हुआ आगे चला गया।",
+   "startFrame": 1206,
+   "durationFrames": 110,
+   "duration": 3.67,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 75,
+       "pose": "walk",
+       "mood": "laugh",
+       "scale": 1.0,
+       "speaking": false,
+       "fromX": 70
+      },
+      {
+       "id": "ant",
+       "x": 25,
+       "pose": "stand",
+       "mood": "sad",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": true
+    },
+    "foley": [
+     {
+      "name": "footsteps-grass",
+      "at": 0.5,
+      "volume": 0.5,
+      "duration": 3
+     }
+    ]
+   }
+  },
+  {
+   "id": "s07",
+   "text": "कुछ दिन बाद जंगल में शिकारियों ने चुपके से एक जाल बिछा दिया।",
+   "startFrame": 1316,
+   "durationFrames": 173,
+   "duration": 5.77,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "dusk",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ant",
+       "x": 20,
+       "pose": "stand",
+       "mood": "worried",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 60,
+       "scale": 1.6,
+       "anim": "none"
+      },
+      {
+       "type": "tree",
+       "x": 86,
+       "scale": 1.0,
+       "anim": "none"
+      }
+     ],
+     "cont": false
+    },
+    "ambient": "wind"
+   }
+  },
+  {
+   "id": "s08",
+   "text": "हाथी बेखबर चला आ रहा था, और अचानक उसका पैर जाल में फँस गया।",
+   "startFrame": 1489,
+   "durationFrames": 126,
+   "duration": 4.19,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "dusk",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 55,
+       "pose": "struggle",
+       "mood": "scared",
+       "scale": 1.0,
+       "speaking": false,
+       "fromX": 25
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 58,
+       "scale": 1.6,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    },
+    "foley": [
+     {
+      "name": "footsteps-grass",
+      "at": 0.2,
+      "volume": 0.5,
+      "duration": 1.5
+     },
+     {
+      "name": "thud",
+      "at": 1.7,
+      "volume": 0.7
+     }
+    ]
+   }
+  },
+  {
+   "id": "s09",
+   "text": "हाथी ने पूरी ताकत लगाई, पर जाल और कस गया।",
+   "startFrame": 1615,
+   "durationFrames": 89,
+   "duration": 2.98,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "dusk",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 55,
+       "pose": "struggle",
+       "mood": "angry",
+       "scale": 1.0,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 58,
+       "scale": 1.6,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s10",
+   "text": "वो ज़ोर से चिंघाड़ा, पर कोई मदद के लिए नहीं आया।",
+   "startFrame": 1704,
+   "durationFrames": 145,
+   "duration": 4.82,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "dusk",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 55,
+       "pose": "shout",
+       "mood": "scared",
+       "scale": 1.0,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 58,
+       "scale": 1.6,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s11",
+   "text": "उसकी आँखों में आँसू आ गए। अब उसे अपनी ताकत बेकार लगने लगी।",
+   "startFrame": 1849,
+   "durationFrames": 193,
+   "duration": 6.43,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "night",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 55,
+       "pose": "cry",
+       "mood": "sad",
+       "scale": 1.0,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 58,
+       "scale": 1.6,
+       "anim": "none"
+      }
+     ],
+     "cont": false
+    },
+    "ambient": "night"
+   }
+  },
+  {
+   "id": "s12",
+   "text": "तभी रात के सन्नाटे में चींटी ने उसकी आवाज़ सुनी।",
+   "startFrame": 2042,
+   "durationFrames": 159,
+   "duration": 5.31,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "night",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ant",
+       "x": 25,
+       "pose": "stand",
+       "mood": "surprised",
+       "scale": 1.4,
+       "speaking": false
+      },
+      {
+       "id": "ele",
+       "x": 78,
+       "pose": "sad",
+       "mood": "sad",
+       "scale": 1.0,
+       "speaking": false,
+       "flip": true
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 80,
+       "scale": 1.6,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s13",
+   "text": "वो दौड़ती हुई आई और बोली, हाथी भाई, घबराओ मत, मैं आ गई हूँ।",
+   "startFrame": 2201,
+   "durationFrames": 170,
+   "duration": 5.67,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "night",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ant",
+       "x": 60,
+       "pose": "run",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": true,
+       "fromX": 15,
+       "says": "मैं आ गई हूँ"
+      },
+      {
+       "id": "ele",
+       "x": 80,
+       "pose": "sad",
+       "mood": "surprised",
+       "scale": 1.0,
+       "speaking": false,
+       "flip": true
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 80,
+       "scale": 1.6,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    },
+    "foley": [
+     {
+      "name": "run",
+      "at": 0.1,
+      "volume": 0.35,
+      "duration": 2.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "s14",
+   "text": "हाथी हैरान था। उसने कहा, तू इतनी छोटी है, इस जाल को कैसे काटेगी?",
+   "startFrame": 2371,
+   "durationFrames": 180,
+   "duration": 6.01,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "night",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 78,
+       "pose": "talk",
+       "mood": "worried",
+       "scale": 1.0,
+       "speaking": true,
+       "flip": true,
+       "says": "कैसे काटेगी?"
+      },
+      {
+       "id": "ant",
+       "x": 48,
+       "pose": "stand",
+       "mood": "neutral",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 82,
+       "scale": 1.6,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s15",
+   "text": "चींटी मुस्कुराई, और उसने अपने सारे साथियों को बुला लिया।",
+   "startFrame": 2551,
+   "durationFrames": 106,
+   "duration": 3.54,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "night",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ant",
+       "x": 40,
+       "pose": "wave",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false
+      },
+      {
+       "id": "ant2",
+       "x": 24,
+       "pose": "walk",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 0
+      },
+      {
+       "id": "ant3",
+       "x": 12,
+       "pose": "walk",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false,
+       "fromX": 0
+      }
+     ],
+     "props": [],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s16",
+   "text": "सैकड़ों चींटियाँ आईं और रस्सी को कुतरने लगीं।",
+   "startFrame": 2657,
+   "durationFrames": 92,
+   "duration": 3.05,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "night",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 84,
+       "pose": "stand",
+       "mood": "worried",
+       "scale": 1.0,
+       "speaking": false,
+       "flip": true
+      },
+      {
+       "id": "ant",
+       "x": 30,
+       "pose": "eat",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false
+      },
+      {
+       "id": "ant2",
+       "x": 46,
+       "pose": "eat",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false
+      },
+      {
+       "id": "ant3",
+       "x": 62,
+       "pose": "eat",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 74,
+       "scale": 1.6,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s17",
+   "text": "रात भर वो मेहनत करती रहीं। एक-एक रेशा कटता गया।",
+   "startFrame": 2749,
+   "durationFrames": 179,
+   "duration": 5.97,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "night",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 84,
+       "pose": "tired",
+       "mood": "worried",
+       "scale": 1.0,
+       "speaking": false,
+       "flip": true
+      },
+      {
+       "id": "ant",
+       "x": 36,
+       "pose": "push",
+       "mood": "worried",
+       "scale": 1.4,
+       "speaking": false
+      },
+      {
+       "id": "ant2",
+       "x": 56,
+       "pose": "push",
+       "mood": "worried",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "rope",
+       "x": 74,
+       "scale": 1.6,
+       "anim": "none"
+      }
+     ],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s18",
+   "text": "सुबह होते-होते जाल कट गया, और हाथी आज़ाद हो गया।",
+   "startFrame": 2928,
+   "durationFrames": 108,
+   "duration": 3.61,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "sparkle",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 60,
+       "pose": "jump",
+       "mood": "happy",
+       "scale": 1.0,
+       "speaking": false
+      },
+      {
+       "id": "ant",
+       "x": 30,
+       "pose": "dance",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": false
+    },
+    "ambient": "forest"
+   }
+  },
+  {
+   "id": "s19",
+   "text": "हाथी की आँखों में शर्म और खुशी के आँसू थे।",
+   "startFrame": 3036,
+   "durationFrames": 96,
+   "duration": 3.21,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 70,
+       "pose": "cry",
+       "mood": "sad",
+       "scale": 1.0,
+       "speaking": false,
+       "flip": true
+      },
+      {
+       "id": "ant",
+       "x": 35,
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s20",
+   "text": "उसने चींटी से कहा, मुझे माफ़ कर दो, मैं बहुत घमंडी था।",
+   "startFrame": 3132,
+   "durationFrames": 113,
+   "duration": 3.77,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 70,
+       "pose": "bow",
+       "mood": "sad",
+       "scale": 1.0,
+       "speaking": true,
+       "flip": true,
+       "says": "मुझे माफ़ कर दो"
+      },
+      {
+       "id": "ant",
+       "x": 32,
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s21",
+   "text": "चींटी बोली, कोई छोटा या बड़ा नहीं होता, हर कोई किसी न किसी के काम आता है।",
+   "startFrame": 3245,
+   "durationFrames": 136,
+   "duration": 4.55,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "none",
+     "chars": [
+      {
+       "id": "ant",
+       "x": 34,
+       "pose": "talk",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": true
+      },
+      {
+       "id": "ele",
+       "x": 70,
+       "pose": "stand",
+       "mood": "happy",
+       "scale": 1.0,
+       "speaking": false,
+       "flip": true
+      }
+     ],
+     "props": [],
+     "cont": true
+    }
+   }
+  },
+  {
+   "id": "s22",
+   "text": "उस दिन के बाद हाथी और चींटी पक्के दोस्त बन गए।",
+   "startFrame": 3381,
+   "durationFrames": 109,
+   "duration": 3.64,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "day",
+     "fx": "hearts",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 62,
+       "pose": "happy",
+       "mood": "happy",
+       "scale": 1.0,
+       "speaking": false,
+       "flip": true
+      },
+      {
+       "id": "ant",
+       "x": 36,
+       "pose": "dance",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "cont": true
+    },
+    "foley": [
+     {
+      "name": "laughter",
+      "at": 0.5,
+      "volume": 0.25,
+      "duration": 3
+     }
+    ]
+   }
+  },
+  {
+   "id": "s23",
+   "text": "तो दोस्तो, कभी किसी को छोटा मत समझो, और मिलकर काम करो, तो हर मुश्किल आसान हो जाती है।",
+   "startFrame": 3490,
+   "durationFrames": 193,
+   "duration": 6.42,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "forest",
+     "time": "dusk",
+     "fx": "stars",
+     "chars": [
+      {
+       "id": "ele",
+       "x": 66,
+       "pose": "talk",
+       "mood": "happy",
+       "scale": 1.0,
+       "speaking": true,
+       "flip": true
+      },
+      {
+       "id": "ant",
+       "x": 34,
+       "pose": "talk",
+       "mood": "happy",
+       "scale": 1.4,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "tree",
+       "x": 12,
+       "scale": 1.0,
+       "anim": "none"
+      }
+     ],
+     "cont": false
+    }
+   }
+  }
+ ],
+ "totalFrames": 3683
+}
