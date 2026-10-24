@@ -18,6 +18,7 @@
     "@remotion/media": "4.0.484",
     "@remotion/renderer": "4.0.484",
     "@remotion/tailwind-v4": "4.0.484",
+    "@remotion/three": "^4.0.484",
     "@remotion/zod-types": "4.0.484",
     "axios": "^1.18.1",
     "googleapis": "^173.0.0",

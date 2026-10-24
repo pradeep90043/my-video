@@ -1,3 +1,4 @@
+import { Story3DDemo } from "./three3d/Story3DDemo";
 import "./index.css";
 import React from "react";
 import { Composition } from "remotion";
@@ -138,6 +139,8 @@ export const RemotionRoot: React.FC = () => {
 
       {/* Dev preview: contact sheet of every doodle asset (npx remotion still DoodleCatalog out/doodle-catalog.png) */}
       <Composition id="DoodleCatalog" component={DoodleCatalog} fps={30} width={1760} height={2900} durationInFrames={1} />
+      {/* 3D proof (branch feat/3d-characters): a procedural rigged wolf, orbiting camera */}
+      <Composition id="Story3DDemo" component={Story3DDemo} width={720} height={1280} fps={30} durationInFrames={120} />
     </>
   );
 };
