@@ -37,6 +37,7 @@ const SPECS: Record<string, Spec> = {
 
 /** how tall an animal stands, as a fraction of a person (for scaling on stage and for name tags) */
 export const animalHeight = (species: string): number => {
+  if (species === "crow") return 215; // a bird's head rides high above its legs: keeps name tags and speech bubbles clear of the head and raised wing
   const s = SPECS[species] ?? SPECS.wolf;
   return (s.leg + s.bh * 2 + s.neck + s.hr) * s.size;
 };
