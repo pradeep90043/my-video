@@ -11,7 +11,7 @@ export const FOLEY_NAMES = [
   "door-open", "door-close", "door-creak", "knock",
   "alarm", "smoke-alarm", "siren", "clock-tick",
   "typing", "typing-soft", "click", "glass", "book-flip", "cloth",
-  "punch", "thud", "clang", "bell", "applause", "laughter",
+  "punch", "thud", "clang", "bell", "applause", "laughter", "hiss",
 ] as const;
 
 export type AmbientName = (typeof AMBIENT_NAMES)[number];
@@ -26,7 +26,7 @@ export const FOLEY_GAIN: Record<FoleyName, number> = {
   "door-open": 0.6, "door-close": 0.6, "door-creak": 0.5, knock: 0.6,
   alarm: 0.45, "smoke-alarm": 0.35, siren: 0.35, "clock-tick": 0.4,
   typing: 0.45, "typing-soft": 0.5, click: 0.5, glass: 0.55, "book-flip": 0.55, cloth: 0.5,
-  punch: 0.6, thud: 0.6, clang: 0.5, bell: 0.45, applause: 0.4, laughter: 0.4,
+  punch: 0.6, thud: 0.6, clang: 0.5, bell: 0.45, applause: 0.4, laughter: 0.4, hiss: 0.5,
 };
 
 /** Sample `at` positions in the spoken text → frames: a rule fires on the first word matching `word`. */

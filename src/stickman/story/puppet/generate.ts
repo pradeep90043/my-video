@@ -21,7 +21,8 @@ SVG: only <g> <path> <circle> <ellipse> <rect> <polygon> <polyline> <line>, attr
 Colour with palette tokens: $fur $furD (darker) $furL (lighter) $belly $accent $out (outline) $mouth $toe, and define them in "palette" as hex colours. Use stroke="$out" stroke-width="3.5" outlines like a flat sticker style. Round the shapes; keep them simple and readable.
 "eyes": [{ "bone": "head", "at": [x,y], "r": 8 }] are drawn and blinked for you, so do not draw eyes in the svg.
 "height": total standing height in pixels (a person is about 580, an elephant about 300, a crow about 170).
-Keep 8 to 16 bones. The far-side legs (z -2) use $furD. Make sure the feet end at y=0 when the body is at its rest position.
+LEGLESS creatures (snake, worm, fish): no legs. The root "body" is the head end (draw the head, eyes and a tongue/mouth in its svg, resting on the ground: body "at" [0, -radius]); behind it hang 8 to 12 chain bones, each child of the previous one at "at" [-segmentLength, 0], role "tail", with "phase" growing by about 0.7 per bone (0, 0.7, 1.4 ...), each drawn as a THICK rounded segment (as thick as the head or only slightly thinner, with the SAME body colours and pattern as the head: back colour on top, belly colour below) that overlaps the next one so the body looks continuous, not like beads. The animator sends a wave down the chain.
+Keep 8 to 16 bones (a legless chain may use up to 24). The far-side legs (z -2) use $furD. Make sure the feet end at y=0 when the body is at its rest position (the animator also corrects small errors).
 
 JSON SHAPE: { "name": "...", "height": 300, "palette": { "fur": "#...", ... }, "bones": [ { "id": "body", "parent": null, "at": [0,-150], "role": "body", "svg": "<ellipse .../>" }, ... ], "eyes": [ ... ] }`;
 

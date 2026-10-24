@@ -1,0 +1,138 @@
+{
+ "name": "Giant Panda",
+ "height": 280,
+ "palette": {
+  "fur": "#FFFFFF",
+  "furD": "#1A1A1D",
+  "furL": "#E8E8E8",
+  "belly": "#F2F2F2",
+  "accent": "#FFB3C6",
+  "out": "#222225",
+  "mouth": "#A83244",
+  "toe": "#2A2A2E"
+ },
+ "bones": [
+  {
+   "id": "body",
+   "parent": null,
+   "at": [
+    0,
+    -140
+   ],
+   "role": "body",
+   "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"90\" ry=\"65\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><path d=\"M25,-63 C55,-63 82,-35 82,10 C82,50 50,58 20,58 C0,58 -10,30 -10,-10 C-10,-45 0,-63 25,-63 Z\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"-30\" cy=\"15\" rx=\"45\" ry=\"35\" fill=\"$belly\" opacity=\"0.5\"/>"
+  },
+  {
+   "id": "legBF",
+   "parent": "body",
+   "at": [
+    -55,
+    30
+   ],
+   "role": "leg",
+   "group": "A",
+   "z": -2,
+   "svg": "<rect x=\"-20\" y=\"0\" width=\"40\" height=\"102\" rx=\"18\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"2\" cy=\"102\" rx=\"22\" ry=\"10\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "legFF",
+   "parent": "body",
+   "at": [
+    50,
+    30
+   ],
+   "role": "leg",
+   "group": "B",
+   "z": -2,
+   "svg": "<rect x=\"-18\" y=\"0\" width=\"36\" height=\"102\" rx=\"16\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"2\" cy=\"102\" rx=\"20\" ry=\"10\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "legBN",
+   "parent": "body",
+   "at": [
+    -65,
+    35
+   ],
+   "role": "leg",
+   "group": "B",
+   "z": 1,
+   "svg": "<rect x=\"-22\" y=\"0\" width=\"44\" height=\"98\" rx=\"18\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"98\" rx=\"24\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "legFN",
+   "parent": "body",
+   "at": [
+    60,
+    35
+   ],
+   "role": "leg",
+   "group": "A",
+   "z": 1,
+   "svg": "<rect x=\"-20\" y=\"0\" width=\"40\" height=\"98\" rx=\"16\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"98\" rx=\"22\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "tail",
+   "parent": "body",
+   "at": [
+    -85,
+    -10
+   ],
+   "role": "tail",
+   "z": -1,
+   "svg": "<circle cx=\"-8\" cy=\"0\" r=\"14\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+  },
+  {
+   "id": "earF",
+   "parent": "head",
+   "at": [
+    -20,
+    -45
+   ],
+   "role": "ear",
+   "z": -1,
+   "svg": "<circle cx=\"0\" cy=\"0\" r=\"18\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+  },
+  {
+   "id": "head",
+   "parent": "body",
+   "at": [
+    75,
+    -35
+   ],
+   "role": "head",
+   "svg": "<ellipse cx=\"15\" cy=\"-5\" rx=\"55\" ry=\"48\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"38\" cy=\"-8\" rx=\"20\" ry=\"15\" transform=\"rotate(-15 38 -8)\" fill=\"$furD\"/><ellipse cx=\"52\" cy=\"12\" rx=\"22\" ry=\"15\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3\"/><path d=\"M60,4 Q68,4 65,11 Q60,16 55,11 Q52,4 60,4 Z\" fill=\"$furD\"/>"
+  },
+  {
+   "id": "earN",
+   "parent": "head",
+   "at": [
+    0,
+    -50
+   ],
+   "role": "ear",
+   "z": 1,
+   "svg": "<circle cx=\"0\" cy=\"0\" r=\"20\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><circle cx=\"0\" cy=\"0\" r=\"10\" fill=\"$accent\" opacity=\"0.4\"/>"
+  },
+  {
+   "id": "jaw",
+   "parent": "head",
+   "at": [
+    50,
+    22
+   ],
+   "role": "jaw",
+   "z": -1,
+   "svg": "<path d=\"M0,0 Q10,12 20,0 Z\" fill=\"$mouth\" stroke=\"$out\" stroke-width=\"2.5\"/>"
+  }
+ ],
+ "eyes": [
+  {
+   "bone": "head",
+   "at": [
+    38,
+    -8
+   ],
+   "r": 7
+  }
+ ]
+}

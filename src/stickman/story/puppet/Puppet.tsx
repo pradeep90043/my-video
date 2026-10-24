@@ -56,7 +56,7 @@ export const Puppet: React.FC<Props> = ({ spec, pose, mood, frame, talking, mout
   return (
     <g transform={`translate(${c.shake},0)`}>
       <ellipse cx={0} cy={6} rx={spec.height * 0.5} ry={12} fill="#000" opacity={0.18} transform={`scale(${Math.max(0.6, 1 + lift / 260)},1)`} />
-      <g transform={`translate(0,${lift})`}>{render(root)}</g>
+      <g transform={`translate(0,${lift * (spec.scale ?? 1)}) scale(${spec.scale ?? 1})`}>{render(root)}</g>
       {holds && <g transform={`translate(${spec.height * 0.5},${-spec.height * 0.15 + lift}) scale(0.4)`}><StoryPropArt type={holds} frame={frame} /></g>}
     </g>
   );

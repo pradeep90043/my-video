@@ -23,6 +23,8 @@ export interface PuppetBone {
   amp?: number;
   /** draw order among siblings: below 0 is drawn behind the parent's art */
   z?: number;
+  /** legless creatures: bones of a chain share one travelling wave; each takes a larger phase than the one before it (e.g. 0, 0.8, 1.6) */
+  phase?: number;
   /** inline SVG (whitelisted shapes only); colours may be palette tokens: $fur $furD $furL $belly $accent $out $mouth $toe */
   svg: string;
 }
@@ -31,6 +33,8 @@ export interface PuppetSpec {
   name?: string;
   /** how tall it stands, for name tags and speech bubbles */
   height: number;
+  /** draws the whole creature this many times bigger (height must already include it) */
+  scale?: number;
   palette: Record<string, string>;
   bones: PuppetBone[];
   /** eyes drawn on a bone: blink and mood are animated for any creature */
@@ -81,6 +85,7 @@ export function validatePuppet(p: unknown): PuppetIssue[] {
     ids.add(b.id);
     if (!PUPPET_ROLES.includes(b.role)) out.push({ bone: b.id, problem: `unknown role ${b.role}` });
     if (!(Array.isArray(b.at) && b.at.length === 2 && b.at.every((n) => Number.isFinite(n) && Math.abs(n) < 800))) out.push({ bone: b.id, problem: "bad `at`" });
+    if (b.phase !== undefined && !Number.isFinite(b.phase)) out.push({ bone: b.id, problem: "bad phase" });
     if (typeof b.svg !== "string" || sanitizeSvg(b.svg) === null) out.push({ bone: b.id, problem: "svg missing or not allowed" });
   }
   const roots = s.bones.filter((b) => b.parent === null);

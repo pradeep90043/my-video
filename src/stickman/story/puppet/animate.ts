@@ -11,8 +11,10 @@ export interface Channels {
   head: number; tilt: number; lean: number; bounce: number;
   wing: number; trunk: number; tail: number; ear: number;
   arm: number; armSwing: number; lie: number; shake: number; jaw: number; blink: number;
+  /** frame (for travelling waves) and how strongly legless bodies undulate */
+  time: number; slither: number;
 }
-const KEYS: (keyof Channels)[] = ["legSwing", "kneeA", "kneeB", "head", "tilt", "lean", "bounce", "wing", "trunk", "tail", "ear", "arm", "armSwing", "lie", "shake", "jaw", "blink"];
+const KEYS: (keyof Channels)[] = ["legSwing", "kneeA", "kneeB", "head", "tilt", "lean", "bounce", "wing", "trunk", "tail", "ear", "arm", "armSwing", "lie", "shake", "jaw", "blink", "time", "slither"];
 
 interface Target { gait?: "walk" | "run" | "hop"; head?: number; tilt?: number; lean?: number; bounce?: number; wing?: number; trunk?: number; tail?: number; arm?: number; lie?: number; shake?: number; jaw?: number; peck?: number }
 const T: Record<CharPose, Target> = {
@@ -55,6 +57,8 @@ export function channelsFor(pose: CharPose, o: MotionInput): Channels {
     lie: t.lie ?? 0,
     shake: (t.shake ?? 0) * (pose === "struggle" ? sin(1.2) * 8 : pose === "scared" ? sin(1.6) * 3 : sin(1.1) * 2),
     jaw: Math.max(t.jaw ?? 0, talk, pose === "eat" ? eating * 0.7 : 0, o.mood === "laugh" ? 0.8 : 0, pose === "struggle" ? 0.45 + 0.35 * Math.abs(sin(1.0)) : 0),
+    time: f,
+    slither: t.gait === "run" ? 1.7 : t.gait === "walk" ? 1 : t.gait === "hop" ? 1.3 : pose === "struggle" || pose === "fight" ? 1.4 : pose === "shout" || pose === "angry" ? 0.7 : 0,
     blink: pose === "sleep" || f % 120 > 113 ? 0.12 : 1,
   };
 }
@@ -69,6 +73,7 @@ export function mixChannels(a: Channels, b: Channels, k: number): Channels {
 /** The angle (degrees, clockwise) a bone should have, given the mixed channels. */
 export function boneAngle(b: PuppetBone, c: Channels): number {
   const rest = b.rot ?? 0, amp = b.amp ?? 1, side = b.group === "B" ? -1 : 1;
+  if (b.phase !== undefined && (b.role === "tail" || b.role === "extra" || b.role === "body" || b.role === "head")) return rest + Math.sin(c.time * 0.2 - b.phase) * (1.5 + c.slither * 3.2) * amp + (b.role === "head" ? c.head * amp : 0);
   switch (b.role) {
     case "body": return rest + c.lean + c.shake * 0.3;
     case "head": return rest + (c.head + c.tilt) * amp;
