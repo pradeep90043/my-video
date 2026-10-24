@@ -261,6 +261,9 @@ export const StoryCharSchema = z.object({
   says: z.string().max(40).optional(),
   /** a reaction: "no" shakes the head, "yes" nods */
   react: z.enum(["no", "yes", "shrug", "surprise", "laugh"]).optional(),
+  /** a sequence of actions inside the beat (run, then cry): each springs into the next */
+  acts: z.array(z.object({ at: z.number().min(0).max(1), pose: z.enum(CHAR_POSES) })).max(4).optional(),
+  fromPose: z.enum(CHAR_POSES).optional(),
 });
 export const StoryPropSchema = z.object({
   type: z.enum(STORY_PROPS),

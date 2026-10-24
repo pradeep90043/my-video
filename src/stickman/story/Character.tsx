@@ -15,7 +15,7 @@ interface Props {
   talking: boolean;
   /** 0..1 loudness of the spoken line (lip-sync); undefined = generic flap */
   mouthLevel?: number;
-  flip?: boolean;
+  flip?: boolean | number;
   /** 0..1 pulse that peaks at each spoken word: drives the gesture and the nod of whoever is speaking */
   energy?: number;
   /** changes every few words: picks the next gesture of the speaker */
@@ -30,6 +30,9 @@ interface Props {
   holds?: StoryPropName;
   /** no / yes / shrug / surprise / laugh: a head movement answering someone */
   react?: string;
+  /** the pose the character comes FROM and how far into the new one it is (0..1, springy): poses glide into each other instead of snapping */
+  prevPose?: CharPose;
+  blend?: number;
 }
 
 const OUT = "#2B2B2B";
@@ -69,56 +72,77 @@ const POSES: Record<CharPose, PoseSpec> = {
   jump: { rt: 150, rf: 12, lt: 150, lf: 12, tilt: 0, lean: 0, headDrop: 0 },
 };
 
-export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talking, mouthLevel, flip, energy = 0, gesture = 0, listening = false, envelope = 1, poseWeight = 1, holds, react }) => {
+export const Character: React.FC<Props> = ({ member: m, pose: poseIn, prevPose, blend = 1, mood, frame, talking, mouthLevel, flip, energy = 0, gesture = 0, listening = false, envelope = 1, poseWeight = 1, holds, react }) => {
+  const pose: CharPose = prevPose && blend < 0.5 ? prevPose : poseIn; // the pose that dominates right now (face, mouth, props follow it)
+  const poseA: CharPose = prevPose ?? poseIn, poseB: CharPose = poseIn;
+  const bt = prevPose ? Math.max(0, Math.min(1.25, blend)) : 1;
   // a real animal is drawn as one: four legs, a tail, a snout (a monkey stays upright)
   if (m.species && m.species !== "monkey") {
-    return <g transform="scale(1.05)"><AnimalCharacter member={m} pose={pose} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} energy={energy} react={react} holds={holds} envelope={envelope} /></g>;
+    return <g transform={`scale(${(typeof flip === "number" ? flip : flip ? -1 : 1) * 1.05},1.05)`}><AnimalCharacter member={m} pose={pose} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} energy={energy} react={react} holds={holds} envelope={envelope} /></g>;
   }
   const child = m.age === "child", teen = m.age === "teen", elder = m.age === "elder";
   const bodyK = child ? 0.62 : teen ? 0.86 : 1;
   const headK = child ? 1.22 : teen ? 1.08 : 1;
   const mix = (a: number, b: number, k: number) => a + (b - a) * k;
   const smooth = (k: number) => { const c = Math.max(0, Math.min(1, k)); return c * c * (3 - 2 * c); };
-  const sticky = ACTION_POSES.includes(pose); // the action is the acting: held for the whole beat
-  const walking = pose === "walk" || pose === "run";
-  const held = sticky ? Math.max(envelope, 0.85) : poseWeight * envelope; // how much of the staged pose is shown right now
-  const EXP = POSES[pose], REST = POSES.stand;
-  const P: PoseSpec = { rt: mix(REST.rt, EXP.rt, held), rf: mix(REST.rf, EXP.rf, held), lt: mix(REST.lt, EXP.lt, held), lf: mix(REST.lf, EXP.lf, held), tilt: EXP.tilt * held, lean: EXP.lean * held, headDrop: EXP.headDrop * held };
-  const breathe = Math.sin(frame * 0.09) * 3;
-  const swing = pose === "walk" ? Math.sin(frame * 0.32) : pose === "run" ? Math.sin(frame * 0.55) : 0;
-  const dance = pose === "dance" ? Math.sin(frame * 0.3) : 0;
-  const punch = pose === "fight" ? Math.sin(frame * 0.55) : 0;
-  const eatBite = pose === "eat" ? Math.sin(frame * 0.4) : 0;
-  const asleep = pose === "sleep";
-  const thrash = pose === "struggle" ? Math.sin(frame * 0.95) : 0; // flailing arms, shaking body
-  const shove = pose === "push" ? Math.sin(frame * 0.5) : 0;
-  const talkSwing = pose === "talk" || (talking && pose === "stand") ? Math.sin(frame * 0.27) : 0;
-  const waveSwing = pose === "wave" ? Math.sin(frame * 0.45) : 0;
-  const hop = (pose === "happy" ? -Math.abs(Math.sin(frame * 0.2)) * 22 : 0) - (pose === "dance" ? Math.abs(dance) * 22 : 0) - (pose === "jump" ? Math.abs(Math.sin(frame * 0.26)) * 70 : 0) + (pose === "struggle" ? Math.abs(thrash) * 6 : 0) - (talking ? energy * 5 : 0);
-  const lean = P.lean + (elder ? 5 : 0);
+  const solve = (pose: CharPose) => {
+    const sticky = ACTION_POSES.includes(pose); // the action is the acting: held for the whole beat
+    const walking = pose === "walk" || pose === "run";
+    const held = sticky ? Math.max(envelope, 0.85) : poseWeight * envelope; // how much of the staged pose is shown right now
+    const EXP = POSES[pose], REST = POSES.stand;
+    const P: PoseSpec = { rt: mix(REST.rt, EXP.rt, held), rf: mix(REST.rf, EXP.rf, held), lt: mix(REST.lt, EXP.lt, held), lf: mix(REST.lf, EXP.lf, held), tilt: EXP.tilt * held, lean: EXP.lean * held, headDrop: EXP.headDrop * held };
+    const breathe = Math.sin(frame * 0.09) * 3;
+    const swing = pose === "walk" ? Math.sin(frame * 0.32) : pose === "run" ? Math.sin(frame * 0.55) : 0;
+    const dance = pose === "dance" ? Math.sin(frame * 0.3) : 0;
+    const punch = pose === "fight" ? Math.sin(frame * 0.55) : 0;
+    const eatBite = pose === "eat" ? Math.sin(frame * 0.4) : 0;
+    const asleep = pose === "sleep";
+    const thrash = pose === "struggle" ? Math.sin(frame * 0.95) : 0; // flailing arms, shaking body
+    const shove = pose === "push" ? Math.sin(frame * 0.5) : 0;
+    const talkSwing = pose === "talk" || (talking && pose === "stand") ? Math.sin(frame * 0.27) : 0;
+    const waveSwing = pose === "wave" ? Math.sin(frame * 0.45) : 0;
+    const hop = (pose === "happy" ? -Math.abs(Math.sin(frame * 0.2)) * 22 : 0) - (pose === "dance" ? Math.abs(dance) * 22 : 0) - (pose === "jump" ? Math.abs(Math.sin(frame * 0.26)) * 70 : 0) + (pose === "struggle" ? Math.abs(thrash) * 6 : 0) - (talking ? energy * 5 : 0);
+    const lean = P.lean + (elder ? 5 : 0);
 
-  // A speaker does a different gesture every few words (gliding from one to the next) and each word gives it a push; between
-  // sentences the arms settle back to rest.
-  const speaking = talking && !sticky;
-  const SPEAK: [number, number, number, number][] = [[45, 80, 8, 10], [55, 70, 55, 70], [8, 10, 45, 80], [112, 22, 8, 10], [35, 100, 35, 100]];
-  const gi = Math.floor(gesture), gf = gesture - gi;
-  const A = SPEAK[((gi % 5) + 5) % 5], B = SPEAK[(((gi + 1) % 5) + 5) % 5], bl = smooth((gf - 0.7) / 0.3);
-  const gv = A.map((v, k) => mix(v, B[k], bl));
-  const push = energy * 16;
-  const gestureR = { t: gv[0] + (gv[0] > 20 ? push : 0), f: gv[1] + energy * 10 };
-  const gestureL = { t: gv[2] + (gv[2] > 20 ? push : 0), f: gv[3] + energy * 10 };
-  // the speaker: staged pose first, then gestures; always eased in and out of the sentence by the envelope
-  const rArm = speaking && !walking
-    ? { t: mix(REST.rt, mix(gestureR.t, EXP.rt, poseWeight), envelope), f: mix(REST.rf, mix(gestureR.f, EXP.rf, poseWeight), envelope) }
-    : { t: P.rt + talkSwing * 14 + waveSwing * 18 - swing * (pose === "run" ? 45 : 28) + dance * 26 + thrash * 42 + shove * 6 + (pose === "fight" ? 20 + punch * 18 : 0), f: P.rf + talkSwing * 12 + eatBite * 8 + thrash * 26 + (pose === "shout" ? Math.sin(frame * 0.4) * 8 : 0) - (pose === "fight" ? 18 + punch * 18 : 0) };
-  const lArm = speaking && !walking
-    ? { t: mix(REST.lt, mix(gestureL.t, EXP.lt, poseWeight), envelope), f: mix(REST.lf, mix(gestureL.f, EXP.lf, poseWeight), envelope) }
-    : { t: P.lt + (pose === "angry" || pose === "scared" ? 0 : swing * (pose === "run" ? 45 : 28)) - dance * 26 - thrash * 42 + shove * 6 - (pose === "fight" ? punch * 18 : 0), f: P.lf - thrash * 20 };
-  const rf0 = frame % 90, rAmt = react ? Math.max(0, 1 - rf0 / 70) : 0;
-  const headNo = react === "no" ? Math.sin(frame * 0.6) * 14 * rAmt : 0;
-  const headYes = react === "yes" ? Math.sin(frame * 0.5) * 9 * rAmt : 0;
-  const shrugUp = react === "shrug" ? rAmt * 14 : 0;
-  const nod = headYes + shrugUp * 0 + (speaking ? energy * 6 : listening ? Math.max(0, Math.sin(frame * 0.045)) ** 3 * 7 : 0);
+    // A speaker does a different gesture every few words (gliding from one to the next) and each word gives it a push; between
+    // sentences the arms settle back to rest.
+    const speaking = talking && !sticky;
+    const SPEAK: [number, number, number, number][] = [[45, 80, 8, 10], [55, 70, 55, 70], [8, 10, 45, 80], [112, 22, 8, 10], [35, 100, 35, 100]];
+    const gi = Math.floor(gesture), gf = gesture - gi;
+    const A = SPEAK[((gi % 5) + 5) % 5], B = SPEAK[(((gi + 1) % 5) + 5) % 5], bl = smooth((gf - 0.7) / 0.3);
+    const gv = A.map((v, k) => mix(v, B[k], bl));
+    const push = energy * 16;
+    const gestureR = { t: gv[0] + (gv[0] > 20 ? push : 0), f: gv[1] + energy * 10 };
+    const gestureL = { t: gv[2] + (gv[2] > 20 ? push : 0), f: gv[3] + energy * 10 };
+    // the speaker: staged pose first, then gestures; always eased in and out of the sentence by the envelope
+    const rArm = speaking && !walking
+      ? { t: mix(REST.rt, mix(gestureR.t, EXP.rt, poseWeight), envelope), f: mix(REST.rf, mix(gestureR.f, EXP.rf, poseWeight), envelope) }
+      : { t: P.rt + talkSwing * 14 + waveSwing * 18 - swing * (pose === "run" ? 45 : 28) + dance * 26 + thrash * 42 + shove * 6 + (pose === "fight" ? 20 + punch * 18 : 0), f: P.rf + talkSwing * 12 + eatBite * 8 + thrash * 26 + (pose === "shout" ? Math.sin(frame * 0.4) * 8 : 0) - (pose === "fight" ? 18 + punch * 18 : 0) };
+    const lArm = speaking && !walking
+      ? { t: mix(REST.lt, mix(gestureL.t, EXP.lt, poseWeight), envelope), f: mix(REST.lf, mix(gestureL.f, EXP.lf, poseWeight), envelope) }
+      : { t: P.lt + (pose === "angry" || pose === "scared" ? 0 : swing * (pose === "run" ? 45 : 28)) - dance * 26 - thrash * 42 + shove * 6 - (pose === "fight" ? punch * 18 : 0), f: P.lf - thrash * 20 };
+    const rf0 = frame % 90, rAmt = react ? Math.max(0, 1 - rf0 / 70) : 0;
+    const headNo = react === "no" ? Math.sin(frame * 0.6) * 14 * rAmt : 0;
+    const headYes = react === "yes" ? Math.sin(frame * 0.5) * 9 * rAmt : 0;
+    const shrugUp = react === "shrug" ? rAmt * 14 : 0;
+    const nod = headYes + shrugUp * 0 + (speaking ? energy * 6 : listening ? Math.max(0, Math.sin(frame * 0.045)) ** 3 * 7 : 0);
+
+    return { sticky, walking, P, breathe, swing, dance, punch, eatBite, asleep, thrash, shove, hop, lean, rArm, lArm, nod, headNo, speaking };
+  };
+  // two poses blended: the one we come from and the one we go to (k overshoots a little: a springy settle, not a robotic stop)
+  const SB = solve(poseB);
+  const SA = bt < 1 && poseA !== poseB ? solve(poseA) : SB;
+  const kk = Math.min(1.12, bt);
+  const m2 = (a: number, b: number) => a + (b - a) * kk;
+  const P: PoseSpec = { rt: m2(SA.P.rt, SB.P.rt), rf: m2(SA.P.rf, SB.P.rf), lt: m2(SA.P.lt, SB.P.lt), lf: m2(SA.P.lf, SB.P.lf), tilt: m2(SA.P.tilt, SB.P.tilt), lean: m2(SA.P.lean, SB.P.lean), headDrop: m2(SA.P.headDrop, SB.P.headDrop) };
+  const swing = m2(SA.swing, SB.swing), dance = m2(SA.dance, SB.dance), punch = m2(SA.punch, SB.punch), eatBite = m2(SA.eatBite, SB.eatBite);
+  const thrash = m2(SA.thrash, SB.thrash), shove = m2(SA.shove, SB.shove), hop = m2(SA.hop, SB.hop), lean = m2(SA.lean, SB.lean);
+  const nod = m2(SA.nod, SB.nod), headNo = m2(SA.headNo, SB.headNo), breathe = SB.breathe;
+  const rArm = { t: m2(SA.rArm.t, SB.rArm.t), f: m2(SA.rArm.f, SB.rArm.f) };
+  const lArm = { t: m2(SA.lArm.t, SB.lArm.t), f: m2(SA.lArm.f, SB.lArm.f) };
+  const dom = bt > 0.5 ? SB : SA;
+  const asleep = dom.asleep, speaking = dom.speaking, walking = dom.walking, sticky = dom.sticky;
+  void punch; void dance; void shove; void eatBite; void walking; void sticky; void speaking;
 
   // face
   const blink = asleep || frame % 120 > 114 ? 0.1 : 1;
@@ -268,7 +292,7 @@ export const Character: React.FC<Props> = ({ member: m, pose, mood, frame, talki
   );
 
   return (
-    <g transform={`scale(${(flip ? -1 : 1) * bodyK},${bodyK}) translate(${pose === "struggle" ? Math.sin(frame * 1.3) * 7 : 0},${hop}) ${asleep ? "translate(0,-105) rotate(-88)" : ""}`}>
+    <g transform={`scale(${(typeof flip === "number" ? flip : flip ? -1 : 1) * bodyK},${bodyK}) translate(${pose === "struggle" ? Math.sin(frame * 1.3) * 7 : 0},${hop}) ${asleep ? "translate(0,-105) rotate(-88)" : ""}`}>
       <ellipse cx={0} cy={6} rx={78} ry={12} fill="#000" opacity={0.18} />
       <g transform={`translate(0,${breathe * 0.4})`}>
         {legs}

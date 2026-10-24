@@ -1,0 +1,264 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "act-demo",
+ "description": "",
+ "tags": [],
+ "cast": [
+  {
+   "id": "raju",
+   "name": "राजू",
+   "age": "child",
+   "skin": "#D39A68",
+   "hair": "short",
+   "hairColor": "#1B1B1B",
+   "outfit": "shirt",
+   "color": "#F39C12",
+   "color2": "#2D3436",
+   "bindi": false
+  },
+  {
+   "id": "maa",
+   "name": "माँ",
+   "age": "adult",
+   "skin": "#E7B07F",
+   "hair": "bun",
+   "hairColor": "#1B1B1B",
+   "outfit": "saree",
+   "color": "#E84393",
+   "color2": "#2D3436",
+   "bindi": true
+  },
+  {
+   "id": "dada",
+   "name": "दादाजी",
+   "age": "elder",
+   "skin": "#D39A68",
+   "hair": "bald",
+   "hairColor": "#1B1B1B",
+   "outfit": "dhoti",
+   "color": "#F5F1E6",
+   "color2": "#2D3436",
+   "bindi": false,
+   "glasses": true,
+   "beard": true
+  }
+ ],
+ "scenes": [
+  {
+   "id": "a0",
+   "text": "राजू दौड़कर माँ के पास गया और उसे तोहफ़ा दिया।",
+   "startFrame": 0,
+   "durationFrames": 120,
+   "duration": 3.8,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "home",
+     "time": "day",
+     "fx": "hearts",
+     "props": [],
+     "chars": [
+      {
+       "id": "raju",
+       "x": 28,
+       "pose": "run",
+       "acts": [
+        {
+         "at": 0,
+         "pose": "stand"
+        },
+        {
+         "at": 0.45,
+         "pose": "give"
+        }
+       ],
+       "mood": "happy",
+       "holds": "gift"
+      },
+      {
+       "id": "maa",
+       "x": 72,
+       "pose": "stand",
+       "mood": "happy",
+       "acts": [
+        {
+         "at": 0,
+         "pose": "stand"
+        },
+        {
+         "at": 0.55,
+         "pose": "happy"
+        }
+       ],
+       "flip": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "a1",
+   "text": "माँ ने उसे गले लगा लिया।",
+   "startFrame": 120,
+   "durationFrames": 120,
+   "duration": 3.8,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "home",
+     "time": "day",
+     "fx": "hearts",
+     "cont": true,
+     "props": [],
+     "chars": [
+      {
+       "id": "raju",
+       "x": 58,
+       "fromX": 28,
+       "pose": "hug",
+       "mood": "happy"
+      },
+      {
+       "id": "maa",
+       "x": 72,
+       "fromX": 72,
+       "pose": "hug",
+       "mood": "happy",
+       "flip": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "a2",
+   "text": "तभी दादाजी आए, राजू डरकर भागा और रोने लगा।",
+   "startFrame": 240,
+   "durationFrames": 120,
+   "duration": 3.8,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "home",
+     "time": "day",
+     "fx": "none",
+     "cont": true,
+     "props": [],
+     "chars": [
+      {
+       "id": "dada",
+       "x": 86,
+       "pose": "angry",
+       "mood": "angry",
+       "flip": true
+      },
+      {
+       "id": "raju",
+       "x": 14,
+       "fromX": 58,
+       "pose": "run",
+       "acts": [
+        {
+         "at": 0,
+         "pose": "scared"
+        },
+        {
+         "at": 0.55,
+         "pose": "cry"
+        }
+       ],
+       "mood": "sad"
+      },
+      {
+       "id": "maa",
+       "x": 56,
+       "fromX": 72,
+       "pose": "stand",
+       "mood": "worried",
+       "flip": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "a3",
+   "text": "माँ ने दादाजी को समझाया और सब हँस पड़े।",
+   "startFrame": 360,
+   "durationFrames": 120,
+   "duration": 3.8,
+   "visual": {
+    "camera": "none",
+    "story": {
+     "bg": "home",
+     "time": "day",
+     "fx": "sparkle",
+     "cont": true,
+     "props": [],
+     "chars": [
+      {
+       "id": "maa",
+       "x": 50,
+       "fromX": 56,
+       "pose": "talk",
+       "speaking": true,
+       "mood": "neutral",
+       "acts": [
+        {
+         "at": 0,
+         "pose": "point"
+        },
+        {
+         "at": 0.5,
+         "pose": "happy"
+        }
+       ]
+      },
+      {
+       "id": "dada",
+       "x": 80,
+       "fromX": 86,
+       "pose": "stand",
+       "mood": "laugh",
+       "flip": true,
+       "acts": [
+        {
+         "at": 0,
+         "pose": "stand"
+        },
+        {
+         "at": 0.5,
+         "pose": "happy"
+        }
+       ]
+      },
+      {
+       "id": "raju",
+       "x": 20,
+       "fromX": 14,
+       "pose": "stand",
+       "mood": "laugh",
+       "acts": [
+        {
+         "at": 0,
+         "pose": "stand"
+        },
+        {
+         "at": 0.6,
+         "pose": "dance"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  }
+ ],
+ "totalFrames": 480
+}
