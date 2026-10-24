@@ -15,3 +15,6 @@ tunnelmole.log
 public/content/*/audio/segment_*.mp3
 public/content/*/audio/.cache.json
 public/content/*/audio/*.part.mp3
+
+# Raw sound downloads (the mastered mp3s in public/audio are committed)
+.cache/

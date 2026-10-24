@@ -76,6 +76,7 @@
     "longform:new": "tsx scripts/longs/new-project.ts",
     "longform:audio": "tsx scripts/longs/generate-audio.ts",
     "longform:sfx": "tsx scripts/longs/generate-sfx.ts",
+    "longform:sounds": "tsx scripts/longs/fetch-sounds.ts",
     "longform:natural-audio": "tsx scripts/longs/generate-natural-audio.ts",
     "longform:images": "tsx scripts/longs/generate-images.ts",
     "longform:merge": "tsx scripts/longs/merge-audio.ts",

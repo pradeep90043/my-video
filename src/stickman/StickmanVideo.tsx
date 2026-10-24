@@ -6,6 +6,7 @@ import { StickmanScene } from "./StickmanScene";
 import { THEMES, type ThemeName } from "./theme";
 import type { SpokenWord } from "./captions";
 import { StickmanVisualSchema, type Mood, type PoseName } from "./schema";
+import { AMBIENT_FADE, ambientEnvelope, planSounds } from "./soundPlan";
 
 /** The slice of a project's video.json the composition needs. */
 export interface StickmanProjectData {
@@ -13,6 +14,8 @@ export interface StickmanProjectData {
   theme?: ThemeName;
   totalFrames?: number;
   orientation?: "horizontal" | "vertical";
+  /** realism sounds (all default on): looping ambience, one-shot foley, and picking them from the narration text */
+  fx?: { ambience?: boolean; foley?: boolean; autoSound?: boolean };
   /** optional music files under public/ (e.g. "audio/music-2.mp3"); a new one starts at every chapter scene, crossfaded. No default: the old bundled track matched a commercial song (Content ID risk), so music is opt-in and must be copyright-cleared. */
   music?: string[];
   /** Lip-sync: mouth level 0..1 per video frame (voiceover.env.json); absent = generic flap */
@@ -52,6 +55,9 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
   const musicSections = tracks.length === 0 ? [] : bounds.slice(0, -1).map((from, i) => ({ from, to: bounds[i + 1], src: tracks[i % tracks.length] }));
   const risers = chapterStarts.map((f) => Math.max(0, f - RISER_FRAMES + 6));
 
+  const fx = { ambience: true, foley: true, autoSound: true, ...data.fx };
+  const sounds = React.useMemo(() => planSounds(data.scenes, data.fps, { autoSound: fx.autoSound }), [data.scenes, data.fps, fx.autoSound]);
+
   let prevPose: PoseName = "idle";
   let prevMood: Mood | undefined;
   return (
@@ -72,6 +78,21 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
         return el;
       })}
       <Audio src={staticFile(`content/${project}/audio/voiceover.mp3`)} volume={voVolume} />
+      {fx.ambience &&
+        sounds.ambient.map((amb, i) => {
+          const dur = amb.to - amb.from + AMBIENT_FADE; // the tail overlaps the next bed's fade-in
+          return (
+            <Sequence key={`amb${i}`} from={amb.from} durationInFrames={dur} layout="none" name={`ambient-${amb.name}`}>
+              <Audio src={staticFile(`audio/ambient/${amb.name}.mp3`)} loop volume={(f) => amb.gain * ambientEnvelope(f, dur)} />
+            </Sequence>
+          );
+        })}
+      {fx.foley &&
+        sounds.foley.map((e, i) => (
+          <Sequence key={`fol${i}`} from={e.frame} durationInFrames={e.durationFrames} layout="none" name={`foley-${e.name}`}>
+            <Audio src={staticFile(`audio/foley/${e.name}.mp3`)} volume={(f) => e.volume * Math.min(1, (e.durationFrames - f) / 6)} />
+          </Sequence>
+        ))}
       {bgMusicVolume > 0 && musicSections.map((m, i) => (
         <Sequence key={`music-${i}`} from={m.from} durationInFrames={m.to - m.from} name={`music ${i + 1}`}>
           <MusicBed windows={speech} volume={bgMusicVolume} src={m.src} from={m.from} to={m.to} first={i === 0} last={i === musicSections.length - 1} />

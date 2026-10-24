@@ -10,6 +10,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { loadVideoJson, resolveProject, validateVideoJson } from "./lib";
 import { validateStickmanScenes } from "../../src/stickman/schema";
+import { planSounds } from "../../src/stickman/soundPlan";
 import { fail, freeDiskGb, getArg, hasBinary, hasFlag } from "./util";
 
 export interface PreflightOptions {
@@ -38,6 +39,18 @@ export function preflight(slug: string, { needsTts }: PreflightOptions): string[
   if (isStickman) {
     problems.push(...validateStickmanScenes(data.scenes).map((p) => `video.json: ${p}`));
     if (data.theme && data.theme !== "light" && data.theme !== "dark") problems.push('video.json: theme must be "light" or "dark"');
+    // Every ambience bed / foley sound the plan will use must exist (npm run longform:sounds builds them).
+    if (problems.length === 0) {
+      const fx = data.fx ?? {};
+      const plan = planSounds(data.scenes, data.fps ?? 30, { autoSound: fx.autoSound });
+      const need = new Set<string>([
+        ...(fx.ambience === false ? [] : plan.ambient.map((a) => `ambient/${a.name}`)),
+        ...(fx.foley === false ? [] : plan.foley.map((f) => `foley/${f.name}`)),
+      ]);
+      for (const n of need) {
+        if (!fs.existsSync(path.join(process.cwd(), "public", "audio", `${n}.mp3`))) problems.push(`sound public/audio/${n}.mp3 missing — run: npm run longform:sounds`);
+      }
+    }
     // Long static scenes feel dead; the audio step records durations, so this only fires after TTS.
     for (const s of data.scenes) {
       if ((s.duration ?? 0) > 8) console.warn(`⚠ scene "${s.id}" is ${s.duration!.toFixed(1)}s — split it into shorter beats (≤ 6s) so visuals keep changing.`);

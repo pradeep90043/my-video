@@ -135,6 +135,18 @@ Each scene's `visual` (validated in preflight; schema in `src/stickman/schema.ts
 | `accent` | red, blue, gold, green |
 | `figureX`, `flip`, `hideFigure` | figure placement |
 
+**Realism sounds.** Each scene's `visual` may set `ambient` (looping bed: wind, night, forest, rain, storm,
+rain-window, city, cafe, crowd, room, or `none`; persists across scenes until changed; `ambientVolume` 0–2) and
+`foley[]` (timed one-shots `{name, at (s after narration starts), volume?, duration? (s)}`: footsteps(-wood/-grass/-carpet),
+run, stairs, door-open/close/creak, knock, alarm, smoke-alarm, siren, clock-tick, typing(-soft), click, glass, book-flip,
+cloth, punch, thud, clang, bell, applause, laughter). Recorded CC0 / public-domain clips (Kenney + Wikimedia Commons,
+credits in `public/audio/SOUND_LICENSES.md`) are mastered into `public/audio/{ambient,foley}/` by
+`npm run longform:sounds` (committed; only re-run to rebuild). With `fx.autoSound` (default on) scenes that set neither
+field get sound picked from the narration ("it was raining" → rain bed, "he walked in and knocked" → footsteps + knock,
+synced to the spoken word); auto beds fade after 4 scenes and an explicit `ambient` is never overridden. Switch off with
+`"fx": {"ambience": false, "foley": false, "autoSound": false}` in video.json. When generating scenes with an LLM, have it
+tag `ambient` per location/weather change and `foley` per physical action. Preflight fails if a used sound file is missing.
+
 Tips: keep each scene to ~2 short sentences (≤ 6 s) so something changes every few seconds (preflight
 warns above 8 s); grounded props (laptop, robot, …) stand on the floor automatically; the figure's
 mouth animates while the scene plays and its pose eases from the previous scene's. Captions are

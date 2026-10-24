@@ -7,6 +7,7 @@
 import { z } from "zod";
 import { SCENE_ASSETS, SCENE_BACKGROUNDS, SCENE_TINTS } from "./doodle/catalog";
 import { CODE_LANGUAGES } from "./code";
+import { AMBIENT_NAMES, FOLEY_NAMES } from "./sounds";
 
 export const POSES = [
   "idle", "point", "present", "shrug", "think",
@@ -261,6 +262,9 @@ export const StoryCharSchema = z.object({
   says: z.string().max(40).optional(),
   /** a reaction: "no" shakes the head, "yes" nods */
   react: z.enum(["no", "yes", "shrug", "surprise", "laugh"]).optional(),
+  /** a sequence of actions inside the beat (run, then cry): each springs into the next */
+  acts: z.array(z.object({ at: z.number().min(0).max(1), pose: z.enum(CHAR_POSES) })).max(4).optional(),
+  fromPose: z.enum(CHAR_POSES).optional(),
 });
 export const StoryPropSchema = z.object({
   type: z.enum(STORY_PROPS),
@@ -306,6 +310,18 @@ export const PhotoSchema = z.object({
   /** seconds to skip at the start of a clip (agency clips open on a title slate) */
   startFrom: z.number().min(0).max(300).default(0),
 });
+
+/** A timed one-shot sound (footsteps, door, alarm, …) inside a scene. */
+export const FoleySchema = z.object({
+  name: z.enum(FOLEY_NAMES),
+  /** seconds after the scene's narration starts */
+  at: z.number().min(0).max(60).default(0),
+  /** mix gain override, 0..1 */
+  volume: z.number().min(0).max(1).optional(),
+  /** cut the sound after this many seconds (footsteps/typing otherwise play out, up to the end of the scene) */
+  duration: z.number().min(0.2).max(30).optional(),
+});
+export type FoleySpec = z.infer<typeof FoleySchema>;
 
 /** Every panel key. A scene may use only one. */
 export const PANEL_KEYS = [
@@ -365,6 +381,15 @@ export const StickmanVisualSchema = z.object({
   sfx: z.enum(["auto", "none", ...SFX_NAMES]).default("auto"),
   /** frames after scene start before the SFX plays */
   sfxDelay: z.number().int().min(0).default(0),
+  /**
+   * Background ambience bed. Omit to keep the previous scene's bed running (or let the narration pick one when
+   * fx.autoSound is on); "none" fades it out. Beds loop and crossfade between scenes.
+   */
+  ambient: z.enum([...AMBIENT_NAMES, "none"]).optional(),
+  /** ambience loudness multiplier, 0..2 (1 = the library default) */
+  ambientVolume: z.number().min(0).max(2).default(1),
+  /** timed one-shot sounds in this scene; with fx.autoSound the narration's action words add more */
+  foley: z.array(FoleySchema).max(8).default([]),
   /** where the eyes look: "auto" = lively saccades */
   look: z.enum(["auto", "camera", "left", "right", "up", "down"]).default("auto"),
   /** turn off the mood overlay (tint / flash / confetti) and body motion */

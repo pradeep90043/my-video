@@ -29,7 +29,7 @@ export type HairStyle = (typeof HAIR_STYLES)[number];
 
 export const OUTFITS = ["shirt", "kurta", "saree", "dress", "uniform", "suit", "hoodie", "dhoti", "fur"] as const;
 /** animal characters (fairy-tale animals that stand and talk like people): the fur colour is `skin` */
-export const SPECIES = ["wolf", "fox", "lion", "tiger", "dog", "cat", "monkey", "rabbit", "bear", "elephant", "deer", "goat", "buffalo", "cow", "crow"] as const;
+export const SPECIES = ["wolf", "fox", "lion", "tiger", "dog", "cat", "monkey", "rabbit", "bear", "elephant", "deer", "goat", "buffalo", "cow", "tortoise", "crow"] as const;
 export type Species = (typeof SPECIES)[number];
 export type Outfit = (typeof OUTFITS)[number];
 
@@ -78,4 +78,8 @@ export interface StagedChar {
   says?: string;
   /** a head movement answering someone: no (shake), yes (nod), shrug, surprise, laugh */
   react?: string;
+  /** what they do during the beat, in order: [{at: 0..1, pose}], each action springs into the next */
+  acts?: { at: number; pose: string }[];
+  /** the pose they had at the end of the previous beat (the first action eases out of it) */
+  fromPose?: string;
 }

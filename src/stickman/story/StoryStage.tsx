@@ -1,9 +1,10 @@
 import React from "react";
 import { STORY_FONT } from "./font";
-import { StoryFxLayer, StoryPropArt, type StoryFx, type StoryPropName } from "./StoryProps";import { Easing, interpolate } from "remotion";
+import { StoryFxLayer, StoryPropArt, type StoryFx, type StoryPropName } from "./StoryProps";import { Easing, interpolate, spring } from "remotion";
 import { StoryBackground } from "./Backgrounds";
 import { Character, CHARACTER_HEIGHT } from "./Character";
 import { animalHeight } from "./Animal";
+import type { CharPose } from "./cast";
 import { DEFAULT_CAST, type CastMember, type StagedChar, type StoryBgName, type StoryLook, type StoryTime } from "./cast";
 
 interface Props {
@@ -97,8 +98,15 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
   const p = interpolate(frame, [0, durationFrames], [0, 1], { extrapolateRight: "clamp", easing: Easing.inOut(Easing.sin) });
   // a storyboard shot does not zoom: every beat restarting the push looked like the frame jumping
   void p; void camera;
-  const cam = 1;
-  const camX = 0;
+  // the camera follows the people: it drifts toward where they stand (smoothly, from where the previous beat left it), the background
+  // moves less than the people (parallax) and a slow breathing zoom keeps the picture alive
+  const finalPx = chars.map((c) => (c.x / 100) * w);
+  const startPx = chars.map((c) => (cont && c.fromX !== undefined ? (c.fromX / 100) * w : (c.x / 100) * w));
+  const mean = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : w / 2);
+  const camEase = Easing.inOut(Easing.cubic)(Math.max(0, Math.min(1, frame / 40)));
+  const focus = mean(startPx) + (mean(finalPx) - mean(startPx)) * camEase;
+  const camX = (w / 2 - focus) * 0.16;
+  const cam = 1.03 + 0.022 * Math.sin((frame + startFrame) * 0.011);
   const crowd = chars.length >= 4 ? 0.8 : chars.length === 3 ? 0.9 : 1;
   const base = (h * (w < h ? 0.4 : 0.62)) / CHARACTER_HEIGHT;
   const anySpeaker = chars.some((c) => c.speaking);
@@ -116,8 +124,10 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
 
   return (
     <g>
-    <g transform={`translate(${w / 2 + camX},${ground}) scale(${cam}) translate(${-w / 2},${-ground})`}>
+    <g transform={`translate(${w / 2 + camX * 0.45},${ground}) scale(${cam * 1.07}) translate(${-w / 2},${-ground})`}>
       <StoryBackground bg={bg} time={time} frame={clock} w={w} h={h} ground={ground} />
+    </g>
+    <g transform={`translate(${w / 2 + camX},${ground}) scale(${cam}) translate(${-w / 2},${-ground})`}>
       {props.map((pr, k) => {
         const px = (pr.x / 100) * w;
         const py = ground + 6 - pr.air * 260;
@@ -132,14 +142,36 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
         const member = lookup(c.id);
         const tx = (c.x / 100) * w;
         const local = frame - c.delay;
-        // a new shot: everybody walks in; the same shot: they stay and walk from where they stood to where they stand now
+        // a new shot: everybody walks in; the same shot: they stay and walk from where they stood to where they stand now,
+        // at a natural pace (a long way takes longer than a step)
         const stays = cont && c.fromX !== undefined;
         const fx = stays ? (c.fromX! / 100) * w : c.x < 50 ? -w * 0.2 : w * 1.2;
-        const dur = stays ? 16 : 20;
-        const enter = interpolate(local, [0, dur], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.inOut(Easing.cubic) });
+        const dist = Math.abs(tx - fx);
+        const travel = dist > 30 && !(cont && c.fromX === undefined);
+        const moveFrames = travel ? Math.max(14, Math.min(70, Math.round(dist / 15))) : 0;
+        const enter = moveFrames ? interpolate(local, [0, moveFrames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.inOut(Easing.sin) }) : 1;
         const popIn = cont && c.fromX === undefined ? interpolate(local, [0, 8], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 1;
         const x = cont && c.fromX === undefined ? tx : fx + (tx - fx) * enter;
-        const walking = enter < 1 && local >= 0 && Math.abs(tx - fx) > 30;
+        const moving = travel && local >= 0 && local < moveFrames;
+        // what they do in this beat: a sequence of actions (after they have arrived), each springing into the next
+        const actList = c.acts && c.acts.length ? c.acts : [{ at: 0, pose: c.pose }];
+        const act0 = Math.max(0, moveFrames - 2);
+        const span = Math.max(20, durationFrames - act0);
+        let ak = 0;
+        actList.forEach((a, j) => { if (local >= act0 + a.at * span) ak = j; });
+        const actPose = actList[ak].pose as CharPose;
+        const comeFrom = ak > 0 ? (actList[ak - 1].pose as CharPose) : ((c.fromPose as CharPose | undefined) ?? (travel ? "walk" : (actList[0].pose as CharPose)));
+        const tAct = act0 + actList[ak].at * span;
+        const walkPose: CharPose = dist / Math.max(1, moveFrames) > 22 ? "run" : "walk";
+        let poseNow: CharPose = actPose, poseFrom: CharPose | undefined = comeFrom !== actPose ? comeFrom : undefined, blendNow = 1;
+        if (moving) { poseNow = walkPose; poseFrom = undefined; }
+        else if (poseFrom) blendNow = spring({ frame: Math.max(0, local - tAct), fps, config: { damping: 11, stiffness: 120, mass: 0.9 } });
+        // turning: face where you walk, then the person you are with (a turn squashes through zero instead of snapping)
+        const others = chars.filter((o) => o !== c);
+        const partnerPx = others.length ? (others.reduce((best, o) => (Math.abs((o.x / 100) * w - tx) < Math.abs(best - tx) ? (o.x / 100) * w : best), (others[0].x / 100) * w)) : null;
+        const faceFinal = partnerPx !== null && Math.abs(partnerPx - tx) > 20 ? (partnerPx > tx ? 1 : -1) : c.flip ? -1 : 1;
+        const faceMove = tx >= fx ? 1 : -1;
+        const faceNow = travel ? interpolate(local, [moveFrames - 3, moveFrames + 6], [faceMove, faceFinal], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : faceFinal;
         // in a story the narrator is off screen: a character talks only in a beat where someone really speaks; presenters (finance, news) always do
         const isSpeaker = c.speaking || (look !== "story" && !anySpeaker && i === 0);
         // acting: eases in over the first frames of the sentence and relaxes towards its end; the staged pose lasts about a second
@@ -151,7 +183,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
         const nameOn = member.name && !cont && local >= 0 && local < 70;
         return (
           <g key={c.id + i} transform={`translate(${x},${ground + 6 + (c.scale > 1 ? 14 : 0)}) scale(${s})`} opacity={local < 0 ? 0 : popIn}>
-            <Character member={member} pose={walking ? "walk" : c.pose} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={c.flip} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && (anySpeaker || look !== "story") && !isSpeaker} envelope={envelope} poseWeight={poseWeight} holds={c.holds as StoryPropName | undefined} react={c.react ? (local >= 4 && local < 80 ? c.react : undefined) : undefined} />
+            <Character member={member} pose={poseNow} prevPose={poseFrom} blend={blendNow} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={faceNow} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && (anySpeaker || look !== "story") && !isSpeaker} envelope={envelope} poseWeight={poseWeight} holds={c.holds as StoryPropName | undefined} react={c.react ? (local >= 4 && local < 80 ? c.react : undefined) : undefined} />
             {(() => {
               const animal = !!member.species && member.species !== "monkey";
               const topY = animal

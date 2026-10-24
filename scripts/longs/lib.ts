@@ -38,6 +38,8 @@ export interface LongformVideoJSON {
   theme?: string;
   /** "vertical" = 1080x1920 Short/Reel; default 16:9 */
   orientation?: "horizontal" | "vertical";
+  /** realism-sound switches (see StickmanFx in src/stickman/StickmanVideo.tsx) */
+  fx?: { ambience?: boolean; foley?: boolean; autoSound?: boolean };
   /** Remotion composition id — defaults to the project slug */
   composition?: string;
   fps: number;
