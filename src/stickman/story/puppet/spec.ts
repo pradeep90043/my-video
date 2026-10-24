@@ -100,3 +100,43 @@ export function validatePuppet(p: unknown): PuppetIssue[] {
 export function paint(svg: string, palette: Record<string, string>): string {
   return svg.replace(/\$([A-Za-z]+)/g, (_, k) => palette[k] ?? palette.out ?? "#2B2B2B");
 }
+
+/** Lowest y reached by a piece of SVG (plain shapes; absolute path commands only), in its own frame. */
+function svgBottom(svg: string): number {
+  let bottom = -Infinity;
+  const num = (s: string | undefined) => (s === undefined ? NaN : parseFloat(s));
+  const attr = (tag: string, name: string) => new RegExp(`\\s${name}\\s*=\\s*"([^"]*)"`).exec(tag)?.[1];
+  for (const tag of svg.match(/<[^>]*>/g) ?? []) {
+    const name = /^<\s*([a-zA-Z]+)/.exec(tag)?.[1];
+    const sw = (num(attr(tag, "stroke-width")) || 0) / 2;
+    let y = -Infinity;
+    if (name === "ellipse") y = num(attr(tag, "cy")) + num(attr(tag, "ry"));
+    else if (name === "circle") y = num(attr(tag, "cy")) + num(attr(tag, "r"));
+    else if (name === "rect") y = num(attr(tag, "y")) + num(attr(tag, "height"));
+    else if (name === "line") y = Math.max(num(attr(tag, "y1")), num(attr(tag, "y2")));
+    else if (name === "polygon" || name === "polyline") { const n = (attr(tag, "points") ?? "").match(/-?[\d.]+/g)?.map(Number) ?? []; for (let i = 1; i < n.length; i += 2) y = Math.max(y, n[i]); }
+    else if (name === "path") {
+      const d = attr(tag, "d") ?? "";
+      if (!/[a-z]/.test(d)) for (const seg of d.match(/[MLQCTSmlqcts][^MLQCTSmlqcts]*/g) ?? []) { const n = seg.slice(1).match(/-?[\d.]+/g)?.map(Number) ?? []; for (let i = 1; i < n.length; i += 2) y = Math.max(y, n[i]); }
+    }
+    if (Number.isFinite(y)) bottom = Math.max(bottom, y + (attr(tag, "stroke") && attr(tag, "stroke") !== "none" ? sw : 0));
+  }
+  return bottom;
+}
+
+/**
+ * How far to move the whole drawing so its lowest foot touches the ground (y = 0). LLMs misjudge this by tens of pixels.
+ * Estimated from the leg / shin bones at rest (rotations ignored); 0 when there are no legs or the estimate is implausible.
+ */
+export function groundShift(spec: PuppetSpec): number {
+  const byId = new Map(spec.bones.map((b) => [b.id, b]));
+  const absY = (b: PuppetBone): number => { let y = 0, cur: PuppetBone | undefined = b, hops = 0; while (cur && hops++ < 40) { y += cur.at[1]; cur = cur.parent ? byId.get(cur.parent) : undefined; } return y; };
+  let lowest = -Infinity;
+  for (const b of spec.bones) {
+    if (b.role !== "leg" && b.role !== "lower") continue;
+    const sb = svgBottom(b.svg);
+    if (Number.isFinite(sb)) lowest = Math.max(lowest, absY(b) + sb);
+  }
+  if (!Number.isFinite(lowest) || Math.abs(lowest) > spec.height * 0.5) return 0;
+  return -lowest;
+}

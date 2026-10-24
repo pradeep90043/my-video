@@ -1,0 +1,144 @@
+{
+ "name": "Chirpy the Monkey",
+ "height": 340,
+ "palette": {
+  "fur": "#A06B4A",
+  "furD": "#7A4E32",
+  "furL": "#C28A62",
+  "belly": "#E8D5B5",
+  "accent": "#D9C5A0",
+  "out": "#3A2A1A",
+  "mouth": "#5C2A2A",
+  "toe": "#D9C5A0"
+ },
+ "bones": [
+  {
+   "id": "body",
+   "parent": null,
+   "at": [
+    0,
+    -180
+   ],
+   "role": "body",
+   "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"48\" ry=\"62\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"0\" cy=\"12\" rx=\"32\" ry=\"42\" fill=\"$belly\" stroke=\"$out\" stroke-width=\"2.5\"/>"
+  },
+  {
+   "id": "legL",
+   "parent": "body",
+   "at": [
+    -18,
+    48
+   ],
+   "role": "leg",
+   "group": "A",
+   "z": -2,
+   "svg": "<rect x=\"-12\" y=\"0\" width=\"24\" height=\"82\" rx=\"12\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"0\" cy=\"82\" rx=\"16\" ry=\"10\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "legR",
+   "parent": "body",
+   "at": [
+    18,
+    48
+   ],
+   "role": "leg",
+   "group": "B",
+   "z": 1,
+   "svg": "<rect x=\"-12\" y=\"0\" width=\"24\" height=\"82\" rx=\"12\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"0\" cy=\"82\" rx=\"16\" ry=\"10\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "armL",
+   "parent": "body",
+   "at": [
+    -38,
+    -28
+   ],
+   "role": "arm",
+   "z": -2,
+   "svg": "<rect x=\"-10\" y=\"0\" width=\"20\" height=\"65\" rx=\"10\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><circle cx=\"0\" cy=\"65\" r=\"12\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "armR",
+   "parent": "body",
+   "at": [
+    38,
+    -28
+   ],
+   "role": "arm",
+   "z": 1,
+   "svg": "<rect x=\"-10\" y=\"0\" width=\"20\" height=\"65\" rx=\"10\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><circle cx=\"0\" cy=\"65\" r=\"12\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3\"/>"
+  },
+  {
+   "id": "tail",
+   "parent": "body",
+   "at": [
+    -35,
+    35
+   ],
+   "role": "tail",
+   "z": -1,
+   "svg": "<path d=\"M0,0 C-45,15 -75,45 -55,85 C-35,115 -15,85 -35,65 C-55,45 -45,25 -25,15\" fill=\"none\" stroke=\"$out\" stroke-width=\"16\" stroke-linecap=\"round\"/><path d=\"M0,0 C-45,15 -75,45 -55,85 C-35,115 -15,85 -35,65 C-55,45 -45,25 -25,15\" fill=\"none\" stroke=\"$fur\" stroke-width=\"10\" stroke-linecap=\"round\"/><circle cx=\"-25\" cy=\"15\" r=\"7\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"2\"/>"
+  },
+  {
+   "id": "head",
+   "parent": "body",
+   "at": [
+    0,
+    -58
+   ],
+   "role": "head",
+   "svg": "<circle cx=\"0\" cy=\"-25\" r=\"42\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"12\" cy=\"-18\" rx=\"28\" ry=\"32\" fill=\"$belly\" stroke=\"$out\" stroke-width=\"2.5\"/>"
+  },
+  {
+   "id": "earL",
+   "parent": "head",
+   "at": [
+    -35,
+    -35
+   ],
+   "role": "ear",
+   "z": -1,
+   "svg": "<circle cx=\"-8\" cy=\"0\" r=\"14\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3\"/><circle cx=\"-8\" cy=\"0\" r=\"8\" fill=\"$belly\" stroke=\"$out\" stroke-width=\"2\"/>"
+  },
+  {
+   "id": "earR",
+   "parent": "head",
+   "at": [
+    35,
+    -35
+   ],
+   "role": "ear",
+   "z": 1,
+   "svg": "<circle cx=\"8\" cy=\"0\" r=\"14\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3\"/><circle cx=\"8\" cy=\"0\" r=\"8\" fill=\"$belly\" stroke=\"$out\" stroke-width=\"2\"/>"
+  },
+  {
+   "id": "jaw",
+   "parent": "head",
+   "at": [
+    18,
+    5
+   ],
+   "role": "jaw",
+   "z": 1,
+   "svg": "<path d=\"M-12,0 Q0,18 12,0 Z\" fill=\"$mouth\" stroke=\"$out\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/>"
+  }
+ ],
+ "eyes": [
+  {
+   "bone": "head",
+   "at": [
+    10,
+    -32
+   ],
+   "r": 7
+  },
+  {
+   "bone": "head",
+   "at": [
+    28,
+    -32
+   ],
+   "r": 7
+  }
+ ]
+}

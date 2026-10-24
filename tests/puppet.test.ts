@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { sanitizeSvg, validatePuppet, paint, type PuppetSpec } from "../src/stickman/story/puppet/spec";
+import { sanitizeSvg, validatePuppet, paint, groundShift, type PuppetSpec } from "../src/stickman/story/puppet/spec";
 import { boneAngle, channelsFor, mixChannels, type Channels } from "../src/stickman/story/puppet/animate";
 import { generatePuppet, extractJson } from "../src/stickman/story/puppet/generate";
 import { CHAR_POSES } from "../src/stickman/story/cast";
@@ -86,4 +86,11 @@ test("generatePuppet retries with the exact problems until the drawing is valid"
 test("generatePuppet gives up after the attempts and says why", async () => {
   await assert.rejects(generatePuppet("x", elephant, async () => "nope", 2), /after 2 attempts/);
   assert.throws(() => extractJson("no braces"));
+});
+
+test("groundShift lands the lowest foot on the ground, whatever the drawing's own offset", () => {
+  assert.ok(Math.abs(groundShift(elephant)) < 15, `elephant ${groundShift(elephant)}`);
+  const raised: PuppetSpec = { ...elephant, bones: elephant.bones.map((b) => (b.parent === null ? { ...b, at: [b.at[0], b.at[1] - 40] as [number, number] } : b)) };
+  assert.ok(Math.abs(groundShift(raised) - (groundShift(elephant) + 40)) < 1, "a drawing floating 40 px higher is moved down by 40 px more");
+  assert.equal(groundShift({ ...elephant, bones: elephant.bones.filter((b) => b.role !== "leg") }), 0);
 });

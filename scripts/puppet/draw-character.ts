@@ -4,7 +4,7 @@
  *   tsx scripts/puppet/draw-character.ts --desc "a small brown monkey with a long curly tail" --id monkey --project my-story
  *
  * Writes public/content/<project>/puppets/<id>.json (merge it into a cast member's `puppet`), then renders a pose sheet PNG next to it
- * for a quick look. The LLM is any OpenAI-compatible gateway: FREELLMAPI_URL (default http://localhost:3001), FREELLMAPI_KEY, PUPPET_MODEL (default "auto").
+ * for a quick look. The LLM is any OpenAI-compatible endpoint: PUPPET_LLM_URL + PUPPET_LLM_KEY, or FreeLLMAPI via FREELLMAPI_URL (default http://localhost:3001) + FREELLMAPI_KEY; PUPPET_MODEL (default "auto").
  */
 import { execFileSync } from "child_process";
 import * as fs from "fs";
@@ -17,11 +17,14 @@ const opt = (n: string, d?: string) => { const i = args.indexOf(`--${n}`); retur
 const desc = opt("desc"), id = opt("id"), project = opt("project", "puppets")!;
 if (!desc || !id || !/^[a-z0-9_-]+$/i.test(id)) { console.error("usage: --desc \"...\" --id <name> [--project <slug>]"); process.exit(1); }
 
+// PUPPET_LLM_URL = a full chat-completions URL (e.g. https://api.groq.com/openai/v1/chat/completions); otherwise FreeLLMAPI at FREELLMAPI_URL
 const base = (process.env.FREELLMAPI_URL || "http://localhost:3001").replace(/\/$/, "");
+const chatUrl = process.env.PUPPET_LLM_URL || `${base}/v1/chat/completions`;
+const apiKey = process.env.PUPPET_LLM_KEY ?? process.env.FREELLMAPI_KEY ?? "";
 async function ask(prompt: string): Promise<string> {
-  const res = await fetch(`${base}/v1/chat/completions`, {
+  const res = await fetch(chatUrl, {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.FREELLMAPI_KEY ?? ""}` },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
     body: JSON.stringify({ model: process.env.PUPPET_MODEL || "auto", temperature: 0.4, messages: [{ role: "user", content: prompt }] }),
     signal: AbortSignal.timeout(180_000),
   });

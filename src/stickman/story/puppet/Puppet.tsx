@@ -2,7 +2,7 @@ import React from "react";
 import type { CharMood, CharPose } from "../cast";
 import { StoryPropArt, type StoryPropName } from "../StoryProps";
 import { boneAngle, bodyOffset, channelsFor, mixChannels } from "./animate";
-import { paint, sanitizeSvg, type PuppetBone, type PuppetSpec } from "./spec";
+import { groundShift, paint, sanitizeSvg, type PuppetBone, type PuppetSpec } from "./spec";
 
 interface Props {
   spec: PuppetSpec;
@@ -52,7 +52,7 @@ export const Puppet: React.FC<Props> = ({ spec, pose, mood, frame, talking, mout
   };
   const root = spec.bones.find((b) => b.parent === null);
   if (!root) return null;
-  const lift = bodyOffset(spec, c);
+  const lift = bodyOffset(spec, c) + groundShift(spec);
   return (
     <g transform={`translate(${c.shake},0)`}>
       <ellipse cx={0} cy={6} rx={spec.height * 0.5} ry={12} fill="#000" opacity={0.18} transform={`scale(${Math.max(0.6, 1 + lift / 260)},1)`} />
