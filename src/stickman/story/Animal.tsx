@@ -16,7 +16,10 @@ const shade = (hex: string, k: number): string => {
 interface Spec {
   leg: number; bw: number; bh: number; hr: number; neck: number; size: number;
   snout: [number, number]; ears: "point" | "round" | "floppy" | "long" | "big" | "none"; tail: "bush" | "thin" | "tuft" | "up" | "puff" | "short" | "none";
-  extra?: "mane" | "stripes" | "spots" | "horns" | "wide-horns" | "antlers" | "trunk" | "beard" | "whiskers" | "stand-ears";
+  slow?: number;
+  /** height of things drawn above the head (a shell), so name tags clear them */
+  topExtra?: number;
+  extra?: "mane" | "shell" | "stripes" | "spots" | "horns" | "wide-horns" | "antlers" | "trunk" | "beard" | "whiskers" | "stand-ears";
 }
 const SPECS: Record<string, Spec> = {
   wolf: { leg: 83, bw: 150, bh: 62, hr: 46, neck: 30, size: 1, snout: [50, 26], ears: "point", tail: "bush" },
@@ -31,13 +34,14 @@ const SPECS: Record<string, Spec> = {
   deer: { leg: 111, bw: 118, bh: 48, hr: 34, neck: 70, size: 1.1, snout: [38, 20], ears: "point", tail: "short", extra: "antlers" },
   goat: { leg: 67, bw: 100, bh: 48, hr: 36, neck: 30, size: 0.85, snout: [32, 22], ears: "floppy", tail: "short", extra: "beard" },
   buffalo: { leg: 74, bw: 168, bh: 86, hr: 52, neck: 26, size: 1.25, snout: [44, 34], ears: "floppy", tail: "thin", extra: "wide-horns" },
+  tortoise: { leg: 26, bw: 118, bh: 46, hr: 25, neck: 8, size: 0.8, snout: [20, 14], ears: "none", tail: "short", extra: "shell", slow: 0.35, topExtra: 80 },
   cow: { leg: 73, bw: 160, bh: 80, hr: 50, neck: 26, size: 1.15, snout: [44, 32], ears: "floppy", tail: "thin", extra: "spots" },
 };
 
 /** how tall an animal stands, as a fraction of a person (for scaling on stage and for name tags) */
 export const animalHeight = (species: string): number => {
   const s = SPECS[species] ?? SPECS.wolf;
-  return (s.leg + s.bh * 2 + s.neck + s.hr) * s.size;
+  return (s.leg + s.bh * 2 + s.neck + s.hr + (s.topExtra ?? 0)) * s.size;
 };
 export const ANIMAL_SIZE = (species: string): number => (SPECS[species]?.size ?? 1);
 
@@ -62,7 +66,8 @@ export const AnimalCharacter: React.FC<Props> = ({ member: m, pose, mood, frame,
   const sinf = (k: number) => Math.sin(frame * k);
 
   // ---- motion per pose
-  const gait = pose === "walk" ? 0.3 : pose === "run" ? 0.55 : pose === "jump" || pose === "dance" ? 0.4 : 0;
+  const slow = sp.slow ?? 1;
+  const gait = slow * (pose === "walk" ? 0.3 : pose === "run" ? 0.55 : pose === "jump" || pose === "dance" ? 0.4 : 0);
   const swing = gait ? Math.sin(frame * gait) : 0;
   const amp = pose === "run" ? 38 : pose === "walk" ? 22 : 0;
   const bounce = (pose === "run" ? Math.abs(sinf(0.55)) * 10 : pose === "walk" ? Math.abs(sinf(0.3)) * 4 : 0) + (pose === "jump" || pose === "dance" ? Math.abs(sinf(0.3)) * 60 : 0) + (pose === "happy" ? Math.abs(sinf(0.25)) * 18 : 0);
@@ -184,6 +189,16 @@ export const AnimalCharacter: React.FC<Props> = ({ member: m, pose, mood, frame,
       <ellipse cx={0} cy={bodyY} rx={BW} ry={BH} fill={fur} stroke={OUT} strokeWidth={3.5} />
       <ellipse cx={-4} cy={bodyY + BH * 0.42} rx={BW * 0.78} ry={BH * 0.5} fill={furL} opacity={0.75} />
       {pattern}
+      {sp.extra === "shell" && (
+        <g>
+          <path d={`M${-BW * 1.02},${bodyY + 2} Q${-BW * 0.95},${bodyY - BH * 2.1} 0,${bodyY - BH * 2.15} Q${BW * 0.95},${bodyY - BH * 2.1} ${BW * 1.02},${bodyY + 2} Z`} fill="#8A6A35" stroke={OUT} strokeWidth={4} strokeLinejoin="round" />
+          <g fill="none" stroke="#5E4620" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round">
+            <path d={`M${-BW * 0.55},${bodyY - 2} L${-BW * 0.4},${bodyY - BH * 1.1} L0,${bodyY - BH * 1.5} L${BW * 0.4},${bodyY - BH * 1.1} L${BW * 0.55},${bodyY - 2}`} />
+            <path d={`M${-BW * 0.4},${bodyY - BH * 1.1} L${-BW * 0.78},${bodyY - BH * 0.9} M${BW * 0.4},${bodyY - BH * 1.1} L${BW * 0.78},${bodyY - BH * 0.9} M0,${bodyY - BH * 1.5} L0,${bodyY - BH * 2.1}`} />
+          </g>
+          <path d={`M${-BW * 1.02},${bodyY + 2} L${BW * 1.02},${bodyY + 2}`} stroke="#C9B27A" strokeWidth={9} strokeLinecap="round" />
+        </g>
+      )}
       {leg(-BW * 0.46, 1, false)}{leg(BW * 0.64, -1, false)}
       {head}
       {lying && <text x={BW * 0.8} y={bodyY - BH - 80} fontSize={64} fontWeight={900} fill="#5DADE2" fontFamily="sans-serif" opacity={0.5 + 0.5 * sinf(0.1)}>Zz</text>}
