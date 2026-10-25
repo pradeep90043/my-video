@@ -5,17 +5,19 @@
 import React from "react";
 import { EnvBack, EnvFront, FilmDefs } from "./env";
 import { Hand } from "./hand";
-import { Person, POSES, blendPose } from "./person";
+import { Person } from "./person";
+import { PropArt, PROPS } from "./props";
+import { frontHandWorld, personState, stepAt } from "./rig";
 import { Books, Calendar, Caption, Phone, Poster, Screen, Sign } from "./ui";
 import { val } from "./anim";
 import type { FilmLayer, FilmSpec } from "./schema";
 
 const W = 1920, H = 1080;
 const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
-const rnd = (seed: number) => { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); };
+const rnd = (seed: number) => { let s = Math.imul(seed + 1, 2654435761) >>> 0; return () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296); };
 
 /** Draw order when a layer does not set `z`. */
-const DEFAULT_Z: Record<string, number> = { env: 0, person: 10, poster: 12, sign: 16, books: 20, calendar: 20, phone: 20, screen: 20, hand: 35, fx: 40, caption: 60 };
+const DEFAULT_Z: Record<string, number> = { env: 0, person: 10, prop: 20, poster: 12, sign: 16, books: 20, calendar: 20, phone: 20, screen: 20, hand: 35, fx: 40, caption: 60 };
 
 const Fx: React.FC<{ layer: Extract<FilmLayer, { t: "fx" }>; frame: number }> = ({ layer, frame }) => {
   const a = layer.amount;
@@ -64,6 +66,8 @@ const Fx: React.FC<{ layer: Extract<FilmLayer, { t: "fx" }>; frame: number }> = 
 interface Props { film: FilmSpec; frame: number; durationFrames: number }
 
 export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
+  const envLayer = film.layers.find((l) => l.t === "env");
+  const grade = envLayer && envLayer.t === "env" ? envLayer.grade : "day";
   const zoom = val(film.cam.zoom, frame, 1), cx = val(film.cam.x, frame, 960), cy = val(film.cam.y, frame, 540);
   const camT = (d: number) => {
     const z = 1 + (zoom - 1) * d, px = 960 + (cx - 960) * d, py = 540 + (cy - 540) * d;
@@ -76,11 +80,12 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
     if (layer.t === "env") {
       items.push({ z: layer.z ?? 0, key: `e${i}b`, layer, part: "back" }, { z: (layer.z ?? 0) + 15, key: `e${i}f`, layer, part: "front" });
     } else {
-      const z = ("z" in layer ? layer.z : undefined) ?? (layer.t === "person" && layer.fg ? 25 : layer.t === "hand" && !layer.over ? 18 : DEFAULT_Z[layer.t] ?? 20);
+      const zs = layer.t === "person" || layer.t === "prop" ? layer.zs : undefined;
+      const z = (zs ? stepAt(zs, frame, zs[0]?.[1] ?? 20).v : undefined) ?? ("z" in layer ? layer.z : undefined) ?? (layer.t === "person" && layer.fg ? 25 : layer.t === "hand" && !layer.over ? 18 : DEFAULT_Z[layer.t] ?? 20);
       items.push({ z, key: `l${i}`, layer });
     }
   });
-  items.sort((a, b) => a.z - b.z);
+  items.sort((a, b) => a.z - b.z || a.key.localeCompare(b.key, undefined, { numeric: true }));
 
   const visible = (l: { at?: number; until?: number }) => frame >= (l.at ?? 0) && (l.until === undefined || frame < l.until);
   const fade = (l: { at?: number; until?: number }) => Math.min(clamp01((frame - (l.at ?? 0)) / 4 + (l.at ? 0 : 1)), l.until === undefined ? 1 : clamp01((l.until - frame) / 4));
@@ -93,7 +98,7 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
       const blur = val(l.blur, frame, 0);
       return (
         <g key={it.key} transform={camT(l.depth)} style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined}>
-          {it.part === "back" ? <EnvBack kind={l.kind} grade={l.grade} t={frame} /> : <EnvFront kind={l.kind} />}
+          {it.part === "back" ? <EnvBack kind={l.kind} grade={l.grade} t={frame} wall={l.wall} floor={l.floor} /> : <EnvFront kind={l.kind} t={frame} />}
         </g>
       );
     }
@@ -106,11 +111,33 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
     );
     switch (l.t) {
       case "person": {
-        const a = POSES[l.pose] ?? POSES.stand;
-        const b = l.to ? POSES[l.to] ?? a : a;
-        const k = l.to ? clamp01((frame - l.poseAt) / Math.max(1, l.poseDur)) : 0;
-        const e = k * k * (3 - 2 * k);
-        return wrap(<Person who={l.who} pose={blendPose(a, b, e)} frame={frame} eyes={l.eyes} mood={l.mood} look={l.look} holds={l.holds} seed={Number(it.key.slice(1)) + 1} />, l.flip ? -1 : 1);
+        const st = personState(l, Number(it.key.slice(1)), frame);
+        const p = st.place;
+        return (
+          <g key={it.key} transform={camT(1)} opacity={o} style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined}>
+            <g transform={`translate(${p.x},${p.y}) rotate(${p.r}) scale(${p.s * (p.flip ? -1 : 1)},${p.s})`}>
+              <Person who={l.who} pose={st.pose} frame={frame} eyes={l.eyes} mood={st.mood} look={st.look} holds={l.holds} seed={st.seed} shadow={l.shadow && p.r === 0} shirt={l.shirt} />
+            </g>
+          </g>
+        );
+      }
+      case "prop": {
+        const lit = stepAt(l.ons, frame, l.on).v;
+        // carried: the prop rides in its carrier's front hand, held by its grip point
+        const hold = stepAt((l.held ?? []).map((h) => [h.from, h] as const), frame, undefined as (typeof l.held extends (infer H)[] | undefined ? H : never) | undefined).v;
+        const carrier = hold && (hold.until === undefined || frame < hold.until) ? film.layers[hold.by] : undefined;
+        if (carrier && carrier.t === "person") {
+          const st = personState(carrier, hold!.by, frame);
+          const [hx, hy] = frontHandWorld(st, frame);
+          const g = hold!.grip ?? PROPS[l.kind].grip ?? [0, -PROPS[l.kind].h / 2];
+          const fl = l.flip !== st.place.flip;
+          return (
+            <g key={it.key} transform={camT(1)} opacity={o}>
+              <g transform={`translate(${hx},${hy}) scale(${s * (fl ? -1 : 1)},${s}) translate(${-g[0]},${-g[1]})`}><PropArt layer={{ ...l, on: lit, shadow: false }} frame={frame} grade={grade} /></g>
+            </g>
+          );
+        }
+        return wrap(<PropArt layer={{ ...l, on: lit }} frame={frame} grade={grade} />, l.flip ? -1 : 1);
       }
       case "hand": return <g key={it.key} transform={camT(1)} style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined}><Hand layer={l} x={x} y={y} scale={s} frame={frame} opacity={o} /></g>;
       case "phone": return wrap(<Phone layer={l} frame={frame} />);

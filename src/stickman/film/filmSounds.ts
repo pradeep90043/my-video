@@ -3,7 +3,7 @@
  * it is drawn, a calendar crumples, keys tap while text is typed, a box lands on the counter. Pure, and in the shot's own frames,
  * so the sound lands on the picture. Mirrors actionSounds.ts for story scenes.
  */
-import { FOLEY_GAIN, type FoleyName } from "../sounds";
+import { FOLEY_GAIN, FOLEY_NAMES, type FoleyName } from "../sounds";
 import { endFrame, type Anim } from "./anim";
 import type { FilmSpec, FilmLayer } from "./schema";
 import type { ActionCue } from "../actionSounds";
@@ -60,6 +60,9 @@ export function planFilmSounds(film: FilmSpec, durationFrames: number, opts: { f
     }
   }
 
+  // what the director staged (footsteps for a walk, a chair taking weight, a cup put down...)
+  for (const f of film.foley ?? []) if ((FOLEY_NAMES as readonly string[]).includes(f.name)) add(f.at, f.name as FoleyName, f.volume, f.seconds);
+
   // two cues of one sound within a quarter second are one sound
   const seen = new Map<string, number>();
   return cues
@@ -70,5 +73,5 @@ export function planFilmSounds(film: FilmSpec, durationFrames: number, opts: { f
       seen.set(c.name, c.frame);
       return true;
     })
-    .slice(0, 16);
+    .slice(0, 24);
 }

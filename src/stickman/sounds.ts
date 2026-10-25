@@ -69,6 +69,8 @@ const PLACE_LAYERS: Record<string, AmbientLayer[]> = {
   "desk-dawn": [{ name: "room", gain: 0.4 }, { name: "forest", gain: 0.25 }],
   "street-view": [{ name: "city", gain: 0.5 }, { name: "wind", gain: 0.12 }],
   "hill-day": [{ name: "forest", gain: 0.55 }, { name: "wind", gain: 0.25 }],
+  room: [{ name: "room", gain: 0.5 }, { name: "city", gain: 0.08 }],
+  park: [{ name: "forest", gain: 0.5 }, { name: "wind", gain: 0.2 }, { name: "city", gain: 0.06 }],
 };
 /** The extra beds a story scene wants: its place, plus rain when it rains and the night outside after dark. */
 export function placeLayers(bg: string, time: string, fx: string): AmbientLayer[] {

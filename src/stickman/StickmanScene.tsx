@@ -17,6 +17,7 @@ import { PhotoPanel } from "./PhotoPanel";
 import { CinematicScene } from "./CinematicScene";
 import { StoryStage } from "./story/StoryStage";
 import { FilmStage } from "./film/FilmStage";
+import { directCached } from "./film/direct";
 import type { CastMember } from "./story/cast";
 import {
   AlertPanel, NewsPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
@@ -291,7 +292,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
   // slow parallax drift of the dot grid so the background is never static
   const drift = (frame * 0.35) % 60;
 
-  if (v.film) return <AbsoluteFill style={{ backgroundColor: "#000" }}><FilmStage film={v.film} frame={frame} durationFrames={durationFrames} /></AbsoluteFill>;
+  const film = v.film ?? (v.shot ? directCached(v.shot).film : undefined);
+  if (film) return <AbsoluteFill style={{ backgroundColor: "#000" }}><FilmStage film={film} frame={frame} durationFrames={durationFrames} /></AbsoluteFill>;
 
   return (
     <AbsoluteFill style={{ backgroundColor: theme.bg }}>
