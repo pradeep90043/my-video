@@ -6,6 +6,7 @@ import React from "react";
 import { EnvBack, EnvFront, FilmDefs } from "./env";
 import { Hand } from "./hand";
 import { Person } from "./person";
+import { resolveAvatar } from "./avatar";
 import { PropArt, PROPS } from "./props";
 import { frontHandWorld, personState, stepAt, talkingAt } from "./rig";
 import { Books, Calendar, Caption, Phone, Poster, Screen, Sign } from "./ui";
@@ -115,8 +116,8 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
         const p = st.place;
         return (
           <g key={it.key} transform={camT(1)} opacity={o} style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined}>
-            <g transform={`translate(${p.x},${p.y}) rotate(${p.r}) scale(${p.s * (p.flip ? -1 : 1)},${p.s})`}>
-              <Person who={l.who} pose={st.pose} frame={frame} eyes={l.eyes} mood={st.mood} look={st.look} holds={l.holds} seed={st.seed} shadow={l.shadow && p.r === 0} shirt={l.shirt} talking={talkingAt(l, frame)} />
+            <g transform={`translate(${p.x},${p.y}) rotate(${p.r}) scale(${p.s * (p.flip ? -1 : 1) * (p.sx ?? 1)},${p.s})`}>
+              <Person avatar={resolveAvatar(l.who, l.avatar, l.shirt)} pose={st.pose} frame={frame} eyes={l.eyes} mood={st.mood} look={st.look} holds={l.holds} seed={st.seed} shadow={l.shadow && p.r === 0} talking={talkingAt(l, frame)} seatSole={l.seatSole} />
             </g>
           </g>
         );

@@ -1,8 +1,11 @@
 /**
- * Silhouette people for the film shots: black figures with a soft rim light, joint-based poses that blend into each other,
- * breathing, blinking and (optionally) small white eyes whose brows follow the mood. Origin = the middle of the feet.
+ * The film's people: joint-based poses that blend into each other, breathing and blinking, a face that turns with what the person
+ * is doing (pose.turn: 0 = to the camera, 1 = side-on), and an avatar the story chooses (avatar.ts): age, build, hair, beard,
+ * glasses, outfit, colours, skin. The skeleton never changes (rig.ts mirrors it for IK); the avatar is drawing only.
+ * Origin = the middle of the feet; +x = the way the figure faces.
  */
 import React from "react";
+import { SIZE, SKIN_FILL, type Avatar } from "./avatar";
 
 export interface PoseParams {
   /** forward lean of the torso, degrees */
@@ -21,11 +24,16 @@ export interface PoseParams {
   noLegs?: boolean;
   /** sitting on a bench: thighs forward, shins down (the origin is the hip line, as with noLegs) */
   seat?: boolean;
+  /** kneeling: thighs down to the knees, shins flat behind (the director lowers the figure so the shins rest on the floor) */
+  kneel?: boolean;
   /** the front arm keeps still while walking (it carries something) */
   carry?: boolean;
   /** how far the face turns from the camera towards the way the body faces: 0 = front, 1 = full profile */
   turn?: number;
 }
+
+/** a kneeling figure's shins rest 148 below the hip, so the director lowers it by 250 − 148 to put them on the floor */
+export const KNEEL_DROP = 250 - 148;
 
 const STAND: PoseParams = { lean: 0, head: 0, armF: [6, 6], armB: [-4, 6], stride: 0, shoulders: 0, point: false, turn: 0.75 };
 export const POSES: Record<string, PoseParams> = {
@@ -54,6 +62,17 @@ export const POSES: Record<string, PoseParams> = {
   "look-up": { ...STAND, head: -16, armF: [8, 8], armB: [-6, 8], turn: 0.8 },
   wave: { ...STAND, armF: [110, 60], armB: [-4, 6], turn: 0.3 },
   laugh: { ...STAND, head: -12, shoulders: 6, armF: [14, 40], armB: [-14, 40], turn: 0.35 },
+  jump: { ...STAND, head: -8, armF: [150, 20], armB: [140, 20], turn: 0.5 },
+  crouch: { ...STAND, lean: 22, head: 6, armF: [40, 40], armB: [30, 40], turn: 0.8 },
+  kneel: { ...STAND, lean: 4, head: 6, armF: [20, 30], armB: [16, 30], kneel: true, noLegs: true, turn: 0.8 },
+  pray: { ...STAND, lean: 2, head: 14, armF: [62, 112], armB: [58, 112], kneel: true, noLegs: true, turn: 0.9 },
+  "clap-a": { ...STAND, head: -4, armF: [78, 44], armB: [74, 44], turn: 0.5 },
+  "clap-b": { ...STAND, head: -4, armF: [62, 14], armB: [58, 14], turn: 0.5 },
+  hug: { ...STAND, lean: 8, head: 4, armF: [86, 64], armB: [84, 70], turn: 1 },
+  "dance-a": { ...STAND, lean: -6, head: -8, armF: [150, 30], armB: [40, 80], shoulders: 6, turn: 0.4 },
+  "dance-b": { ...STAND, lean: 6, head: 6, armF: [40, 80], armB: [150, 30], shoulders: -4, turn: 0.4 },
+  push: { ...STAND, lean: 18, head: 0, armF: [88, 8], armB: [84, 8], stride: 10, turn: 1 },
+  bow: { ...STAND, lean: 34, head: 14, armF: [4, 4], armB: [-2, 4], turn: 0.9 },
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -63,32 +82,60 @@ export function blendPose(a: PoseParams, b: PoseParams, t: number): PoseParams {
     armF: [lerp(a.armF[0], b.armF[0], t), lerp(a.armF[1], b.armF[1], t)],
     armB: [lerp(a.armB[0], b.armB[0], t), lerp(a.armB[1], b.armB[1], t)],
     stride: lerp(a.stride, b.stride, t), shoulders: lerp(a.shoulders, b.shoulders, t), point: t < 0.5 ? a.point : b.point, noLegs: t < 0.5 ? a.noLegs : b.noLegs, seat: t < 0.5 ? a.seat : b.seat, carry: t < 0.5 ? a.carry : b.carry,
+    kneel: t < 0.5 ? a.kneel : b.kneel,
     turn: lerp(a.turn ?? 0.75, b.turn ?? 0.75, t),
   };
 }
 
-const SKIN = "url(#fl-sil)";
-const RIM = "rgba(255,255,255,0.10)";
 const UPPER = 150, LOWER = 140, ARM_W = 42, LEG_W = 56;
+/** 0 below a, 1 above b, smooth between */
+const band = (a: number, b: number, t: number) => { const k = Math.max(0, Math.min(1, (t - a) / (b - a))); return k * k * (3 - 2 * k); };
 
-/** A two-segment limb from (0,0) hanging down, rotated by the shoulder and elbow angles. */
-const Limb: React.FC<{ a: [number, number]; upper: number; lower: number; w: number; hand?: "mitt" | "point" | "none" }> = ({ a, upper, lower, w, hand = "none" }) => (
-  <g transform={`rotate(${-a[0]})`}>
-    <rect x={-w / 2} y={-w / 2} width={w} height={upper + w / 2} rx={w / 2} fill={SKIN} stroke={RIM} strokeWidth={2} />
-    <g transform={`translate(0,${upper}) rotate(${-a[1]})`}>
-      <rect x={-w / 2 + 3} y={-w / 2} width={w - 6} height={lower + w / 2} rx={(w - 6) / 2} fill={SKIN} stroke={RIM} strokeWidth={2} />
-      {hand !== "none" && (
-        <g transform={`translate(0,${lower})`}>
-          <ellipse cx={0} cy={14} rx={w * 0.62} ry={w * 0.72} fill={SKIN} stroke={RIM} strokeWidth={2} />
-          {hand === "point" && <rect x={-5} y={-4 - 44} width={12} height={62} rx={6} fill={SKIN} transform="translate(0,6)" />}
-        </g>
-      )}
+/** The paint for one figure: skin, clothes, outline, and the colour of facial features drawn on the skin. */
+interface Paint { skin: string; line: string; lineW: number; top: string; bottom: string; shade: number; ink: string; white: string; pupil: string; hair: string; silhouette: boolean }
+function paintOf(av: Avatar): Paint {
+  const sil = av.skin === "silhouette";
+  return {
+    skin: SKIN_FILL[av.skin], silhouette: sil,
+    // silhouettes get the soft rim light; drawn skin a thin dark outline
+    line: sil ? "rgba(255,255,255,0.10)" : "rgba(20,14,10,0.55)", lineW: sil ? 2 : 3,
+    top: av.top, bottom: av.bottom ?? SKIN_FILL[av.skin], shade: sil ? 0.45 : 0.16,
+    ink: sil ? "#f4f4f0" : "#2a1d17", white: "#f6f4ee", pupil: sil ? "#0b0b0d" : "#1d1410", hair: av.hairColor,
+  };
+}
+
+/** A two-segment limb from (0,0) hanging down, rotated by the shoulder and elbow angles; sleeves in the top colour. */
+const Limb: React.FC<{ a: [number, number]; w: number; hand?: "mitt" | "point" | "none"; p: Paint; sleeve: "full" | "short" | "none" }> = ({ a, w, hand = "none", p, sleeve }) => {
+  const up = sleeve === "none" ? p.skin : p.top, low = sleeve === "full" ? p.top : p.skin;
+  return (
+    <g transform={`rotate(${-a[0]})`}>
+      <rect x={-w / 2} y={-w / 2} width={w} height={UPPER + w / 2} rx={w / 2} fill={up} stroke={p.line} strokeWidth={p.lineW} />
+      {sleeve !== "none" && <rect x={-w / 2} y={-w / 2} width={w} height={UPPER + w / 2} rx={w / 2} fill="url(#fl-sil)" opacity={p.shade * 0.6} />}
+      <g transform={`translate(0,${UPPER}) rotate(${-a[1]})`}>
+        <rect x={-w / 2 + 3} y={-w / 2} width={w - 6} height={LOWER + w / 2} rx={(w - 6) / 2} fill={low} stroke={p.line} strokeWidth={p.lineW} />
+        {sleeve === "short" && <rect x={-w / 2 + 3} y={-w / 2} width={w - 6} height={4} fill={p.top} />}
+        {hand !== "none" && (
+          <g transform={`translate(0,${LOWER})`}>
+            <ellipse cx={0} cy={14} rx={w * 0.6} ry={w * 0.7} fill={p.skin} stroke={p.line} strokeWidth={p.lineW} />
+            {hand === "point" && <rect x={-5} y={-42} width={12} height={62} rx={6} fill={p.skin} />}
+          </g>
+        )}
+      </g>
     </g>
+  );
+};
+
+/** One straight leg from the hip, with a shoe pointing forward. */
+const Leg: React.FC<{ p: Paint; dx: number; a: number }> = ({ p, dx, a }) => (
+  <g transform={`translate(${dx},0) rotate(${a})`}>
+    <rect x={-LEG_W / 2} y={-6} width={LEG_W} height={250} rx={LEG_W / 2} fill={p.bottom} stroke={p.line} strokeWidth={p.lineW} />
+    {!p.silhouette && <rect x={-LEG_W / 2} y={-6} width={LEG_W} height={250} rx={LEG_W / 2} fill="url(#fl-sil)" opacity={p.shade} />}
+    <path d="M-26,236 Q-26,222 -8,222 L22,224 Q46,228 46,242 Q46,252 30,252 L-20,252 Q-26,252 -26,244 Z" fill={p.silhouette ? p.skin : "#1b1b1f"} stroke={p.line} strokeWidth={p.lineW} />
   </g>
 );
 
 export interface PersonProps {
-  who: "customer" | "seller" | "student";
+  avatar: Avatar;
   pose: PoseParams;
   frame: number;
   eyes: boolean;
@@ -97,120 +144,217 @@ export interface PersonProps {
   holds: "box" | "none";
   seed: number;
   shadow?: boolean;
-  shirt?: string;
   /** speaking now: the mouth moves */
   talking?: boolean;
+  /** seated: how far below the hip line the soles are (fits the seat height; a child's feet dangle) */
+  seatSole?: number;
 }
 
-/** 0 below a, 1 above b, smooth between */
-const band = (a: number, b: number, t: number) => { const k = Math.max(0, Math.min(1, (t - a) / (b - a))); return k * k * (3 - 2 * k); };
-
-export const Person: React.FC<PersonProps> = ({ who, pose, frame, eyes, mood, look, holds, seed, shadow, shirt, talking }) => {
+export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, mood, look, holds, seed, shadow, talking, seatSole }) => {
+  const p = paintOf(av);
+  const sole = seatSole ?? 228;
   const breathe = Math.sin((frame + seed * 13) / 22) * 3;
   const sway = Math.sin((frame + seed * 7) / 47) * 1.2;
-  const walkPhase = Math.sin(frame * 0.26);
-  const strideA = pose.stride * walkPhase;
+  const strideA = pose.stride * Math.sin(frame * 0.26);
   const bob = pose.stride ? Math.abs(Math.sin(frame * 0.26)) * -7 : 0;
+  // the rig (rig.ts) computes hands from pose.lean, so the drawing must use exactly that
+  const lean = pose.lean;
+  // torso width: build and gender
+  const wF = (av.build === "slim" ? 0.88 : av.build === "heavy" ? 1.2 : 1) * (av.gender === "female" ? 0.93 : 1);
+  const sleeve = av.outfit === "tshirt" || av.outfit === "dress" ? "short" : "full";
+  const skirt = av.outfit === "kurta" ? 120 : av.outfit === "dress" ? 140 : av.outfit === "saree" ? 236 : 0;
+  const torsoPath = (sh: number) => `M${-62 * wF},0 C${-70 * wF},-60 ${-84 * wF},-120 ${-78 * wF},${-150 - sh} C${-72 * wF},-168 ${-40 * wF},-178 0,-178 C${40 * wF},-178 ${72 * wF},-168 ${78 * wF},${-150 - sh} C${84 * wF},-120 ${70 * wF},-60 ${62 * wF},0 Z`;
+
+  return (
+    <g>
+      {shadow && !pose.noLegs && <ellipse cx={0} cy={2} rx={110 - Math.abs(bob) * 2} ry={16} fill="#000" opacity={0.28} filter="url(#fl-soft2)" />}
+      <g transform={`translate(0,${bob})`}>
+        {/* back arm (behind everything) */}
+        <g transform={`translate(${-46 * wF},${-400 + pose.shoulders * -0.4}) rotate(${-lean})`}>
+          <Limb a={[pose.armB[0] + strideA * -0.6, pose.armB[1]]} w={ARM_W} hand="mitt" p={p} sleeve={sleeve} />
+        </g>
+        {/* legs */}
+        {!pose.noLegs && (
+          <g transform="translate(0,-250)">
+            <Leg p={p} dx={-26} a={strideA} />
+            <Leg p={p} dx={26} a={-strideA} />
+          </g>
+        )}
+        {pose.seat && (
+          <g transform="translate(0,-250)">
+            <rect x={-20} y={-28} width={190} height={56} rx={28} fill={p.bottom} stroke={p.line} strokeWidth={p.lineW} />
+            <rect x={132} y={-24} width={52} height={sole - 4} rx={26} fill={p.bottom} stroke={p.line} strokeWidth={p.lineW} />
+            <path d="M136,206 Q136,192 154,192 L184,194 Q208,198 208,212 Q208,222 192,222 L142,222 Q136,222 136,214 Z" transform={`translate(0,${sole - 222})`} fill={p.silhouette ? p.skin : "#1b1b1f"} />
+          </g>
+        )}
+        {pose.kneel && (
+          <g transform="translate(0,-250)">
+            <rect x={-6} y={-24} width={56} height={150} rx={28} fill={p.bottom} stroke={p.line} strokeWidth={p.lineW} transform="rotate(-8)" />
+            <rect x={-130} y={96} width={170} height={52} rx={26} fill={p.bottom} stroke={p.line} strokeWidth={p.lineW} />
+            <path d="M-150,100 Q-162,100 -162,116 L-162,146 Q-162,152 -150,152 L-128,152 L-128,100 Z" fill={p.silhouette ? p.skin : "#1b1b1f"} />
+          </g>
+        )}
+        {/* long clothes over the legs: kurta, dress, saree (over the thighs when seated) */}
+        {skirt > 0 && !pose.noLegs && (
+          <g transform="translate(0,-250)">
+            <path d={`M${-64 * wF},-10 L${64 * wF},-10 L${(66 + skirt * 0.12) * wF + Math.abs(strideA) * 1.6},${skirt} L${-(66 + skirt * 0.12) * wF - Math.abs(strideA) * 1.6},${skirt} Z`} fill={p.top} stroke={p.line} strokeWidth={p.lineW} />
+            <path d={`M${-64 * wF},-10 L${64 * wF},-10 L${(66 + skirt * 0.12) * wF},${skirt} L${-(66 + skirt * 0.12) * wF},${skirt} Z`} fill="url(#fl-sil)" opacity={p.shade} />
+            {av.outfit === "saree" && av.bottom && <rect x={-(66 + skirt * 0.12) * wF - Math.abs(strideA) * 1.6} y={skirt - 16} width={2 * ((66 + skirt * 0.12) * wF + Math.abs(strideA) * 1.6)} height={16} fill={av.bottom} />}
+          </g>
+        )}
+        {skirt > 0 && pose.seat && (
+          <g transform="translate(0,-250)">
+            <rect x={-30 * wF} y={-34} width={skirt > 130 ? 214 : 160 + skirt * 0.2} height={66} rx={30} fill={p.top} stroke={p.line} strokeWidth={p.lineW} />
+            {skirt > 200 && <rect x={128} y={-20} width={62} height={sole - 12} rx={24} fill={p.top} stroke={p.line} strokeWidth={p.lineW} />}
+          </g>
+        )}
+        {/* torso + head (lean from the hip) */}
+        <g transform={`translate(0,-250) rotate(${lean + sway * 0.4})`}>
+          <path d={torsoPath(pose.shoulders * 0.4)} transform={`scale(1,${1 + breathe * 0.004})`} fill={p.top} stroke={p.line} strokeWidth={p.lineW} />
+          {av.build === "heavy" && <ellipse cx={50 * wF} cy={-66} rx={40} ry={58} fill={p.top} />}
+          <path d={torsoPath(pose.shoulders * 0.4)} fill="url(#fl-sil)" opacity={p.shade} />
+          {/* outfit details */}
+          {av.outfit === "jacket" && <path d={`M${52 * wF},-172 L${30 * wF},-60 L${54 * wF},-2 L${66 * wF},-2 L${74 * wF},-150 Z`} fill="#e9e6df" opacity={0.85} />}
+          {av.outfit === "uniform" && <><path d={`M${56 * wF},-170 L${40 * wF},-150 L${66 * wF},-150 Z`} fill="#f2f0ea" /><path d={`M${52 * wF},-150 L${44 * wF},-80 L${56 * wF},-66 L${64 * wF},-80 L${58 * wF},-150 Z`} fill="#8e2a2a" /></>}
+          {av.outfit === "kurta" && <path d={`M${58 * wF},-172 L${58 * wF},-110`} stroke="rgba(255,255,255,0.35)" strokeWidth={4} strokeDasharray="2 12" strokeLinecap="round" />}
+          {av.outfit === "saree" && <path d={`M${-70 * wF},-160 L${-40 * wF},-178 L${76 * wF},-30 L${62 * wF},0 Z`} fill={av.bottom ?? "#e0b84a"} opacity={0.9} />}
+          <Head av={av} p={p} pose={pose} frame={frame} seed={seed} sway={sway} eyes={eyes} mood={mood} look={look} talking={!!talking} />
+          {/* front arm hangs from the torso's shoulder */}
+          <g transform="translate(50,-148)">
+            <Limb a={[pose.armF[0] + (pose.carry ? 0 : strideA * 0.6), pose.armF[1]]} w={ARM_W} hand={pose.point ? "point" : "mitt"} p={p} sleeve={sleeve} />
+          </g>
+          {holds === "box" && (
+            <g transform="translate(96,-70)">
+              <rect x={-70} y={-34} width={140} height={68} rx={4} fill="#5f7184" stroke="#2f3946" strokeWidth={3} />
+              <rect x={-70} y={-34} width={140} height={14} fill="#7c8ea1" />
+            </g>
+          )}
+        </g>
+      </g>
+    </g>
+  );
+};
+
+/**
+ * The head, in the neck's frame (neck at 0,0). A round cranium over a narrower jaw makes an egg from the front; turning side-on the
+ * cranium slides back, the jaw and a nose come forward, the far eye fades out and the near eye, brow and mouth move to the front.
+ */
+const Head: React.FC<{ av: Avatar; p: Paint; pose: PoseParams; frame: number; seed: number; sway: number; eyes: boolean; mood: PersonProps["mood"]; look: number; talking: boolean }> = ({ av, p, pose, frame, seed, sway, eyes, mood, look, talking }) => {
+  const T = Math.max(0, Math.min(1, pose.turn ?? 0.75));
+  const size = SIZE[av.age];
+  const female = av.gender === "female";
   // blink: a quick close every ~3.7 s, offset per person
   const bp = (frame + seed * 41) % 112;
   const blink = bp < 4 ? 1 - Math.sin((bp / 4) * Math.PI) * 0.92 : 1;
-  const seller = who === "seller";
   const browTilt = mood === "sad" || mood === "worried" ? 14 : mood === "happy" ? -6 : mood === "tired" ? 4 : mood === "angry" ? -16 : 0;
   const browLift = mood === "surprised" ? -8 : 0;
   const lidDrop = mood === "tired" ? 0.5 : 0;
   const closed = mood === "sleep";
-  const eyeR = mood === "surprised" ? 1.25 : 1;
-  const T = Math.max(0, Math.min(1, pose.turn ?? 0.75));
+  const eyeR = (mood === "surprised" ? 1.2 : 1) * size.eyes;
   const farEye = 1 - band(0.48, 0.62, T);
-  // eyes drop a little when the head bows over something
   const gazeY = Math.max(-1, Math.min(1, pose.head / 25));
-  // talking: the mouth opens and closes at a speech-like rate
   const talk = talking ? Math.abs(Math.sin(frame * 0.55 + seed)) * (0.6 + 0.4 * Math.abs(Math.sin(frame * 0.19))) : 0;
 
+  // geometry
+  const R = 58, cx = -5 * T, cy = -68; // cranium
+  const jx = 6 * T, jy = -44, jrx = (female ? 44 : 47) - T * 2, jry = female ? 38 : 40; // jaw
+  const eyeY = -60;
+  const near = { x: 21 + T * 15, k: 1 - T * 0.32 }, far = { x: -21 + T * 45, k: 1 - T * 0.5 };
+  const mouthX = T * 33, mouthY = -26;
+  const noseO = band(0.3, 0.75, T);
+  const id = `hd${seed}`;
+
+  const skull = (
+    <>
+      <circle cx={cx} cy={cy} r={R} />
+      <ellipse cx={jx} cy={jy} rx={jrx} ry={jry} />
+      <path d={`M${48 + 6 * T},-70 Q${66 + 6 * T},-58 ${60 + 4 * T},-48 Q${56 + 4 * T},-44 ${48 + 4 * T},-46 Z`} opacity={noseO} />
+    </>
+  );
+  // hair cap: an arc band over the top that slides to the back of the head as it turns
+  const a0 = ((200 - 78 * T) * Math.PI) / 180, a1 = ((340 - 18 * T) * Math.PI) / 180;
+  const Rh = R + 4;
+  const pt = (a: number, r = Rh) => `${(cx + Math.cos(a) * r).toFixed(1)},${(cy + Math.sin(a) * r).toFixed(1)}`;
+  const capPath = (dip: number) => `M${pt(a0)} A${Rh},${Rh} 0 0 1 ${pt(a1)} Q${(cx + 6 - 26 * T).toFixed(1)},${(cy - R * dip).toFixed(1)} ${pt(a0)} Z`;
+  const hairFill = { fill: p.hair, stroke: p.line, strokeWidth: p.lineW };
+
   return (
-    <g>
-    {shadow && !pose.noLegs && <ellipse cx={0} cy={2} rx={110 - Math.abs(bob) * 2} ry={16} fill="#000" opacity={0.28} filter="url(#fl-soft2)" />}
-    <g transform={`translate(0,${bob})`}>
-      {/* legs (not drawn for a seated figure or one behind a counter) */}
-      {!pose.noLegs && <g transform="translate(0,-250)">
-        <g transform={`translate(-26,0) rotate(${strideA})`}><rect x={-LEG_W / 2} y={-6} width={LEG_W} height={256} rx={LEG_W / 2} fill={SKIN} stroke={RIM} strokeWidth={2} /></g>
-        <g transform={`translate(26,0) rotate(${-strideA})`}><rect x={-LEG_W / 2} y={-6} width={LEG_W} height={256} rx={LEG_W / 2} fill={SKIN} stroke={RIM} strokeWidth={2} /></g>
-      </g>}
-      {pose.seat && (
-        <g transform="translate(0,-250)">
-          <rect x={-20} y={-28} width={190} height={56} rx={28} fill={SKIN} stroke={RIM} strokeWidth={2} />
-          <rect x={132} y={-24} width={52} height={238} rx={26} fill={SKIN} stroke={RIM} strokeWidth={2} />
-          <ellipse cx={172} cy={214} rx={44} ry={16} fill={SKIN} />
+    <g transform={`translate(0,-190) rotate(${pose.head + sway}) scale(${size.head})`}>
+      <defs><clipPath id={id}><ellipse cx={jx} cy={jy} rx={jrx + 2} ry={jry + 2} /><path d={`M${48 + 6 * T},-70 Q${66 + 6 * T},-58 ${60 + 4 * T},-48 L${48},-46 Z`} /></clipPath></defs>
+      {/* behind the head: long hair, ponytail, hijab drape, the ears */}
+      {av.hair === "long" && <path d={`M${-R - 6},${-70} Q${-R - 10},${30} ${-R + 4},${46} L${R + 4 - (R + 10) * T},${46} Q${R + 10 - (R + 10) * T},${30} ${R + 6 - (R + 6) * T},-70 Z`} {...hairFill} />}
+      {av.hair === "ponytail" && <path d={`M${cx - R * 0.7},${cy + 6} Q${cx - R - 30 + Math.sin(frame / 9) * 4},${cy + 40} ${cx - R - 14 + Math.sin(frame / 9) * 8},${cy + 110} Q${cx - R + 6},${cy + 60} ${cx - R * 0.4},${cy + 14} Z`} {...hairFill} opacity={band(0.2, 0.6, T)} />}
+      {av.hair === "hijab" && <path d={`M${cx - R - 12},${cy} Q${cx - R - 20},${cy + 110} ${cx - R - 4},${cy + 150} L${cx + R + 6 - 30 * T},${cy + 150} Q${cx + R + 16 - 30 * T},${cy + 100} ${cx + R + 12},${cy}`} {...hairFill} />}
+      <ellipse cx={-54 + T * 48} cy={-56} rx={11} ry={15} fill={p.skin} stroke={p.line} strokeWidth={p.lineW} opacity={1 - band(0.3, 0.55, T)} />
+      <ellipse cx={54 - T * 100} cy={-56} rx={11} ry={15} fill={p.skin} stroke={p.line} strokeWidth={p.lineW} opacity={1 - band(0.05, 0.25, T)} />
+      {/* neck */}
+      <rect x={-18} y={-18} width={36} height={36} rx={14} fill={p.skin} />
+      {/* the head: outline pass, then fill pass (so the overlapping shapes read as one outline) */}
+      <g fill={p.skin} stroke={p.line} strokeWidth={p.lineW * 2}>{skull}</g>
+      <g fill={p.skin}>{skull}</g>
+      {/* the near ear, side-on: only drawn skin shows it (on a silhouette it read as a second eye) */}
+      {!p.silhouette && <path d={`M${-4 + 2 * T},-68 Q${-20 + 2 * T},-60 ${-6 + 2 * T},-44`} fill="none" stroke={p.line} strokeWidth={3} opacity={band(0.55, 0.85, T)} />}
+      {/* beard / stubble on the jaw */}
+      {(av.beard === "beard" || av.beard === "stubble") && (
+        <g clipPath={`url(#${id})`} opacity={av.beard === "stubble" ? 0.35 : 1}>
+          <path d={`M${-70},${-44} Q${jx},${-24} ${70},${-44} L70,10 L-70,10 Z`} fill={p.hair} transform={`translate(${-14 + 18 * T},0)`} />
         </g>
       )}
-      {/* back arm */}
-      <g transform={`translate(-46,${-400 + pose.shoulders * -0.4}) rotate(${-pose.lean})`}>
-        <Limb a={[pose.armB[0] + strideA * -0.6, pose.armB[1]]} upper={UPPER} lower={LOWER} w={ARM_W} hand="mitt" />
-      </g>
-      {/* torso + head (leans from the hip) */}
-      <g transform={`translate(0,-250) rotate(${pose.lean + sway * 0.4})`}>
-        <path d={`M-62,0 C-70,-60 -84,-120 -78,${-150 - pose.shoulders * 0.4} C-72,-168 -40,-178 0,-178 C40,-178 72,-168 78,${-150 - pose.shoulders * 0.4} C84,-120 70,-60 62,0 Z`}
-          transform={`scale(1,${1 + breathe * 0.004})`} fill={shirt ?? SKIN} stroke={RIM} strokeWidth={2} />
-        {shirt && <path d="M-62,0 C-70,-60 -84,-120 -78,-150 C-72,-168 -40,-178 0,-178 C40,-178 72,-168 78,-150 C84,-120 70,-60 62,0 Z" fill="url(#fl-sil)" opacity={0.45} />}
-        {seller && <path d="M-26,-176 L-10,-110 M26,-176 L10,-110" stroke="rgba(255,255,255,0.35)" strokeWidth={4} strokeLinecap="round" fill="none" />}
-        <g transform={`translate(0,-190) rotate(${pose.head + sway})`}>
-          <rect x={-18} y={-4} width={36} height={36} rx={14} fill={SKIN} transform="translate(0,-14)" />
-          {/* nose: only shows as the face turns side-on (drawn first so the head covers its root) */}
-          <ellipse cx={54 + 10 * T} cy={-48} rx={6 + 9 * T} ry={11} fill={SKIN} stroke={RIM} strokeWidth={2} opacity={band(0.25, 0.7, T)} />
-          <circle cx={0} cy={-62} r={62} fill={SKIN} stroke={RIM} strokeWidth={2} />
-          {seller ? (
-            <circle cx={-30 - T * 12} cy={-122 + T * 8} r={28} fill={SKIN} stroke={RIM} strokeWidth={2} />
-          ) : (
-            <path d="M-50,-92 Q-6,-134 52,-96 Q22,-118 -50,-92 Z" fill={SKIN} transform={`translate(${-T * 14},0)`} />
-          )}
-          {eyes && (
-            <g>
-              {/* the near eye moves towards the front of the face; the far eye fades out (never a sliver) once the face is side-on */}
-              {[{ x: -22 + T * 48, k: 1 - T * 0.5, o: farEye, far: true }, { x: 24 + T * 18, k: 1 - T * 0.35, o: 1, far: false }].map((e, i) => e.o > 0.02 && (
-                <g key={i} transform={`translate(${e.x},-60) scale(${e.k},1)`} opacity={e.o}>
-                  {closed ? <path d="M-10,2 Q0,8 10,2" stroke="#f4f4f0" strokeWidth={3.5} fill="none" strokeLinecap="round" opacity={0.85} /> : <>
-                    <ellipse cx={0} cy={0} rx={10 * eyeR} ry={12 * blink * eyeR} fill="#f4f4f0" />
-                    <circle cx={Math.max(-5, Math.min(5, look * 4 + T * 3))} cy={1 + gazeY * 3} r={4.4} fill="#0b0b0d" />
-                    {lidDrop > 0 && <rect x={-12} y={-13} width={24} height={13 * lidDrop * 2} fill="#0b0b0d" />}
-                  </>}
-                  {!closed && <path d={`M-14,${-22 + browLift + (e.far ? 1 : -1) * browTilt * 0.3} L14,${-22 + browLift - (e.far ? 1 : -1) * browTilt * 0.3}`} stroke="#f4f4f0" strokeWidth={4} strokeLinecap="round" opacity={0.85} />}
-                </g>
-              ))}
-              {/* the mouth follows the face round and foreshortens */}
-              <g transform={`translate(${T * 36},0) scale(${1 - T * 0.45},1)`}>
-                {talk > 0.05 ? <ellipse cx={2} cy={-24} rx={9} ry={2 + talk * 8} fill="#f4f4f0" opacity={0.9} />
-                  : <>
-                    {mood === "happy" && <path d="M-16,-26 Q2,-12 20,-26" stroke="#f4f4f0" strokeWidth={4} fill="none" strokeLinecap="round" />}
-                    {(mood === "sad" || mood === "worried" || mood === "angry") && <path d="M-14,-22 Q2,-32 18,-22" stroke="#f4f4f0" strokeWidth={4} fill="none" strokeLinecap="round" />}
-                    {mood === "surprised" && <ellipse cx={2} cy={-24} rx={7} ry={9} fill="#f4f4f0" />}
-                  </>}
-              </g>
-              {seller && (
-                <g stroke="rgba(255,255,255,0.55)" strokeWidth={3} fill="none">
-                  {farEye > 0.02 && <g opacity={farEye}>
-                    <ellipse cx={-22 + T * 48} cy={-60} rx={19 * (1 - T * 0.5)} ry={19} />
-                    <path d={`M${-22 + T * 48 + 19 * (1 - T * 0.5)},-60 L${24 + T * 18 - 19 * (1 - T * 0.35)},-60`} />
-                  </g>}
-                  <ellipse cx={24 + T * 18} cy={-60} rx={19 * (1 - T * 0.35)} ry={19} />
-                  {/* side-on: the arm of the glasses runs back towards the ear */}
-                  {farEye < 0.98 && <path d={`M${24 + T * 18 - 19 * (1 - T * 0.35)},-62 L-6,-64`} opacity={1 - farEye} />}
-                </g>
-              )}
+      {/* hair on top */}
+      {av.hair !== "bald" && av.hair !== "hijab" && av.hair !== "cap" && <path d={capPath(av.hair === "side-part" ? 0.62 : 0.55)} {...hairFill} />}
+      {av.hair === "bald" && old(av) && <path d={`M${pt((160 - 40 * T) * Math.PI / 180, R + 2)} Q${cx - R + 2},${cy + 4} ${pt((215 - 50 * T) * Math.PI / 180, R + 2)}`} fill="none" stroke={p.hair} strokeWidth={10} strokeLinecap="round" />}
+      {av.hair === "spiky" && [0.3, 0.5, 0.7].map((u) => { const a = a0 + (a1 - a0) * u; return <path key={u} d={`M${pt(a - 0.12)} L${pt(a, Rh + 22)} L${pt(a + 0.12)} Z`} {...hairFill} />; })}
+      {av.hair === "side-part" && <path d={`M${pt(a1 - 0.5)} Q${cx + 40 + 10 * T},${cy - R - 8} ${pt(a1 + 0.08, Rh)} Q${cx + 30 + 14 * T},${cy - R * 0.5} ${pt(a1 - 0.5)} Z`} {...hairFill} />}
+      {av.hair === "curly" && Array.from({ length: 7 }, (_, i) => { const a = a0 + ((a1 - a0) * i) / 6; return <circle key={i} cx={cx + Math.cos(a) * (R + 2)} cy={cy + Math.sin(a) * (R + 2)} r={17} {...hairFill} />; })}
+      {av.hair === "bun" && <circle cx={cx + 4 - (R * 0.75) * T} cy={cy - R - 6 + 22 * T} r={24} {...hairFill} />}
+      {av.hair === "long" && <path d={capPath(0.42)} {...hairFill} />}
+      {av.hair === "cap" && (
+        <g>
+          <path d={`M${pt(Math.PI * 1.02)} A${R + 4},${R + 4} 0 0 1 ${pt(Math.PI * 1.98)} Z`} fill={p.hair} stroke={p.line} strokeWidth={p.lineW} />
+          <path d={`M${cx + R * 0.2 + 30 * T},${cy - 8} L${cx + R + 2 + 44 * T},${cy - 6} Q${cx + R + 10 + 44 * T},${cy} ${cx + R + 44 * T},${cy + 4} L${cx - R * (1 - T) * 0.9},${cy + 4} Z`} fill={p.hair} stroke={p.line} strokeWidth={p.lineW} opacity={0.95} />
+        </g>
+      )}
+      {av.hair === "hijab" && (
+        <path fillRule="evenodd" d={`M${cx - R - 12},${cy} a${R + 12},${R + 12} 0 1 1 ${2 * (R + 12)},0 L${cx + R + 12},${cy + 40} L${cx - R - 12},${cy + 40} Z M${jx + 8 * T - 38 + 6 * T},${-56} a${38 - 6 * T},46 0 1 0 ${2 * (38 - 6 * T)},0 a${38 - 6 * T},46 0 1 0 ${-2 * (38 - 6 * T)},0 Z`} {...hairFill} />
+      )}
+      {/* face */}
+      {eyes && (
+        <g>
+          {[{ ...far, o: farEye, isFar: true }, { ...near, o: 1, isFar: false }].map((e, i) => e.o > 0.02 && (
+            <g key={i} transform={`translate(${e.x},${eyeY}) scale(${e.k * eyeR},${eyeR})`} opacity={e.o}>
+              {closed ? <path d="M-10,2 Q0,8 10,2" stroke={p.ink} strokeWidth={3.5} fill="none" strokeLinecap="round" opacity={0.85} /> : <>
+                <ellipse cx={0} cy={0} rx={10.5} ry={12.5 * blink} fill={p.white} stroke={p.silhouette ? "none" : p.pupil} strokeWidth={1.5} />
+                <circle cx={Math.max(-5, Math.min(5, look * 4 + T * 3))} cy={1 + gazeY * 3} r={4.8 * blink} fill={p.pupil} />
+                {lidDrop > 0 && <rect x={-12} y={-14} width={24} height={14 * lidDrop * 2} fill={p.skin} />}
+              </>}
+              {!closed && <path d={`M-14,${-21 + browLift + (e.isFar ? 1 : -1) * browTilt * 0.3} L14,${-21 + browLift - (e.isFar ? 1 : -1) * browTilt * 0.3}`} stroke={old(av) ? "#d8d8d4" : av.skin === "silhouette" ? p.ink : p.hair} strokeWidth={female ? 3.5 : 4.5} strokeLinecap="round" opacity={0.9} />}
+              {female && !closed && <path d="M8,-10 L14,-15" stroke={p.silhouette ? p.ink : p.pupil} strokeWidth={2.5} strokeLinecap="round" opacity={0.8} />}
+            </g>
+          ))}
+          {old(av) && <path d={`M${near.x + 13},${eyeY + 4} l6,3 M${near.x + 13},${eyeY + 9} l5,1`} stroke={p.ink} strokeWidth={2} opacity={0.5} />}
+          {av.beard === "mustache" && <rect x={mouthX - 15 * (1 - T * 0.45)} y={mouthY - 12} width={30 * (1 - T * 0.45)} height={8} rx={4} fill={p.hair} />}
+          <g transform={`translate(${mouthX},0) scale(${1 - T * 0.45},1)`}>
+            {talk > 0.05 ? <ellipse cx={0} cy={mouthY} rx={9} ry={2 + talk * 8} fill={p.silhouette ? p.ink : "#5a2420"} opacity={0.9} />
+              : <>
+                {mood === "happy" && <path d={`M-16,${mouthY - 2} Q0,${mouthY + 12} 16,${mouthY - 2}`} stroke={p.ink} strokeWidth={4} fill="none" strokeLinecap="round" />}
+                {(mood === "sad" || mood === "worried" || mood === "angry") && <path d={`M-14,${mouthY + 2} Q0,${mouthY - 8} 14,${mouthY + 2}`} stroke={p.ink} strokeWidth={4} fill="none" strokeLinecap="round" />}
+                {mood === "surprised" && <ellipse cx={0} cy={mouthY} rx={7} ry={9} fill={p.silhouette ? p.ink : "#5a2420"} />}
+                {(mood === "neutral" || mood === "tired") && !p.silhouette && <path d={`M-8,${mouthY} L8,${mouthY}`} stroke={p.ink} strokeWidth={3} strokeLinecap="round" opacity={0.7} />}
+              </>}
+          </g>
+          {av.glasses && (
+            <g stroke={p.silhouette ? "rgba(255,255,255,0.55)" : "#1d1d22"} strokeWidth={3} fill="none">
+              {farEye > 0.02 && <g opacity={farEye}>
+                <ellipse cx={far.x} cy={eyeY} rx={19 * far.k} ry={18} />
+                <path d={`M${far.x + 19 * far.k},${eyeY} L${near.x - 19 * near.k},${eyeY}`} />
+              </g>}
+              <ellipse cx={near.x} cy={eyeY} rx={19 * near.k} ry={18} />
+              {farEye < 0.98 && <path d={`M${near.x - 19 * near.k},${eyeY - 2} L-6,${eyeY - 4}`} opacity={1 - farEye} />}
             </g>
           )}
         </g>
-        {/* front arm hangs from the torso's shoulder */}
-        <g transform="translate(50,-148)">
-          <Limb a={[pose.armF[0] + (pose.carry ? 0 : strideA * 0.6), pose.armF[1]]} upper={UPPER} lower={LOWER} w={ARM_W} hand={pose.point ? "point" : "mitt"} />
-        </g>
-        {holds === "box" && (
-          <g transform="translate(96,-70)">
-            <rect x={-70} y={-34} width={140} height={68} rx={4} fill="#5f7184" stroke="#2f3946" strokeWidth={3} />
-            <rect x={-70} y={-34} width={140} height={14} fill="#7c8ea1" />
-          </g>
-        )}
-      </g>
-    </g>
+      )}
     </g>
   );
 };
+const old = (av: Avatar) => av.age === "old";

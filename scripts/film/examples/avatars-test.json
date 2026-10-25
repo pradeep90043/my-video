@@ -1,0 +1,56 @@
+{
+ "title": "Avatars test",
+ "shots": [
+  {
+   "secs": 4, "place": "living-room", "time": "day", "furnish": false,
+   "cast": [
+    { "id": "riya", "age": "child", "gender": "female", "hair": "ponytail", "outfit": "dress", "top": "#e0607e", "skin": "medium", "at": 0.08, "mood": "happy" },
+    { "id": "aman", "age": "teen", "gender": "male", "hair": "spiky", "outfit": "tshirt", "top": "#3e6fa8", "bottom": "#2b3142", "skin": "medium", "at": 0.29 },
+    { "id": "maa", "age": "adult", "gender": "female", "hair": "bun", "outfit": "saree", "top": "#c0392b", "bottom": "#e0b84a", "skin": "tan", "at": 0.5, "mood": "happy" },
+    { "id": "papa", "age": "adult", "gender": "male", "build": "heavy", "hair": "side-part", "beard": "mustache", "glasses": true, "outfit": "kurta", "top": "#f2e6c8", "skin": "medium", "at": 0.71 },
+    { "id": "dada", "age": "old", "gender": "male", "build": "slim", "hair": "bald", "beard": "beard", "outfit": "jacket", "top": "#6b5a48", "skin": "light", "at": 0.92 }
+   ],
+   "actions": [
+    { "at": 2.2, "who": "riya", "do": "look", "target": "camera" }, { "at": 2.2, "who": "aman", "do": "look", "target": "camera" },
+    { "at": 2.2, "who": "maa", "do": "look", "target": "camera" }, { "at": 2.2, "who": "papa", "do": "look", "target": "camera" },
+    { "at": 2.2, "who": "dada", "do": "look", "target": "camera" }
+   ],
+   "camera": { "shot": "wide", "move": "static" }
+  },
+  {
+   "secs": 4, "place": "room", "time": "night", "furnish": false,
+   "cast": [
+    { "id": "a", "hair": "cap", "outfit": "tshirt", "top": "#2e8b57", "at": 0.08 },
+    { "id": "b", "gender": "female", "hair": "hijab", "outfit": "dress", "top": "#5a4a8a", "at": 0.29 },
+    { "id": "c", "hair": "curly", "outfit": "uniform", "top": "#f0f0f0", "bottom": "#253046", "at": 0.5 },
+    { "id": "d", "gender": "female", "hair": "long", "outfit": "jacket", "top": "#a8503e", "at": 0.71 },
+    { "id": "e", "age": "child", "hair": "short", "outfit": "tshirt", "top": "#e6a23c", "at": 0.92, "mood": "surprised" }
+   ],
+   "actions": [
+    { "at": 2.2, "who": "a", "do": "look", "target": "camera" }, { "at": 2.2, "who": "b", "do": "look", "target": "camera" },
+    { "at": 2.2, "who": "c", "do": "look", "target": "camera" }, { "at": 2.2, "who": "d", "do": "look", "target": "camera" },
+    { "at": 2.2, "who": "e", "do": "look", "target": "camera" }
+   ],
+   "camera": { "shot": "wide", "move": "static" }
+  },
+  {
+   "secs": 9, "place": "park", "time": "day",
+   "props": [{ "id": "bottle", "kind": "bottle", "on": "bench", "at": 0.8 }],
+   "cast": [
+    { "id": "aman", "age": "teen", "hair": "spiky", "outfit": "tshirt", "top": "#3e6fa8", "bottom": "#2b3142", "skin": "medium", "at": 0.25 },
+    { "id": "riya", "age": "child", "gender": "female", "hair": "ponytail", "outfit": "dress", "top": "#e0607e", "skin": "medium", "at": 0.75, "facing": "left" }
+   ],
+   "actions": [
+    { "at": 0.3, "who": "aman", "do": "jump", "mood": "happy" },
+    { "at": 0.3, "who": "riya", "do": "clap", "dur": 1.2, "mood": "happy" },
+    { "at": 1.8, "who": "riya", "do": "dance", "dur": 2 },
+    { "at": 2.0, "who": "aman", "do": "hug", "target": "riya" },
+    { "at": 4.6, "who": "aman", "do": "drink", "target": "bottle" },
+    { "at": 6.8, "who": "riya", "do": "kneel" },
+    { "at": 7.0, "who": "aman", "do": "nod" },
+    { "at": 7.6, "who": "aman", "do": "fall", "mood": "surprised" }
+   ],
+   "camera": { "shot": "full", "on": ["aman", "riya"], "move": "static" }
+  }
+ ]
+}

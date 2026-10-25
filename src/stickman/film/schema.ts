@@ -4,6 +4,7 @@
  * only interpolates the numbers it is given. See FilmStage.tsx.
  */
 import { z } from "zod";
+import { AvatarSchema } from "./avatar";
 
 const AnimSchema = z.union([
   z.number(),
@@ -21,6 +22,7 @@ export const WHO = ["customer", "seller", "student"] as const;
 export const PERSON_POSES = [
   "stand", "lean", "point", "hand-over", "shrug", "slump", "hold", "reach", "walk", "run", "sit", "look-up", "sit-read", "sit-bench", "sit-chair", "sit-slump", "sit-hold", "lie",
   "wave", "laugh", "think", "cry", "cheer", "arms-crossed", "facepalm",
+  "jump", "crouch", "kneel", "pray", "clap-a", "clap-b", "hug", "dance-a", "dance-b", "push", "bow",
 ] as const;
 export const MOODS = ["neutral", "sad", "worried", "happy", "tired", "sleep", "angry", "surprised"] as const;
 export const HAND_KINDS = ["point", "open", "press", "grab", "pinch", "write", "flat"] as const;
@@ -82,6 +84,12 @@ export const FilmLayerSchema = z.discriminatedUnion("t", [
     zs: z.array(z.tuple([z.number(), z.number()])).optional(),
     /** shirt colour (a tint on the silhouette's torso) */
     shirt: z.string().optional(),
+    /** what the person looks like (avatar.ts); missing fields come from `who` */
+    avatar: AvatarSchema.optional(),
+    /** seated: soles this far below the hip line (local units) */
+    seatSole: z.number().optional(),
+    /** head gestures, [from, to, kind] frames */
+    nods: z.array(z.tuple([z.number(), z.number(), z.enum(["nod", "shake"])])).optional(),
     /** in front of the counter (an over-the-shoulder foreground figure) */
     fg: z.boolean().default(false),
     /** what the figure carries */

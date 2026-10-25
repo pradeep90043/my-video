@@ -36,7 +36,7 @@ async function ask(messages: { role: string; content: string }[]): Promise<strin
 const EXAMPLE = {
   secs: 6, place: "study", time: "night",
   props: [{ id: "laptop", kind: "laptop", on: "desk", at: 0.4 }, { id: "phone", kind: "phone", on: "desk", at: 0.1 }],
-  cast: [{ id: "aman", who: "student", enter: "left", at: 0.2, shirt: "#3e6fa8", mood: "tired" }],
+  cast: [{ id: "aman", age: "teen", gender: "male", hair: "spiky", outfit: "tshirt", top: "#3e6fa8", bottom: "#2b3142", skin: "medium", enter: "left", at: 0.2, mood: "tired" }],
   actions: [
     { at: 1.6, who: "aman", do: "sit", target: "chair" },
     { at: 2.8, who: "aman", do: "use", target: "laptop", dur: 2 },
@@ -55,12 +55,14 @@ SHOT FIELDS
 - secs: 2-8. Total of all shots ≈ ${seconds}. Use 10-20 shots. Vary camera: an establishing "wide", then "medium"/"close" on the person, "detail" on an important object.
 - place, time ("day"|"dusk"|"night"|"rain"), optional furnish:false to start with an empty room.
 - props: [{ id, kind, on, at, label?, lit?, color? }] — "on" is "floor", "wall", or the id of a thing with a surface (e.g. "desk", "bed", "counter", "nightstand"). The place's own furniture already exists with the ids listed below: refer to it, don't re-add it.
-- cast: [{ id, who: "student"|"customer"|"seller", shirt: "#hex", at: 0-1, row?: "back"|"mid"|"front", facing?, mood, sitOn?, lieOn?, holds?, enter?: "left"|"right" }]. Keep the same id and shirt colour for a character in every shot.
+- cast: [{ id, at: 0-1, row?: "back"|"mid"|"front", facing?, mood, sitOn?, lieOn?, holds?, enter?: "left"|"right", + how they look: age, gender, build, hair, hairColor?, beard?, glasses?, outfit, top: "#hex", bottom?: "#hex", skin }].
+  Design every character to fit the story (a grandmother: age "old", gender "female", hair "bun", outfit "saree"; a schoolboy: age "child", outfit "uniform"...). Use one skin style for the whole film ("silhouette" for the dark cinematic look, or a skin tone). Repeat EXACTLY the same look fields for a character in every shot.
 - actions: [{ at: seconds into the shot, who, do, target?, to?, spot?, pose?, mood?, text?, dur? }]
     walk/run (target: a prop or person id, or to: 0-1 / "left" / "right"), enter, exit, sit (target a seat), stand, lie / sleep (target a bed or sofa), wake,
     pick (target a small thing), put (target a surface id, spot 0-1), give (target a person; must be holding something),
     use (laptop, phone, book: typing/reading), write (notebook, whiteboard, paper), press, switch (turn a lamp/tv/laptop on or off, open a door),
-    look / face (target; "camera" turns the face to the audience until their next action), pose (pose, optional dur), mood (mood), say / think (text, ≤ 8 words; "say" may target the person spoken to).
+    look / face (target; "camera" turns the face to the audience until their next action), pose (pose, optional dur), mood (mood), say / think (text, ≤ 8 words; "say" may target the person spoken to),
+    jump (dur = how long to keep jumping), dance (dur), clap (dur), kneel, pray, hug (target a person), fall (falls backwards, drops what is held; "stand" gets up), drink / eat (target a cup, bottle, glass, food: picked up first if not held), nod, shake (head), point / wave (target), bow.
   Faces follow the activity on their own: side-on while walking, working or talking to someone, eyes on what the hands do. Use "camera" only for a moment that speaks to the viewer.
   A person can only pick when the hands are free, put/give only when holding. Actions of one person happen in order; leave time for walking.
 - camera: { shot: "wide"|"full"|"medium"|"close"|"detail", on: id or [ids], move: "static"|"push-in"|"pull-out"|"pan-left"|"pan-right"|"follow" }

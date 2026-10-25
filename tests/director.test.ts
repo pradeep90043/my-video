@@ -43,7 +43,7 @@ test("sitting puts the hip on the seat and the feet on the floor", () => {
   const hip = st.place.y - 250 * st.place.s;
   const seatTop = (chair.y as number) - PROPS.chair.seat!.y * (chair.s as number);
   assert.ok(Math.abs(hip + 28 * st.place.s - seatTop) < 0.5, "thighs rest on the seat");
-  const feet = hip + 228 * st.place.s; // person.tsx: seated shins reach 228 below the hip line
+  const feet = hip + (p.seatSole ?? 228) * st.place.s; // person.tsx: seated soles are seatSole below the hip line
   assert.ok(Math.abs(feet - (chair.y as number)) < 3, `feet at ${feet}, floor at ${chair.y}`);
 });
 
@@ -120,4 +120,26 @@ test("faces follow the activity: side-on to the person spoken to, down at the ke
   const [[w, wi]] = people(work.layers);
   const sw = personState(w, wi, 60);
   assert.ok(sw.pose.head > POSES["sit-chair"].head + 5, `head bows to the keys (${sw.pose.head.toFixed(1)})`);
+});
+
+test("avatars: a child is smaller with dangling feet on a chair; kneeling knees and a fall land on the floor", () => {
+  const { film, warnings } = direct({
+    secs: 4, place: "study",
+    cast: [{ id: "kid", age: "child", sitOn: "chair" }, { id: "b", at: 0.8, gender: "female", outfit: "saree", hair: "bun", skin: "tan" }],
+    actions: [{ at: 0.2, who: "b", do: "kneel" }, { at: 2, who: "b", do: "fall" }],
+  });
+  assert.deepEqual(warnings, []);
+  const [[kid, ki], [b, bi]] = people(film.layers);
+  const ks = personState(kid, ki, 0), chair = prop(film.layers, "chair");
+  assert.ok(ks.place.s < (chair.s as number) * 0.8, "a child is smaller");
+  const feet = ks.place.y - 250 * ks.place.s + (kid.seatSole ?? 228) * ks.place.s;
+  assert.ok(feet < (chair.y as number) - 5, "a child's feet dangle above the floor");
+  assert.equal(b.avatar?.outfit, "saree");
+  const floor = personState(b, bi, 0).place.y; // her own row's floor line
+  const kn = personState(b, bi, 40);
+  // KNEEL_DROP: the shins (148 below the hip) touch the floor
+  assert.ok(Math.abs(kn.place.y - 250 * kn.place.s + 148 * kn.place.s - floor) < 2, `knees at the floor (${kn.place.y})`);
+  const fl = personState(b, bi, 100);
+  assert.equal(Math.abs(fl.place.r), 90);
+  assert.ok(Math.abs(fl.place.y + 72 * fl.place.s - floor) < 2, "lying on the floor after the fall");
 });
