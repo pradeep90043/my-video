@@ -217,6 +217,8 @@ export const EnvBack: React.FC<{ kind: EnvKind; grade: string; t: number }> = ({
           <path d="M0,560 Q300,470 620,540 T1300,520 T1920,540 L1920,1080 L0,1080 Z" fill="#a8c7a0" />
           <path d="M0,640 Q420,560 900,630 T1920,610 L1920,1080 L0,1080 Z" fill="#8fbd86" />
           <path d="M0,760 Q500,690 1000,750 T1920,730 L1920,1080 L0,1080 Z" fill="#76ac6e" />
+          <rect x={-400} y={1060} width={2720} height={500} fill="#76ac6e" />
+          <rect x={-400} y={-400} width={2720} height={420} fill="#bcdcf0" />
           <g transform="translate(1000,0)"><rect x={-260} y={915} width={520} height={26} rx={6} fill="#8a5a3a" /><rect x={-240} y={941} width={22} height={90} fill="#6b4328" /><rect x={218} y={941} width={22} height={90} fill="#6b4328" /><ellipse cx={0} cy={1040} rx={320} ry={26} fill="#000" opacity={0.18} /></g>
           <g transform="translate(240,340)"><rect x={-14} y={150} width={28} height={250} fill="#6b4a36" /><circle cx={0} cy={110} r={150} fill="#5f9b55" /><circle cx={-90} cy={170} r={90} fill="#6aaa5f" /></g>
           {Array.from({ length: 70 }).map((_, i) => { const r = rnd(i + 5); const x = r() * W, y = 780 + r() * 300; return <path key={i} d={`M${x},${y} q${Math.sin((t + i * 11) / 30) * 8},-24 ${Math.sin((t + i * 11) / 30) * 14},-${30 + r() * 24}`} stroke="#4f8a49" strokeWidth={5} fill="none" strokeLinecap="round" />; })}
