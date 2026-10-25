@@ -161,6 +161,33 @@ generated from the scene text. Reference: `public/content/stickman-demo/`.
 
 ---
 
+## 3. Director films (any script → staged shots, no coordinates)
+
+An LLM (or a person) writes shots in words; `src/stickman/film/direct.ts` stages them physically and the film engine renders them.
+
+```bash
+# 1. the AI writes the film (every shot is checked by the director; complaints go back to the LLM until clean)
+FREELLMAPI_KEY=... npx tsx scripts/film/plan-film.ts --idea "..." --seconds 60 --out shots.json --build my-film
+# (or hand-write shots.json, then)  npx tsx scripts/film/build-film.ts --shots shots.json --slug my-film
+# 2. check the staging: start / middle / end of every shot on one sheet
+npx tsx scripts/film/stills.ts --project my-film
+# 3. render
+npx remotion render src/index.ts StickmanVideo out/my-film.mp4 --props='{"project":"my-film"}'
+```
+
+A shot: `{ secs, place, time, props: [{id, kind, on, at}], cast: [{id, who, shirt, at, sitOn?, lieOn?, holds?, enter?}],
+actions: [{at, who, do, target?}], camera: {shot, on, move}, captions, title, fx }`. Vocabulary: `catalog()` in direct.ts.
+
+What the director guarantees (tests/director.test.ts):
+- things stand ON surfaces (every prop's origin is its bottom edge; furniture declares its top and seat heights, props.tsx)
+- people sit with the hip on the seat and the feet on the floor, lie on beds, stand on their row's floor line with a contact shadow
+- `pick` / `put` / `give` / `use` / `write` walk close enough first, then the arm bends onto the exact point (two-bone IK, rig.ts);
+  a picked thing rides in the hand frame by frame; a seated worker's hands stay on the desk
+- walking speed matches the stride (no foot sliding); moving between depth rows changes scale and draw order
+- the camera frames what it is told to (`wide/full/medium/close/detail`) and never shows past the set
+- every action brings its sound (footsteps on the right floor, chair, cloth, typing, marker, thud)
+- mistakes (unknown ids, sitting on a lamp, picking with full hands) are warnings; the action is skipped, never drawn wrong
+
 ## Shared assets
 
 - `public/audio/` — shared SFX only (`background-music.mp3`, `text-pop.mp3`,

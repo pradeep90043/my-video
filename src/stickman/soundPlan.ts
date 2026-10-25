@@ -6,6 +6,7 @@
 import { AMBIENT_GAIN, FOLEY_GAIN, detectAmbient, detectFoley, placeLayers, type AmbientName, type FoleyName } from "./sounds";
 import { planActionSounds, stageWidth } from "./actionSounds";
 import { planFilmSounds } from "./film/filmSounds";
+import { directCached } from "./film/direct";
 import { StickmanVisualSchema } from "./schema";
 
 export interface PlanScene {
@@ -87,9 +88,10 @@ export function planSounds(scenes: PlanScene[], fps: number, opts: { autoSound?:
       }
     }
 
-    if (autoSound && visual.film) {
+    const film = visual.film ?? (visual.shot ? directCached(visual.shot, fps).film : undefined);
+    if (autoSound && film) {
       const named = new Set(visual.foley.map((f) => f.name));
-      for (const c of planFilmSounds(visual.film, duration, { fps })) {
+      for (const c of planFilmSounds(film, duration, { fps })) {
         if (!named.has(c.name)) addFoley(c.name, from + c.frame, c.volume, c.seconds);
       }
     }
@@ -114,7 +116,7 @@ export function planSounds(scenes: PlanScene[], fps: number, opts: { autoSound?:
 
     // Layers: a place is never one sound. Under the main bed sit its quieter neighbours; a bed that continues into the
     // next scene is extended, not restarted, so it does not re-fade at every cut.
-    const filmEnv = visual.film?.layers.find((l) => l.t === "env");
+    const filmEnv = film?.layers.find((l) => l.t === "env");
     const place = visual.story
       ? { bg: visual.story.bg, time: visual.story.time as string, fx: visual.story.fx as string }
       : filmEnv && filmEnv.t === "env" ? { bg: filmEnv.kind as string, time: filmEnv.grade as string, fx: "none" } : undefined;

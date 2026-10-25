@@ -246,7 +246,7 @@ export const Caption: React.FC<{ layer: L<"caption">; frame: number }> = ({ laye
   const st = layer.style;
   const stroke = { stroke: "rgba(0,0,0,0.7)", strokeWidth: 8, paintOrder: "stroke" as const, strokeLinejoin: "round" as const };
   return (
-    <g opacity={o} transform={`translate(${layer.x},${layer.y + (1 - o) * 6})`}>
+    <g opacity={o} transform={`translate(${layer.x},${layer.y + (1 - o) * 6}) scale(${layer.big ? 1.45 : 1})`}>
       {st === "speech" && <text textAnchor="middle" fontFamily={UI_FONT} fontSize={46} fontWeight={800} fill="#fff" {...stroke}>{layer.text}{layer.line2 ? <tspan x={0} dy={58}>{layer.line2}</tspan> : null}</text>}
       {st === "excuse" && (
         <g>

@@ -6,7 +6,7 @@ import React from "react";
 import type { EnvKind } from "./schema";
 
 const W = 1920, H = 1080;
-const rnd = (seed: number) => { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); };
+const rnd = (seed: number) => { let s = Math.imul(seed + 1, 2654435761) >>> 0; return () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296); };
 const SPINES = ["#4f6fa3", "#6fa58f", "#c8b46c", "#b46a6a", "#8a7ab0", "#d9dbdc", "#5b8c9b", "#c98f5a", "#7d8f6a", "#3f4d66"];
 
 /** Shared gradients and filters: one <defs> per shot. */
@@ -16,6 +16,8 @@ export const FilmDefs: React.FC = () => (
     <radialGradient id="fl-warm" cx="50%" cy="50%" r="50%"><stop offset="0" stopColor="#ffe9b0" stopOpacity="0.55" /><stop offset="1" stopColor="#ffe9b0" stopOpacity="0" /></radialGradient>
     <radialGradient id="fl-cool" cx="50%" cy="50%" r="50%"><stop offset="0" stopColor="#bcd6ff" stopOpacity="0.45" /><stop offset="1" stopColor="#bcd6ff" stopOpacity="0" /></radialGradient>
     <radialGradient id="fl-vig" cx="50%" cy="50%" r="72%"><stop offset="55%" stopColor="#000" stopOpacity="0" /><stop offset="100%" stopColor="#000" stopOpacity="0.55" /></radialGradient>
+    <linearGradient id="fl-wallgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#000" stopOpacity="0.18" /><stop offset="1" stopColor="#fff" stopOpacity="0.06" /></linearGradient>
+    <linearGradient id="fl-floorgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#000" stopOpacity="0.22" /><stop offset="0.5" stopColor="#000" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity="0.15" /></linearGradient>
     <filter id="fl-soft"><feGaussianBlur stdDeviation="14" /></filter>
     <filter id="fl-soft2"><feGaussianBlur stdDeviation="5" /></filter>
     <filter id="fl-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="3" /><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.9 0" /></filter>
@@ -106,9 +108,48 @@ const Dust: React.FC<{ t: number }> = ({ t }) => (
   })}</g>
 );
 
-export const EnvBack: React.FC<{ kind: EnvKind; grade: string; t: number }> = ({ kind, grade, t }) => {
+/** The wall meets the floor here in a "room" (and the grass meets the trees in a "park"). Director rows stand below it. */
+export const ROOM_FLOOR = 690;
+export const PARK_GROUND = 640;
+
+const FLOORS: Record<string, [string, string]> = { wood: ["#8a6a50", "#7a5c44"], tile: ["#c9ccce", "#b8bcbf"], carpet: ["#6f7a86", "#66717c"], concrete: ["#8d9196", "#83878c"] };
+
+const Room: React.FC<{ wall?: string; floor?: string; night: boolean; t: number }> = ({ wall, floor = "wood", night, t }) => {
+  const [f1, f2] = FLOORS[floor] ?? FLOORS.wood;
+  return (
+    <g>
+      <rect x={-400} y={-400} width={W + 800} height={ROOM_FLOOR + 400} fill={wall ?? "#c9cfd4"} />
+      <rect x={-400} y={-400} width={W + 800} height={ROOM_FLOOR + 400} fill="url(#fl-wallgrad)" />
+      <rect x={-400} y={ROOM_FLOOR} width={W + 800} height={H - ROOM_FLOOR + 400} fill={f1} />
+      {floor === "wood" && Array.from({ length: 9 }).map((_, i) => { const y = ROOM_FLOOR + 14 + i * i * 6 + i * 22; return <rect key={i} x={-400} y={y} width={W + 800} height={3} fill={f2} />; })}
+      {floor === "tile" && Array.from({ length: 16 }).map((_, i) => <line key={i} x1={i * 128 - 60} y1={ROOM_FLOOR} x2={(i * 128 - 960) * 1.9 + 960} y2={H + 40} stroke={f2} strokeWidth={3} />)}
+      <rect x={-400} y={ROOM_FLOOR} width={W + 800} height={H - ROOM_FLOOR + 400} fill="url(#fl-floorgrad)" />
+      <rect x={-400} y={ROOM_FLOOR - 18} width={W + 800} height={18} fill="#eef0f1" opacity={0.85} />
+      <rect x={-400} y={ROOM_FLOOR} width={W + 800} height={10} fill="#000" opacity={0.18} />
+      {night && <rect x={-400} y={-400} width={W + 800} height={H + 800} fill="#0a1226" opacity={0.45} />}
+      <Dust t={t} />
+    </g>
+  );
+};
+
+const Park: React.FC<{ night: boolean; t: number }> = ({ night, t }) => (
+  <g>
+    <rect x={-400} y={-400} width={W + 800} height={H + 800} fill={night ? "#121a2c" : "#bcdcf0"} />
+    {!night && <><circle cx={1520} cy={150} r={70} fill="#fff6d6" /><circle cx={1520} cy={150} r={240} fill="url(#fl-warm)" /></>}
+    {night && <circle cx={1520} cy={150} r={44} fill="#f3efd8" />}
+    <path d={`M-400,${PARK_GROUND - 80} Q300,${PARK_GROUND - 170} 700,${PARK_GROUND - 90} T1500,${PARK_GROUND - 110} T2320,${PARK_GROUND - 90} L2320,1500 L-400,1500 Z`} fill={night ? "#1f3326" : "#a8c7a0"} />
+    {[120, 420, 760, 1260, 1640, 1860].map((x, i) => <g key={x}><rect x={x - 10} y={PARK_GROUND - 190} width={20} height={130} fill={night ? "#2a2420" : "#6b4a36"} /><circle cx={x} cy={PARK_GROUND - 220} r={70 + (i % 3) * 18} fill={night ? "#1c2f22" : i % 2 ? "#5f9b55" : "#6aaa5f"} /></g>)}
+    <rect x={-400} y={PARK_GROUND} width={W + 800} height={H - PARK_GROUND + 400} fill={night ? "#26402c" : "#86b77c"} />
+    <path d={`M700,${PARK_GROUND} L1220,${PARK_GROUND} L1600,${H + 400} L320,${H + 400} Z`} fill={night ? "#3a3a36" : "#d8c9a6"} opacity={0.75} />
+    {Array.from({ length: 50 }).map((_, i) => { const r = rnd(i + 5); const x = r() * W, y = PARK_GROUND + 20 + r() * 420; return <path key={i} d={`M${x},${y} q${Math.sin((t + i * 11) / 30) * 6},-18 ${Math.sin((t + i * 11) / 30) * 10},-${22 + r() * 18}`} stroke={night ? "#2f5235" : "#5f9b55"} strokeWidth={4} fill="none" strokeLinecap="round" />; })}
+  </g>
+);
+
+export const EnvBack: React.FC<{ kind: EnvKind; grade: string; t: number; wall?: string; floor?: string }> = ({ kind, grade, t, wall, floor }) => {
   const night = grade === "night" || grade === "rain";
   switch (kind) {
+    case "room": return <Room wall={wall} floor={floor} night={night} t={t} />;
+    case "park": return <Park night={night} t={t} />;
     case "black": return <rect width={W} height={H} fill="#000" />;
     case "paper": return <rect width={W} height={H} fill="#e9e6df" />;
     case "shop-counter":
@@ -194,11 +235,8 @@ export const EnvBack: React.FC<{ kind: EnvKind; grade: string; t: number }> = ({
             {!dawn && Array.from({ length: 26 }).map((_, i) => <circle key={i} cx={20 + (i * 71) % 520} cy={300 + ((i * 53) % 180)} r={4 + (i % 4)} fill="#f2d27a" opacity={0.35 + (i % 3) * 0.15} filter="url(#fl-soft2)" />)}
             <rect width={560} height={500} fill="none" stroke="#2b3441" strokeWidth={18} /><line x1={280} y1={0} x2={280} y2={500} stroke="#2b3441" strokeWidth={12} />
           </g>
-          <rect x={0} y={700} width={W} height={H - 700} fill={dawn ? "#4a4540" : "#232932"} />
-          <rect x={0} y={700} width={W} height={8} fill="#fff" opacity={0.12} />
           {!dawn && (
             <g>
-              <ellipse cx={1200} cy={760} rx={620} ry={150} fill="url(#fl-warm)" opacity={0.9 - 0.06 * Math.sin(t / 7)} />
               <g transform="translate(1450,300)"><line x1={0} y1={400} x2={0} y2={150} stroke="#545b63" strokeWidth={10} /><line x1={0} y1={150} x2={-110} y2={60} stroke="#545b63" strokeWidth={10} /><path d="M-170,100 L-60,60 L-70,10 Z" fill="#6a727a" /><ellipse cx={-110} cy={72} rx={40} ry={10} fill="#fff4c9" /></g>
             </g>
           )}
@@ -228,8 +266,18 @@ export const EnvBack: React.FC<{ kind: EnvKind; grade: string; t: number }> = ({
   }
 };
 
-export const EnvFront: React.FC<{ kind: EnvKind }> = ({ kind }) => {
+export const EnvFront: React.FC<{ kind: EnvKind; t?: number }> = ({ kind, t = 0 }) => {
   if (kind === "shop-counter" || kind === "shop-floor") return <Counter />;
+  if (kind === "desk-night" || kind === "desk-dawn") {
+    const dawn = kind === "desk-dawn";
+    return (
+      <g>
+        <rect x={-400} y={700} width={W + 800} height={H - 700 + 400} fill={dawn ? "#4a4540" : "#232932"} />
+        <rect x={-400} y={700} width={W + 800} height={8} fill="#fff" opacity={0.12} />
+        {!dawn && <ellipse cx={1200} cy={760} rx={620} ry={150} fill="url(#fl-warm)" opacity={0.9 - 0.06 * Math.sin(t / 7)} />}
+      </g>
+    );
+  }
   if (kind === "shop-window") return <Counter drawers />;
   return null;
 };
