@@ -98,14 +98,14 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     flip: stepAt(l.faces, frame, l.flip).v,
   };
 
-  // turning round: around each change of facing the face passes through the front and the body narrows, instead of a mirror flip
-  const TURN = 7;
+  // turning round: around each change of facing the head and body pass through the front (spin 0) over ~0.8 s, instead of a
+  // mirror flip; the mirror happens at the middle, when the figure faces the camera and looks the same both ways
+  const TURN = 12;
   let turnDip = 1;
   for (const [f] of l.faces ?? []) {
     const d = Math.abs(frame - f);
     if (d < TURN) turnDip = Math.min(turnDip, smooth(d / TURN));
   }
-  if (turnDip < 1) place.sx = 0.8 + 0.2 * turnDip;
 
   // what the head attends to: a gaze target, else whatever the hand is working on (the strongest wins)
   let attend: { x: number; y: number; w: number } | undefined;
@@ -144,7 +144,7 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     const own = pose.turn ?? 0.75;
     const { v, since, prev } = stepAt(l.turns, frame, -1);
     const to = v < 0 ? own : v, from = prev < 0 ? own : prev;
-    pose = { ...pose, turn: from + (to - from) * smooth((frame - since) / 10) };
+    pose = { ...pose, turn: from + (to - from) * smooth((frame - since) / 18) };
   }
 
   // head gestures
@@ -154,7 +154,7 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     if (kind === "nod") pose = { ...pose, head: pose.head + Math.sin((frame - a) * 0.5) * 12 * env };
     else pose = { ...pose, turn: Math.max(0, Math.min(1, (pose.turn ?? 0.75) - 0.25 + Math.sin((frame - a) * 0.45) * 0.3 * env)) };
   }
-  if (turnDip < 1) pose = { ...pose, turn: (pose.turn ?? 0.75) * turnDip };
+  if (turnDip < 1) pose = { ...pose, turn: (pose.turn ?? 0.75) * turnDip, spin: turnDip };
 
   return { pose, place, mood: stepAt(l.moods, frame, l.mood).v, look: stepAt(l.looks, frame, l.look).v, seed };
 }
