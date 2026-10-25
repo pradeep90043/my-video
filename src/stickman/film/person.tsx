@@ -23,35 +23,37 @@ export interface PoseParams {
   seat?: boolean;
   /** the front arm keeps still while walking (it carries something) */
   carry?: boolean;
+  /** how far the face turns from the camera towards the way the body faces: 0 = front, 1 = full profile */
+  turn?: number;
 }
 
-const STAND: PoseParams = { lean: 0, head: 0, armF: [6, 6], armB: [-4, 6], stride: 0, shoulders: 0, point: false };
+const STAND: PoseParams = { lean: 0, head: 0, armF: [6, 6], armB: [-4, 6], stride: 0, shoulders: 0, point: false, turn: 0.75 };
 export const POSES: Record<string, PoseParams> = {
   stand: STAND,
-  lean: { ...STAND, lean: 14, head: 6, armF: [35, 55], armB: [30, 60] },
-  point: { ...STAND, lean: 2, head: -4, armF: [95, 75], armB: [-6, 10], point: true },
-  "hand-over": { ...STAND, lean: 8, armF: [84, 12], armB: [40, 60] },
-  shrug: { ...STAND, shoulders: 16, head: 8, armF: [22, 78], armB: [-22, 78] },
-  slump: { ...STAND, lean: 12, head: 20, armF: [-2, 4], armB: [4, 4], shoulders: -8 },
-  hold: { ...STAND, lean: 3, head: 6, armF: [38, 52], armB: [34, 52], carry: true },
-  reach: { ...STAND, lean: 6, armF: [104, 6], armB: [4, 8] },
-  walk: { ...STAND, lean: 3, stride: 26, armF: [0, 8], armB: [0, 8] },
-  run: { ...STAND, lean: 14, head: -2, stride: 40, armF: [10, 85], armB: [10, 85] },
-  sit: { ...STAND, lean: 6, head: 8, armF: [32, 58], armB: [28, 58], noLegs: true },
-  "sit-read": { ...STAND, lean: 12, head: 24, armF: [30, 60], armB: [26, 62], noLegs: true },
-  "sit-bench": { ...STAND, lean: 10, head: 22, armF: [30, 60], armB: [26, 62], noLegs: true, seat: true },
-  "sit-chair": { ...STAND, lean: 4, head: 4, armF: [24, 50], armB: [20, 52], noLegs: true, seat: true },
-  "sit-hold": { ...STAND, lean: 6, head: 18, armF: [52, 82], armB: [46, 82], noLegs: true, seat: true, carry: true },
-  "sit-slump": { ...STAND, lean: 20, head: 28, armF: [12, 30], armB: [8, 30], shoulders: -8, noLegs: true, seat: true },
-  lie: { ...STAND, armF: [3, 2], armB: [-3, 2] },
-  think: { ...STAND, head: -6, armF: [70, 118], armB: [30, 70] },
-  cry: { ...STAND, lean: 8, head: 22, armF: [122, 112], armB: [112, 112], shoulders: -6 },
-  cheer: { ...STAND, head: -10, armF: [168, 8], armB: [160, 8], shoulders: 8 },
-  "arms-crossed": { ...STAND, armF: [48, 104], armB: [40, 104] },
-  facepalm: { ...STAND, lean: 6, head: 16, armF: [126, 104], armB: [-4, 8] },
-  "look-up": { ...STAND, head: -16, armF: [8, 8], armB: [-6, 8] },
-  wave: { ...STAND, armF: [110, 60], armB: [-4, 6] },
-  laugh: { ...STAND, head: -12, shoulders: 6, armF: [14, 40], armB: [-14, 40] },
+  lean: { ...STAND, lean: 14, head: 6, armF: [35, 55], armB: [30, 60], turn: 0.9 },
+  point: { ...STAND, lean: 2, head: -4, armF: [95, 75], armB: [-6, 10], point: true, turn: 0.85 },
+  "hand-over": { ...STAND, lean: 8, armF: [84, 12], armB: [40, 60], turn: 1 },
+  shrug: { ...STAND, shoulders: 16, head: 8, armF: [22, 78], armB: [-22, 78], turn: 0.15 },
+  slump: { ...STAND, lean: 12, head: 20, armF: [-2, 4], armB: [4, 4], shoulders: -8, turn: 0.7 },
+  hold: { ...STAND, lean: 3, head: 6, armF: [38, 52], armB: [34, 52], carry: true, turn: 0.85 },
+  reach: { ...STAND, lean: 6, armF: [104, 6], armB: [4, 8], turn: 1 },
+  walk: { ...STAND, lean: 3, stride: 26, armF: [0, 8], armB: [0, 8], turn: 1 },
+  run: { ...STAND, lean: 14, head: -2, stride: 40, armF: [10, 85], armB: [10, 85], turn: 1 },
+  sit: { ...STAND, lean: 6, head: 8, armF: [32, 58], armB: [28, 58], noLegs: true, turn: 0.7 },
+  "sit-read": { ...STAND, lean: 12, head: 24, armF: [30, 60], armB: [26, 62], noLegs: true, turn: 0.95 },
+  "sit-bench": { ...STAND, lean: 10, head: 22, armF: [30, 60], armB: [26, 62], noLegs: true, seat: true, turn: 0.8 },
+  "sit-chair": { ...STAND, lean: 4, head: 4, armF: [24, 50], armB: [20, 52], noLegs: true, seat: true, turn: 0.75 },
+  "sit-hold": { ...STAND, lean: 6, head: 18, armF: [52, 82], armB: [46, 82], noLegs: true, seat: true, carry: true, turn: 0.9 },
+  "sit-slump": { ...STAND, lean: 20, head: 28, armF: [12, 30], armB: [8, 30], shoulders: -8, noLegs: true, seat: true, turn: 0.65 },
+  lie: { ...STAND, armF: [3, 2], armB: [-3, 2], turn: 1 },
+  think: { ...STAND, head: -6, armF: [70, 118], armB: [30, 70], turn: 0.45 },
+  cry: { ...STAND, lean: 8, head: 22, armF: [122, 112], armB: [112, 112], shoulders: -6, turn: 0.3 },
+  cheer: { ...STAND, head: -10, armF: [168, 8], armB: [160, 8], shoulders: 8, turn: 0.15 },
+  "arms-crossed": { ...STAND, armF: [48, 104], armB: [40, 104], turn: 0.35 },
+  facepalm: { ...STAND, lean: 6, head: 16, armF: [126, 104], armB: [-4, 8], turn: 0.55 },
+  "look-up": { ...STAND, head: -16, armF: [8, 8], armB: [-6, 8], turn: 0.8 },
+  wave: { ...STAND, armF: [110, 60], armB: [-4, 6], turn: 0.3 },
+  laugh: { ...STAND, head: -12, shoulders: 6, armF: [14, 40], armB: [-14, 40], turn: 0.35 },
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -61,6 +63,7 @@ export function blendPose(a: PoseParams, b: PoseParams, t: number): PoseParams {
     armF: [lerp(a.armF[0], b.armF[0], t), lerp(a.armF[1], b.armF[1], t)],
     armB: [lerp(a.armB[0], b.armB[0], t), lerp(a.armB[1], b.armB[1], t)],
     stride: lerp(a.stride, b.stride, t), shoulders: lerp(a.shoulders, b.shoulders, t), point: t < 0.5 ? a.point : b.point, noLegs: t < 0.5 ? a.noLegs : b.noLegs, seat: t < 0.5 ? a.seat : b.seat, carry: t < 0.5 ? a.carry : b.carry,
+    turn: lerp(a.turn ?? 0.75, b.turn ?? 0.75, t),
   };
 }
 
@@ -95,9 +98,14 @@ export interface PersonProps {
   seed: number;
   shadow?: boolean;
   shirt?: string;
+  /** speaking now: the mouth moves */
+  talking?: boolean;
 }
 
-export const Person: React.FC<PersonProps> = ({ who, pose, frame, eyes, mood, look, holds, seed, shadow, shirt }) => {
+/** 0 below a, 1 above b, smooth between */
+const band = (a: number, b: number, t: number) => { const k = Math.max(0, Math.min(1, (t - a) / (b - a))); return k * k * (3 - 2 * k); };
+
+export const Person: React.FC<PersonProps> = ({ who, pose, frame, eyes, mood, look, holds, seed, shadow, shirt, talking }) => {
   const breathe = Math.sin((frame + seed * 13) / 22) * 3;
   const sway = Math.sin((frame + seed * 7) / 47) * 1.2;
   const walkPhase = Math.sin(frame * 0.26);
@@ -112,6 +120,11 @@ export const Person: React.FC<PersonProps> = ({ who, pose, frame, eyes, mood, lo
   const lidDrop = mood === "tired" ? 0.5 : 0;
   const closed = mood === "sleep";
   const eyeR = mood === "surprised" ? 1.25 : 1;
+  const T = Math.max(0, Math.min(1, pose.turn ?? 0.75));
+  // eyes drop a little when the head bows over something
+  const gazeY = Math.max(-1, Math.min(1, pose.head / 25));
+  // talking: the mouth opens and closes at a speech-like rate
+  const talk = talking ? Math.abs(Math.sin(frame * 0.55 + seed)) * (0.6 + 0.4 * Math.abs(Math.sin(frame * 0.19))) : 0;
 
   return (
     <g>
@@ -141,33 +154,41 @@ export const Person: React.FC<PersonProps> = ({ who, pose, frame, eyes, mood, lo
         {seller && <path d="M-26,-176 L-10,-110 M26,-176 L10,-110" stroke="rgba(255,255,255,0.35)" strokeWidth={4} strokeLinecap="round" fill="none" />}
         <g transform={`translate(0,-190) rotate(${pose.head + sway})`}>
           <rect x={-18} y={-4} width={36} height={36} rx={14} fill={SKIN} transform="translate(0,-14)" />
+          {/* nose: only shows as the face turns side-on (drawn first so the head covers its root) */}
+          <ellipse cx={54 + 10 * T} cy={-48} rx={6 + 9 * T} ry={11} fill={SKIN} stroke={RIM} strokeWidth={2} opacity={band(0.25, 0.7, T)} />
           <circle cx={0} cy={-62} r={62} fill={SKIN} stroke={RIM} strokeWidth={2} />
           {seller ? (
-            <g>
-              <circle cx={-30} cy={-122} r={28} fill={SKIN} stroke={RIM} strokeWidth={2} />
-              <path d="M-60,-84 Q-2,-138 56,-92" stroke="rgba(255,255,255,0.0)" fill="none" />
-            </g>
+            <circle cx={-30 - T * 12} cy={-122 + T * 8} r={28} fill={SKIN} stroke={RIM} strokeWidth={2} />
           ) : (
-            <path d="M-50,-92 Q-6,-134 52,-96 Q22,-118 -50,-92 Z" fill={SKIN} />
+            <path d="M-50,-92 Q-6,-134 52,-96 Q22,-118 -50,-92 Z" fill={SKIN} transform={`translate(${-T * 14},0)`} />
           )}
           {eyes && (
             <g>
-              {[-22, 24].map((ex, i) => (
-                <g key={i} transform={`translate(${ex},-60)`}>
+              {/* the near eye moves towards the front of the face; the far eye narrows and disappears behind the nose */}
+              {[{ x: -22 + T * 48, k: (1 - T * 0.6) * (1 - band(0.55, 0.82, T)), far: true }, { x: 24 + T * 18, k: 1 - T * 0.35, far: false }].map((e, i) => e.k > 0.04 && (
+                <g key={i} transform={`translate(${e.x},-60) scale(${e.k},1)`}>
                   {closed ? <path d="M-10,2 Q0,8 10,2" stroke="#f4f4f0" strokeWidth={3.5} fill="none" strokeLinecap="round" opacity={0.85} /> : <>
                     <ellipse cx={0} cy={0} rx={10 * eyeR} ry={12 * blink * eyeR} fill="#f4f4f0" />
-                    <circle cx={look * 4} cy={1} r={4.4} fill="#0b0b0d" />
+                    <circle cx={Math.max(-5, Math.min(5, look * 4 + T * 3))} cy={1 + gazeY * 3} r={4.4} fill="#0b0b0d" />
                     {lidDrop > 0 && <rect x={-12} y={-13} width={24} height={13 * lidDrop * 2} fill="#0b0b0d" />}
                   </>}
-                  {!closed && <path d={`M-14,${-22 + browLift + (i ? -1 : 1) * browTilt * 0.3} L14,${-22 + browLift - (i ? -1 : 1) * browTilt * 0.3}`} stroke="#f4f4f0" strokeWidth={4} strokeLinecap="round" opacity={0.85} />}
+                  {!closed && <path d={`M-14,${-22 + browLift + (e.far ? 1 : -1) * browTilt * 0.3} L14,${-22 + browLift - (e.far ? 1 : -1) * browTilt * 0.3}`} stroke="#f4f4f0" strokeWidth={4} strokeLinecap="round" opacity={0.85} />}
                 </g>
               ))}
-              {mood === "happy" && <path d="M-16,-26 Q2,-12 20,-26" stroke="#f4f4f0" strokeWidth={4} fill="none" strokeLinecap="round" />}
-              {(mood === "sad" || mood === "worried" || mood === "angry") && <path d="M-14,-22 Q2,-32 18,-22" stroke="#f4f4f0" strokeWidth={4} fill="none" strokeLinecap="round" />}
-              {mood === "surprised" && <ellipse cx={2} cy={-24} rx={7} ry={9} fill="#f4f4f0" />}
+              {/* the mouth follows the face round and foreshortens */}
+              <g transform={`translate(${T * 26},0) scale(${1 - T * 0.45},1)`}>
+                {talk > 0.05 ? <ellipse cx={2} cy={-24} rx={9} ry={2 + talk * 8} fill="#f4f4f0" opacity={0.9} />
+                  : <>
+                    {mood === "happy" && <path d="M-16,-26 Q2,-12 20,-26" stroke="#f4f4f0" strokeWidth={4} fill="none" strokeLinecap="round" />}
+                    {(mood === "sad" || mood === "worried" || mood === "angry") && <path d="M-14,-22 Q2,-32 18,-22" stroke="#f4f4f0" strokeWidth={4} fill="none" strokeLinecap="round" />}
+                    {mood === "surprised" && <ellipse cx={2} cy={-24} rx={7} ry={9} fill="#f4f4f0" />}
+                  </>}
+              </g>
               {seller && (
                 <g stroke="rgba(255,255,255,0.55)" strokeWidth={3} fill="none">
-                  <circle cx={-22} cy={-60} r={19} /><circle cx={24} cy={-60} r={19} /><path d="M-3,-60 L5,-60" />
+                  {T < 0.85 && <ellipse cx={-22 + T * 48} cy={-60} rx={19 * (1 - T * 0.6)} ry={19} />}
+                  <ellipse cx={24 + T * 18} cy={-60} rx={19 * (1 - T * 0.35)} ry={19} />
+                  {T < 0.85 ? <path d={`M${-22 + T * 48 + 19 * (1 - T * 0.6)},-60 L${24 + T * 18 - 19 * (1 - T * 0.35)},-60`} /> : <path d="M26,-62 L-6,-64" />}
                 </g>
               )}
             </g>

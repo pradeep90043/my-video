@@ -68,6 +68,12 @@ export const FilmLayerSchema = z.discriminatedUnion("t", [
     faces: z.array(z.tuple([z.number(), z.boolean()])).optional(),
     moods: z.array(z.tuple([z.number(), z.enum(MOODS)])).optional(),
     looks: z.array(z.tuple([z.number(), z.number().min(-1).max(1)])).optional(),
+    /** face turn override, [frame, 0 = to the camera .. 1 = profile, or -1 = back to what the pose does] */
+    turns: z.array(z.tuple([z.number(), z.number().min(-1).max(1)])).optional(),
+    /** the head turns to look at a world point from `at` until `until` */
+    gazes: z.array(z.object({ at: z.number(), until: z.number().optional(), x: z.number(), y: z.number() })).optional(),
+    /** speaking, [from, to] frames: the mouth moves */
+    talks: z.array(z.tuple([z.number(), z.number()])).optional(),
     /** the front hand goes to a world point (inverse kinematics) from `at` for `dur` frames; `hold` keeps it there; `wiggle` = typing / writing */
     reach: z.array(z.object({ at: z.number(), dur: z.number(), x: z.number(), y: z.number(), hold: z.boolean().optional(), release: z.number().optional(), ease: z.number().optional(), wiggle: z.number().optional() })).optional(),
     /** a soft contact shadow on the ground at the feet */
