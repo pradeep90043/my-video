@@ -12,6 +12,8 @@ export const FOLEY_NAMES = [
   "alarm", "smoke-alarm", "siren", "clock-tick",
   "typing", "typing-soft", "click", "glass", "book-flip", "cloth",
   "punch", "thud", "clang", "bell", "applause", "laughter", "hiss",
+  // body and object sounds that the animation itself triggers (see actionSounds.ts)
+  "phone-buzz", "heartbeat", "breath", "sigh", "whoosh", "rustle", "bat-hit", "ball-bounce",
 ] as const;
 
 export type AmbientName = (typeof AMBIENT_NAMES)[number];
@@ -27,7 +29,41 @@ export const FOLEY_GAIN: Record<FoleyName, number> = {
   alarm: 0.45, "smoke-alarm": 0.35, siren: 0.35, "clock-tick": 0.4,
   typing: 0.45, "typing-soft": 0.5, click: 0.5, glass: 0.55, "book-flip": 0.55, cloth: 0.5,
   punch: 0.6, thud: 0.6, clang: 0.5, bell: 0.45, applause: 0.4, laughter: 0.4, hiss: 0.5,
+  "phone-buzz": 0.45, heartbeat: 0.5, breath: 0.35, sigh: 0.4, whoosh: 0.4, rustle: 0.45, "bat-hit": 0.6, "ball-bounce": 0.5,
 };
+
+/**
+ * Layered ambience: what a place sounds like is a close bed plus a distant one (a bedroom is room tone with the night
+ * outside; a street is traffic with wind). `layers` lists the extra beds under whatever the scene's main bed is.
+ */
+export interface AmbientLayer { name: AmbientName; gain: number }
+const PLACE_LAYERS: Record<string, AmbientLayer[]> = {
+  room_night: [{ name: "room", gain: 0.5 }, { name: "night", gain: 0.3 }],
+  home: [{ name: "room", gain: 0.5 }, { name: "city", gain: 0.1 }],
+  school: [{ name: "crowd", gain: 0.4 }, { name: "room", gain: 0.2 }],
+  street: [{ name: "city", gain: 0.5 }, { name: "wind", gain: 0.15 }],
+  market: [{ name: "crowd", gain: 0.5 }, { name: "city", gain: 0.2 }],
+  road: [{ name: "wind", gain: 0.3 }, { name: "city", gain: 0.25 }],
+  village: [{ name: "forest", gain: 0.4 }, { name: "wind", gain: 0.15 }],
+  forest: [{ name: "forest", gain: 0.5 }, { name: "wind", gain: 0.15 }],
+  farm: [{ name: "forest", gain: 0.4 }, { name: "wind", gain: 0.2 }],
+  river: [{ name: "wind", gain: 0.3 }, { name: "forest", gain: 0.3 }],
+  mountain: [{ name: "wind", gain: 0.5 }, { name: "forest", gain: 0.15 }],
+  beach: [{ name: "wind", gain: 0.4 }, { name: "crowd", gain: 0.1 }],
+  office: [{ name: "room", gain: 0.4 }, { name: "cafe", gain: 0.12 }],
+  hospital: [{ name: "room", gain: 0.45 }, { name: "crowd", gain: 0.08 }],
+  palace: [{ name: "room", gain: 0.4 }, { name: "wind", gain: 0.12 }],
+  temple: [{ name: "wind", gain: 0.25 }, { name: "room", gain: 0.3 }],
+  cave: [{ name: "wind", gain: 0.3 }, { name: "room", gain: 0.5 }],
+};
+/** The extra beds a story scene wants: its place, plus rain when it rains and the night outside after dark. */
+export function placeLayers(bg: string, time: string, fx: string): AmbientLayer[] {
+  const out = [...(PLACE_LAYERS[bg] ?? [{ name: "room" as const, gain: 0.4 }])];
+  const has = (n: AmbientName) => out.some((l) => l.name === n);
+  if ((fx === "rain" || fx === "lightning") && !has("rain")) out.push({ name: "rain", gain: 0.5 });
+  if (time === "night" && !has("night") && bg !== "room_night") out.push({ name: "night", gain: 0.3 });
+  return out;
+}
 
 /** Sample `at` positions in the spoken text → frames: a rule fires on the first word matching `word`. */
 interface FoleyRule { foley: FoleyName; word: RegExp }

@@ -173,3 +173,12 @@ generated from the scene text. Reference: `public/content/stickman-demo/`.
 - `edge-tts` (Python: `pip install edge-tts`), `ffmpeg`/`ffprobe` on PATH
 - `.env`: `GEMINI_API_KEY` (+ optional `ELEVENLABS_API_KEY`, `LLM_PROVIDER`,
   `VOICE_PROVIDER`, `OUTRO_PATH`)
+
+### Sound design (stories)
+
+For story scenes (`visual.story`) the sound is planned from the animation, in `src/stickman/actionSounds.ts` + `soundPlan.ts`:
+
+- **Action sounds** — footsteps for exactly the frames a character walks in (floor-aware: wood indoors, grass outdoors, concrete in streets), run, jump whoosh + landing, sleep breathing, sighs, heartbeat for fear/struggle, phone taps, clock ticks, bat hits, door/bell props. Turn off per project with `fx.autoSound: false`. Sounds you name in a scene's `foley[]` win: action cues only add sounds you did not name.
+- **Layered beds** — every place has a close bed plus a quiet distant one (`PLACE_LAYERS` in `sounds.ts`: a bedroom is room tone with the night outside, a street is traffic with wind; rain and night are added by `fx`/`time`). A layer continuing across scenes is one segment, so it does not re-fade at each cut.
+- **Library** — `npm run longform:sounds` builds CC0 clips plus ffmpeg-synthesised ones (`hiss`, `phone-buzz`, `heartbeat`, `breath`, `sigh`, `whoosh`); no new downloads needed for those.
+- **Loudness master** — `render.ts` runs `scripts/longs/master-audio.ts` after branding: light compression, then two-pass normalisation to -16 LUFS, loudness range about 7 LU, true peak under -1.5 dBFS. `--no-master` skips it; run it by hand with `tsx scripts/longs/master-audio.ts in.mp4 [out.mp4]`.

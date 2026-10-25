@@ -56,7 +56,7 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
   const risers = chapterStarts.map((f) => Math.max(0, f - RISER_FRAMES + 6));
 
   const fx = { ambience: true, foley: true, autoSound: true, ...data.fx };
-  const sounds = React.useMemo(() => planSounds(data.scenes, data.fps, { autoSound: fx.autoSound }), [data.scenes, data.fps, fx.autoSound]);
+  const sounds = React.useMemo(() => planSounds(data.scenes, data.fps, { autoSound: fx.autoSound, vertical: data.orientation === "vertical" }), [data.scenes, data.fps, fx.autoSound, data.orientation]);
 
   let prevPose: PoseName = "idle";
   let prevMood: Mood | undefined;

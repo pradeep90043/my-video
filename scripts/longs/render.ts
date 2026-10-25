@@ -27,6 +27,7 @@ import { spawnSync } from "child_process";
 import { loadVideoJson, resolveProject } from "./lib";
 import { addBranding } from "../shared/branding";
 import { fail, getArg, hasFlag } from "./util";
+import { masterAudio } from "./master-audio";
 import { qaVideo, reportQa } from "./qa";
 import { writeStamp } from "../shared/qa-stamp";
 
@@ -209,6 +210,9 @@ function main() {
     fs.rmSync(workPath, { force: true });
     fail("Final encode/branding failed — refusing to output an unfinished video. Re-run, or pass --no-branding to skip the logo.");
   }
+
+  // Loudness master (-16 LUFS, narrower range): quiet scenes stay audible on a phone. --no-master skips it.
+  if (!hasFlag("no-master") && !masterAudio(workPath)) console.warn("⚠ audio not mastered (no measurable audio)");
 
   console.log("🔎 Running QA…");
   const qa = qaVideo(workPath, {

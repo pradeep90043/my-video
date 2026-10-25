@@ -93,6 +93,20 @@ const FOLEY: Record<FoleyName, FoleySpec> = {
   bell: { src: K("impactBell_heavy_001.ogg") },
   applause: { src: { commons: "Sound Effects - Applause after a concert.ogg" }, ss: 1, t: 6 },
   laughter: { src: { commons: "Laughter(s).ogg" }, t: 5 },
+  // snake / sibilant: filtered noise with a fast tremolo
+  hiss: { src: { synth: "anoisesrc=d=1.6:c=white:r=44100:a=0.9" }, af: "highpass=f=3500,lowpass=f=9500,tremolo=f=22:d=0.35,afade=t=in:d=0.25,afade=t=out:st=0.9:d=0.7" },
+  // two short buzzes of a phone on a table
+  "phone-buzz": { src: { synth: "aevalsrc='sin(2*PI*180*t)*(0.6+0.4*sin(2*PI*40*t))':d=1.6:s=44100" }, af: "volume='clip(8*(0.32-mod(t,0.8)),0,1)*clip(40*mod(t,0.8),0,1)':eval=frame,lowpass=f=900" },
+  // lub-dub, 66 bpm; a harmonic keeps it audible on phone speakers
+  heartbeat: { src: { synth: "aevalsrc='0.7*sin(2*PI*55*t)+0.5*sin(2*PI*110*t)':d=6:s=44100" }, af: "volume='max(exp(-14*mod(t,0.9)),0.7*gte(mod(t,0.9),0.28)*exp(-14*(mod(t,0.9)-0.28))):eval=frame',lowpass=f=240" },
+  // slow breathing of someone asleep: soft noise swelling every 3.4 s
+  breath: { src: { synth: "anoisesrc=color=pink:amplitude=0.8:d=10.2:r=44100" }, af: "highpass=f=250,lowpass=f=1800,volume='0.15+0.85*pow(0.5+0.5*sin(2*PI*t/3.4-1.57),2)':eval=frame" },
+  sigh: { src: { synth: "anoisesrc=color=pink:amplitude=0.8:d=1.8:r=44100" }, af: "highpass=f=300,lowpass=f=2400,volume='pow(sin(PI*t/1.8),2)':eval=frame" },
+  whoosh: { src: { synth: "anoisesrc=color=white:amplitude=0.8:d=0.8:r=44100" }, af: "highpass=f=300,lowpass=f=4000,volume='pow(sin(PI*t/0.8),1.5)':eval=frame" },
+  // turning over in bed / shifting clothes
+  rustle: { steps: { takes: ["cloth1.ogg", "cloth2.ogg", "cloth3.ogg", "cloth4.ogg"].map((f) => K(f, "rpg")), count: 6, interval: 0.45 } },
+  "bat-hit": { src: K("impactPlank_medium_001.ogg") },
+  "ball-bounce": { steps: { takes: ["000", "001", "002", "003", "004"].map((n) => K(`impactSoft_medium_${n}.ogg`)), count: 6, interval: 0.42 }, af: "volume='exp(-0.9*t)':eval=frame" },
 };
 
 // ───────────────────────────── downloads ─────────────────────────────
