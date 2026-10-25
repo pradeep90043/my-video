@@ -121,6 +121,7 @@ export const Person: React.FC<PersonProps> = ({ who, pose, frame, eyes, mood, lo
   const closed = mood === "sleep";
   const eyeR = mood === "surprised" ? 1.25 : 1;
   const T = Math.max(0, Math.min(1, pose.turn ?? 0.75));
+  const farEye = 1 - band(0.48, 0.62, T);
   // eyes drop a little when the head bows over something
   const gazeY = Math.max(-1, Math.min(1, pose.head / 25));
   // talking: the mouth opens and closes at a speech-like rate
@@ -164,9 +165,9 @@ export const Person: React.FC<PersonProps> = ({ who, pose, frame, eyes, mood, lo
           )}
           {eyes && (
             <g>
-              {/* the near eye moves towards the front of the face; the far eye narrows and disappears behind the nose */}
-              {[{ x: -22 + T * 48, k: (1 - T * 0.6) * (1 - band(0.55, 0.82, T)), far: true }, { x: 24 + T * 18, k: 1 - T * 0.35, far: false }].map((e, i) => e.k > 0.04 && (
-                <g key={i} transform={`translate(${e.x},-60) scale(${e.k},1)`}>
+              {/* the near eye moves towards the front of the face; the far eye fades out (never a sliver) once the face is side-on */}
+              {[{ x: -22 + T * 48, k: 1 - T * 0.5, o: farEye, far: true }, { x: 24 + T * 18, k: 1 - T * 0.35, o: 1, far: false }].map((e, i) => e.o > 0.02 && (
+                <g key={i} transform={`translate(${e.x},-60) scale(${e.k},1)`} opacity={e.o}>
                   {closed ? <path d="M-10,2 Q0,8 10,2" stroke="#f4f4f0" strokeWidth={3.5} fill="none" strokeLinecap="round" opacity={0.85} /> : <>
                     <ellipse cx={0} cy={0} rx={10 * eyeR} ry={12 * blink * eyeR} fill="#f4f4f0" />
                     <circle cx={Math.max(-5, Math.min(5, look * 4 + T * 3))} cy={1 + gazeY * 3} r={4.4} fill="#0b0b0d" />
@@ -176,7 +177,7 @@ export const Person: React.FC<PersonProps> = ({ who, pose, frame, eyes, mood, lo
                 </g>
               ))}
               {/* the mouth follows the face round and foreshortens */}
-              <g transform={`translate(${T * 26},0) scale(${1 - T * 0.45},1)`}>
+              <g transform={`translate(${T * 36},0) scale(${1 - T * 0.45},1)`}>
                 {talk > 0.05 ? <ellipse cx={2} cy={-24} rx={9} ry={2 + talk * 8} fill="#f4f4f0" opacity={0.9} />
                   : <>
                     {mood === "happy" && <path d="M-16,-26 Q2,-12 20,-26" stroke="#f4f4f0" strokeWidth={4} fill="none" strokeLinecap="round" />}
@@ -186,9 +187,13 @@ export const Person: React.FC<PersonProps> = ({ who, pose, frame, eyes, mood, lo
               </g>
               {seller && (
                 <g stroke="rgba(255,255,255,0.55)" strokeWidth={3} fill="none">
-                  {T < 0.85 && <ellipse cx={-22 + T * 48} cy={-60} rx={19 * (1 - T * 0.6)} ry={19} />}
+                  {farEye > 0.02 && <g opacity={farEye}>
+                    <ellipse cx={-22 + T * 48} cy={-60} rx={19 * (1 - T * 0.5)} ry={19} />
+                    <path d={`M${-22 + T * 48 + 19 * (1 - T * 0.5)},-60 L${24 + T * 18 - 19 * (1 - T * 0.35)},-60`} />
+                  </g>}
                   <ellipse cx={24 + T * 18} cy={-60} rx={19 * (1 - T * 0.35)} ry={19} />
-                  {T < 0.85 ? <path d={`M${-22 + T * 48 + 19 * (1 - T * 0.6)},-60 L${24 + T * 18 - 19 * (1 - T * 0.35)},-60`} /> : <path d="M26,-62 L-6,-64" />}
+                  {/* side-on: the arm of the glasses runs back towards the ear */}
+                  {farEye < 0.98 && <path d={`M${24 + T * 18 - 19 * (1 - T * 0.35)},-62 L-6,-64`} opacity={1 - farEye} />}
                 </g>
               )}
             </g>
