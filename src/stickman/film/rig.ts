@@ -61,14 +61,15 @@ export function solveFrontArm(pose: PoseParams, frame: number, seed: number, tar
 /** How far the front hand can reach from the hip line (local units), for "walk closer first" decisions. */
 export const REACH = BODY.upper + BODY.lower + BODY.mitt - 10;
 
-export interface Placement { x: number; y: number; s: number; r: number; flip: boolean }
+/** `sx` squeezes the width for a few frames while the figure turns round */
+export interface Placement { x: number; y: number; s: number; r: number; flip: boolean; sx?: number }
 
 export function toLocal(p: Placement, wx: number, wy: number): [number, number] {
   const [rx, ry] = rot(wx - p.x, wy - p.y, -p.r);
-  return [rx / (p.s * (p.flip ? -1 : 1)), ry / p.s];
+  return [rx / (p.s * (p.flip ? -1 : 1) * (p.sx ?? 1)), ry / p.s];
 }
 export function toWorld(p: Placement, lx: number, ly: number): [number, number] {
-  const [rx, ry] = rot(lx * p.s * (p.flip ? -1 : 1), ly * p.s, p.r);
+  const [rx, ry] = rot(lx * p.s * (p.flip ? -1 : 1) * (p.sx ?? 1), ly * p.s, p.r);
   return [p.x + rx, p.y + ry];
 }
 
@@ -96,6 +97,15 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     x: val(l.x, frame, 960), y: val(l.y, frame, 540), s: val(l.s, frame, 1), r: val(l.r, frame, 0),
     flip: stepAt(l.faces, frame, l.flip).v,
   };
+
+  // turning round: around each change of facing the face passes through the front and the body narrows, instead of a mirror flip
+  const TURN = 7;
+  let turnDip = 1;
+  for (const [f] of l.faces ?? []) {
+    const d = Math.abs(frame - f);
+    if (d < TURN) turnDip = Math.min(turnDip, smooth(d / TURN));
+  }
+  if (turnDip < 1) place.sx = 0.8 + 0.2 * turnDip;
 
   // what the head attends to: a gaze target, else whatever the hand is working on (the strongest wins)
   let attend: { x: number; y: number; w: number } | undefined;
@@ -136,6 +146,15 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     const to = v < 0 ? own : v, from = prev < 0 ? own : prev;
     pose = { ...pose, turn: from + (to - from) * smooth((frame - since) / 10) };
   }
+
+  // head gestures
+  for (const [a, b, kind] of l.nods ?? []) {
+    if (frame < a || frame >= b) continue;
+    const env = Math.min(1, (frame - a) / 4, (b - frame) / 4);
+    if (kind === "nod") pose = { ...pose, head: pose.head + Math.sin((frame - a) * 0.5) * 12 * env };
+    else pose = { ...pose, turn: Math.max(0, Math.min(1, (pose.turn ?? 0.75) - 0.25 + Math.sin((frame - a) * 0.45) * 0.3 * env)) };
+  }
+  if (turnDip < 1) pose = { ...pose, turn: (pose.turn ?? 0.75) * turnDip };
 
   return { pose, place, mood: stepAt(l.moods, frame, l.mood).v, look: stepAt(l.looks, frame, l.look).v, seed };
 }

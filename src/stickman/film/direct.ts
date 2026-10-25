@@ -10,6 +10,8 @@ import type { FilmLayer, FilmSpec } from "./schema";
 import { FilmSchema, MOODS, PERSON_POSES, PROP_KINDS, WHO } from "./schema";
 import { PROPS, type PropKind } from "./props";
 import { BODY, REACH } from "./rig";
+import { AGES, AvatarSchema, BEARDS, BUILDS, GENDERS, HAIRS, OUTFITS, SKINS, bodyScale, resolveAvatar, type Avatar } from "./avatar";
+import { KNEEL_DROP } from "./person";
 import { PARK_GROUND, ROOM_FLOOR } from "./env";
 
 const FPS = 30, W = 1920, H = 1080;
@@ -17,7 +19,8 @@ const FPS = 30, W = 1920, H = 1080;
 // ───────────────────────────── the vocabulary ─────────────────────────────
 
 export const PLACE_NAMES = ["bedroom", "study", "kitchen", "classroom", "office", "living-room", "room", "shop", "park", "street", "desk-closeup", "black", "paper"] as const;
-export const ACTIONS = ["walk", "run", "enter", "exit", "sit", "stand", "lie", "sleep", "wake", "pick", "put", "give", "use", "write", "press", "look", "face", "pose", "mood", "say", "think", "switch"] as const;
+export const ACTIONS = ["walk", "run", "enter", "exit", "sit", "stand", "lie", "sleep", "wake", "pick", "put", "give", "use", "write", "press", "look", "face", "pose", "mood", "say", "think", "switch",
+  "jump", "dance", "clap", "kneel", "pray", "hug", "fall", "drink", "eat", "nod", "shake", "point", "wave", "bow"] as const;
 export const SHOT_SIZES = ["wide", "full", "medium", "close", "detail"] as const;
 export const MOVES = ["static", "push-in", "pull-out", "pan-left", "pan-right", "follow"] as const;
 
@@ -50,7 +53,7 @@ const CastSchema = z.object({
   holds: z.string().optional(),
   /** walks in from off-screen at the start */
   enter: z.enum(["left", "right"]).optional(),
-});
+}).merge(AvatarSchema);
 const ActionSchema = z.object({
   at: z.number().min(0),
   who: z.string(),
@@ -184,12 +187,15 @@ interface PropState {
 interface CastState {
   spec: CastIn; layerIndex: number;
   x: number; y: number; s: number; r: number; row: RowName; flip: boolean; z: number;
-  pose: string; seated?: string; lying?: string; holding?: string;
+  pose: string; seated?: string; lying?: string; kneeling?: boolean; holding?: string;
+  /** the look, and the body size it gives (a child is smaller: multiplies every scale) */
+  avatar: Avatar; k: number; seatSole?: number;
   xs: [number, number][]; ys: [number, number][]; ss: [number, number][]; rs: [number, number][]; zs: [number, number][];
   poses: [number, string][]; faces: [number, boolean][]; moods: [number, string][]; looks: [number, number][];
   reach: { at: number; dur: number; x: number; y: number; hold?: boolean; release?: number; ease?: number; wiggle?: number }[];
   /** where the head looks (and the face turns): gaze targets, turns to the camera, speaking */
   gazes: { at: number; until?: number; x: number; y: number }[]; turns: [number, number][]; talks: [number, number][]; toCamera?: boolean;
+  nods: [number, number, "nod" | "shake"][];
   /** the frame this person is free again (actions queue up behind each other) */
   busy: number;
   initPose: string; initFlip: boolean; initZ: number;
@@ -342,9 +348,11 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     const at = c.at ?? (n === 1 ? 0.5 : 0.28 + (0.44 * i) / Math.max(1, n - 1));
     const x = 100 + at * (W - 200);
     const pose = c.pose ?? (place.behind === rowName ? "sit" : "stand");
+    const avatar = resolveAvatar(c.who, c, c.shirt), k = bodyScale(avatar);
     const st: CastState = {
-      spec: c, layerIndex: -1, x, y: row.y, s: row.s, r: 0, row: rowName, flip: c.facing ? c.facing === "left" : x > W / 2 && n > 1, z: row.z + 2,
-      pose, xs: [], ys: [], ss: [], rs: [], zs: [], poses: [], faces: [], moods: [], looks: [], reach: [], gazes: [], turns: [], talks: [], busy: 0,
+      avatar, k,
+      spec: c, layerIndex: -1, x, y: row.y, s: row.s * k, r: 0, row: rowName, flip: c.facing ? c.facing === "left" : x > W / 2 && n > 1, z: row.z + 2,
+      pose, xs: [], ys: [], ss: [], rs: [], zs: [], poses: [], faces: [], moods: [], looks: [], reach: [], gazes: [], turns: [], talks: [], nods: [], busy: 0,
       initPose: pose, initFlip: false, initZ: 0,
     };
     st.layerIndex = layers.length + props.size + i;
@@ -376,8 +384,8 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   const setRow = (c: CastState, f: number, rowName: RowName, dur: number) => {
     const row = place.rows[rowName];
     if (rowName === c.row) return;
-    key(c.ss, f, c.s, row.s, dur);
-    c.s = row.s;
+    key(c.ss, f, c.s, row.s * c.k, dur);
+    c.s = row.s * c.k;
     c.zs.push([f + Math.round(dur / 2), row.z + 2]);
     c.z = row.z + 2;
     c.row = rowName;
@@ -388,7 +396,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     if (Math.abs(tx - c.x) < 6 && rowName === c.row) return f;
     f = standUp(c, f);
     const dist = Math.hypot(tx - c.x, (row.y - c.y) * 1.6);
-    const dur = Math.max(10, Math.round(dist / ((run ? RUN_SPEED : WALK_SPEED) * ((c.s + row.s) / 2))));
+    const dur = Math.max(10, Math.round(dist / ((run ? RUN_SPEED : WALK_SPEED) * ((c.s + row.s * c.k) / 2))));
     setFace(c, f, tx < c.x);
     const before = c.pose === "walk" || c.pose === "run" ? "stand" : c.pose;
     setPose(c, f, run ? "run" : "walk");
@@ -402,13 +410,13 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   };
   /** a seated / lying person gets up first */
   const standUp = (c: CastState, f: number): number => {
-    if (!c.seated && !c.lying) return f;
+    if (!c.seated && !c.lying && !c.kneeling) return f;
     const row = place.rows[c.row];
     if (c.lying) { key(c.rs, f, c.r, 0, 16); c.r = 0; }
     for (const r of c.reach) if (r.hold && r.release === undefined) r.release = f;
     key(c.ys, f, c.y, row.y, 14);
     c.y = row.y;
-    c.seated = undefined; c.lying = undefined;
+    c.seated = undefined; c.lying = undefined; c.kneeling = undefined;
     setPose(c, f, "stand");
     foley.push({ name: "cloth", at: f, volume: 0.35 });
     return f + 16;
@@ -457,8 +465,11 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     const hipX = p.x + (left ? -1 : 1) * (seat.dx - 40) * p.s;
     const seatTop = p.y - seat.y * p.s;
     const rowName = (p.row === "back" || p.row === "mid" || p.row === "front" ? p.row : c.row) as RowName;
+    // shins long enough to reach the floor from this seat (a child's feet dangle instead)
+    const sitS = p.s * c.k, need = (p.y - seatTop) / sitS + 28;
+    c.seatSole = c.avatar.age === "child" ? Math.min(need, 228) : Math.max(160, Math.min(262, need));
     if (initial) {
-      c.x = hipX; c.s = p.s; c.row = rowName; c.z = place.rows[rowName].z + 2; c.flip = left;
+      c.x = hipX; c.s = p.s * c.k; c.row = rowName; c.z = place.rows[rowName].z + 2; c.flip = left;
       c.y = seatTop - 28 * c.s + BODY.hip * c.s; c.pose = "sit-chair"; c.seated = id;
       return f;
     }
@@ -480,10 +491,10 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     if (!p || !seat) { warn(`${c.spec.id} cannot lie on "${id}"`); return f; }
     const top = p.y - (PROPS[p.kind].top?.y ?? seat.y) * p.s;
     const fx = p.x + 210 * p.s * (p.flip ? -1 : 1);
-    const y = top - 70 * p.s;
+    const y = top - 70 * p.s * c.k;
     const rowName = (p.row === "back" || p.row === "mid" || p.row === "front" ? p.row : c.row) as RowName;
     if (initial) {
-      c.x = fx; c.y = y; c.s = p.s; c.row = rowName; c.z = place.rows[rowName].z + 2; c.r = p.flip ? 90 : -90; c.flip = !!p.flip; c.pose = "lie"; c.lying = id;
+      c.x = fx; c.y = y; c.s = p.s * c.k; c.row = rowName; c.z = place.rows[rowName].z + 2; c.r = p.flip ? 90 : -90; c.flip = !!p.flip; c.pose = "lie"; c.lying = id;
       return f;
     }
     let t = walkTo(c, f, p.x + (PROPS[p.kind].w / 2 - 60) * p.s, rowName);
@@ -495,6 +506,31 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     c.lying = id;
     foley.push({ name: "cloth", at: t + 6, volume: 0.4 });
     return t + 20;
+  }
+
+  /** walk to a small thing, reach it and take it in the hand; -1 if it cannot be picked */
+  function pickUp(c: CastState, f: number, tp: PropState): number {
+    if (tp.holder) { warn(`${c.spec.id} pick ${tp.spec.id}: someone already holds it`); return -1; }
+    if (c.holding) { warn(`${c.spec.id} pick: hands full (holding ${c.holding})`); return -1; }
+    if ((c.seated || c.kneeling) && !near(c, ...propGrip(tp))) f = standUp(c, f);
+    const [gx, gy] = propGrip(tp);
+    f = approach(c, f, gx, gy, tp.row);
+    const R = 14;
+    c.reach.push({ at: f, dur: R, x: gx, y: gy });
+    tp.held.push({ from: f + R, by: c.layerIndex });
+    tp.holder = c.spec.id; c.holding = tp.spec.id;
+    setPose(c, f + R, c.seated ? "sit-hold" : "hold");
+    foley.push({ name: tp.kind.startsWith("book") || tp.kind === "paper" || tp.kind === "notebook" ? "book-flip" : "rustle", at: f + R, volume: 0.4 });
+    return f + R + 12;
+  }
+  /** alternate two poses every `every` frames for `d` frames, then go back */
+  function alternate(c: CastState, f: number, a: string, b: string, d: number, every: number, bounce = 0): number {
+    const before = c.pose;
+    for (let t = 0; t < d; t += every) setPose(c, f + t, (t / every) % 2 ? b : a);
+    if (bounce) for (let t = 0; t < d; t += every) c.ys.push([f + t, c.y], [f + t + every / 2, c.y - bounce * c.s]);
+    if (bounce) c.ys.push([f + d, c.y]);
+    setPose(c, f + d, before === a || before === b ? "stand" : before);
+    return f + d;
   }
 
   for (const a of actions) {
@@ -551,18 +587,9 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       }
       case "pick": {
         if (!tp) { warn(`${a.who} pick: pick what?`); continue; }
-        if (tp.holder) { warn(`${a.who} pick ${tp.spec.id}: someone already holds it`); continue; }
-        if (c.holding) { warn(`${a.who} pick: hands full (holding ${c.holding})`); continue; }
-        if (c.seated && !near(c, ...propGrip(tp))) f = standUp(c, f);
-        const [gx, gy] = propGrip(tp);
-        f = approach(c, f, gx, gy, tp.row);
-        const R = 14;
-        c.reach.push({ at: f, dur: R, x: gx, y: gy });
-        tp.held.push({ from: f + R, by: c.layerIndex });
-        tp.holder = c.spec.id; c.holding = tp.spec.id;
-        setPose(c, f + R, c.seated ? "sit-hold" : "hold");
-        foley.push({ name: tp.kind.startsWith("book") || tp.kind === "paper" || tp.kind === "notebook" ? "book-flip" : "rustle", at: f + R, volume: 0.4 });
-        f += R + 12;
+        const t = pickUp(c, f, tp);
+        if (t < 0) continue;
+        f = t;
         break;
       }
       case "put": {
@@ -684,6 +711,121 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         break;
       }
       case "mood": if (a.mood) c.moods.push([f, a.mood]); if (a.mood === "sad" || a.mood === "tired") foley.push({ name: "sigh", at: f + 4, volume: 0.35 }); break;
+      case "jump": {
+        f = standUp(c, f);
+        const before = c.pose === "walk" || c.pose === "run" ? "stand" : c.pose;
+        const times = Math.max(1, Math.min(6, Math.round((dur ?? F(0.9)) / F(0.9))));
+        for (let i = 0; i < times; i++) {
+          // crouch, spring up, land, absorb
+          setPose(c, f, "crouch"); setPose(c, f + 5, "jump");
+          c.ys.push([f + 5, c.y], [f + 13, c.y - 110 * c.s], [f + 21, c.y]);
+          setPose(c, f + 21, "crouch");
+          foley.push({ name: "thud", at: f + 21, volume: 0.3 });
+          f += 27;
+        }
+        setPose(c, f, before); f += 4;
+        break;
+      }
+      case "dance": f = alternate(c, standUp(c, f), "dance-a", "dance-b", dur ?? F(3), 12, 14); foley.push({ name: "cloth", at: f, volume: 0.2 }); break;
+      case "clap": {
+        if (c.holding) { warn(`${a.who} clap: hands full (holding ${c.holding})`); continue; }
+        f = alternate(c, f, "clap-a", "clap-b", dur ?? F(1.6), 6);
+        break;
+      }
+      case "kneel": case "pray": {
+        if (c.lying) f = standUp(c, f);
+        if (c.seated) f = standUp(c, f);
+        if (!c.kneeling) {
+          const y = place.rows[c.row].y + KNEEL_DROP * c.s;
+          key(c.ys, f, c.y, y, 14); c.y = y; c.kneeling = true;
+          foley.push({ name: "cloth", at: f + 4, volume: 0.35 }, { name: "thud", at: f + 12, volume: 0.15 });
+        }
+        setPose(c, f, a.do === "pray" ? "pray" : "kneel");
+        if (a.do === "pray") c.moods.push([f + 10, a.mood ?? "sleep"]);
+        f += 16 + (dur ?? 0);
+        break;
+      }
+      case "hug": {
+        if (!tc) { warn(`${a.who} hug: hug whom?`); continue; }
+        if (c.holding || tc.holding) { warn(`${a.who} hug: hands full`); continue; }
+        f = walkTo(c, f, tc.x + (c.x < tc.x ? -1 : 1) * 150 * c.s, tc.row);
+        setFace(c, f, tc.x < c.x); setFace(tc, Math.max(f, tc.busy), c.x < tc.x);
+        const d = dur ?? F(1.8);
+        const bc = c.pose, bt = tc.pose;
+        setPose(c, f, "hug"); setPose(tc, Math.max(f, tc.busy) + 3, "hug");
+        foley.push({ name: "cloth", at: f + 6, volume: 0.4 });
+        setPose(c, f + d, bc === "walk" ? "stand" : bc); setPose(tc, f + d, bt === "hug" ? "stand" : bt);
+        c.moods.push([f, a.mood ?? "happy"]);
+        f += d;
+        tc.busy = Math.max(tc.busy, f);
+        break;
+      }
+      case "fall": {
+        if (c.lying) continue;
+        if (c.seated || c.kneeling) f = standUp(c, f);
+        const ground = place.rows[c.row].y;
+        // whatever was in the hand drops to the floor in front
+        if (c.holding) {
+          const item = props.get(c.holding)!;
+          const last = item.held[item.held.length - 1];
+          const drop = f + 8, dx = c.x + (c.flip ? -1 : 1) * 160 * c.s;
+          if (last) last.until = drop;
+          item.xs.push([drop - 1, item.x], [drop, dx]); item.ys.push([drop - 1, item.y], [drop, ground]);
+          if (item.s !== c.s) item.ss.push([drop - 1, item.s], [drop, c.s]);
+          item.zs.push([drop, c.z + 1]);
+          Object.assign(item, { x: dx, y: ground, s: c.s, z: c.z + 1, row: c.row, support: "floor", holder: undefined });
+          c.holding = undefined;
+        }
+        // backwards onto the floor: the body pivots on the feet, head away from where they face
+        const r = c.flip ? 90 : -90;
+        setPose(c, f, "lie");
+        key(c.rs, f, c.r, r, 12); c.r = r;
+        const y = ground - 72 * c.s;
+        key(c.ys, f, c.y, y, 12); c.y = y;
+        c.lying = "floor";
+        foley.push({ name: "thud", at: f + 11, volume: 0.6 }, { name: "cloth", at: f + 2, volume: 0.4 });
+        if (a.mood) c.moods.push([f, a.mood]);
+        f += 16;
+        break;
+      }
+      case "drink": case "eat": {
+        // take the thing first if it is not in the hand already
+        if (!c.holding) {
+          if (!tp) { warn(`${a.who} ${a.do}: ${a.do} what?`); continue; }
+          const t = pickUp(c, f, tp);
+          if (t < 0) continue;
+          f = t;
+        } else if (tp && c.holding !== tp.spec.id) { warn(`${a.who} ${a.do}: hands full (holding ${c.holding})`); continue; }
+        const d = dur ?? F(1.6);
+        const dir = c.flip ? -1 : 1;
+        // the hand comes up to the mouth (the thing rides in it), a few times for food
+        const mx = c.x + dir * 70 * c.s, my = c.y - (BODY.hip + 190 + 30) * c.s;
+        const sips = a.do === "eat" ? Math.max(1, Math.round(d / F(0.8))) : 1;
+        const each = Math.round(d / sips);
+        for (let i = 0; i < sips; i++) c.reach.push({ at: f + i * each, dur: Math.max(6, each - 16), x: mx, y: my, ease: 8 });
+        if (a.do === "drink") c.nods.push([f + 8, f + 9, "nod"]);
+        foley.push({ name: a.do === "drink" ? "glass" : "rustle", at: f + 8, volume: 0.35 });
+        f += d + 8;
+        break;
+      }
+      case "nod": case "shake": c.nods.push([f, f + (dur ?? F(1)), a.do]); break;
+      case "point": case "wave": {
+        const tx = tp ? tp.x : tc ? tc.x : undefined;
+        if (tx !== undefined && !c.seated && !c.lying) setFace(c, f, tx < c.x);
+        if (tc) gaze(c, f, ...headOf(tc), f + (dur ?? F(1.5)));
+        else if (tp) gaze(c, f, tp.x, tp.y - PROPS[tp.kind].h * tp.s * 0.5, f + (dur ?? F(1.5)));
+        if (a.do === "wave") { f = alternate(c, f, "wave", "point", dur ?? F(1.5), 9); break; }
+        const before = c.pose;
+        setPose(c, f, "point"); setPose(c, f + (dur ?? F(1.5)), before);
+        f += dur ?? F(1.5);
+        break;
+      }
+      case "bow": {
+        const before = c.pose;
+        setPose(c, f, "bow"); setPose(c, f + (dur ?? F(1.2)), before);
+        f += dur ?? F(1.2);
+        break;
+      }
       case "say": case "think": {
         if (!a.text) { warn(`${a.who} ${a.do}: says nothing`); continue; }
         const d = dur ?? F(Math.max(1.6, a.text.split(/\s+/).length * 0.38));
@@ -731,7 +873,8 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       flip: c.initFlip, faces: c.faces.length ? c.faces : undefined, mood: c.spec.mood, moods: c.moods.length ? c.moods : undefined,
       looks: c.looks.length ? c.looks : undefined, reach: c.reach.length ? c.reach : undefined,
       gazes: c.gazes.length ? c.gazes : undefined, turns: c.turns.length ? c.turns : undefined, talks: c.talks.length ? c.talks : undefined,
-      eyes: true, look: 0, fg: false, holds: "none", shadow: true, shirt: c.spec.shirt,
+      eyes: true, look: 0, fg: false, holds: "none", shadow: true, avatar: c.avatar,
+      nods: c.nods.length ? c.nods : undefined, seatSole: c.seatSole,
       ...(c.zs.length ? { zs: [[0, c.initZ] as [number, number], ...c.zs] } : { z: c.initZ }),
     } as unknown as FilmLayer;
   }
@@ -760,34 +903,59 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   function camera(): FilmSpec["cam"] {
     const on = shot.camera.on === undefined ? [] : Array.isArray(shot.camera.on) ? shot.camera.on : [shot.camera.on];
     const size = shot.camera.shot;
-    // the box to frame, measured where each subject is when the shot starts (or at the end of its first move)
-    const boxes = on.map((id) => {
+    // the box to frame for one subject at one frame (people that are off-screen then don't count)
+    const boxAt = (id: string, f: number) => {
       const c = cast.get(id);
       if (c) {
         const l = layers[c.layerIndex] as FilmLayer & { t: "person" };
-        const mid = Math.min(total - 1, Math.max(0, Math.round(total * 0.5)));
-        const x = typeof l.x === "number" ? l.x : valAt(l.x, mid), y = typeof l.y === "number" ? l.y : valAt(l.y, mid), s = typeof l.s === "number" ? l.s : valAt(l.s, mid);
-        const r = typeof l.r === "number" ? l.r : valAt(l.r, mid);
-        if (Math.abs(r) > 45) return { x0: x - 520 * s, x1: x + 40 * s, y0: y - 120 * s, y1: y + 90 * s, head: [x - 440 * s, y] as [number, number], s };
+        const at = (a: unknown) => (typeof a === "number" ? a : valAt(a, f));
+        const x = at(l.x), y = at(l.y), s = at(l.s), r = at(l.r);
+        if (x < -60 || x > W + 60) return undefined;
+        if (Math.abs(r) > 45) return { x0: x - 520 * s, x1: x + 520 * s, y0: y - 120 * s, y1: y + 90 * s };
         const top = y - BODY.height * s;
         const boxH = size === "close" ? 230 * s : size === "medium" ? 360 * s : 620 * s;
-        return { x0: x - 130 * s, x1: x + 130 * s, y0: top - 20 * s, y1: top - 20 * s + boxH, head: [x, y - BODY.head * s] as [number, number], s };
+        return { x0: x - 130 * s, x1: x + 130 * s, y0: top - 20 * s, y1: top - 20 * s + boxH };
       }
       const p = props.get(id);
       if (p) {
         const sp = PROPS[p.kind];
-        return { x0: p.x - (sp.w * p.s) / 2, x1: p.x + (sp.w * p.s) / 2, y0: p.y - sp.h * p.s, y1: p.y, head: [p.x, p.y - (sp.h * p.s) / 2] as [number, number], s: p.s };
+        return { x0: p.x - (sp.w * p.s) / 2, x1: p.x + (sp.w * p.s) / 2, y0: p.y - sp.h * p.s, y1: p.y };
       }
-      warn(`camera: no "${id}" to look at`);
       return undefined;
-    }).filter((b): b is NonNullable<typeof b> => !!b);
+    };
+    for (const id of on) if (!cast.has(id) && !props.has(id)) warn(`camera: no "${id}" to look at`);
+    type Box = { x0: number; x1: number; y0: number; y1: number };
+    const union = (bs: Box[]): Box | undefined => bs.length ? { x0: Math.min(...bs.map((b) => b.x0)), x1: Math.max(...bs.map((b) => b.x1)), y0: Math.min(...bs.map((b) => b.y0)), y1: Math.max(...bs.map((b) => b.y1)) } : undefined;
+    const pad = size === "detail" ? 2.2 : 1.25;
+    const fit = (b: Box) => Math.max(1, Math.min(size === "detail" ? 5 : 3.6, Math.min(H / ((b.y1 - b.y0) * pad), W / ((b.x1 - b.x0) * pad * 1.15))));
+    // sample the whole shot: everything the subjects do should stay in frame
+    const STEP = 10;
+    const samples: { f: number; box: Box }[] = [];
+    for (let f = 0; f < total; f += STEP) {
+      const b = union(on.map((id) => boxAt(id, f)).filter((x): x is Box => !!x));
+      if (b) samples.push({ f, box: b });
+    }
     let zoom = 1, cx = 960, cy = 540;
-    if (boxes.length && size !== "wide") {
-      const x0 = Math.min(...boxes.map((b) => b.x0)), x1 = Math.max(...boxes.map((b) => b.x1));
-      const y0 = Math.min(...boxes.map((b) => b.y0)), y1 = Math.max(...boxes.map((b) => b.y1));
-      const pad = size === "detail" ? 2.2 : 1.25;
-      zoom = Math.max(1, Math.min(size === "detail" ? 5 : 3.6, Math.min(H / ((y1 - y0) * pad), W / ((x1 - x0) * pad * 1.15))));
-      cx = (x0 + x1) / 2; cy = (y0 + y1) / 2;
+    const all = union(samples.map((x) => x.box));
+    if (all && size !== "wide") {
+      const zAll = fit(all);
+      const zEach = samples.map((x) => fit(x.box)).sort((a, b) => a - b);
+      const zTight = zEach[Math.floor(zEach.length * 0.2)] ?? zAll;
+      if (zAll >= zTight * 0.72 || shot.camera.move !== "static") {
+        zoom = zAll; cx = (all.x0 + all.x1) / 2; cy = (all.y0 + all.y1) / 2;
+      } else {
+        // too far apart over time for one frame at this size: the camera travels with the action, at one steady zoom
+        const z = zTight;
+        const clamp = (x: number, y: number) => [Math.max(960 / z, Math.min(W - 960 / z, x)), Math.max(540 / z, Math.min(H - 540 / z, y))];
+        const keysX: [number, number][] = [], keysY: [number, number][] = [];
+        for (const smp of samples.filter((_, i) => i % 2 === 0)) {
+          const win = union(samples.filter((o) => Math.abs(o.f - smp.f) <= 15).map((o) => o.box))!;
+          const [x, y] = clamp((win.x0 + win.x1) / 2, (win.y0 + win.y1) / 2);
+          keysX.push([smp.f, x]); keysY.push([smp.f, y]);
+        }
+        if (keysX.length >= 2) return { zoom: { from: z, to: z * 1.02, dur: total, ease: "linear" }, x: { keys: keysX, ease: "inout" }, y: { keys: keysY, ease: "inout" } };
+        zoom = z; cx = keysX[0]?.[1] ?? cx; cy = keysY[0]?.[1] ?? cy;
+      }
     }
     const clampC = (z: number, x: number, y: number): [number, number] => [Math.max(960 / z, Math.min(W - 960 / z, x)), Math.max(540 / z, Math.min(H - 540 / z, y))];
     const mv = shot.camera.move;
@@ -849,6 +1017,7 @@ export function catalog(): string {
     `can be sat on: ${seats.join(", ")}. things can be put on: ${tops.join(", ")}`,
     `actions: ${ACTIONS.join(", ")}`,
     `poses: ${PERSON_POSES.join(", ")}. moods: ${MOODS.join(", ")}`,
+    `cast look (all optional): age ${AGES.join("/")}, gender ${GENDERS.join("/")}, build ${BUILDS.join("/")}, hair ${HAIRS.join("/")}, hairColor "#hex", beard ${BEARDS.join("/")}, glasses true/false, outfit ${OUTFITS.join("/")}, top "#hex", bottom "#hex", skin ${SKINS.join("/")}`,
     `camera shot: ${SHOT_SIZES.join(", ")}; move: ${MOVES.join(", ")}`,
   ].join("\n");
 }
