@@ -16,6 +16,8 @@ Rebuilt by `npm run longform:sounds` — do not edit by hand.
 | `ambient/wind` | [Wikimedia Commons — Windy breath.ogg](https://commons.wikimedia.org/wiki/File:Windy_breath.ogg) | Public domain |
 | `foley/alarm` | [Wikimedia Commons — Alarm Clock (Directory.Audio).mp3](https://commons.wikimedia.org/wiki/File:Alarm_Clock_(Directory.Audio).mp3) | CC0 |
 | `foley/applause` | [Wikimedia Commons — Sound Effects - Applause after a concert.ogg](https://commons.wikimedia.org/wiki/File:Sound_Effects_-_Applause_after_a_concert.ogg) | CC0 |
+| `foley/ball-bounce` | [Kenney Impact Sounds — impactSoft_medium_000.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — impactSoft_medium_001.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — impactSoft_medium_002.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — impactSoft_medium_003.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — impactSoft_medium_004.ogg](https://kenney.nl/assets) | CC0 |
+| `foley/bat-hit` | [Kenney Impact Sounds — impactPlank_medium_001.ogg](https://kenney.nl/assets) | CC0 |
 | `foley/bell` | [Kenney Impact Sounds — impactBell_heavy_001.ogg](https://kenney.nl/assets) | CC0 |
 | `foley/book-flip` | [Kenney RPG Audio — bookFlip2.ogg](https://kenney.nl/assets) | CC0 |
 | `foley/clang` | [Kenney Impact Sounds — impactPlate_heavy_001.ogg](https://kenney.nl/assets) | CC0 |
@@ -34,6 +36,7 @@ Rebuilt by `npm run longform:sounds` — do not edit by hand.
 | `foley/laughter` | [Wikimedia Commons — Laughter(s).ogg](https://commons.wikimedia.org/wiki/File:Laughter(s).ogg) | CC0 |
 | `foley/punch` | [Kenney Impact Sounds — impactPunch_medium_001.ogg](https://kenney.nl/assets) | CC0 |
 | `foley/run` | [Kenney Impact Sounds — footstep_concrete_000.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — footstep_concrete_001.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — footstep_concrete_002.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — footstep_concrete_003.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — footstep_concrete_004.ogg](https://kenney.nl/assets) | CC0 |
+| `foley/rustle` | [Kenney RPG Audio — cloth1.ogg](https://kenney.nl/assets)<br>[Kenney RPG Audio — cloth3.ogg](https://kenney.nl/assets) | CC0 |
 | `foley/siren` | [Wikimedia Commons — American police siren i.ogg](https://commons.wikimedia.org/wiki/File:American_police_siren_i.ogg) | Public domain |
 | `foley/smoke-alarm` | [Wikimedia Commons — Smoke alarm.ogg](https://commons.wikimedia.org/wiki/File:Smoke_alarm.ogg) | Public domain |
 | `foley/stairs` | [Kenney Impact Sounds — footstep_wood_000.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — footstep_wood_001.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — footstep_wood_002.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — footstep_wood_003.ogg](https://kenney.nl/assets)<br>[Kenney Impact Sounds — footstep_wood_004.ogg](https://kenney.nl/assets) | CC0 |

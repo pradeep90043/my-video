@@ -42,7 +42,7 @@ export function preflight(slug: string, { needsTts }: PreflightOptions): string[
     // Every ambience bed / foley sound the plan will use must exist (npm run longform:sounds builds them).
     if (problems.length === 0) {
       const fx = data.fx ?? {};
-      const plan = planSounds(data.scenes, data.fps ?? 30, { autoSound: fx.autoSound });
+      const plan = planSounds(data.scenes, data.fps ?? 30, { autoSound: fx.autoSound, vertical: data.orientation === "vertical" });
       const need = new Set<string>([
         ...(fx.ambience === false ? [] : plan.ambient.map((a) => `ambient/${a.name}`)),
         ...(fx.foley === false ? [] : plan.foley.map((f) => `foley/${f.name}`)),

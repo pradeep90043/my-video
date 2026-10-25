@@ -1,0 +1,1600 @@
+{
+  "format": "shorts",
+  "template": "stickman",
+  "theme": "dark",
+  "composition": "StickmanVideo",
+  "fps": 30,
+  "orientation": "vertical",
+  "language": "hi",
+  "title": "पांडा और साँप की दोस्ती (बिना आवाज़)",
+  "description": "",
+  "tags": [],
+  "cast": [
+    {
+      "id": "panda",
+      "name": "पांडा",
+      "age": "adult",
+      "skin": "#FFFFFF",
+      "hair": "bald",
+      "hairColor": "#1B1B1B",
+      "outfit": "fur",
+      "color": "#FFFFFF",
+      "puppet": {
+        "name": "Giant Panda",
+        "height": 280,
+        "palette": {
+          "fur": "#FFFFFF",
+          "furD": "#1A1A1D",
+          "furL": "#E8E8E8",
+          "belly": "#F2F2F2",
+          "accent": "#FFB3C6",
+          "out": "#222225",
+          "mouth": "#A83244",
+          "toe": "#2A2A2E"
+        },
+        "bones": [
+          {
+            "id": "body",
+            "parent": null,
+            "at": [
+              0,
+              -140
+            ],
+            "role": "body",
+            "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"90\" ry=\"65\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><path d=\"M25,-63 C55,-63 82,-35 82,10 C82,50 50,58 20,58 C0,58 -10,30 -10,-10 C-10,-45 0,-63 25,-63 Z\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"-30\" cy=\"15\" rx=\"45\" ry=\"35\" fill=\"$belly\" opacity=\"0.5\"/>"
+          },
+          {
+            "id": "legBF",
+            "parent": "body",
+            "at": [
+              -55,
+              30
+            ],
+            "role": "leg",
+            "group": "A",
+            "z": -2,
+            "svg": "<rect x=\"-20\" y=\"0\" width=\"40\" height=\"102\" rx=\"18\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"2\" cy=\"102\" rx=\"22\" ry=\"10\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+          },
+          {
+            "id": "legFF",
+            "parent": "body",
+            "at": [
+              50,
+              30
+            ],
+            "role": "leg",
+            "group": "B",
+            "z": -2,
+            "svg": "<rect x=\"-18\" y=\"0\" width=\"36\" height=\"102\" rx=\"16\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"2\" cy=\"102\" rx=\"20\" ry=\"10\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+          },
+          {
+            "id": "legBN",
+            "parent": "body",
+            "at": [
+              -65,
+              35
+            ],
+            "role": "leg",
+            "group": "B",
+            "z": 1,
+            "svg": "<rect x=\"-22\" y=\"0\" width=\"44\" height=\"98\" rx=\"18\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"98\" rx=\"24\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+          },
+          {
+            "id": "legFN",
+            "parent": "body",
+            "at": [
+              60,
+              35
+            ],
+            "role": "leg",
+            "group": "A",
+            "z": 1,
+            "svg": "<rect x=\"-20\" y=\"0\" width=\"40\" height=\"98\" rx=\"16\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"3\" cy=\"98\" rx=\"22\" ry=\"11\" fill=\"$toe\" stroke=\"$out\" stroke-width=\"3\"/>"
+          },
+          {
+            "id": "tail",
+            "parent": "body",
+            "at": [
+              -85,
+              -10
+            ],
+            "role": "tail",
+            "z": -1,
+            "svg": "<circle cx=\"-8\" cy=\"0\" r=\"14\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+          },
+          {
+            "id": "earF",
+            "parent": "head",
+            "at": [
+              -20,
+              -45
+            ],
+            "role": "ear",
+            "z": -1,
+            "svg": "<circle cx=\"0\" cy=\"0\" r=\"18\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+          },
+          {
+            "id": "head",
+            "parent": "body",
+            "at": [
+              75,
+              -35
+            ],
+            "role": "head",
+            "svg": "<ellipse cx=\"15\" cy=\"-5\" rx=\"55\" ry=\"48\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"38\" cy=\"-8\" rx=\"20\" ry=\"15\" transform=\"rotate(-15 38 -8)\" fill=\"$furD\"/><ellipse cx=\"52\" cy=\"12\" rx=\"22\" ry=\"15\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3\"/><path d=\"M60,4 Q68,4 65,11 Q60,16 55,11 Q52,4 60,4 Z\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "earN",
+            "parent": "head",
+            "at": [
+              0,
+              -50
+            ],
+            "role": "ear",
+            "z": 1,
+            "svg": "<circle cx=\"0\" cy=\"0\" r=\"20\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><circle cx=\"0\" cy=\"0\" r=\"10\" fill=\"$accent\" opacity=\"0.4\"/>"
+          },
+          {
+            "id": "jaw",
+            "parent": "head",
+            "at": [
+              50,
+              22
+            ],
+            "role": "jaw",
+            "z": -1,
+            "svg": "<path d=\"M0,0 Q10,12 20,0 Z\" fill=\"$mouth\" stroke=\"$out\" stroke-width=\"2.5\"/>"
+          }
+        ],
+        "eyes": [
+          {
+            "bone": "head",
+            "at": [
+              38,
+              -8
+            ],
+            "r": 7
+          }
+        ]
+      }
+    },
+    {
+      "id": "snake",
+      "name": "साँप",
+      "age": "adult",
+      "skin": "#6ABD45",
+      "hair": "bald",
+      "hairColor": "#1B1B1B",
+      "outfit": "fur",
+      "color": "#6ABD45",
+      "puppet": {
+        "name": "Chunky Snake",
+        "height": 90,
+        "palette": {
+          "fur": "#6ABD45",
+          "furD": "#3A7A2B",
+          "furL": "#8FD06B",
+          "belly": "#F5E1C3",
+          "accent": "#E63946",
+          "out": "#2B2B2B",
+          "mouth": "#7A1F2B",
+          "toe": "#F5E1C3"
+        },
+        "bones": [
+          {
+            "id": "head",
+            "parent": null,
+            "at": [
+              0,
+              -40
+            ],
+            "role": "body",
+            "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"42\" ry=\"36\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"5\" cy=\"14\" rx=\"28\" ry=\"18\" fill=\"$belly\"/><path d=\"M32,4 Q42,4 48,0 M48,0 L54,-4 M48,0 L54,4\" fill=\"none\" stroke=\"$accent\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><path d=\"M15,10 Q26,16 32,6\" fill=\"none\" stroke=\"$out\" stroke-width=\"3\" stroke-linecap=\"round\"/>"
+          },
+          {
+            "id": "seg1",
+            "parent": "head",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 8,
+            "phase": 0,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg2",
+            "parent": "seg1",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": -12,
+            "phase": 0.7,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg3",
+            "parent": "seg2",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 10,
+            "phase": 1.4,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg4",
+            "parent": "seg3",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": -8,
+            "phase": 2.1,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg5",
+            "parent": "seg4",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 6,
+            "phase": 2.8,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg6",
+            "parent": "seg5",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": -6,
+            "phase": 3.5,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg7",
+            "parent": "seg6",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 4,
+            "phase": 4.2,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg8",
+            "parent": "seg7",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": -4,
+            "phase": 4.9,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg9",
+            "parent": "seg8",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 2,
+            "phase": 5.6,
+            "svg": "<path d=\"M8,-25 C-15,-25 -40,-15 -42,0 C-40,15 -15,25 8,25 Z\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><polygon points=\"-18,-12 -10,-20 -2,-12 -10,-4\" fill=\"$furD\"/>"
+          }
+        ],
+        "eyes": [
+          {
+            "bone": "head",
+            "at": [
+              18,
+              -12
+            ],
+            "r": 9
+          }
+        ]
+      }
+    },
+    {
+      "id": "giant",
+      "name": "बड़ा साँप",
+      "age": "adult",
+      "skin": "#8E3B2E",
+      "hair": "bald",
+      "hairColor": "#1B1B1B",
+      "outfit": "fur",
+      "color": "#8E3B2E",
+      "puppet": {
+        "name": "बड़ा साँप",
+        "height": 162,
+        "palette": {
+          "fur": "#8E3B2E",
+          "furD": "#5A2018",
+          "furL": "#B35A47",
+          "belly": "#E8C9A0",
+          "accent": "#FFD23F",
+          "out": "#2B2B2B",
+          "mouth": "#7A1F2B",
+          "toe": "#F5E1C3"
+        },
+        "bones": [
+          {
+            "id": "head",
+            "parent": null,
+            "at": [
+              0,
+              -40
+            ],
+            "role": "body",
+            "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"42\" ry=\"36\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"5\" cy=\"14\" rx=\"28\" ry=\"18\" fill=\"$belly\"/><path d=\"M32,4 Q42,4 48,0 M48,0 L54,-4 M48,0 L54,4\" fill=\"none\" stroke=\"$accent\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><path d=\"M15,10 Q26,16 32,6\" fill=\"none\" stroke=\"$out\" stroke-width=\"3\" stroke-linecap=\"round\"/>"
+          },
+          {
+            "id": "seg1",
+            "parent": "head",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 8,
+            "phase": 0,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg2",
+            "parent": "seg1",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": -12,
+            "phase": 0.7,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg3",
+            "parent": "seg2",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 10,
+            "phase": 1.4,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg4",
+            "parent": "seg3",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": -8,
+            "phase": 2.1,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg5",
+            "parent": "seg4",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 6,
+            "phase": 2.8,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg6",
+            "parent": "seg5",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": -6,
+            "phase": 3.5,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg7",
+            "parent": "seg6",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 4,
+            "phase": 4.2,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg8",
+            "parent": "seg7",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": -4,
+            "phase": 4.9,
+            "svg": "<rect x=\"-44\" y=\"-35\" width=\"52\" height=\"70\" rx=\"30\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><rect x=\"-42\" y=\"5\" width=\"48\" height=\"27\" rx=\"12\" fill=\"$belly\"/><polygon points=\"-22,-20 -12,-30 -2,-20 -12,-10\" fill=\"$furD\"/>"
+          },
+          {
+            "id": "seg9",
+            "parent": "seg8",
+            "at": [
+              -36,
+              0
+            ],
+            "role": "tail",
+            "rot": 2,
+            "phase": 5.6,
+            "svg": "<path d=\"M8,-25 C-15,-25 -40,-15 -42,0 C-40,15 -15,25 8,25 Z\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><polygon points=\"-18,-12 -10,-20 -2,-12 -10,-4\" fill=\"$furD\"/>"
+          }
+        ],
+        "eyes": [
+          {
+            "bone": "head",
+            "at": [
+              18,
+              -12
+            ],
+            "r": 9
+          }
+        ],
+        "scale": 1.8
+      }
+    }
+  ],
+  "scenes": [
+    {
+      "id": "s00",
+      "text": "एक बहुत ही सुंदर और हरे भरे जंगल में पांडा टहल रहा था।",
+      "startFrame": 0,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 50,
+              "pose": "walk",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false
+            }
+          ],
+          "props": [
+            {
+              "type": "tree",
+              "x": 20,
+              "scale": 1,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "footsteps-grass",
+            "at": 1,
+            "volume": 0.5
+          }
+        ]
+      },
+      "audioFile": "segment_0_s00.mp3"
+    },
+    {
+      "id": "s01",
+      "text": "टहलते हुए उसे रास्ते में अचानक एक छोटा सा साँप दिखाई दिया।",
+      "startFrame": 150,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "stand",
+              "mood": "surprised",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "stand",
+              "mood": "neutral",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [
+            {
+              "type": "tree",
+              "x": 90,
+              "scale": 1,
+              "anim": "none"
+            }
+          ],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "thud",
+            "at": 0.5,
+            "volume": 0.3
+          }
+        ]
+      },
+      "audioFile": "segment_1_s01.mp3"
+    },
+    {
+      "id": "s02",
+      "text": "पांडा को लगा कि यह छोटा साँप उसे डसने की कोशिश करेगा।",
+      "startFrame": 300,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "scared",
+              "mood": "worried",
+              "scale": 1,
+              "speaking": true,
+              "says": "दूर रहो मुझसे"
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "stand",
+              "mood": "neutral",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "hiss",
+            "at": 1.5,
+            "volume": 0.5
+          }
+        ]
+      },
+      "audioFile": "segment_2_s02.mp3"
+    },
+    {
+      "id": "s03",
+      "text": "साँप को भी लगा कि पांडा उसे अपने भारी पैरों से कुचल देगा।",
+      "startFrame": 450,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "stand",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "angry",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": true,
+              "flip": true,
+              "says": "पीछे हटो"
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": []
+      },
+      "audioFile": "segment_3_s03.mp3"
+    },
+    {
+      "id": "s04",
+      "text": "दोनों गुस्से में आकर एक दूसरे को घूरने और डराने लगे थे।",
+      "startFrame": 600,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "shout",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "shout",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "hiss",
+            "at": 0.8,
+            "volume": 0.6
+          }
+        ]
+      },
+      "audioFile": "segment_4_s04.mp3"
+    },
+    {
+      "id": "s05",
+      "text": "पांडा गुस्से में चिल्लाया और साँप ने भी अपनी फुंकार तेज कर दी।",
+      "startFrame": 750,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "angry",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "fight",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "punch",
+            "at": 1,
+            "volume": 0.4
+          },
+          {
+            "name": "hiss",
+            "at": 2.0,
+            "volume": 0.7
+          }
+        ]
+      },
+      "audioFile": "segment_5_s05.mp3"
+    },
+    {
+      "id": "s06",
+      "text": "बिना कुछ सोचे समझे वे दोनों आपस में बुरी तरह लड़ने लग गए।",
+      "startFrame": 900,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 40,
+              "pose": "fight",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 60,
+              "pose": "fight",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "thud",
+            "at": 0.5,
+            "volume": 0.6
+          }
+        ]
+      },
+      "audioFile": "segment_6_s06.mp3"
+    },
+    {
+      "id": "s07",
+      "text": "उनकी लड़ाई के दौरान अचानक पूरा जंगल जोर जोर से हिलने लगा।",
+      "startFrame": 1050,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "leaves",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "tired",
+              "mood": "surprised",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "tired",
+              "mood": "surprised",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "storm",
+        "foley": [
+          {
+            "name": "thud",
+            "at": 0.3,
+            "volume": 0.7
+          },
+          {
+            "name": "thud",
+            "at": 1.6,
+            "volume": 0.7
+          },
+          {
+            "name": "thud",
+            "at": 3.0,
+            "volume": 0.6
+          }
+        ]
+      },
+      "audioFile": "segment_7_s07.mp3"
+    },
+    {
+      "id": "s08",
+      "text": "शाम होते ही झाड़ियों से एक बहुत ही विशाल बड़ा साँप निकला।",
+      "startFrame": 1200,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "dusk",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "giant",
+              "x": 80,
+              "pose": "stand",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            },
+            {
+              "id": "panda",
+              "x": 20,
+              "pose": "scared",
+              "mood": "scared",
+              "scale": 1,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "storm",
+        "foley": [
+          {
+            "name": "run",
+            "at": 0.2,
+            "volume": 0.7
+          }
+        ]
+      },
+      "audioFile": "segment_8_s08.mp3"
+    },
+    {
+      "id": "s09",
+      "text": "वह बड़ा साँप इतना खतरनाक था कि उसे देखकर सब काँपने लगे।",
+      "startFrame": 1350,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "giant",
+              "x": 70,
+              "pose": "shout",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            },
+            {
+              "id": "snake",
+              "x": 30,
+              "pose": "scared",
+              "mood": "scared",
+              "scale": 1,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "hiss",
+            "at": 1.0,
+            "volume": 0.6
+          }
+        ]
+      },
+      "audioFile": "segment_9_s09.mp3"
+    },
+    {
+      "id": "s10",
+      "text": "पांडा और छोटा साँप उस भयानक राक्षस को देखकर बहुत डर गए।",
+      "startFrame": 1500,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 20,
+              "pose": "scared",
+              "mood": "scared",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 40,
+              "pose": "scared",
+              "mood": "scared",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "giant",
+              "x": 80,
+              "pose": "stand",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "hiss",
+            "at": 0.5,
+            "volume": 0.5
+          },
+          {
+            "name": "thud",
+            "at": 2.0,
+            "volume": 0.5
+          }
+        ]
+      },
+      "audioFile": "segment_10_s10.mp3"
+    },
+    {
+      "id": "s11",
+      "text": "बड़े साँप ने तुरंत पांडा को अपना शिकार बनाने के लिए हमला किया।",
+      "startFrame": 1650,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "giant",
+              "x": 60,
+              "pose": "fight",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            },
+            {
+              "id": "panda",
+              "x": 20,
+              "pose": "scared",
+              "mood": "scared",
+              "scale": 1,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "run",
+            "at": 0.5,
+            "volume": 0.6
+          }
+        ]
+      },
+      "audioFile": "segment_11_s11.mp3"
+    },
+    {
+      "id": "s12",
+      "text": "छोटे साँप ने अपने नए दुश्मन पांडा को बचाने की हिम्मत दिखाई।",
+      "startFrame": 1800,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "snake",
+              "x": 40,
+              "pose": "point",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": true,
+              "says": "रुको दानव"
+            },
+            {
+              "id": "panda",
+              "x": 10,
+              "pose": "scared",
+              "mood": "scared",
+              "scale": 1,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "night",
+        "foley": []
+      },
+      "audioFile": "segment_12_s12.mp3"
+    },
+    {
+      "id": "s13",
+      "text": "छोटे साँप ने बड़े साँप के शरीर पर बहुत जोर से हमला किया।",
+      "startFrame": 1950,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "snake",
+              "x": 50,
+              "pose": "fight",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "giant",
+              "x": 70,
+              "pose": "struggle",
+              "mood": "surprised",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "punch",
+            "at": 0.5,
+            "volume": 0.5
+          },
+          {
+            "name": "hiss",
+            "at": 0.2,
+            "volume": 0.6
+          }
+        ]
+      },
+      "audioFile": "segment_13_s13.mp3"
+    },
+    {
+      "id": "s14",
+      "text": "पांडा ने भी एक भारी पत्थर उठाकर उस बड़े साँप पर फेंका।",
+      "startFrame": 2100,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 20,
+              "pose": "push",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "giant",
+              "x": 60,
+              "pose": "struggle",
+              "mood": "scared",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [
+            {
+              "type": "stone",
+              "x": 40,
+              "scale": 1,
+              "anim": "none"
+            }
+          ],
+          "cont": true
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "thud",
+            "at": 1,
+            "volume": 0.7
+          }
+        ]
+      },
+      "audioFile": "segment_14_s14.mp3"
+    },
+    {
+      "id": "s15",
+      "text": "अब पांडा और साँप मिलकर उस दानव का बहादुरी से सामना किया।",
+      "startFrame": 2250,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "fight",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 45,
+              "pose": "fight",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "giant",
+              "x": 80,
+              "pose": "struggle",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "hiss",
+            "at": 0.5,
+            "volume": 0.5
+          }
+        ]
+      },
+      "audioFile": "segment_15_s15.mp3"
+    },
+    {
+      "id": "s16",
+      "text": "दोनों की इस एकता के सामने वह बड़ा साँप टिक नहीं पाया।",
+      "startFrame": 2400,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "giant",
+              "x": 70,
+              "pose": "tired",
+              "mood": "sad",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            },
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "shout",
+              "mood": "angry",
+              "scale": 1,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "punch",
+            "at": 1.0,
+            "volume": 0.5
+          }
+        ]
+      },
+      "audioFile": "segment_16_s16.mp3"
+    },
+    {
+      "id": "s17",
+      "text": "वह विशाल और डरावना साँप डरकर जंगल से बहुत दूर भाग गया।",
+      "startFrame": 2550,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "giant",
+              "x": 90,
+              "pose": "run",
+              "mood": "scared",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 30,
+              "pose": "happy",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "run",
+            "at": 0.5,
+            "volume": 0.6
+          }
+        ]
+      },
+      "audioFile": "segment_17_s17.mp3"
+    },
+    {
+      "id": "s18",
+      "text": "पांडा और छोटा साँप अपनी जीत की खुशी में झूमने और नाचने लगे।",
+      "startFrame": 2700,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "sparkle",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "dance",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "dance",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "applause",
+            "at": 1,
+            "volume": 0.4
+          }
+        ]
+      },
+      "audioFile": "segment_18_s18.mp3"
+    },
+    {
+      "id": "s19",
+      "text": "उन्होंने अपनी पुरानी दुश्मनी भुलाकर एक दूसरे को प्यार से गले लगाया।",
+      "startFrame": 2850,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "hearts",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 45,
+              "pose": "hug",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 55,
+              "pose": "hug",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "laughter",
+            "at": 1.5,
+            "volume": 0.4
+          }
+        ]
+      },
+      "audioFile": "segment_19_s19.mp3"
+    },
+    {
+      "id": "s20",
+      "text": "साँप और पांडा अब उस जंगल के सबसे अच्छे पक्के दोस्त थे।",
+      "startFrame": 3000,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "talk",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": true,
+              "says": "हम दोस्त हैं"
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "talk",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "applause",
+            "at": 1.5,
+            "volume": 0.35
+          }
+        ]
+      },
+      "audioFile": "segment_20_s20.mp3"
+    },
+    {
+      "id": "s21",
+      "text": "जंगल के सभी जानवरों ने उनकी इस बहादुरी की जमकर तारीफ की।",
+      "startFrame": 3150,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 40,
+              "pose": "wave",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 60,
+              "pose": "wave",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "laughter",
+            "at": 1,
+            "volume": 0.5
+          }
+        ]
+      },
+      "audioFile": "segment_21_s21.mp3"
+    },
+    {
+      "id": "s22",
+      "text": "अब वे दोनों हमेशा साथ मिलकर मजे से रहते और खेलते हैं।",
+      "startFrame": 3300,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "jump",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "jump",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [
+            {
+              "type": "flowers",
+              "x": 50,
+              "scale": 1,
+              "anim": "none"
+            }
+          ],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": []
+      },
+      "audioFile": "segment_22_s22.mp3"
+    },
+    {
+      "id": "s23",
+      "text": "साथ मिलकर काम करने से हर बड़ी मुसीबत आसानी से टल जाती है।",
+      "startFrame": 3450,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "forest",
+          "time": "day",
+          "fx": "sparkle",
+          "chars": [
+            {
+              "id": "panda",
+              "x": 30,
+              "pose": "happy",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false
+            },
+            {
+              "id": "snake",
+              "x": 70,
+              "pose": "happy",
+              "mood": "happy",
+              "scale": 1,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [
+            {
+              "type": "heart",
+              "x": 50,
+              "scale": 1,
+              "anim": "none"
+            }
+          ],
+          "cont": true
+        },
+        "ambient": "forest",
+        "foley": []
+      },
+      "audioFile": "segment_23_s23.mp3"
+    }
+  ],
+  "totalFrames": 3600,
+  "totalDuration": 98.65713699999999
+}

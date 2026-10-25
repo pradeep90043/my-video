@@ -3,7 +3,8 @@
  * foley one-shot lands. Pure (no React) so the composition, preflight and tests share it.
  * Explicit `visual.ambient` / `visual.foley` win; with `autoSound` the narration's own words fill the gaps.
  */
-import { AMBIENT_GAIN, FOLEY_GAIN, detectAmbient, detectFoley, type AmbientName, type FoleyName } from "./sounds";
+import { AMBIENT_GAIN, FOLEY_GAIN, detectAmbient, detectFoley, placeLayers, type AmbientName, type FoleyName } from "./sounds";
+import { planActionSounds, stageWidth } from "./actionSounds";
 import { StickmanVisualSchema } from "./schema";
 
 export interface PlanScene {
@@ -48,11 +49,14 @@ export function ambientEnvelope(f: number, dur: number, fade = AMBIENT_FADE): nu
   return Math.max(0, Math.min(1, f / fade, (dur - f) / fade));
 }
 
-export function planSounds(scenes: PlanScene[], fps: number, opts: { autoSound?: boolean } = {}): SoundPlan {
+/** `vertical`: the stage is 1080 wide instead of 1920 (walk lengths, and so footstep lengths, depend on it). */
+export function planSounds(scenes: PlanScene[], fps: number, opts: { autoSound?: boolean; vertical?: boolean } = {}): SoundPlan {
   const autoSound = opts.autoSound !== false;
   const foley: FoleyEvent[] = [];
   const ambient: AmbientSegment[] = [];
   let bed: { seg: AmbientSegment; auto: boolean; left: number } | undefined;
+  /** the quiet extra beds of a story place (distant traffic, the night outside): one open segment per bed name */
+  const layers = new Map<AmbientName, AmbientSegment>();
 
   scenes.forEach((scene) => {
     const visual = StickmanVisualSchema.parse(scene.visual ?? {});
@@ -73,6 +77,15 @@ export function planSounds(scenes: PlanScene[], fps: number, opts: { autoSound?:
       for (const c of detectFoley(tokens.map((t) => t.text))) addFoley(c.foley, from + speakFrom + Math.round(tokens[c.wordIndex].at * fps));
     }
 
+    // What the animation does: footsteps for the frames somebody walks, a jump's landing, a sleeper's breathing...
+    // (a scene whose author wrote its own foley keeps just that: action cues only add sounds the author did not name)
+    if (autoSound && visual.story) {
+      const named = new Set(visual.foley.map((f) => f.name));
+      for (const c of planActionSounds(visual.story, duration, { w: stageWidth(!!opts.vertical), fps })) {
+        if (!named.has(c.name)) addFoley(c.name, from + c.frame, c.volume, c.seconds);
+      }
+    }
+
     // Ambience: an explicit `ambient` persists until changed; a bed picked from the text lingers a few scenes
     // (a bed the author set explicitly is never replaced by one guessed from the text)
     const wanted = visual.ambient ?? (autoSound && !(bed && !bed.auto) ? detectAmbient(scene.text) : undefined);
@@ -90,6 +103,29 @@ export function planSounds(scenes: PlanScene[], fps: number, opts: { autoSound?:
       else if (bed.auto && --bed.left <= 0) { bed.seg.to = from; bed = undefined; }
     }
     if (bed) bed.seg.to = sceneEnd;
+
+    // Layers: a place is never one sound. Under the main bed sit its quieter neighbours; a bed that continues into the
+    // next scene is extended, not restarted, so it does not re-fade at every cut.
+    if (autoSound && visual.story && wanted !== "none") {
+      const want = placeLayers(visual.story.bg, visual.story.time, visual.story.fx).filter((l) => l.name !== bed?.seg.name);
+      for (const [name, seg] of layers) {
+        if (!want.some((l) => l.name === name)) { seg.to = from; layers.delete(name); }
+      }
+      for (const l of want) {
+        const gain = AMBIENT_GAIN[l.name] * l.gain * visual.ambientVolume;
+        const open = layers.get(l.name);
+        if (open && Math.abs(open.gain - gain) < 1e-6) open.to = sceneEnd;
+        else {
+          if (open) open.to = from;
+          const seg: AmbientSegment = { name: l.name, from, to: sceneEnd, gain };
+          ambient.push(seg);
+          layers.set(l.name, seg);
+        }
+      }
+    } else if (layers.size) {
+      for (const seg of layers.values()) seg.to = from;
+      layers.clear();
+    }
   });
 
   return { foley, ambient };

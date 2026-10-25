@@ -1,0 +1,1209 @@
+{
+  "format": "shorts",
+  "template": "stickman",
+  "theme": "dark",
+  "composition": "StickmanVideo",
+  "fps": 30,
+  "orientation": "vertical",
+  "language": "hi",
+  "title": "अमन की आदत: पहले और बाद (बिना आवाज़)",
+  "description": "A boy's night-time phone habit and how his life changed once he quit. No voiceover.",
+  "tags": [],
+  "cast": [
+    {
+      "id": "aman",
+      "name": "अमन",
+      "age": "teen",
+      "skin": "#D39A68",
+      "hair": "short",
+      "hairColor": "#1B1B1B",
+      "outfit": "hoodie",
+      "color": "#3B6FD4",
+      "color2": "#2B2B2B"
+    },
+    {
+      "id": "maa",
+      "name": "माँ",
+      "age": "adult",
+      "skin": "#D39A68",
+      "hair": "bun",
+      "hairColor": "#1B1B1B",
+      "outfit": "saree",
+      "color": "#C0392B"
+    },
+    {
+      "id": "rohan",
+      "name": "रोहन",
+      "age": "teen",
+      "skin": "#E7B07F",
+      "hair": "side",
+      "hairColor": "#2B1B10",
+      "outfit": "shirt",
+      "color": "#2ECC71",
+      "color2": "#34495E"
+    },
+    {
+      "id": "chhotu",
+      "name": "छोटू",
+      "age": "child",
+      "skin": "#B9794A",
+      "hair": "short",
+      "hairColor": "#1B1B1B",
+      "outfit": "shirt",
+      "color": "#F39C12",
+      "color2": "#34495E"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "s00",
+      "text": "रात के दो बजे, अँधेरा कमरा… और हाथ में फ़ोन।",
+      "startFrame": 0,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "push",
+        "story": {
+          "bg": "room_night",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 50,
+              "pose": "tired",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "phone"
+            }
+          ],
+          "props": [
+            {
+              "type": "lamp",
+              "x": 18,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "click",
+            "at": 0.6,
+            "volume": 0.5
+          },
+          {
+            "name": "click",
+            "at": 2.6,
+            "volume": 0.4
+          }
+        ]
+      }
+    },
+    {
+      "id": "s01",
+      "text": "घंटे बीतते गए… नींद गायब।",
+      "startFrame": 150,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "room_night",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 45,
+              "pose": "tired",
+              "mood": "worried",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [
+            {
+              "type": "clock",
+              "x": 75,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "shake"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "room",
+        "foley": [
+          {
+            "name": "clock-tick",
+            "at": 0.3,
+            "volume": 0.6
+          },
+          {
+            "name": "clock-tick",
+            "at": 1.8,
+            "volume": 0.6
+          },
+          {
+            "name": "clock-tick",
+            "at": 3.3,
+            "volume": 0.6
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "text": "सुबह माँ ने जगाया… आँखें खुल ही नहीं रहीं।",
+      "startFrame": 300,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "home",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 66,
+              "pose": "sleep",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false
+            },
+            {
+              "id": "maa",
+              "x": 92,
+              "pose": "talk",
+              "mood": "worried",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "room",
+        "foley": [
+          {
+            "name": "alarm",
+            "at": 0.3,
+            "volume": 0.45
+          },
+          {
+            "name": "knock",
+            "at": 2.4,
+            "volume": 0.6
+          }
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "text": "स्कूल में थका चेहरा… दोस्तों से दूरी।",
+      "startFrame": 450,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "school",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 30,
+              "pose": "tired",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false
+            },
+            {
+              "id": "rohan",
+              "x": 72,
+              "pose": "happy",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "ball"
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "crowd",
+        "foley": [
+          {
+            "name": "bell",
+            "at": 0.3,
+            "volume": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "text": "नंबर गिरते गए… आत्मविश्वास भी।",
+      "startFrame": 600,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "push",
+        "story": {
+          "bg": "school",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 45,
+              "pose": "sad",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "letter"
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "room",
+        "foley": [
+          {
+            "name": "cloth",
+            "at": 1.0,
+            "volume": 0.4
+          }
+        ],
+        "sfx": "fail",
+        "sfxDelay": 15
+      }
+    },
+    {
+      "id": "s05",
+      "text": "दोस्त बुलाते रहे, वो नज़रें चुराता रहा।",
+      "startFrame": 750,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "street",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 28,
+              "pose": "walk",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false,
+              "flip": true,
+              "fromX": 60
+            },
+            {
+              "id": "rohan",
+              "x": 72,
+              "pose": "wave",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false,
+              "flip": true
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "city",
+        "foley": [
+          {
+            "name": "footsteps",
+            "at": 0.2,
+            "volume": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "text": "हर बार कसम… हर बार हार। अंदर से टूटता गया।",
+      "startFrame": 900,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "push",
+        "story": {
+          "bg": "room_night",
+          "time": "night",
+          "fx": "rain",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 50,
+              "pose": "cry",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "phone"
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "rain-window",
+        "foley": [
+          {
+            "name": "click",
+            "at": 0.5,
+            "volume": 0.4
+          }
+        ],
+        "sfx": "sad",
+        "sfxDelay": 15
+      }
+    },
+    {
+      "id": "s07",
+      "text": "वही रात… वही चक्र।",
+      "startFrame": 1050,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "push",
+        "story": {
+          "bg": "room_night",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 50,
+              "pose": "tired",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "phone"
+            }
+          ],
+          "props": [
+            {
+              "type": "clock",
+              "x": 78,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "shake"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "click",
+            "at": 0.5,
+            "volume": 0.5
+          },
+          {
+            "name": "click",
+            "at": 1.7,
+            "volume": 0.5
+          },
+          {
+            "name": "click",
+            "at": 2.9,
+            "volume": 0.5
+          },
+          {
+            "name": "clock-tick",
+            "at": 3.8,
+            "volume": 0.6
+          }
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "text": "खाना ठंडा पड़ा रहा, माँ की चिंता बढ़ती गई।",
+      "startFrame": 1200,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "home",
+          "time": "dusk",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 32,
+              "pose": "sad",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false
+            },
+            {
+              "id": "maa",
+              "x": 72,
+              "pose": "sad",
+              "mood": "worried",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [
+            {
+              "type": "food",
+              "x": 50,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            },
+            {
+              "type": "table",
+              "x": 50,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "room",
+        "foley": [
+          {
+            "name": "clock-tick",
+            "at": 1.0,
+            "volume": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "text": "कमज़ोरी, सिरदर्द, ऊर्जा खत्म।",
+      "startFrame": 1350,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "home",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 50,
+              "pose": "tired",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [
+            {
+              "type": "medicine",
+              "x": 78,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "room",
+        "foley": [
+          {
+            "name": "thud",
+            "at": 1.5,
+            "volume": 0.4
+          }
+        ],
+        "sfx": "gasp",
+        "sfxDelay": 15
+      }
+    },
+    {
+      "id": "s10",
+      "text": "एक रात उसने खुद से पूछा: क्या यही ज़िंदगी चाहिए?",
+      "startFrame": 1500,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "push",
+        "story": {
+          "bg": "room_night",
+          "time": "night",
+          "fx": "rain",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 45,
+              "pose": "think",
+              "mood": "sad",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [
+            {
+              "type": "candle",
+              "x": 75,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "float"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "rain",
+        "foley": [],
+        "sfx": "sad",
+        "sfxDelay": 15
+      }
+    },
+    {
+      "id": "s11",
+      "text": "सुबह उसने फ़ैसला किया: बस, अब और नहीं।",
+      "startFrame": 1650,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "pull",
+        "story": {
+          "bg": "home",
+          "time": "dusk",
+          "fx": "sparkle",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 50,
+              "pose": "stand",
+              "mood": "neutral",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "phone"
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "wind",
+        "foley": [
+          {
+            "name": "footsteps",
+            "at": 0.3,
+            "volume": 0.5
+          }
+        ],
+        "sfx": "riser",
+        "sfxDelay": 15
+      }
+    },
+    {
+      "id": "s12",
+      "text": "फ़ोन दूर रखा… और माँ को सब सच बताया।",
+      "startFrame": 1800,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "home",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 32,
+              "pose": "give",
+              "mood": "worried",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "phone"
+            },
+            {
+              "id": "maa",
+              "x": 72,
+              "pose": "stand",
+              "mood": "surprised",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "room",
+        "foley": [
+          {
+            "name": "cloth",
+            "at": 0.8,
+            "volume": 0.5
+          },
+          {
+            "name": "door-close",
+            "at": 2.8,
+            "volume": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "s13",
+      "text": "शुरू के दिन बहुत मुश्किल थे… मन बार-बार खींचता।",
+      "startFrame": 1950,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "push",
+        "story": {
+          "bg": "room_night",
+          "time": "night",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 50,
+              "pose": "struggle",
+              "mood": "worried",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [
+            {
+              "type": "clock",
+              "x": 78,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "shake"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "clock-tick",
+            "at": 0.3,
+            "volume": 0.7
+          },
+          {
+            "name": "clock-tick",
+            "at": 1.3,
+            "volume": 0.7
+          },
+          {
+            "name": "clock-tick",
+            "at": 2.3,
+            "volume": 0.7
+          },
+          {
+            "name": "clock-tick",
+            "at": 3.3,
+            "volume": 0.7
+          }
+        ]
+      }
+    },
+    {
+      "id": "s14",
+      "text": "उसने सुबह दौड़ना शुरू किया।",
+      "startFrame": 2100,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "road",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 45,
+              "pose": "run",
+              "mood": "neutral",
+              "scale": 1.0,
+              "speaking": false,
+              "fromX": 10
+            }
+          ],
+          "props": [
+            {
+              "type": "tree",
+              "x": 85,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "forest",
+        "foley": [
+          {
+            "name": "run",
+            "at": 0.2,
+            "volume": 0.7
+          },
+          {
+            "name": "footsteps-grass",
+            "at": 3.0,
+            "volume": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "s15",
+      "text": "फिर दोस्तों के साथ खेलना।",
+      "startFrame": 2250,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "village",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 35,
+              "pose": "jump",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            },
+            {
+              "id": "rohan",
+              "x": 70,
+              "pose": "happy",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "ball"
+            }
+          ],
+          "props": [
+            {
+              "type": "cricket",
+              "x": 50,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "crowd",
+        "foley": [
+          {
+            "name": "thud",
+            "at": 0.8,
+            "volume": 0.5
+          },
+          {
+            "name": "laughter",
+            "at": 2.5,
+            "volume": 0.4
+          }
+        ]
+      }
+    },
+    {
+      "id": "s16",
+      "text": "रोज़ रात दस बजे सोना।",
+      "startFrame": 2400,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "pull",
+        "story": {
+          "bg": "room_night",
+          "time": "night",
+          "fx": "stars",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 72,
+              "pose": "sleep",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [
+            {
+              "type": "clock",
+              "x": 78,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "night",
+        "foley": [
+          {
+            "name": "clock-tick",
+            "at": 0.5,
+            "volume": 0.4
+          }
+        ]
+      }
+    },
+    {
+      "id": "s17",
+      "text": "पढ़ाई में मन लगने लगा।",
+      "startFrame": 2550,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "home",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 42,
+              "pose": "think",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "book"
+            }
+          ],
+          "props": [
+            {
+              "type": "table",
+              "x": 70,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            },
+            {
+              "type": "lamp",
+              "x": 75,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "room",
+        "foley": [
+          {
+            "name": "book-flip",
+            "at": 0.8,
+            "volume": 0.6
+          },
+          {
+            "name": "book-flip",
+            "at": 2.8,
+            "volume": 0.6
+          }
+        ]
+      }
+    },
+    {
+      "id": "s18",
+      "text": "माँ के चेहरे पर फिर मुस्कान लौटी।",
+      "startFrame": 2700,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "home",
+          "time": "day",
+          "fx": "hearts",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 32,
+              "pose": "eat",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            },
+            {
+              "id": "maa",
+              "x": 72,
+              "pose": "happy",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [
+            {
+              "type": "food",
+              "x": 52,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "room",
+        "foley": [
+          {
+            "name": "laughter",
+            "at": 1.2,
+            "volume": 0.4
+          }
+        ]
+      }
+    },
+    {
+      "id": "s19",
+      "text": "नतीजे आए, नंबर सुधरे।",
+      "startFrame": 2850,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "push",
+        "story": {
+          "bg": "school",
+          "time": "day",
+          "fx": "sparkle",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 40,
+              "pose": "happy",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false,
+              "holds": "letter"
+            },
+            {
+              "id": "rohan",
+              "x": 72,
+              "pose": "happy",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "crowd",
+        "foley": [
+          {
+            "name": "applause",
+            "at": 0.8,
+            "volume": 0.45
+          }
+        ],
+        "sfx": "tada",
+        "sfxDelay": 15
+      }
+    },
+    {
+      "id": "s20",
+      "text": "टूटी दोस्ती फिर जुड़ गई।",
+      "startFrame": 3000,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "school",
+          "time": "day",
+          "fx": "hearts",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 42,
+              "pose": "hug",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            },
+            {
+              "id": "rohan",
+              "x": 58,
+              "pose": "hug",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "crowd",
+        "foley": [
+          {
+            "name": "laughter",
+            "at": 1.0,
+            "volume": 0.4
+          }
+        ]
+      }
+    },
+    {
+      "id": "s21",
+      "text": "अब मन शांत था, ऊर्जा भरपूर।",
+      "startFrame": 3150,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "none",
+        "story": {
+          "bg": "river",
+          "time": "day",
+          "fx": "none",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 35,
+              "pose": "walk",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false,
+              "fromX": 10
+            },
+            {
+              "id": "rohan",
+              "x": 62,
+              "pose": "walk",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false,
+              "fromX": 40
+            }
+          ],
+          "props": [
+            {
+              "type": "tree",
+              "x": 88,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "wind",
+        "foley": [
+          {
+            "name": "footsteps-grass",
+            "at": 0.2,
+            "volume": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "s22",
+      "text": "आत्मविश्वास लौट आया।",
+      "startFrame": 3300,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "pull",
+        "story": {
+          "bg": "mountain",
+          "time": "day",
+          "fx": "sparkle",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 50,
+              "pose": "jump",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [],
+          "cont": false
+        },
+        "ambient": "wind",
+        "foley": [],
+        "sfx": "tada",
+        "sfxDelay": 15
+      }
+    },
+    {
+      "id": "s23",
+      "text": "आदत बदली, तो ज़िंदगी बदली। मदद माँगना कमज़ोरी नहीं।",
+      "startFrame": 3450,
+      "durationFrames": 150,
+      "duration": 5.0,
+      "visual": {
+        "camera": "pull",
+        "story": {
+          "bg": "street",
+          "time": "day",
+          "fx": "hearts",
+          "chars": [
+            {
+              "id": "aman",
+              "x": 35,
+              "pose": "give",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            },
+            {
+              "id": "chhotu",
+              "x": 70,
+              "pose": "happy",
+              "mood": "happy",
+              "scale": 1.0,
+              "speaking": false
+            }
+          ],
+          "props": [
+            {
+              "type": "ball",
+              "x": 55,
+              "air": 0,
+              "scale": 1.0,
+              "anim": "none"
+            }
+          ],
+          "cont": false
+        },
+        "ambient": "city",
+        "foley": [
+          {
+            "name": "bell",
+            "at": 0.5,
+            "volume": 0.4
+          },
+          {
+            "name": "laughter",
+            "at": 2.0,
+            "volume": 0.35
+          }
+        ],
+        "sfx": "tada",
+        "sfxDelay": 15
+      }
+    }
+  ],
+  "totalFrames": 3600
+}
