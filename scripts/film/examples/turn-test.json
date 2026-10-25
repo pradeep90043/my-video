@@ -1,0 +1,16 @@
+{
+ "title": "Turn test",
+ "shots": [
+  {
+   "secs": 6, "place": "room", "time": "day", "furnish": false,
+   "cast": [{ "id": "papa", "age": "adult", "gender": "male", "hair": "side-part", "beard": "mustache", "glasses": true, "outfit": "kurta", "top": "#f2e6c8", "skin": "medium", "at": 0.45 }],
+   "actions": [
+    { "at": 0.5, "who": "papa", "do": "face", "to": "left" },
+    { "at": 1.5, "who": "papa", "do": "face", "to": "right" },
+    { "at": 2.5, "who": "papa", "do": "look", "target": "camera" },
+    { "at": 4.0, "who": "papa", "do": "nod" }
+   ],
+   "camera": { "shot": "close", "on": "papa", "move": "static" }
+  }
+ ]
+}
