@@ -5,6 +5,7 @@
  */
 import { AMBIENT_GAIN, FOLEY_GAIN, detectAmbient, detectFoley, placeLayers, type AmbientName, type FoleyName } from "./sounds";
 import { planActionSounds, stageWidth } from "./actionSounds";
+import { planFilmSounds } from "./film/filmSounds";
 import { StickmanVisualSchema } from "./schema";
 
 export interface PlanScene {
@@ -86,6 +87,13 @@ export function planSounds(scenes: PlanScene[], fps: number, opts: { autoSound?:
       }
     }
 
+    if (autoSound && visual.film) {
+      const named = new Set(visual.foley.map((f) => f.name));
+      for (const c of planFilmSounds(visual.film, duration, { fps })) {
+        if (!named.has(c.name)) addFoley(c.name, from + c.frame, c.volume, c.seconds);
+      }
+    }
+
     // Ambience: an explicit `ambient` persists until changed; a bed picked from the text lingers a few scenes
     // (a bed the author set explicitly is never replaced by one guessed from the text)
     const wanted = visual.ambient ?? (autoSound && !(bed && !bed.auto) ? detectAmbient(scene.text) : undefined);
@@ -106,8 +114,12 @@ export function planSounds(scenes: PlanScene[], fps: number, opts: { autoSound?:
 
     // Layers: a place is never one sound. Under the main bed sit its quieter neighbours; a bed that continues into the
     // next scene is extended, not restarted, so it does not re-fade at every cut.
-    if (autoSound && visual.story && wanted !== "none") {
-      const want = placeLayers(visual.story.bg, visual.story.time, visual.story.fx).filter((l) => l.name !== bed?.seg.name);
+    const filmEnv = visual.film?.layers.find((l) => l.t === "env");
+    const place = visual.story
+      ? { bg: visual.story.bg, time: visual.story.time as string, fx: visual.story.fx as string }
+      : filmEnv && filmEnv.t === "env" ? { bg: filmEnv.kind as string, time: filmEnv.grade as string, fx: "none" } : undefined;
+    if (autoSound && place && wanted !== "none") {
+      const want = placeLayers(place.bg, place.time, place.fx).filter((l) => l.name !== bed?.seg.name);
       for (const [name, seg] of layers) {
         if (!want.some((l) => l.name === name)) { seg.to = from; layers.delete(name); }
       }

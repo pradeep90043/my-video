@@ -106,6 +106,14 @@ const FOLEY: Record<FoleyName, FoleySpec> = {
   // turning over in bed / shifting clothes
   rustle: { steps: { takes: ["cloth1.ogg", "cloth2.ogg", "cloth3.ogg", "cloth4.ogg"].map((f) => K(f, "rpg")), count: 6, interval: 0.45 } },
   "bat-hit": { src: K("impactPlank_medium_001.ogg") },
+  // digital phone alarm: four beeps, a pause, four beeps
+  "phone-alarm": { src: { synth: "aevalsrc='0.6*sin(2*PI*1760*t)+0.3*sin(2*PI*880*t)':d=2.4:s=44100" }, af: "volume='lt(mod(t,1.2),0.76)*clip(40*(0.1-mod(t,0.19)),0,1)*clip(60*mod(t,0.19),0,1)':eval=frame" },
+  // a marker squeaking across paper
+  "marker-write": { src: { synth: "anoisesrc=color=white:d=0.6:r=44100:a=0.7" }, af: "highpass=f=1800,lowpass=f=4500,tremolo=f=34:d=0.9,volume='pow(sin(PI*t/0.6),0.7)':eval=frame" },
+  // paper being scrunched: crackly bursts
+  "paper-crumple": { src: { synth: "anoisesrc=color=white:d=1.4:r=44100:a=0.8" }, af: "highpass=f=1200,volume='abs(sin(t*61))*abs(sin(t*37+1))*pow(sin(PI*t/1.4),0.6)*2':eval=frame" },
+  // shop door bell: three bright partials decaying together
+  "shop-bell": { src: { synth: "aevalsrc='(0.5*sin(2*PI*2637*t)+0.35*sin(2*PI*3951*t)+0.25*sin(2*PI*1318*t))*exp(-4*t)':d=1.6:s=44100" } },
   "ball-bounce": { steps: { takes: ["000", "001", "002", "003", "004"].map((n) => K(`impactSoft_medium_${n}.ogg`)), count: 6, interval: 0.42 }, af: "volume='exp(-0.9*t)':eval=frame" },
 };
 
