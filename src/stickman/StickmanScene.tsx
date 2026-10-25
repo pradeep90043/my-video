@@ -15,6 +15,7 @@ import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
 import { ScenePanel } from "./doodle/ScenePanel";
 import { PhotoPanel } from "./PhotoPanel";
 import { StoryStage } from "./story/StoryStage";
+import { FilmStage } from "./film/FilmStage";
 import type { CastMember } from "./story/cast";
 import {
   AlertPanel, NewsPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
@@ -208,6 +209,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
   const irisR = Math.hypot(world.width, world.height) / 2 * tr;
   // slow parallax drift of the dot grid so the background is never static
   const drift = (frame * 0.35) % 60;
+
+  if (v.film) return <AbsoluteFill style={{ backgroundColor: "#000" }}><FilmStage film={v.film} frame={frame} durationFrames={durationFrames} /></AbsoluteFill>;
 
   return (
     <AbsoluteFill style={{ backgroundColor: theme.bg }}>

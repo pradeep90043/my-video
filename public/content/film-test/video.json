@@ -1,0 +1,352 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "en",
+ "title": "film test",
+ "description": "",
+ "tags": [],
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "",
+   "startFrame": 0,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "blur": 0
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 690,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "lean",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "happy"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 520,
+       "y": 1040,
+       "s": 1.0,
+       "fg": true,
+       "mood": "neutral"
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {}
+    }
+   }
+  },
+  {
+   "id": "s01",
+   "text": "",
+   "startFrame": 150,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-window",
+       "blur": 8
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "shrug",
+       "x": 1000,
+       "y": 900,
+       "s": 1.15,
+       "mood": "worried"
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1700,
+       "y": 1120,
+       "s": 1.4,
+       "fg": true,
+       "blur": 16,
+       "eyes": false
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "3 hours. Every day.",
+       "at": 10
+      },
+      {
+       "t": "fx",
+       "kind": "vignette"
+      }
+     ],
+     "cam": {}
+    }
+   }
+  },
+  {
+   "id": "s02",
+   "text": "",
+   "startFrame": 300,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table"
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "ring": true,
+       "pressAt": 80
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          900
+         ],
+         [
+          70,
+          1010
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1000
+         ],
+         [
+          70,
+          800
+         ]
+        ]
+       },
+       "s": 1.2
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "Weather's awful.",
+       "x": 520,
+       "y": 210,
+       "at": 5
+      },
+      {
+       "t": "fx",
+       "kind": "vignette"
+      }
+     ],
+     "cam": {}
+    }
+   }
+  },
+  {
+   "id": "s03",
+   "text": "",
+   "startFrame": 450,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall"
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "s": 1.0,
+       "filled": 9,
+       "marks": [
+        {
+         "c": 2,
+         "r": 1,
+         "at": 20
+        },
+        {
+         "c": 3,
+         "r": 1,
+         "at": 50
+        }
+       ]
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "right",
+       "x": {
+        "from": 1300,
+        "to": 840,
+        "dur": 40
+       },
+       "y": {
+        "from": 300,
+        "to": 380,
+        "dur": 40
+       },
+       "s": 1.0
+      },
+      {
+       "t": "fx",
+       "kind": "vignette"
+      }
+     ],
+     "cam": {}
+    }
+   }
+  },
+  {
+   "id": "s04",
+   "text": "",
+   "startFrame": 600,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-door"
+      },
+      {
+       "t": "books",
+       "kind": "pair",
+       "x": 960,
+       "y": 900
+      },
+      {
+       "t": "fx",
+       "kind": "leaves"
+      },
+      {
+       "t": "fx",
+       "kind": "vignette"
+      }
+     ],
+     "cam": {}
+    }
+   }
+  },
+  {
+   "id": "s05",
+   "text": "",
+   "startFrame": 750,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "desk-night",
+       "grade": "night"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "sit-read",
+       "x": 900,
+       "y": 820,
+       "s": 1.3,
+       "mood": "tired"
+      },
+      {
+       "t": "books",
+       "kind": "open",
+       "x": 900,
+       "y": 740,
+       "s": 0.9
+      },
+      {
+       "t": "fx",
+       "kind": "vignette"
+      }
+     ],
+     "cam": {}
+    }
+   }
+  },
+  {
+   "id": "s06",
+   "text": "",
+   "startFrame": 900,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "hill-day"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "sit-read",
+       "x": 1000,
+       "y": 980,
+       "s": 0.6,
+       "mood": "happy"
+      },
+      {
+       "t": "fx",
+       "kind": "sunrays"
+      }
+     ],
+     "cam": {}
+    }
+   }
+  }
+ ],
+ "totalFrames": 1050
+}

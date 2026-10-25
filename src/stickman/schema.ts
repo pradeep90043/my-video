@@ -242,6 +242,7 @@ export const SceneSchema = z.object({
 
 /** A real, licensed photo (Wikimedia Commons / Pexels) shown as a framed picture with its credit. */
 import { CHAR_MOODS, CHAR_POSES, STORY_BGS, STORY_LOOKS, STORY_TIMES } from "./story/cast";
+import { FilmSchema } from "./film/schema";
 import { PROP_ANIMS, STORY_FX, STORY_PROPS } from "./story/StoryProps";
 
 /** Storyboard scene: the story's background plus the characters (by cast id) standing in it. */
@@ -368,6 +369,8 @@ export const StickmanVisualSchema = z.object({
   photo: PhotoSchema.optional(),
   /** storyboard template: replaces the stickman, backdrop and panels of the scene */
   story: StorySchema.optional(),
+  /** cinematic shot made of layers (environment, silhouettes, hands, phone / calendar UI, captions, camera): replaces everything else */
+  film: FilmSchema.optional(),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),

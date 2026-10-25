@@ -14,6 +14,8 @@ export const FOLEY_NAMES = [
   "punch", "thud", "clang", "bell", "applause", "laughter", "hiss",
   // body and object sounds that the animation itself triggers (see actionSounds.ts)
   "phone-buzz", "heartbeat", "breath", "sigh", "whoosh", "rustle", "bat-hit", "ball-bounce",
+  // film shots (see film/filmSounds.ts)
+  "phone-alarm", "marker-write", "paper-crumple", "shop-bell",
 ] as const;
 
 export type AmbientName = (typeof AMBIENT_NAMES)[number];
@@ -30,6 +32,7 @@ export const FOLEY_GAIN: Record<FoleyName, number> = {
   typing: 0.45, "typing-soft": 0.5, click: 0.5, glass: 0.55, "book-flip": 0.55, cloth: 0.5,
   punch: 0.6, thud: 0.6, clang: 0.5, bell: 0.45, applause: 0.4, laughter: 0.4, hiss: 0.5,
   "phone-buzz": 0.45, heartbeat: 0.5, breath: 0.35, sigh: 0.4, whoosh: 0.4, rustle: 0.45, "bat-hit": 0.6, "ball-bounce": 0.5,
+  "phone-alarm": 0.5, "marker-write": 0.45, "paper-crumple": 0.5, "shop-bell": 0.45,
 };
 
 /**
@@ -55,11 +58,23 @@ const PLACE_LAYERS: Record<string, AmbientLayer[]> = {
   palace: [{ name: "room", gain: 0.4 }, { name: "wind", gain: 0.12 }],
   temple: [{ name: "wind", gain: 0.25 }, { name: "room", gain: 0.3 }],
   cave: [{ name: "wind", gain: 0.3 }, { name: "room", gain: 0.5 }],
+  // film shots: keyed by environment kind
+  "shop-counter": [{ name: "room", gain: 0.45 }, { name: "cafe", gain: 0.2 }],
+  "shop-window": [{ name: "room", gain: 0.45 }, { name: "cafe", gain: 0.15 }, { name: "city", gain: 0.12 }],
+  "shop-floor": [{ name: "room", gain: 0.45 }, { name: "cafe", gain: 0.2 }],
+  "home-wall": [{ name: "room", gain: 0.5 }, { name: "city", gain: 0.1 }],
+  "home-door": [{ name: "room", gain: 0.4 }, { name: "wind", gain: 0.22 }, { name: "city", gain: 0.1 }],
+  "dark-table": [{ name: "room", gain: 0.55 }],
+  "desk-night": [{ name: "room", gain: 0.5 }, { name: "night", gain: 0.3 }],
+  "desk-dawn": [{ name: "room", gain: 0.4 }, { name: "forest", gain: 0.25 }],
+  "street-view": [{ name: "city", gain: 0.5 }, { name: "wind", gain: 0.12 }],
+  "hill-day": [{ name: "forest", gain: 0.55 }, { name: "wind", gain: 0.25 }],
 };
 /** The extra beds a story scene wants: its place, plus rain when it rains and the night outside after dark. */
 export function placeLayers(bg: string, time: string, fx: string): AmbientLayer[] {
   const out = [...(PLACE_LAYERS[bg] ?? [{ name: "room" as const, gain: 0.4 }])];
   const has = (n: AmbientName) => out.some((l) => l.name === n);
+  if (time === "rain") { out.push({ name: "rain-window", gain: 0.7 }); return out; } // film grade "rain": rain on the window
   if ((fx === "rain" || fx === "lightning") && !has("rain")) out.push({ name: "rain", gain: 0.5 });
   if (time === "night" && !has("night") && bg !== "room_night") out.push({ name: "night", gain: 0.3 });
   return out;

@@ -1,0 +1,4485 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "en",
+ "title": "1 MINUTE A DAY | An Animated Short Film",
+ "description": "A study-habit story told without narration.",
+ "tags": [],
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "",
+   "startFrame": 0,
+   "durationFrames": 180,
+   "duration": 6.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "lean",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "happy"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "walk",
+       "x": {
+        "from": -120,
+        "to": 520,
+        "dur": 70
+       },
+       "y": 1040,
+       "s": 1.0,
+       "fg": true,
+       "to": "stand",
+       "poseAt": 64
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.12,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 900,
+      "y": 540
+     },
+     "fadeIn": 20,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "shop-bell",
+      "at": 0.2,
+      "volume": 0.45
+     }
+    ]
+   }
+  },
+  {
+   "id": "s01",
+   "text": "",
+   "startFrame": 180,
+   "durationFrames": 96,
+   "duration": 3.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 5,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "point",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "happy",
+       "poseAt": 0
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 420,
+       "y": 1090,
+       "s": 1.5,
+       "fg": true,
+       "blur": 14,
+       "eyes": false
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "Great. Maybe start with…",
+       "at": 10,
+       "x": 960,
+       "y": 170
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.41,
+       "to": 1.5,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 1250,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s02",
+   "text": "",
+   "startFrame": 276,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-window",
+       "grade": "day",
+       "blur": 7,
+       "depth": 0.5
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "shrug",
+       "x": 1000,
+       "y": 900,
+       "s": 1.2,
+       "mood": "happy"
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1700,
+       "y": 1130,
+       "s": 1.5,
+       "fg": true,
+       "blur": 16,
+       "eyes": false,
+       "flip": true
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "3 hours. Every day.",
+       "at": 10,
+       "x": 960,
+       "y": 170
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s03",
+   "text": "",
+   "startFrame": 366,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 5,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "happy"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 420,
+       "y": 1090,
+       "s": 1.5,
+       "fg": true,
+       "blur": 14,
+       "eyes": false
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "Good luck.",
+       "at": 14,
+       "x": 960,
+       "y": 170
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.41,
+       "to": 1.5,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 1250,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s04",
+   "text": "",
+   "startFrame": 456,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 16,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "books",
+       "kind": "box",
+       "x": 960,
+       "y": 640,
+       "s": 1.5,
+       "lid": {
+        "from": 1,
+        "to": 0,
+        "at": 4,
+        "dur": 16
+       }
+      },
+      {
+       "t": "hand",
+       "kind": "flat",
+       "from": "left",
+       "x": {
+        "keys": [
+         [
+          0,
+          380
+         ],
+         [
+          40,
+          640
+         ]
+        ]
+       },
+       "y": 640
+      },
+      {
+       "t": "hand",
+       "kind": "open",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1560
+         ],
+         [
+          40,
+          1330
+         ]
+        ]
+       },
+       "y": 650
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "rustle",
+      "at": 0.4,
+      "volume": 0.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "s05",
+   "text": "",
+   "startFrame": 546,
+   "durationFrames": 120,
+   "duration": 4.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 0,
+       "depth": 0.4
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "title": "3 HRS EVERY DAY"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 1000,
+       "y": 1240,
+       "s": 1.5,
+       "flip": true,
+       "look": -0.8,
+       "mood": "happy"
+      },
+      {
+       "t": "fx",
+       "kind": "glow",
+       "x": 660,
+       "y": 440,
+       "amount": 0.9,
+       "color": "cool",
+       "z": 5
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.15,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 800,
+      "y": 520
+     },
+     "fadeIn": 0,
+     "fadeOut": 20
+    }
+   }
+  },
+  {
+   "id": "s06",
+   "text": "",
+   "startFrame": 666,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "s": 0.95,
+       "date": "Tue, Sep 23",
+       "label": "STUDY 3 HRS",
+       "ring": true,
+       "pressAt": 46
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          1010
+         ],
+         [
+          34,
+          1000
+         ],
+         [
+          46,
+          990
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1100
+         ],
+         [
+          32,
+          940
+         ],
+         [
+          46,
+          872
+         ],
+         [
+          58,
+          1010
+         ]
+        ]
+       }
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "Exams are far.",
+       "at": 6,
+       "x": 520,
+       "y": 200
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s07",
+   "text": "",
+   "startFrame": 756,
+   "durationFrames": 48,
+   "duration": 1.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 3,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "filled": 0,
+       "marks": [
+        {
+         "c": 0,
+         "r": 0,
+         "at": 22
+        }
+       ]
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1012.0
+         ],
+         [
+          16,
+          661.0
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          241.0
+         ],
+         [
+          16,
+          319.0
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s08",
+   "text": "",
+   "startFrame": 804,
+   "durationFrames": 66,
+   "duration": 2.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "s": 0.95,
+       "date": "Wed, Sep 24",
+       "label": "STUDY 3 HRS",
+       "ring": true,
+       "pressAt": 34
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          1010
+         ],
+         [
+          22,
+          1000
+         ],
+         [
+          34,
+          990
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1100
+         ],
+         [
+          20,
+          940
+         ],
+         [
+          34,
+          872
+         ],
+         [
+          46,
+          1010
+         ]
+        ]
+       }
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "Eyes hurt.",
+       "at": 6,
+       "x": 520,
+       "y": 200
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s09",
+   "text": "",
+   "startFrame": 870,
+   "durationFrames": 48,
+   "duration": 1.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 3,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "filled": 1,
+       "marks": [
+        {
+         "c": 1,
+         "r": 0,
+         "at": 22
+        }
+       ]
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1068.0
+         ],
+         [
+          16,
+          717.0
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          241.0
+         ],
+         [
+          16,
+          319.0
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s10",
+   "text": "",
+   "startFrame": 918,
+   "durationFrames": 48,
+   "duration": 1.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-door",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "books",
+       "kind": "pair",
+       "x": 960,
+       "y": 905,
+       "s": 1.2
+      },
+      {
+       "t": "fx",
+       "kind": "leaves"
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.08,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 800
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s11",
+   "text": "",
+   "startFrame": 966,
+   "durationFrames": 66,
+   "duration": 2.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "s": 0.95,
+       "date": "Thu, Sep 25",
+       "label": "STUDY 3 HRS",
+       "ring": true,
+       "pressAt": 34
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          1010
+         ],
+         [
+          22,
+          1000
+         ],
+         [
+          34,
+          990
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1100
+         ],
+         [
+          20,
+          940
+         ],
+         [
+          34,
+          872
+         ],
+         [
+          46,
+          1010
+         ]
+        ]
+       }
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "Slept late.",
+       "at": 6,
+       "x": 520,
+       "y": 200
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s12",
+   "text": "",
+   "startFrame": 1032,
+   "durationFrames": 48,
+   "duration": 1.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 3,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "filled": 2,
+       "marks": [
+        {
+         "c": 2,
+         "r": 0,
+         "at": 22
+        }
+       ]
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1124.0
+         ],
+         [
+          16,
+          773.0
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          241.0
+         ],
+         [
+          16,
+          319.0
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s13",
+   "text": "",
+   "startFrame": 1080,
+   "durationFrames": 66,
+   "duration": 2.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "s": 0.95,
+       "date": "Mon, Oct 6",
+       "label": "STUDY 3 HRS",
+       "ring": true,
+       "pressAt": 34
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          1010
+         ],
+         [
+          22,
+          1000
+         ],
+         [
+          34,
+          990
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1100
+         ],
+         [
+          20,
+          940
+         ],
+         [
+          34,
+          872
+         ],
+         [
+          46,
+          1010
+         ]
+        ]
+       }
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "Too tired.",
+       "at": 6,
+       "x": 520,
+       "y": 200,
+       "line2": "Five more."
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s14",
+   "text": "",
+   "startFrame": 1146,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "filled": 8,
+       "marks": [
+        {
+         "c": 1,
+         "r": 1,
+         "at": 40
+        }
+       ]
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "reach",
+       "x": 330,
+       "y": 1160,
+       "s": 1.4,
+       "mood": "tired",
+       "look": 0.7
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "Busy weekend.",
+       "at": 6,
+       "x": 1300,
+       "y": 200
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "marker-write",
+      "at": 1.3,
+      "volume": 0.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "s15",
+   "text": "",
+   "startFrame": 1236,
+   "durationFrames": 66,
+   "duration": 2.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "s": 0.95,
+       "date": "Fri, Oct 10",
+       "label": "STUDY 3 HRS",
+       "ring": true,
+       "pressAt": 34
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          1010
+         ],
+         [
+          22,
+          1000
+         ],
+         [
+          34,
+          990
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1100
+         ],
+         [
+          20,
+          940
+         ],
+         [
+          34,
+          872
+         ],
+         [
+          46,
+          1010
+         ]
+        ]
+       }
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "Long week.",
+       "at": 6,
+       "x": 520,
+       "y": 200
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s16",
+   "text": "",
+   "startFrame": 1302,
+   "durationFrames": 48,
+   "duration": 1.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 3,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "filled": 13,
+       "marks": [
+        {
+         "c": 6,
+         "r": 1,
+         "at": 22
+        }
+       ]
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1348.0
+         ],
+         [
+          16,
+          997.0
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          331.0
+         ],
+         [
+          16,
+          409.0
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s17",
+   "text": "",
+   "startFrame": 1350,
+   "durationFrames": 48,
+   "duration": 1.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-door",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "books",
+       "kind": "pair",
+       "x": 960,
+       "y": 905,
+       "s": 1.2
+      },
+      {
+       "t": "fx",
+       "kind": "leaves"
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.08,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 800
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s18",
+   "text": "",
+   "startFrame": 1398,
+   "durationFrames": 66,
+   "duration": 2.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "s": 0.95,
+       "date": "Tue, Oct 14",
+       "label": "STUDY 3 HRS",
+       "ring": true,
+       "pressAt": 34
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          1010
+         ],
+         [
+          22,
+          1000
+         ],
+         [
+          34,
+          990
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1100
+         ],
+         [
+          20,
+          940
+         ],
+         [
+          34,
+          872
+         ],
+         [
+          46,
+          1010
+         ]
+        ]
+       }
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "Too cold.",
+       "at": 6,
+       "x": 520,
+       "y": 200
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s19",
+   "text": "",
+   "startFrame": 1464,
+   "durationFrames": 48,
+   "duration": 1.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 3,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "filled": 20,
+       "marks": [
+        {
+         "c": 6,
+         "r": 2,
+         "at": 22
+        }
+       ]
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1348.0
+         ],
+         [
+          16,
+          997.0
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          421.0
+         ],
+         [
+          16,
+          499.0
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s20",
+   "text": "",
+   "startFrame": 1512,
+   "durationFrames": 66,
+   "duration": 2.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "s": 0.95,
+       "date": "Sun, Oct 19",
+       "label": "STUDY 3 HRS",
+       "ring": true,
+       "pressAt": 34
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          1010
+         ],
+         [
+          22,
+          1000
+         ],
+         [
+          34,
+          990
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1100
+         ],
+         [
+          20,
+          940
+         ],
+         [
+          34,
+          872
+         ],
+         [
+          46,
+          1010
+         ]
+        ]
+       }
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "It's Sunday.",
+       "at": 6,
+       "x": 520,
+       "y": 200
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s21",
+   "text": "",
+   "startFrame": 1578,
+   "durationFrames": 48,
+   "duration": 1.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 3,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "filled": 24,
+       "marks": [
+        {
+         "c": 3,
+         "r": 3,
+         "at": 22
+        }
+       ]
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1180.0
+         ],
+         [
+          16,
+          829.0
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          511.0
+         ],
+         [
+          16,
+          589.0
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s22",
+   "text": "",
+   "startFrame": 1626,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 22,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 960,
+       "y": 540,
+       "s": 2.3,
+       "filled": 28
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.06,
+       "to": 1.0,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s23",
+   "text": "",
+   "startFrame": 1716,
+   "durationFrames": 120,
+   "duration": 4.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 18,
+       "depth": 0.3
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "slump",
+       "x": 960,
+       "y": 1560,
+       "s": 2.3,
+       "mood": "sad"
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.1,
+       "dur": 110
+      },
+      "x": 960,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s24",
+   "text": "",
+   "startFrame": 1836,
+   "durationFrames": 114,
+   "duration": 3.8,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 6,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 960,
+       "y": 500,
+       "s": 1.3,
+       "filled": 28,
+       "crumple": {
+        "from": 0,
+        "to": 1,
+        "at": 20,
+        "dur": 40
+       },
+       "o": {
+        "keys": [
+         [
+          0,
+          1
+         ],
+         [
+          62,
+          1
+         ],
+         [
+          70,
+          0
+         ]
+        ]
+       }
+      },
+      {
+       "t": "books",
+       "kind": "crumpled",
+       "x": 960,
+       "y": 560,
+       "s": 1.5,
+       "at": 66
+      },
+      {
+       "t": "hand",
+       "kind": "grab",
+       "from": "left",
+       "x": {
+        "keys": [
+         [
+          0,
+          520
+         ],
+         [
+          20,
+          640
+         ],
+         [
+          60,
+          800
+         ],
+         [
+          100,
+          560
+         ]
+        ]
+       },
+       "y": 520
+      },
+      {
+       "t": "hand",
+       "kind": "grab",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1400
+         ],
+         [
+          20,
+          1280
+         ],
+         [
+          60,
+          1120
+         ],
+         [
+          100,
+          1360
+         ]
+        ]
+       },
+       "y": 520
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s25",
+   "text": "",
+   "startFrame": 1950,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-door",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "books",
+       "kind": "pair",
+       "x": 1180,
+       "y": 905,
+       "s": 0.9
+      },
+      {
+       "t": "books",
+       "kind": "crumpled",
+       "x": 1500,
+       "y": 985,
+       "s": 0.8
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "slump",
+       "x": 640,
+       "y": 1150,
+       "s": 0.95,
+       "mood": "sad"
+      },
+      {
+       "t": "fx",
+       "kind": "leaves",
+       "amount": 0.7
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.1,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 700
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s26",
+   "text": "",
+   "startFrame": 2100,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 16,
+       "depth": 0.5
+      },
+      {
+       "t": "books",
+       "kind": "box",
+       "x": 960,
+       "y": 650,
+       "s": 1.7,
+       "lid": {
+        "from": 0,
+        "to": 1,
+        "at": 14,
+        "dur": 22
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "cloth",
+      "at": 0.5,
+      "volume": 0.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "s27",
+   "text": "",
+   "startFrame": 2190,
+   "durationFrames": 120,
+   "duration": 4.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "lean",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "neutral"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "walk",
+       "x": {
+        "from": -120,
+        "to": 560,
+        "dur": 70
+       },
+       "y": 1040,
+       "s": 1.0,
+       "fg": true,
+       "to": "hold",
+       "poseAt": 64,
+       "holds": "box",
+       "mood": "sad"
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.1,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 900,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "shop-bell",
+      "at": 0.2,
+      "volume": 0.45
+     }
+    ]
+   }
+  },
+  {
+   "id": "s28",
+   "text": "",
+   "startFrame": 2310,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 14,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "books",
+       "kind": "box",
+       "x": 900,
+       "y": 640,
+       "s": 1.5
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "top",
+       "x": {
+        "keys": [
+         [
+          0,
+          1240
+         ],
+         [
+          30,
+          1040
+         ],
+         [
+          50,
+          1020
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          360
+         ],
+         [
+          30,
+          470
+         ],
+         [
+          50,
+          480
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "thud",
+      "at": 1.5,
+      "volume": 0.3
+     }
+    ]
+   }
+  },
+  {
+   "id": "s29",
+   "text": "",
+   "startFrame": 2400,
+   "durationFrames": 108,
+   "duration": 3.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 5,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "shrug",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "sad"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 420,
+       "y": 1090,
+       "s": 1.5,
+       "fg": true,
+       "blur": 14,
+       "eyes": false
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "Sorry. It's been a month.",
+       "at": 10,
+       "x": 960,
+       "y": 170,
+       "line2": "I can't take them back."
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.41,
+       "to": 1.5,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 1250,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s30",
+   "text": "",
+   "startFrame": 2508,
+   "durationFrames": 84,
+   "duration": 2.8,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 5,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "lean",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "neutral"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 420,
+       "y": 1090,
+       "s": 1.5,
+       "fg": true,
+       "blur": 14,
+       "eyes": false
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "What happened to 3 hours a day?",
+       "at": 8,
+       "x": 960,
+       "y": 170
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.41,
+       "to": 1.5,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 1250,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s31",
+   "text": "",
+   "startFrame": 2592,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-window",
+       "grade": "day",
+       "blur": 7,
+       "depth": 0.5
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "slump",
+       "x": 1000,
+       "y": 900,
+       "s": 1.2,
+       "mood": "sad"
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1700,
+       "y": 1130,
+       "s": 1.5,
+       "fg": true,
+       "blur": 16,
+       "eyes": false,
+       "flip": true
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "I couldn't even start.",
+       "at": 10,
+       "x": 960,
+       "y": 170
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s32",
+   "text": "",
+   "startFrame": 2682,
+   "durationFrames": 75,
+   "duration": 2.5,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 5,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "neutral"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 420,
+       "y": 1090,
+       "s": 1.5,
+       "fg": true,
+       "blur": 14,
+       "eyes": false
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.3159999999999998,
+       "to": 1.4,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 1200,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s33",
+   "text": "",
+   "startFrame": 2757,
+   "durationFrames": 60,
+   "duration": 2.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-window",
+       "grade": "day",
+       "blur": 7,
+       "depth": 0.5
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "slump",
+       "x": 1000,
+       "y": 900,
+       "s": 1.2,
+       "mood": "sad"
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1700,
+       "y": 1130,
+       "s": 1.5,
+       "fg": true,
+       "blur": 16,
+       "eyes": false,
+       "flip": true
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "That's right.",
+       "at": 6,
+       "x": 1500,
+       "y": 300
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s34",
+   "text": "",
+   "startFrame": 2817,
+   "durationFrames": 96,
+   "duration": 3.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 5,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "point",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "happy"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 420,
+       "y": 1090,
+       "s": 1.5,
+       "fg": true,
+       "blur": 14,
+       "eyes": false
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "One minute.",
+       "at": 12,
+       "x": 960,
+       "y": 170
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.4569999999999999,
+       "to": 1.55,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 1250,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s35",
+   "text": "",
+   "startFrame": 2913,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-window",
+       "grade": "day",
+       "blur": 7,
+       "depth": 0.5
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "hold",
+       "x": 1000,
+       "y": 900,
+       "s": 1.2,
+       "mood": "neutral",
+       "holds": "box"
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1700,
+       "y": 1130,
+       "s": 1.5,
+       "fg": true,
+       "blur": 16,
+       "eyes": false,
+       "flip": true
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "Thanks. I'll try.",
+       "at": 10,
+       "x": 960,
+       "y": 170
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s36",
+   "text": "",
+   "startFrame": 3003,
+   "durationFrames": 96,
+   "duration": 3.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-door",
+       "grade": "day",
+       "blur": 2,
+       "depth": 0.5
+      },
+      {
+       "t": "books",
+       "kind": "crumpled",
+       "x": {
+        "keys": [
+         [
+          0,
+          830
+         ],
+         [
+          50,
+          830
+         ],
+         [
+          80,
+          960
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          950
+         ],
+         [
+          50,
+          950
+         ],
+         [
+          80,
+          590
+         ]
+        ]
+       },
+       "s": 1.2
+      },
+      {
+       "t": "hand",
+       "kind": "pinch",
+       "from": "top",
+       "x": {
+        "keys": [
+         [
+          0,
+          830
+         ],
+         [
+          50,
+          830
+         ],
+         [
+          80,
+          960
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          420
+         ],
+         [
+          30,
+          800
+         ],
+         [
+          50,
+          800
+         ],
+         [
+          80,
+          440
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "paper-crumple",
+      "at": 1.6,
+      "volume": 0.35
+     }
+    ]
+   }
+  },
+  {
+   "id": "s37",
+   "text": "",
+   "startFrame": 3099,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 2,
+       "depth": 0.5
+      },
+      {
+       "t": "poster",
+       "x": 960,
+       "y": 470,
+       "s": 1.6,
+       "text": "1 MIN",
+       "writeAt": 20,
+       "writeDur": 70
+      },
+      {
+       "t": "hand",
+       "kind": "write",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1700
+         ],
+         [
+          20,
+          890
+         ],
+         [
+          90,
+          1510
+         ],
+         [
+          112,
+          1700
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          420
+         ],
+         [
+          20,
+          500
+         ],
+         [
+          90,
+          500
+         ],
+         [
+          112,
+          420
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s38",
+   "text": "",
+   "startFrame": 3249,
+   "durationFrames": 105,
+   "duration": 3.5,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "s": 0.95,
+       "date": "Tue, Oct 21",
+       "label": "STUDY 1 MIN",
+       "ring": true
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          1010
+         ],
+         [
+          40,
+          1000
+         ],
+         [
+          70,
+          1004
+         ],
+         [
+          104,
+          996
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1100
+         ],
+         [
+          30,
+          900
+         ],
+         [
+          60,
+          890
+         ],
+         [
+          80,
+          900
+         ],
+         [
+          104,
+          890
+         ]
+        ]
+       }
+      },
+      {
+       "t": "caption",
+       "style": "excuse",
+       "text": "Maybe tomorrow?",
+       "at": 6,
+       "x": 520,
+       "y": 200
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s39",
+   "text": "",
+   "startFrame": 3354,
+   "durationFrames": 120,
+   "duration": 4.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "desk-night",
+       "grade": "night",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "sit-read",
+       "x": 900,
+       "y": 1010,
+       "s": 1.3,
+       "mood": "tired"
+      },
+      {
+       "t": "books",
+       "kind": "open",
+       "x": 900,
+       "y": 775,
+       "s": 0.95
+      },
+      {
+       "t": "fx",
+       "kind": "dust"
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.08,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "book-flip",
+      "at": 1.5,
+      "volume": 0.5
+     },
+     {
+      "name": "book-flip",
+      "at": 3.0,
+      "volume": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "s40",
+   "text": "",
+   "startFrame": 3474,
+   "durationFrames": 60,
+   "duration": 2.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "poster",
+       "x": 660,
+       "y": 440,
+       "s": 1.3,
+       "text": "1 MIN"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 1450,
+       "y": 1200,
+       "s": 1.4,
+       "flip": true,
+       "look": -0.6,
+       "mood": "neutral"
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.08,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 900,
+      "y": 520
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s41",
+   "text": "",
+   "startFrame": 3534,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 540,
+       "s": 0.95,
+       "mode": "keyboard",
+       "time": "5:30",
+       "typeStart": "STUDY ",
+       "text": "1 MIN",
+       "typeFrom": 20,
+       "typeEvery": 7
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          900
+         ],
+         [
+          40,
+          840
+         ],
+         [
+          70,
+          1000
+         ],
+         [
+          90,
+          1060
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1100
+         ],
+         [
+          30,
+          900
+         ],
+         [
+          60,
+          880
+         ],
+         [
+          90,
+          900
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s42",
+   "text": "",
+   "startFrame": 3624,
+   "durationFrames": 66,
+   "duration": 2.2,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "black",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "screen",
+       "x": 960,
+       "y": 540,
+       "title": "3 HRS EVERY DAY",
+       "button": "Print",
+       "cursorAt": 24
+      },
+      {
+       "t": "fx",
+       "kind": "glow",
+       "x": 960,
+       "y": 540,
+       "amount": 1.6,
+       "color": "cool",
+       "z": 5
+      },
+      {
+       "t": "fx",
+       "kind": "vignette"
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s43",
+   "text": "",
+   "startFrame": 3690,
+   "durationFrames": 72,
+   "duration": 2.4,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "black",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "screen",
+       "x": 960,
+       "y": 540,
+       "title": "1 MIN EVERY DAY",
+       "typeFrom": "",
+       "typeAt": 8,
+       "typeEvery": 4,
+       "button": "Print",
+       "cursorAt": 40
+      },
+      {
+       "t": "fx",
+       "kind": "glow",
+       "x": 960,
+       "y": 540,
+       "amount": 1.6,
+       "color": "cool",
+       "z": 5
+      },
+      {
+       "t": "fx",
+       "kind": "vignette"
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s44",
+   "text": "",
+   "startFrame": 3762,
+   "durationFrames": 84,
+   "duration": 2.8,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "black",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "fx",
+       "kind": "glow",
+       "x": 960,
+       "y": 700,
+       "amount": 1.4,
+       "color": "cool",
+       "z": 5
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 960,
+       "y": 1560,
+       "s": 2.4,
+       "mood": "neutral",
+       "look": 0.2
+      },
+      {
+       "t": "caption",
+       "style": "whisper",
+       "text": "Just start.",
+       "at": 10,
+       "x": 620,
+       "y": 260
+      },
+      {
+       "t": "fx",
+       "kind": "vignette"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 80
+      },
+      "x": 960,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s45",
+   "text": "",
+   "startFrame": 3846,
+   "durationFrames": 72,
+   "duration": 2.4,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "poster",
+       "x": 1200,
+       "y": 440,
+       "s": 1.2,
+       "text": "1 MIN"
+      },
+      {
+       "t": "calendar",
+       "x": 640,
+       "y": 430,
+       "palette": "warm",
+       "title": "1 MIN EVERY DAY"
+      },
+      {
+       "t": "hand",
+       "kind": "flat",
+       "from": "left",
+       "x": {
+        "keys": [
+         [
+          0,
+          360
+         ],
+         [
+          20,
+          420
+         ]
+        ]
+       },
+       "y": 440
+      },
+      {
+       "t": "hand",
+       "kind": "flat",
+       "from": "right",
+       "x": {
+        "keys": [
+         [
+          0,
+          1000
+         ],
+         [
+          20,
+          900
+         ]
+        ]
+       },
+       "y": 450
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "cloth",
+      "at": 0.6,
+      "volume": 0.4
+     }
+    ]
+   }
+  },
+  {
+   "id": "s46",
+   "text": "",
+   "startFrame": 3918,
+   "durationFrames": 120,
+   "duration": 4.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "dark-table",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "phone",
+       "x": 960,
+       "y": 560,
+       "r": -8,
+       "s": 0.95,
+       "date": "Wed, Oct 22",
+       "label": "STUDY 1 MIN",
+       "ring": true,
+       "pressAt": 70,
+       "pressTarget": "stop"
+      },
+      {
+       "t": "hand",
+       "kind": "point",
+       "from": "bottom",
+       "x": {
+        "keys": [
+         [
+          0,
+          1030
+         ],
+         [
+          55,
+          996
+         ],
+         [
+          70,
+          992
+         ],
+         [
+          88,
+          1040
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          1120
+         ],
+         [
+          55,
+          940
+         ],
+         [
+          70,
+          934
+         ],
+         [
+          92,
+          1060
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s47",
+   "text": "",
+   "startFrame": 4038,
+   "durationFrames": 60,
+   "duration": 2.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 3,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 660,
+       "y": 440,
+       "palette": "warm",
+       "title": "1 MIN EVERY DAY",
+       "marks": [
+        {
+         "c": 0,
+         "r": 0,
+         "kind": "check",
+         "at": 24
+        }
+       ]
+      },
+      {
+       "t": "hand",
+       "kind": "write",
+       "from": "right",
+       "cuff": "#c9a227",
+       "x": {
+        "keys": [
+         [
+          0,
+          1012.0
+         ],
+         [
+          18,
+          742.0
+         ]
+        ]
+       },
+       "y": {
+        "keys": [
+         [
+          0,
+          261.0
+         ],
+         [
+          18,
+          329.0
+         ]
+        ]
+       }
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.3,
+       "to": 1.4,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 660,
+      "y": 440
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s48",
+   "text": "",
+   "startFrame": 4098,
+   "durationFrames": 120,
+   "duration": 4.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "desk-night",
+       "grade": "rain",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "sit-read",
+       "x": 900,
+       "y": 1010,
+       "s": 1.3,
+       "mood": "neutral"
+      },
+      {
+       "t": "books",
+       "kind": "open",
+       "x": 900,
+       "y": 775,
+       "s": 0.95
+      },
+      {
+       "t": "fx",
+       "kind": "rain",
+       "amount": 0.5
+      },
+      {
+       "t": "fx",
+       "kind": "dust"
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "book-flip",
+      "at": 2.0,
+      "volume": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "s49",
+   "text": "",
+   "startFrame": 4218,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "night",
+       "blur": 14,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 960,
+       "y": 540,
+       "s": 1.6,
+       "palette": "warm",
+       "title": "1 MIN EVERY DAY",
+       "filled": 3,
+       "filledKind": "check",
+       "marks": [
+        {
+         "c": 3,
+         "r": 0,
+         "kind": "check",
+         "at": 10
+        },
+        {
+         "c": 4,
+         "r": 0,
+         "kind": "check",
+         "at": 30
+        },
+        {
+         "c": 5,
+         "r": 0,
+         "kind": "check",
+         "at": 50
+        },
+        {
+         "c": 6,
+         "r": 0,
+         "kind": "check",
+         "at": 70
+        }
+       ]
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s50",
+   "text": "",
+   "startFrame": 4308,
+   "durationFrames": 105,
+   "duration": 3.5,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "desk-dawn",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "sit-read",
+       "x": 900,
+       "y": 1010,
+       "s": 1.3,
+       "mood": "happy"
+      },
+      {
+       "t": "books",
+       "kind": "open",
+       "x": 900,
+       "y": 775,
+       "s": 0.95
+      },
+      {
+       "t": "fx",
+       "kind": "dust"
+      },
+      {
+       "t": "fx",
+       "kind": "sunrays",
+       "amount": 0.6
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.06,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 960,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "book-flip",
+      "at": 1.6,
+      "volume": 0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "s51",
+   "text": "",
+   "startFrame": 4413,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "home-wall",
+       "grade": "day",
+       "blur": 14,
+       "depth": 0.5
+      },
+      {
+       "t": "calendar",
+       "x": 960,
+       "y": 540,
+       "s": 1.6,
+       "palette": "warm",
+       "title": "1 MIN EVERY DAY",
+       "filled": 24,
+       "filledKind": "check",
+       "marks": [
+        {
+         "c": 3,
+         "r": 3,
+         "kind": "check",
+         "at": 12
+        },
+        {
+         "c": 4,
+         "r": 3,
+         "kind": "check",
+         "at": 34
+        },
+        {
+         "c": 5,
+         "r": 3,
+         "kind": "check",
+         "at": 56
+        }
+       ]
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s52",
+   "text": "",
+   "startFrame": 4503,
+   "durationFrames": 180,
+   "duration": 6.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "hill-day",
+       "grade": "day",
+       "blur": 0,
+       "depth": 1
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "sit-bench",
+       "x": 1000,
+       "y": 1115,
+       "s": 0.8,
+       "mood": "happy"
+      },
+      {
+       "t": "books",
+       "kind": "open",
+       "x": 1020,
+       "y": 900,
+       "s": 0.28
+      },
+      {
+       "t": "fx",
+       "kind": "sunrays"
+      },
+      {
+       "t": "fx",
+       "kind": "dust",
+       "amount": 0.5
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.5
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.12,
+       "dur": 170
+      },
+      "x": 1000,
+      "y": 800
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s53",
+   "text": "",
+   "startFrame": 4683,
+   "durationFrames": 120,
+   "duration": 4.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "happy"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "walk",
+       "x": {
+        "from": -120,
+        "to": 520,
+        "dur": 70
+       },
+       "y": 1040,
+       "s": 1.0,
+       "fg": true,
+       "to": "stand",
+       "poseAt": 64,
+       "mood": "happy"
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "Hi. It's been a while.",
+       "at": 70,
+       "x": 960,
+       "y": 150
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.0,
+       "to": 1.1,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 900,
+      "y": 540
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    },
+    "foley": [
+     {
+      "name": "shop-bell",
+      "at": 0.2,
+      "volume": 0.45
+     }
+    ]
+   }
+  },
+  {
+   "id": "s54",
+   "text": "",
+   "startFrame": 4803,
+   "durationFrames": 108,
+   "duration": 3.6,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 5,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "laugh",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "happy"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 420,
+       "y": 1090,
+       "s": 1.5,
+       "fg": true,
+       "blur": 14,
+       "eyes": false
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "So you finished the book?",
+       "at": 10,
+       "x": 960,
+       "y": 170
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.41,
+       "to": 1.5,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 1250,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s55",
+   "text": "",
+   "startFrame": 4911,
+   "durationFrames": 150,
+   "duration": 5.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-window",
+       "grade": "day",
+       "blur": 7,
+       "depth": 0.5
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "shrug",
+       "x": 1000,
+       "y": 900,
+       "s": 1.2,
+       "mood": "happy"
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1700,
+       "y": 1130,
+       "s": 1.5,
+       "fg": true,
+       "blur": 16,
+       "eyes": false,
+       "flip": true
+      },
+      {
+       "t": "caption",
+       "style": "speech",
+       "text": "Just one minute a day.",
+       "at": 14,
+       "x": 960,
+       "y": 170
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  },
+  {
+   "id": "s56",
+   "text": "",
+   "startFrame": 5061,
+   "durationFrames": 105,
+   "duration": 3.5,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "shop-counter",
+       "grade": "day",
+       "blur": 5,
+       "depth": 0.5
+      },
+      {
+       "t": "sign",
+       "text": "14-DAY RETURNS",
+       "x": 1580,
+       "y": 668,
+       "s": 0.9
+      },
+      {
+       "t": "person",
+       "who": "seller",
+       "pose": "stand",
+       "x": 1250,
+       "y": 960,
+       "s": 1.05,
+       "mood": "happy"
+      },
+      {
+       "t": "person",
+       "who": "customer",
+       "pose": "stand",
+       "x": 420,
+       "y": 1090,
+       "s": 1.5,
+       "fg": true,
+       "blur": 14,
+       "eyes": false
+      },
+      {
+       "t": "fx",
+       "kind": "vignette",
+       "amount": 0.8
+      },
+      {
+       "t": "fx",
+       "kind": "grain"
+      }
+     ],
+     "cam": {
+      "zoom": {
+       "from": 1.3159999999999998,
+       "to": 1.4,
+       "dur": 140,
+       "ease": "out"
+      },
+      "x": 1200,
+      "y": 560
+     },
+     "fadeIn": 0,
+     "fadeOut": 30
+    },
+    "foley": [
+     {
+      "name": "bell",
+      "at": 1.2,
+      "volume": 0.25
+     }
+    ]
+   }
+  },
+  {
+   "id": "s57",
+   "text": "",
+   "startFrame": 5166,
+   "durationFrames": 120,
+   "duration": 4.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "black",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      },
+      {
+       "t": "caption",
+       "style": "title",
+       "text": "1 MINUTE A DAY",
+       "at": 14,
+       "x": 960,
+       "y": 540
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 20
+    }
+   }
+  },
+  {
+   "id": "s58",
+   "text": "",
+   "startFrame": 5286,
+   "durationFrames": 60,
+   "duration": 2.0,
+   "visual": {
+    "transition": "cut",
+    "film": {
+     "layers": [
+      {
+       "t": "env",
+       "kind": "black",
+       "grade": "day",
+       "blur": 0,
+       "depth": 0.5
+      }
+     ],
+     "cam": {},
+     "fadeIn": 0,
+     "fadeOut": 0
+    }
+   }
+  }
+ ],
+ "totalFrames": 5346
+}
