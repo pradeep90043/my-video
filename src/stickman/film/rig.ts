@@ -97,6 +97,10 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     flip: stepAt(l.faces, frame, l.flip).v,
   };
 
+  // what the head attends to: a gaze target, else whatever the hand is working on (the strongest wins)
+  let attend: { x: number; y: number; w: number } | undefined;
+  const attendTo = (x: number, y: number, w: number) => { if (w > 0 && (!attend || w > attend.w)) attend = { x, y, w }; };
+
   // reaching: the front arm bends onto a world point, easing in and out
   for (const rc of l.reach ?? []) {
     const ramp = rc.ease ?? 10;
@@ -108,9 +112,36 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     const target = toLocal(place, rc.x + wig, rc.y + (rc.wiggle ? Math.abs(Math.cos(frame * 0.9)) * rc.wiggle * 0.4 : 0));
     const ik = solveFrontArm(pose, frame, seed, target);
     pose = { ...pose, armF: [pose.armF[0] + (ik[0] - pose.armF[0]) * w, pose.armF[1] + (ik[1] - pose.armF[1]) * w] };
+    // a resting hand on the desk is not something to stare at
+    if (!rc.hold) attendTo(rc.x, rc.y, w * 0.85);
   }
+  for (const g of l.gazes ?? []) {
+    const end = g.until ?? Infinity;
+    if (frame < g.at || frame > end + 10) continue;
+    attendTo(g.x, g.y, Math.min(smooth((frame - g.at) / 10), smooth((end + 10 - frame) / 10)));
+  }
+  if (attend) {
+    // tilt the head (relative to the leaning torso) so the face points at the target
+    const [tx, ty] = toLocal(place, attend.x, attend.y);
+    const [hx, hy] = rot(0, -252, pose.lean);
+    const want = deg(Math.atan2(ty - (hy - BODY.hip), Math.max(60, tx - hx))) - pose.lean;
+    const head = Math.max(-35, Math.min(40, want));
+    pose = { ...pose, head: pose.head + (head - pose.head) * attend.w, turn: (pose.turn ?? 0.75) + (1 - (pose.turn ?? 0.75)) * attend.w * 0.8 };
+  }
+
+  // explicit face turns (to the camera and back), blended over 10 frames
+  if (l.turns?.length) {
+    const own = pose.turn ?? 0.75;
+    const { v, since, prev } = stepAt(l.turns, frame, -1);
+    const to = v < 0 ? own : v, from = prev < 0 ? own : prev;
+    pose = { ...pose, turn: from + (to - from) * smooth((frame - since) / 10) };
+  }
+
   return { pose, place, mood: stepAt(l.moods, frame, l.mood).v, look: stepAt(l.looks, frame, l.look).v, seed };
 }
+
+/** Is the person speaking at this frame? */
+export const talkingAt = (l: PersonLayer, frame: number) => (l.talks ?? []).some(([a, b]) => frame >= a && frame < b);
 
 /** The front hand's centre in world space at a frame. */
 export function frontHandWorld(st: PersonState, frame: number): [number, number] {

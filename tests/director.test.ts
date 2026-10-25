@@ -99,3 +99,25 @@ test("staged actions bring their sounds", () => {
   const cues = planFilmSounds(film, 180);
   assert.ok(cues.some((c) => c.name === "typing-soft"));
 });
+
+test("faces follow the activity: side-on to the person spoken to, down at the keys, round to the camera when told", () => {
+  const talk = direct({
+    secs: 5, place: "living-room",
+    cast: [{ id: "a", at: 0.35 }, { id: "b", at: 0.65 }],
+    actions: [{ at: 0.4, who: "b", do: "say", target: "a", text: "Did you study?" }, { at: 3, who: "a", do: "look", target: "camera" }],
+  }).film;
+  const [[a, ai], [b, bi]] = people(talk.layers);
+  const sa = personState(a, ai, 60), sb = personState(b, bi, 60);
+  assert.ok(sa.pose.turn! > 0.85 && sb.pose.turn! > 0.85, `turns ${sa.pose.turn} ${sb.pose.turn}`);
+  assert.ok(!sa.place.flip && sb.place.flip, "they face each other");
+  assert.ok(b.talks?.length && b.talks[0][0] <= 60 && b.talks[0][1] > 30, "the speaker's mouth moves");
+  assert.ok(personState(a, ai, 3 * 30 + 20).pose.turn! < 0.1, "turned to the camera");
+
+  const work = direct({
+    secs: 5, place: "study", props: [{ id: "laptop", kind: "laptop", on: "desk" }],
+    cast: [{ id: "a", sitOn: "chair" }], actions: [{ at: 0.2, who: "a", do: "use", target: "laptop", dur: 3 }],
+  }).film;
+  const [[w, wi]] = people(work.layers);
+  const sw = personState(w, wi, 60);
+  assert.ok(sw.pose.head > POSES["sit-chair"].head + 5, `head bows to the keys (${sw.pose.head.toFixed(1)})`);
+});

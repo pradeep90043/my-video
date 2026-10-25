@@ -188,6 +188,8 @@ interface CastState {
   xs: [number, number][]; ys: [number, number][]; ss: [number, number][]; rs: [number, number][]; zs: [number, number][];
   poses: [number, string][]; faces: [number, boolean][]; moods: [number, string][]; looks: [number, number][];
   reach: { at: number; dur: number; x: number; y: number; hold?: boolean; release?: number; ease?: number; wiggle?: number }[];
+  /** where the head looks (and the face turns): gaze targets, turns to the camera, speaking */
+  gazes: { at: number; until?: number; x: number; y: number }[]; turns: [number, number][]; talks: [number, number][]; toCamera?: boolean;
   /** the frame this person is free again (actions queue up behind each other) */
   busy: number;
   initPose: string; initFlip: boolean; initZ: number;
@@ -342,7 +344,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     const pose = c.pose ?? (place.behind === rowName ? "sit" : "stand");
     const st: CastState = {
       spec: c, layerIndex: -1, x, y: row.y, s: row.s, r: 0, row: rowName, flip: c.facing ? c.facing === "left" : x > W / 2 && n > 1, z: row.z + 2,
-      pose, xs: [], ys: [], ss: [], rs: [], zs: [], poses: [], faces: [], moods: [], looks: [], reach: [], busy: 0,
+      pose, xs: [], ys: [], ss: [], rs: [], zs: [], poses: [], faces: [], moods: [], looks: [], reach: [], gazes: [], turns: [], talks: [], busy: 0,
       initPose: pose, initFlip: false, initZ: 0,
     };
     st.layerIndex = layers.length + props.size + i;
@@ -359,6 +361,14 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
 
   const setFace = (c: CastState, f: number, left: boolean) => { if (c.flip !== left) { c.flip = left; c.faces.push([f, left]); } };
   const setPose = (c: CastState, f: number, pose: string) => { if (c.pose !== pose) { c.pose = pose; c.poses.push([f, pose]); } };
+  /** a head (world point) to look at */
+  const headOf = (c: CastState): [number, number] => [c.x, c.y - (c.lying ? 60 : BODY.head) * c.s];
+  /** look at a point until something else takes the attention */
+  const gaze = (c: CastState, f: number, x: number, y: number, until?: number) => { endGaze(c, f); c.gazes.push({ at: f, x, y, until }); };
+  const endGaze = (c: CastState, f: number) => {
+    for (const g of c.gazes) if (g.until === undefined || g.until > f) g.until = Math.max(g.at + 1, f);
+    if (c.toCamera) { c.turns.push([f, -1]); c.toCamera = undefined; }
+  };
   const key = (arr: [number, number][], f: number, from: number, to: number, dur: number) => {
     if (from === to) return;
     arr.push([f, from], [f + Math.max(1, dur), to]);
@@ -493,8 +503,17 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     let f = Math.max(F(a.at), c.busy);
     if (f >= total) { warn(`${a.who} ${a.do} at ${a.at}s starts after the shot ends`); continue; }
     const dur = a.dur ? F(a.dur) : undefined;
+    if ((a.do === "look" || a.do === "face") && a.target === "camera") {
+      // to the audience: the face turns round to the lens, until the next thing they do
+      endGaze(c, f);
+      c.turns.push([f, 0]); c.toCamera = true;
+      c.busy = Math.max(c.busy, f + 6);
+      continue;
+    }
     const tp = a.target ? props.get(a.target) : undefined;
     const tc = a.target ? cast.get(a.target) : undefined;
+    // doing something new takes the eyes off whatever they were looking at
+    if (!["say", "think", "mood", "look", "face"].includes(a.do)) endGaze(c, f);
     if (a.target && !tp && !tc) { warn(`${a.who} ${a.do}: no "${a.target}" in the shot`); continue; }
     switch (a.do) {
       case "walk": case "run": case "enter": {
@@ -609,6 +628,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         if (tp.holder === c.spec.id) {
           // a held phone or book: look at it
           setPose(c, f, c.seated ? "sit-hold" : "hold");
+          gaze(c, f, c.x + (c.flip ? -1 : 1) * 150 * c.s, c.y - (c.seated ? 120 : 330) * c.s, f + d);
           tp.ons.push([f, true]);
           if (tp.kind === "phone") foley.push({ name: "click", at: f + 4, volume: 0.35 });
           f += d;
@@ -646,7 +666,11 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         const tx = tp ? tp.x : tc ? tc.x : a.to === "left" ? -1 : a.to === "right" ? W + 1 : undefined;
         if (tx === undefined) { warn(`${a.who} ${a.do}: look where?`); continue; }
         setFace(c, f, tx < c.x);
-        if (a.do === "look") c.looks.push([f, 0.8]);
+        if (a.do === "look") {
+          c.looks.push([f, 0.8]);
+          if (tc) gaze(c, f, ...headOf(tc), dur ? f + dur : undefined);
+          else if (tp) gaze(c, f, tp.x, tp.y - PROPS[tp.kind].h * tp.s * 0.5, dur ? f + dur : undefined);
+        }
         f += 6;
         break;
       }
@@ -665,6 +689,16 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         const d = dur ?? F(Math.max(1.6, a.text.split(/\s+/).length * 0.38));
         late.push({ t: "caption", style: a.do === "think" ? "whisper" : "speech", text: a.text, at: f, until: Math.min(total, f + d), x: 960, y: 150, big: true } as FilmLayer);
         if (a.mood) c.moods.push([f, a.mood]);
+        if (a.do === "say") {
+          c.talks.push([f, Math.min(total, f + d)]);
+          // speaking to someone: face them and look at them (if not in the middle of something); they look back
+          const listener = tc ?? [...cast.values()].filter((o) => o !== c).sort((p, q) => Math.abs(p.x - c.x) - Math.abs(q.x - c.x))[0];
+          if (listener && !c.toCamera) {
+            if (c.busy <= f && !c.lying) setFace(c, f, listener.x < c.x);
+            if (c.busy <= f) gaze(c, f, ...headOf(listener));
+            if (listener.busy <= f && !listener.lying && !listener.toCamera) { setFace(listener, f, c.x < listener.x); gaze(listener, f + 4, ...headOf(c)); }
+          }
+        }
         break; // talking does not keep the body busy
       }
     }
@@ -696,6 +730,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       at: 0, x: keyed(c.xs, c.x), y: keyed(c.ys, c.y), s: keyed(c.ss, c.s), r: keyed(c.rs, c.r), o: 1, blur: 0,
       flip: c.initFlip, faces: c.faces.length ? c.faces : undefined, mood: c.spec.mood, moods: c.moods.length ? c.moods : undefined,
       looks: c.looks.length ? c.looks : undefined, reach: c.reach.length ? c.reach : undefined,
+      gazes: c.gazes.length ? c.gazes : undefined, turns: c.turns.length ? c.turns : undefined, talks: c.talks.length ? c.talks : undefined,
       eyes: true, look: 0, fg: false, holds: "none", shadow: true, shirt: c.spec.shirt,
       ...(c.zs.length ? { zs: [[0, c.initZ] as [number, number], ...c.zs] } : { z: c.initZ }),
     } as unknown as FilmLayer;

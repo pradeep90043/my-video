@@ -1,0 +1,37 @@
+{
+ "title": "Faces test",
+ "shots": [
+  {
+   "secs": 5, "place": "study", "time": "night",
+   "props": [{ "id": "laptop", "kind": "laptop", "on": "desk", "at": 0.4 }],
+   "cast": [{ "id": "aman", "who": "student", "enter": "left", "at": 0.2, "shirt": "#3e6fa8", "mood": "tired" }],
+   "actions": [
+    { "at": 1.4, "who": "aman", "do": "sit", "target": "chair" },
+    { "at": 2.4, "who": "aman", "do": "use", "target": "laptop", "dur": 2.4 }
+   ],
+   "camera": { "shot": "medium", "on": "aman", "move": "static" }
+  },
+  {
+   "secs": 5, "place": "living-room", "time": "day",
+   "cast": [
+    { "id": "aman", "who": "student", "at": 0.35, "shirt": "#3e6fa8", "mood": "neutral" },
+    { "id": "maa", "who": "customer", "at": 0.65, "shirt": "#a8503e", "mood": "worried" }
+   ],
+   "actions": [
+    { "at": 0.4, "who": "maa", "do": "say", "target": "aman", "text": "Did you study today?" },
+    { "at": 2.4, "who": "aman", "do": "say", "target": "maa", "text": "Just one minute, Maa", "mood": "happy" },
+    { "at": 4.0, "who": "aman", "do": "look", "target": "camera" }
+   ],
+   "camera": { "shot": "medium", "on": ["aman", "maa"], "move": "static" }
+  },
+  {
+   "secs": 4, "place": "bedroom", "time": "day",
+   "cast": [{ "id": "aman", "who": "student", "at": 0.6, "shirt": "#3e6fa8", "mood": "surprised" }],
+   "actions": [
+    { "at": 0.3, "who": "aman", "do": "look", "target": "clock", "dur": 1.6 },
+    { "at": 2.2, "who": "aman", "do": "pose", "pose": "cheer", "mood": "happy" }
+   ],
+   "camera": { "shot": "full", "on": "aman", "move": "static" }
+  }
+ ]
+}

@@ -60,7 +60,8 @@ SHOT FIELDS
     walk/run (target: a prop or person id, or to: 0-1 / "left" / "right"), enter, exit, sit (target a seat), stand, lie / sleep (target a bed or sofa), wake,
     pick (target a small thing), put (target a surface id, spot 0-1), give (target a person; must be holding something),
     use (laptop, phone, book: typing/reading), write (notebook, whiteboard, paper), press, switch (turn a lamp/tv/laptop on or off, open a door),
-    look / face (target), pose (pose, optional dur), mood (mood), say / think (text, ≤ 8 words).
+    look / face (target; "camera" turns the face to the audience until their next action), pose (pose, optional dur), mood (mood), say / think (text, ≤ 8 words; "say" may target the person spoken to).
+  Faces follow the activity on their own: side-on while walking, working or talking to someone, eyes on what the hands do. Use "camera" only for a moment that speaks to the viewer.
   A person can only pick when the hands are free, put/give only when holding. Actions of one person happen in order; leave time for walking.
 - camera: { shot: "wide"|"full"|"medium"|"close"|"detail", on: id or [ids], move: "static"|"push-in"|"pull-out"|"pan-left"|"pan-right"|"follow" }
 - captions: [{ text, at, style: "title"|"speech"|"whisper" }] (optional), title: big title card text (use with place "black"), fx: ["rain","dust","leaves","sunrays","glow"], fadeIn/fadeOut seconds.
