@@ -34,7 +34,12 @@ export interface PoseParams {
   spin?: number;
   /** walk-cycle phase in radians (rig.ts: from the distance walked); time-based when missing */
   phase?: number;
+  /** turning through the front (rig.ts): 0 = side-on, 1 = facing the camera with the arms hanging at both sides */
+  spread?: number;
 }
+
+/** how far the shoulders move out to the sides when the figure faces the camera (rig.ts uses the same) */
+export const SPREAD = 22;
 
 /** a kneeling figure's shins rest 148 below the hip, so the director lowers it by 250 − 148 to put them on the floor */
 export const KNEEL_DROP = 250 - 148;
@@ -172,21 +177,24 @@ export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, m
   // the rig (rig.ts) computes hands from pose.lean, so the drawing must use exactly that
   const lean = pose.lean;
   // turning round: 0 = facing the camera (front details move to the middle of the chest)
-  const spin = pose.spin ?? 1;
+  const spin = pose.spin ?? 1, spread = pose.spread ?? 0;
   // torso width: build and gender
   const wF = (av.build === "slim" ? 0.88 : av.build === "heavy" ? 1.2 : 1) * (av.gender === "female" ? 0.93 : 1);
   const sleeve = av.outfit === "tshirt" || av.outfit === "dress" ? "short" : "full";
   const skirt = av.outfit === "kurta" ? 120 : av.outfit === "dress" ? 140 : av.outfit === "saree" ? 236 : 0;
   const torsoPath = (sh: number) => `M${-62 * wF},0 C${-70 * wF},-60 ${-84 * wF},-120 ${-78 * wF},${-150 - sh} C${-72 * wF},-168 ${-40 * wF},-178 0,-178 C${40 * wF},-178 ${72 * wF},-168 ${78 * wF},${-150 - sh} C${84 * wF},-120 ${70 * wF},-60 ${62 * wF},0 Z`;
+  const backArm = (
+    <g transform={`translate(${-46 * wF * (1 - spread) - (50 + SPREAD) * spread},${-400 + pose.shoulders * -0.4}) rotate(${-lean})`}>
+      <Limb a={[pose.armB[0] + strideA * -0.6, pose.armB[1]]} w={ARM_W} hand="mitt" p={p} sleeve={sleeve} />
+    </g>
+  );
 
   return (
     <g>
       {shadow && !pose.noLegs && <ellipse cx={0} cy={2} rx={110 - Math.abs(bob) * 2} ry={16} fill="#000" opacity={0.28} filter="url(#fl-soft2)" />}
       <g transform={`translate(0,${bob})`}>
-        {/* back arm (behind everything) */}
-        <g transform={`translate(${-46 * wF},${-400 + pose.shoulders * -0.4}) rotate(${-lean})`}>
-          <Limb a={[pose.armB[0] + strideA * -0.6, pose.armB[1]]} w={ARM_W} hand="mitt" p={p} sleeve={sleeve} />
-        </g>
+        {/* back arm (behind everything; facing the camera it hangs at the side, in front, like the other arm) */}
+        {spread <= 0.5 && backArm}
         {/* legs */}
         {!pose.noLegs && (
           <g transform="translate(0,-250)">
@@ -234,9 +242,10 @@ export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, m
           {av.outfit === "kurta" && <path d={`M${58 * wF},-172 L${58 * wF},-110`} stroke="rgba(255,255,255,0.35)" strokeWidth={4} strokeDasharray="2 12" strokeLinecap="round" />}
           </g>
           {av.outfit === "saree" && <path d={`M${-70 * wF},-160 L${-40 * wF},-178 L${76 * wF},-30 L${62 * wF},0 Z`} fill={av.bottom ?? "#e0b84a"} opacity={0.9} />}
+          {spread > 0.5 && <g transform={`rotate(${-(lean + sway * 0.4)}) translate(0,250)`}>{backArm}</g>}
           <Head av={av} p={p} pose={pose} frame={frame} seed={seed} sway={sway} eyes={eyes} mood={mood} look={look} talking={!!talking} />
           {/* front arm hangs from the torso's shoulder */}
-          <g transform="translate(50,-148)">
+          <g transform={`translate(${50 + spread * SPREAD},-148)`}>
             <Limb a={[pose.armF[0] + (pose.carry ? 0 : strideA * 0.6), pose.armF[1]]} w={ARM_W} hand={pose.point ? "point" : "mitt"} p={p} sleeve={sleeve} />
           </g>
           {holds === "box" && (
@@ -334,14 +343,16 @@ const Head: React.FC<{ av: Avatar; p: Paint; pose: PoseParams; frame: number; se
       {av.hair === "long" && <path d={`M${-R - 6},${-70} Q${-R - 10},${30} ${-R + 4},${46} L${R + 4 - (R + 10) * T},${46} Q${R + 10 - (R + 10) * T},${30} ${R + 6 - (R + 6) * T},-70 Z`} {...hairFill} />}
       {av.hair === "ponytail" && <path d={`M${cx - R * 0.6 * st},${cy + 6} Q${cx - (R + 30) * st + Math.sin(frame / 9) * 4},${cy + 40} ${cx - (R + 14) * st + Math.sin(frame / 9) * 8},${cy + 110} Q${cx - (R - 6) * st},${cy + 60} ${cx - R * 0.3 * st},${cy + 14} Z`} {...hairFill} />}
       {av.hair === "hijab" && <path d={`M${cx - R - 12},${cy} Q${cx - R - 20},${cy + 110} ${cx - R - 4},${cy + 150} L${cx + R + 6 - 30 * T},${cy + 150} Q${cx + R + 16 - 30 * T},${cy + 100} ${cx + R + 12},${cy}`} {...hairFill} />}
+      {/* both ears behind the head: from the front they are the bumps at the sides; turning, the far one slides out of sight */}
       {ear(earF)}
-      {p.silhouette && ear(earN)}
+      {ear(earN)}
       {/* neck */}
       <rect x={-18} y={-18} width={36} height={36} rx={14} fill={p.skin} />
       {/* the head: outline pass, then fill pass (so the overlapping shapes read as one outline) */}
       <g fill={p.skin} stroke={p.line} strokeWidth={p.lineW * 2}>{skull}</g>
       <g fill={p.skin}>{skull}</g>
-      {!p.silhouette && av.hair !== "hijab" && ear(earN)}
+      {/* the near ear seen side-on: it turns into view (grows from edge-on), never pops from behind the head to in front */}
+      {!p.silhouette && av.hair !== "hijab" && band(0.12, 0.5, T) > 0.01 && <g transform={`translate(${earN},-56) scale(${band(0.12, 0.5, T)},1) translate(${-earN},56)`}>{ear(earN)}</g>}
       {/* beard / stubble on the jaw */}
       {(av.beard === "beard" || av.beard === "stubble") && (
         <g clipPath={`url(#${id})`} opacity={av.beard === "stubble" ? 0.35 : 1}>

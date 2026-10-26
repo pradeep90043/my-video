@@ -65,7 +65,8 @@ SHOT FIELDS
     jump (dur = how long to keep jumping), dance (dur), clap (dur), kneel, pray, hug (target a person), fall (falls backwards, drops what is held; "stand" gets up), drink / eat (target a cup, bottle, glass, food: picked up first if not held), nod, shake (head), point / wave (target), bow.
   Faces follow the activity on their own: side-on while walking, working or talking to someone, eyes on what the hands do. Use "camera" only for a moment that speaks to the viewer.
   A person can only pick when the hands are free, put/give only when holding. Actions of one person happen in order; leave time for walking.
-- camera: { shot: "wide"|"full"|"medium"|"close"|"detail", on: id or [ids], move: "static"|"push-in"|"pull-out"|"pan-left"|"pan-right"|"follow" }
+- camera: { shot: "wide"|"full"|"medium"|"close"|"detail", on: id or [ids], move: "static"|"push-in"|"pull-out"|"pan-left"|"pan-right"|"follow", feel?: "steady"|"handheld" }
+  The camera follows people who move by itself and shakes on falls and slams by itself; use feel "handheld" for tense, intimate or emotional shots.
 - captions: [{ text, at, style: "title"|"speech"|"whisper" }] (optional), title: big title card text (use with place "black"), fx: ["rain","dust","leaves","sunrays","glow"], fadeIn/fadeOut seconds.
 
 VOCABULARY (use only these words)
