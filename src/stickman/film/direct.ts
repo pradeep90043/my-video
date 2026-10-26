@@ -972,7 +972,8 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         if (Math.abs(r) > 45) return { x0: x - 520 * s, x1: x + 520 * s, y0: y - 120 * s, y1: y + 90 * s };
         const top = y - BODY.height * s;
         const boxH = size === "close" ? 230 * s : size === "medium" ? 360 * s : 620 * s;
-        return { x0: x - 130 * s, x1: x + 130 * s, y0: top - 20 * s, y1: top - 20 * s + boxH };
+        // headroom above the skull for hair, a bun or spikes and a child's bigger head (close-ups cut the crown otherwise)
+        return { x0: x - 130 * s, x1: x + 130 * s, y0: top - 80 * s, y1: top - 80 * s + boxH + 60 * s };
       }
       const p = props.get(id);
       if (p) {
