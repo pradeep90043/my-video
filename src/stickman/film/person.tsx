@@ -351,8 +351,9 @@ const Head: React.FC<{ av: Avatar; p: Paint; pose: PoseParams; frame: number; se
       {/* the head: outline pass, then fill pass (so the overlapping shapes read as one outline) */}
       <g fill={p.skin} stroke={p.line} strokeWidth={p.lineW * 2}>{skull}</g>
       <g fill={p.skin}>{skull}</g>
-      {/* the near ear seen side-on: it turns into view (grows from edge-on), never pops from behind the head to in front */}
-      {!p.silhouette && av.hair !== "hijab" && band(0.12, 0.5, T) > 0.01 && <g transform={`translate(${earN},-56) scale(${band(0.12, 0.5, T)},1) translate(${-earN},56)`}>{ear(earN)}</g>}
+      {/* the near ear seen side-on comes into view as the head turns. It is skin on skin, so fading it in shows only its outline
+          arriving gently (no ghost, unlike a fading eye); squashing it instead drew a thin line */}
+      {!p.silhouette && av.hair !== "hijab" && band(0.1, 0.45, T) > 0.01 && <g opacity={band(0.1, 0.45, T)}>{ear(earN)}</g>}
       {/* beard / stubble on the jaw */}
       {(av.beard === "beard" || av.beard === "stubble") && (
         <g clipPath={`url(#${id})`} opacity={av.beard === "stubble" ? 0.35 : 1}>
