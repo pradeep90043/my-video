@@ -339,8 +339,15 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       // pushed past the far edge: slide the whole row back onto the surface
       const top = PROPS[host.kind].top!, right = host.x + (top.w * host.s) / 2;
       const left = host.x - (top.w * host.s) / 2;
-      const need = kids.reduce((n, k) => n + PROPS[k.kind].w * k.s, 0);
-      if (need > top.w * host.s * 1.05) warn(`${h}: not enough room for ${kids.map((k) => k.spec.id).join(", ")}`);
+      // more than fits: the last things go on the floor beside it (stacked things never overlap in mid-air)
+      let need = kids.reduce((n, k) => n + PROPS[k.kind].w * k.s, 0);
+      let beside = host.x + (PROPS[host.kind].w * host.s) / 2 + 30 * host.s;
+      while (need > top.w * host.s * 1.05 && kids.length > 1) {
+        const k = kids.pop()!;
+        need -= PROPS[k.kind].w * k.s;
+        Object.assign(k, { support: "floor", y: host.y, s: host.s, z: host.z + 1, row: host.row, x: beside + (PROPS[k.kind].w * host.s) / 2 });
+        beside += PROPS[k.kind].w * host.s + 12 * host.s;
+      }
       const last = kids[kids.length - 1], over = last.x + (PROPS[last.kind].w * last.s) / 2 - right;
       if (over > 0) for (const k of kids) k.x -= over;
       const under = left - (kids[0].x - (PROPS[kids[0].kind].w * kids[0].s) / 2);
@@ -448,6 +455,9 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
 
   const actions = [...shot.actions].sort((a, b) => a.at - b.at);
 
+  // people whose first action is "enter" (without a cast `enter`) start off-screen and come in when it happens
+  // (also when the cast says `enter` too: entering at the time of the action wins over walking in at the start)
+  const entersLater = new Set([...cast.keys()].filter((id) => actions.find((a) => a.who === id)?.do === "enter"));
   // initial states that need props (sitting, lying, holding, entering)
   for (const c of cast.values()) {
     const spec = c.spec;
@@ -459,12 +469,17 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       else warn(`${spec.id} holds "${spec.holds}", which is not in the shot`);
     }
     c.initPose = c.pose;
-    if (spec.enter) {
+    if (spec.enter && !entersLater.has(spec.id)) {
       c.x = spec.enter === "left" ? -180 : W + 180;
       c.flip = spec.enter === "right";
+    } else if (entersLater.has(spec.id)) {
+      // first thing they do is "enter": wait off-screen (on the side the cast names, else the nearer one) until then
+      const fromLeft = spec.enter ? spec.enter === "left" : (spec.at ?? 0.5) < 0.5;
+      c.x = fromLeft ? -180 : W + 180;
+      c.flip = !fromLeft;
     }
     c.initFlip = c.flip; c.initZ = c.z;
-    if (spec.enter) c.busy = walkTo(c, 0, 100 + (spec.at ?? 0.5) * (W - 200));
+    if (spec.enter && !entersLater.has(spec.id)) c.busy = walkTo(c, 0, 100 + (spec.at ?? 0.5) * (W - 200));
   }
 
   function sitOn(c: CastState, f: number, id: string, initial = false): number {
@@ -569,6 +584,8 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         else if (a.to === "right") tx = W + 200;
         else if (tp) tx = tp.x + (c.x < tp.x ? -1 : 1) * ((PROPS[tp.kind].w * tp.s) / 2 + 70 * c.s);
         else if (tc) tx = tc.x + (c.x < tc.x ? -1 : 1) * 230 * c.s;
+        // coming in without a destination: to their own place in the shot
+        else if (a.do === "enter") tx = 100 + (c.spec.at ?? 0.5) * (W - 200);
         else { warn(`${a.who} ${a.do}: walk where?`); continue; }
         const rowName = tp && (tp.row === "back" || tp.row === "mid" || tp.row === "front") ? tp.row : c.row;
         f = walkTo(c, f, tx, rowName, a.do === "run");
@@ -584,8 +601,12 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       }
       case "stand": f = standUp(c, f); break;
       case "lie": case "sleep": {
-        const id = a.target ?? [...props.values()].find((p) => p.kind === "bed" || p.kind === "sofa")?.spec.id;
+        // "sleep on the desk": a thing you cannot lie on means dozing off where you are
+        const bedlike = (pid?: string) => { const k = pid ? props.get(pid)?.kind : undefined; return !!k && (!!PROPS[k].seat?.lie || k === "sofa" || k === "bench"); };
+        const id = a.target && bedlike(a.target) ? a.target : !a.target ? [...props.values()].find((p) => p.kind === "bed" || p.kind === "sofa")?.spec.id : undefined;
         if (id && !c.lying) f = lieOn(c, f, id);
+        // nowhere to lie down: dozing off where they are (slumped over, head down)
+        else if (!id && !c.lying) setPose(c, f, c.seated ? "sit-slump" : "slump");
         if (a.do === "sleep") { c.moods.push([f, "sleep"]); foley.push({ name: "breath", at: f + 10, volume: 0.25, seconds: 3 }); }
         break;
       }

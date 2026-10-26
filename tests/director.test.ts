@@ -235,3 +235,11 @@ test("an AI-written shot that does not parse is dropped, the beat keeps its norm
   const bad = Visual.parse({ shot: { secs: 3, place: "moon-base", actions: "not a list" } });
   assert.equal(bad.shot, undefined);
 });
+
+test("enter without a destination: waits off-screen, then walks in to their own place", () => {
+  const { film, warnings } = direct({ secs: 4, place: "room", cast: [{ id: "a", at: 0.7 }], actions: [{ at: 1, who: "a", do: "enter" }] });
+  assert.deepEqual(warnings, []);
+  const [[p, i]] = people(film.layers);
+  assert.ok(personState(p, i, 0).place.x > 1920, "off-screen (right side, nearer to 0.7) before entering");
+  assert.ok(Math.abs(personState(p, i, 119).place.x - (100 + 0.7 * 1720)) < 2, "arrived at their place");
+});
