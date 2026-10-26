@@ -195,3 +195,22 @@ test("timing curves: cruise, fall and rise run from 0 to 1 and never go backward
   const mid = (easeFn("cruise", 0.6) - easeFn("cruise", 0.4)) / 0.2;
   assert.ok(Math.abs(mid - 1 / (1 - 0.18)) < 1e-6, "steady middle speed");
 });
+
+test("hair covers the crown at every turn of the head (no bald top above a band of hair)", async () => {
+  const { hairCap } = await import("../src/stickman/film/person");
+  const inside = (poly: [number, number][], x: number, y: number) => {
+    let c = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const [xi, yi] = poly[i], [xj, yj] = poly[j];
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c;
+    }
+    return c;
+  };
+  for (let T = 0; T <= 1.0001; T += 0.05) {
+    for (const dip of [0.42, 0.55, 0.62]) {
+      const cap = hairCap(T, dip), cx = -5 * T, cy = -68;
+      // the very top of the skull and a little either side of it
+      for (const dx of [-20, 0, 20]) assert.ok(inside(cap, cx + dx, cy - 52), `crown covered at T=${T.toFixed(2)} dip=${dip} dx=${dx}`);
+    }
+  }
+});
