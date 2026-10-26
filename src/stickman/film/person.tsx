@@ -96,7 +96,8 @@ export function blendPose(a: PoseParams, b: PoseParams, t: number): PoseParams {
   };
 }
 
-const UPPER = 150, LOWER = 140, ARM_W = 42, LEG_W = 56;
+// arm lengths: rig.ts BODY.upper / BODY.lower / BODY.mitt (the IK must see the same arm that is drawn)
+const UPPER = 122, LOWER = 108, ARM_W = 40, LEG_W = 56;
 /** 0 below a, 1 above b, smooth between */
 const band = (a: number, b: number, t: number) => { const k = Math.max(0, Math.min(1, (t - a) / (b - a))); return k * k * (3 - 2 * k); };
 
@@ -125,7 +126,7 @@ const Limb: React.FC<{ a: [number, number]; w: number; hand?: "mitt" | "point" |
         {sleeve === "short" && <rect x={-w / 2 + 3} y={-w / 2} width={w - 6} height={4} fill={p.top} />}
         {hand !== "none" && (
           <g transform={`translate(0,${LOWER})`}>
-            <ellipse cx={0} cy={14} rx={w * 0.6} ry={w * 0.7} fill={p.skin} stroke={p.line} strokeWidth={p.lineW} />
+            <ellipse cx={0} cy={12} rx={w * 0.56} ry={w * 0.64} fill={p.skin} stroke={p.line} strokeWidth={p.lineW} />
             {hand === "point" && <rect x={-5} y={-42} width={12} height={62} rx={6} fill={p.skin} />}
           </g>
         )}
