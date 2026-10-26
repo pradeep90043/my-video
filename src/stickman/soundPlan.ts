@@ -6,7 +6,7 @@
 import { AMBIENT_GAIN, FOLEY_GAIN, detectAmbient, detectFoley, placeLayers, type AmbientName, type FoleyName } from "./sounds";
 import { planActionSounds, stageWidth } from "./actionSounds";
 import { planFilmSounds } from "./film/filmSounds";
-import { directCached } from "./film/direct";
+import { directForScene } from "./film/direct";
 import { StickmanVisualSchema } from "./schema";
 
 export interface PlanScene {
@@ -88,7 +88,7 @@ export function planSounds(scenes: PlanScene[], fps: number, opts: { autoSound?:
       }
     }
 
-    const film = visual.film ?? (visual.shot ? directCached(visual.shot, fps).film : undefined);
+    const film = visual.film ?? (visual.shot ? directForScene(visual.shot, duration, fps).film : undefined);
     if (autoSound && film) {
       const named = new Set(visual.foley.map((f) => f.name));
       for (const c of planFilmSounds(film, duration, { fps })) {

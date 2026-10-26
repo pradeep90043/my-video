@@ -214,3 +214,24 @@ test("hair covers the crown at every turn of the head (no bald top above a band 
     }
   }
 });
+
+test("a director shot fits the narrated beat: planned 4 s, voiced 6 s, the actions land proportionally later", async () => {
+  const { fitShot, directForScene } = await import("../src/stickman/film/direct");
+  const shot = { secs: 4, place: "study" as const, cast: [{ id: "a" }], actions: [{ at: 2, who: "a", do: "sit" as const, target: "chair" }, { at: 3, who: "a", do: "nod" as const, dur: 1 }] };
+  const f = fitShot(shot, 6);
+  assert.equal(f.secs, 6);
+  assert.deepEqual(f.actions!.map((a) => a.at), [3, 4.5]);
+  assert.equal(f.actions![1].dur, 1.5);
+  assert.equal(directForScene(shot, 180).film.layers.length, direct(f).film.layers.length);
+  assert.strictEqual(directForScene(shot, 180), directForScene(shot, 180), "compiled once per length");
+});
+
+test("an AI-written shot that does not parse is dropped, the beat keeps its normal visual (the video still renders)", async () => {
+  const schema = await import("../src/stickman/schema");
+  const Visual = schema.StickmanVisualSchema;
+  assert.ok(Visual, "visual schema exported");
+  const good = Visual.parse({ shot: { secs: 3, place: "park" } });
+  assert.equal(good.shot.place, "park");
+  const bad = Visual.parse({ shot: { secs: 3, place: "moon-base", actions: "not a list" } });
+  assert.equal(bad.shot, undefined);
+});

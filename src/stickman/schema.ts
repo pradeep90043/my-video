@@ -373,7 +373,9 @@ export const StickmanVisualSchema = z.object({
   /** cinematic shot made of layers (environment, silhouettes, hands, phone / calendar UI, captions, camera): replaces everything else */
   film: FilmSchema.optional(),
   /** a shot described in words; the director turns it into a film (src/stickman/film/direct.ts) */
-  shot: ShotSchema.optional(),
+  // an AI-written director shot that does not parse is dropped (the beat keeps its normal stickman visual) instead of
+  // failing the whole video
+  shot: z.preprocess((v) => (v === undefined || ShotSchema.safeParse(v).success ? v : undefined), ShotSchema.optional()),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
   callouts: z.array(z.string().max(48)).max(4).default([]),

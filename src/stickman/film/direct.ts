@@ -1057,6 +1057,39 @@ export function directCached(shot: Shot | ShotInput, fps = FPS): Directed {
   return d;
 }
 
+/**
+ * A shot planned as `shot.secs` long, fitted to the time it really gets on screen (a narrated beat lasts as long as its voice):
+ * the action times stretch or shrink with it, so what was planned for the start, middle and end of the line still lands
+ * there. Walking speeds are physical and do not change, only when things start.
+ */
+export function fitShot(shot: ShotInput, seconds: number): ShotInput {
+  const secs = Math.max(0.5, Math.min(30, seconds));
+  const k = shot.secs > 0 ? secs / shot.secs : 1;
+  if (Math.abs(k - 1) < 0.01) return { ...shot, secs };
+  return {
+    ...shot, secs,
+    actions: (shot.actions ?? []).map((a) => ({ ...a, at: a.at * k, ...(a.dur !== undefined ? { dur: Math.max(0.2, Math.min(20, a.dur * k)) } : {}) })),
+    captions: (shot.captions ?? []).map((c) => ({ ...c, at: (c.at ?? 0) * k, ...(c.dur !== undefined ? { dur: c.dur * k } : {}) })),
+  };
+}
+/** Compile a shot fitted to a scene of `frames` frames, once per (shot, length). */
+const fitted = new WeakMap<object, Map<number, Directed>>();
+export function directForScene(shot: ShotInput, frames: number, fps = FPS): Directed {
+  let byLen = fitted.get(shot);
+  if (!byLen) { byLen = new Map(); fitted.set(shot, byLen); }
+  const hit = byLen.get(frames);
+  if (hit) return hit;
+  const d = direct(fitShot(shot, frames / fps), { fps });
+  byLen.set(frames, d);
+  return d;
+}
+
+/** The ids a place provides by itself (its furniture and built-in surfaces), which a shot can refer to without adding them. */
+export function placeThings(name: (typeof PLACE_NAMES)[number]): string[] {
+  const place = placeOf(ShotSchema.parse({ secs: 1, place: name }));
+  return [...place.furniture.map((f) => f.id), ...Object.keys(place.surfaces ?? {})];
+}
+
 /** The vocabulary as text, for the LLM that writes shots. */
 export function catalog(): string {
   const furniture = PROP_KINDS.filter((k) => PROPS[k].mount === "floor");
