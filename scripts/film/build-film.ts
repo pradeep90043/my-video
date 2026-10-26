@@ -10,6 +10,7 @@
  */
 import * as fs from "fs";
 import * as path from "path";
+import { smoothness } from "../../src/stickman/film/lint";
 import { spawnSync } from "child_process";
 import { ShotSchema, direct } from "../../src/stickman/film/direct";
 
@@ -25,8 +26,10 @@ let t = 0, bad = 0;
 const scenes = list.map((s, i) => {
   const parsed = ShotSchema.safeParse(s);
   if (!parsed.success) { bad++; console.error(`✗ shot ${i}: ${parsed.error.issues.map((x) => `${x.path.join(".")}: ${x.message}`).join("; ")}`); return undefined; }
-  const { warnings } = direct(parsed.data, { fps: FPS });
+  const { warnings, film } = direct(parsed.data, { fps: FPS });
   for (const w of warnings) console.warn(`  ⚠ shot ${i}: ${w}`);
+  // motion that snaps instead of moving (see src/stickman/film/lint.ts)
+  for (const p of smoothness(film, Math.round(parsed.data.secs * FPS))) console.warn(`  ⚠ shot ${i} frame ${p.frame}: ${p.detail} (layer ${p.layer})`);
   const d = Math.round(parsed.data.secs * FPS);
   const scene = { id: `s${String(i).padStart(2, "0")}`, text: "", startFrame: t, durationFrames: d, duration: d / FPS, visual: { transition: "cut", shot: s } };
   t += d;

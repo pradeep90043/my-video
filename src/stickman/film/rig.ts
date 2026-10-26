@@ -5,7 +5,7 @@
  * mood, reaches) for one frame, so FilmStage, held props and tests all see the same body.
  */
 import { val } from "./anim";
-import { POSES, blendPose, type PoseParams } from "./person";
+import { POSES, SPREAD, blendPose, type PoseParams } from "./person";
 import type { FilmLayer } from "./schema";
 
 type PersonLayer = Extract<FilmLayer, { t: "person" }>;
@@ -42,7 +42,7 @@ export function frontHandLocal(pose: PoseParams, frame: number, seed: number): [
   const phi = pose.lean + sway(frame, seed) * 0.4;
   const a0 = pose.armF[0] + (pose.carry ? 0 : strideOf(pose, frame) * 0.6), a1 = pose.armF[1];
   const [ux, uy] = dir(a0), [lx, ly] = dir(a0 + a1);
-  const tx = BODY.shoulderF[0] + ux * BODY.upper + lx * (BODY.lower + BODY.mitt);
+  const tx = BODY.shoulderF[0] + (pose.spread ?? 0) * SPREAD + ux * BODY.upper + lx * (BODY.lower + BODY.mitt);
   const ty = BODY.shoulderF[1] + uy * BODY.upper + ly * (BODY.lower + BODY.mitt);
   const [rx, ry] = rot(tx, ty, phi);
   return [rx, ry - BODY.hip + bobOf(pose, frame)];
@@ -52,7 +52,7 @@ export function frontHandLocal(pose: PoseParams, frame: number, seed: number): [
 export function solveFrontArm(pose: PoseParams, frame: number, seed: number, target: [number, number]): [number, number] {
   const phi = pose.lean + sway(frame, seed) * 0.4;
   const [px, py] = rot(target[0], target[1] - bobOf(pose, frame) + BODY.hip, -phi);
-  const qx = px - BODY.shoulderF[0], qy = py - BODY.shoulderF[1];
+  const qx = px - BODY.shoulderF[0] - (pose.spread ?? 0) * SPREAD, qy = py - BODY.shoulderF[1];
   const U = BODY.upper, L = BODY.lower + BODY.mitt;
   const d = Math.max(Math.abs(U - L) + 1, Math.min(U + L - 0.5, Math.hypot(qx, qy)));
   const theta = Math.atan2(qx, qy);
@@ -106,9 +106,17 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
   const seed = index + 1;
   const timeline: [number, string][] = [[0, l.pose], ...(l.to ? [[l.poseAt, l.to] as [number, string]] : []), ...(l.poses ?? [])];
   timeline.sort((a, b) => a[0] - b[0]);
-  const { v, since, prev } = stepAt(timeline.slice(1), frame, timeline[0][1]);
-  const a = POSES[prev] ?? POSES.stand, b = POSES[v] ?? POSES.stand;
-  let pose = since === 0 && v === timeline[0][1] ? b : blendPose(a, b, settle((frame - since) / Math.max(1, l.poseDur)));
+  // each new pose blends in from where the body ACTUALLY is when it starts (mid-way through the previous blend, if that had not
+  // finished), never from the previous pose's name: a quick walk-stop-walk or sit-after-arriving must not snap
+  const dur = Math.max(1, l.poseDur);
+  let a = POSES[timeline[0][1]] ?? POSES.stand, b = a, since = 0;
+  for (const [fk, name] of timeline.slice(1)) {
+    if (fk > frame) break;
+    a = blendPose(a, b, settle((fk - since) / dur));
+    b = POSES[name] ?? POSES.stand;
+    since = fk;
+  }
+  let pose = blendPose(a, b, settle((frame - since) / dur));
 
   const place: Placement = {
     x: val(l.x, frame, 960), y: val(l.y, frame, 540), s: val(l.s, frame, 1), r: val(l.r, frame, 0),
@@ -145,9 +153,17 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     if (frame < rc.at || frame > end + ramp) continue;
     const w = Math.min(smooth((frame - rc.at) / ramp), smooth((end + ramp - frame) / ramp));
     const wig = rc.wiggle ? Math.sin(frame * 1.3) * rc.wiggle : 0; // typing / writing
-    const target = toLocal(place, rc.x + wig, rc.y + (rc.wiggle ? Math.abs(Math.cos(frame * 0.9)) * rc.wiggle * 0.4 : 0));
-    const ik = solveFrontArm(pose, frame, seed, target);
-    pose = { ...pose, armF: [pose.armF[0] + (ik[0] - pose.armF[0]) * w, pose.armF[1] + (ik[1] - pose.armF[1]) * w] };
+    const goal = toLocal(place, rc.x + wig, rc.y + (rc.wiggle ? Math.abs(Math.cos(frame * 0.9)) * rc.wiggle * 0.4 : 0));
+    // the hand's TARGET travels from where the hand is now to the goal, lifting a little on the way (a hand moves in an arc
+    // over things, not through them); the arm is solved for that point every frame, so the path is the hand's, not the joints'
+    const rest = frontHandLocal(pose, frame, seed);
+    const dist = Math.hypot(goal[0] - rest[0], goal[1] - rest[1]);
+    const lift = w < 1 ? Math.sin(Math.PI * w) * Math.min(60, dist * 0.25) : 0;
+    const point: [number, number] = [rest[0] + (goal[0] - rest[0]) * w, rest[1] + (goal[1] - rest[1]) * w - lift];
+    const ik = solveFrontArm(pose, frame, seed, point);
+    // the solved arm takes over fully almost at once (solving the resting hand gives the resting arm, so there is no pop)
+    const k = smooth(Math.min(1, w * 4));
+    pose = { ...pose, armF: [pose.armF[0] + (ik[0] - pose.armF[0]) * k, pose.armF[1] + (ik[1] - pose.armF[1]) * k] };
     // a resting hand on the desk is not something to stare at
     if (!rc.hold) attendTo(rc.x, rc.y, w * 0.85);
   }
@@ -180,7 +196,12 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     if (kind === "nod") pose = { ...pose, head: pose.head + Math.sin((frame - a) * 0.5) * 12 * env };
     else pose = { ...pose, turn: Math.max(0, Math.min(1, (pose.turn ?? 0.75) - 0.25 + Math.sin((frame - a) * 0.45) * 0.3 * env)) };
   }
-  if (turnDip < 1) pose = { ...pose, turn: (pose.turn ?? 0.75) * turnDip, spin: turnDip };
+  if (turnDip < 1) {
+    // facing the camera mid-turn: the arms hang at both sides, lean, head tilt and stride ease to neutral, so the mirror at the
+    // middle of the turn shows nothing (otherwise the arm in front would jump to the other side of the body)
+    const k = turnDip, hang = (a: [number, number]): [number, number] => [a[0] * k + 3 * (1 - k), a[1] * k + 5 * (1 - k)];
+    pose = { ...pose, turn: (pose.turn ?? 0.75) * k, spin: k, spread: 1 - k, armF: hang(pose.armF), armB: hang(pose.armB), lean: pose.lean * k, head: pose.head * k, stride: pose.stride * k };
+  }
 
   return { pose, place, mood: stepAt(l.moods, frame, l.mood).v, look: stepAt(l.looks, frame, l.look).v, seed };
 }
@@ -192,4 +213,11 @@ export const talkingAt = (l: PersonLayer, frame: number) => (l.talks ?? []).some
 export function frontHandWorld(st: PersonState, frame: number): [number, number] {
   const [lx, ly] = frontHandLocal(st.pose, frame, st.seed);
   return toWorld(st.place, lx, ly);
+}
+
+/** Where a carried thing is: in the front hand, coming to the middle of the body (held in both hands) as the person turns
+ * through the front, so the mirror in the middle of a turn does not swap it to the other side. */
+export function carryPoint(st: PersonState, frame: number): [number, number] {
+  const [hx, hy] = frontHandWorld(st, frame), k = st.pose.spread ?? 0;
+  return [hx + (st.place.x - hx) * k, hy];
 }

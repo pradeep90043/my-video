@@ -157,3 +157,41 @@ test("walking: the leg phase follows the distance walked and the stride the spee
   assert.ok(start.pose.stride < a.pose.stride * 0.5, `small first steps (${start.pose.stride.toFixed(1)})`);
   assert.equal(personState(p, i, f1 + 30).pose.stride, 0, "standing still after arriving");
 });
+
+test("no pops: every example shot moves without a single-frame jump (hands, heads, carried things, faces, mirror flips)", async () => {
+  const fs = await import("fs");
+  const { smoothness } = await import("../src/stickman/film/lint");
+  const { ShotSchema } = await import("../src/stickman/film/direct");
+  for (const name of ["director-test", "faces-test", "avatars-test", "one-minute-a-day", "walk-test", "turn-test"]) {
+    const j = JSON.parse(fs.readFileSync(`scripts/film/examples/${name}.json`, "utf8"));
+    (Array.isArray(j) ? j : j.shots).forEach((raw: unknown, i: number) => {
+      const shot = ShotSchema.parse(raw);
+      const pops = smoothness(direct(shot).film, Math.round(shot.secs * 30));
+      assert.deepEqual(pops.map((p) => `${p.frame}: ${p.detail}`), [], `${name} shot ${i}`);
+    });
+  }
+});
+
+test("camera feel: an impact kick dies away to exactly rest; the follow spring never overshoots", async () => {
+  const { shakeAt, damp } = await import("../src/stickman/film/camfx");
+  const kick = [{ kind: "impact" as const, at: 10, dur: 20 }];
+  assert.ok(Math.abs(shakeAt(kick, 12).y) > 1, "it kicks");
+  const end = shakeAt(kick, 29.9);
+  assert.ok(Math.abs(end.x) < 0.05 && Math.abs(end.y) < 0.05 && Math.abs(end.r) < 0.01, "back at rest by the end");
+  assert.deepEqual(shakeAt(kick, 40), { x: 0, y: 0, r: 0, z: 1 });
+  let x = 0, v = 0, max = 0;
+  for (let f = 0; f < 200; f++) { [x, v] = damp(x, v, 100, 16); max = Math.max(max, x); }
+  assert.ok(max <= 100.0001 && x > 99.9, `glides to the target without overshoot (max ${max.toFixed(3)})`);
+});
+
+test("timing curves: cruise, fall and rise run from 0 to 1 and never go backwards", async () => {
+  const { easeFn } = await import("../src/stickman/film/anim");
+  for (const e of ["cruise", "fall", "rise"] as const) {
+    let prev = -1;
+    for (let i = 0; i <= 100; i++) { const v = easeFn(e, i / 100); assert.ok(v >= prev - 1e-9, `${e} monotonic at ${i}`); prev = v; }
+    assert.ok(Math.abs(easeFn(e, 0)) < 1e-9 && Math.abs(easeFn(e, 1) - 1) < 1e-9, `${e} endpoints`);
+  }
+  // cruise holds an even pace through the middle
+  const mid = (easeFn("cruise", 0.6) - easeFn("cruise", 0.4)) / 0.2;
+  assert.ok(Math.abs(mid - 1 / (1 - 0.18)) < 1e-6, "steady middle speed");
+});

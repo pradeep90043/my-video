@@ -7,9 +7,12 @@
  */
 import { z } from "zod";
 import type { FilmLayer, FilmSpec } from "./schema";
+import type { Ease, Key } from "./anim";
+import { damp, type Shake } from "./camfx";
 import { FilmSchema, MOODS, PERSON_POSES, PROP_KINDS, WHO } from "./schema";
 import { PROPS, type PropKind } from "./props";
-import { BODY, REACH } from "./rig";
+import { BODY, REACH, carryPoint, personState } from "./rig";
+import { val } from "./anim";
 import { AGES, AvatarSchema, BEARDS, BUILDS, GENDERS, HAIRS, OUTFITS, SKINS, bodyScale, resolveAvatar, type Avatar } from "./avatar";
 import { KNEEL_DROP } from "./person";
 import { PARK_GROUND, ROOM_FLOOR } from "./env";
@@ -83,7 +86,9 @@ export const ShotSchema = z.object({
     shot: z.enum(SHOT_SIZES).default("wide"),
     on: z.union([z.string(), z.array(z.string())]).optional(),
     move: z.enum(MOVES).default("static"),
-  }).default({ shot: "wide", move: "static" }),
+    /** "handheld": a gentle drift as if the camera were held (intimate, tense or emotional moments) */
+    feel: z.enum(["steady", "handheld"]).default("steady"),
+  }).default({ shot: "wide", move: "static", feel: "steady" }),
   captions: z.array(z.object({ text: z.string().max(80), at: z.number().min(0).default(0), dur: z.number().optional(), style: z.enum(["speech", "excuse", "title", "whisper"]).default("speech") })).default([]),
   title: z.string().max(40).optional(),
   fx: z.array(z.enum(["rain", "dust", "leaves", "sunrays", "glow"])).default([]),
@@ -190,7 +195,7 @@ interface CastState {
   pose: string; seated?: string; lying?: string; kneeling?: boolean; holding?: string;
   /** the look, and the body size it gives (a child is smaller: multiplies every scale) */
   avatar: Avatar; k: number; seatSole?: number;
-  xs: [number, number][]; ys: [number, number][]; ss: [number, number][]; rs: [number, number][]; zs: [number, number][];
+  xs: Key[]; ys: Key[]; ss: Key[]; rs: Key[]; zs: [number, number][];
   poses: [number, string][]; faces: [number, boolean][]; moods: [number, string][]; looks: [number, number][];
   reach: { at: number; dur: number; x: number; y: number; hold?: boolean; release?: number; ease?: number; wiggle?: number }[];
   /** where the head looks (and the face turns): gaze targets, turns to the camera, speaking */
@@ -216,6 +221,10 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   const place = placeOf(shot);
   const layers: FilmLayer[] = [];
   const foley: { name: string; at: number; volume?: number; seconds?: number }[] = [];
+  /** things let go of mid-air (a fall): after posing, they leave the hand from where it really is and fall to the floor */
+  const drops: { item: PropState; at: number; by: number }[] = [];
+  /** camera feel the action calls for: a kick when someone hits the floor, a pulse on a shock */
+  const shakes: Shake[] = [];
 
   const late: FilmLayer[] = []; // captions: after the bodies, so the layer indexes of props and people are known up front
   if (place.env) layers.push(place.env);
@@ -377,9 +386,10 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     for (const g of c.gazes) if (g.until === undefined || g.until > f) g.until = Math.max(g.at + 1, f);
     if (c.toCamera) { c.turns.push([f, -1]); c.toCamera = undefined; }
   };
-  const key = (arr: [number, number][], f: number, from: number, to: number, dur: number) => {
+  /** a move from → to over `dur` frames, with the ease of that move (else the layer's default) */
+  const key = (arr: Key[], f: number, from: number, to: number, dur: number, ease?: Ease) => {
     if (from === to) return;
-    arr.push([f, from], [f + Math.max(1, dur), to]);
+    arr.push([f, from], ease ? [f + Math.max(1, dur), to, ease] : [f + Math.max(1, dur), to]);
   };
   const setRow = (c: CastState, f: number, rowName: RowName, dur: number) => {
     const row = place.rows[rowName];
@@ -400,8 +410,8 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     setFace(c, f, tx < c.x);
     const before = c.pose === "walk" || c.pose === "run" ? "stand" : c.pose;
     setPose(c, f, run ? "run" : "walk");
-    key(c.xs, f, c.x, tx, dur);
-    key(c.ys, f, c.y, row.y, dur);
+    key(c.xs, f, c.x, tx, dur, "cruise");
+    key(c.ys, f, c.y, row.y, dur, "cruise");
     setRow(c, f, rowName, dur);
     c.x = tx; c.y = row.y;
     foley.push({ name: run ? "run" : place.floorSound, at: f, seconds: Math.min(dur / fps, 6), volume: run ? 0.5 : 0.45 });
@@ -686,6 +696,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         const now = tp.ons.length ? tp.ons[tp.ons.length - 1][1] : tp.spec.lit ?? false;
         tp.ons.push([f + 12, !now]);
         foley.push({ name: tp.kind === "door" ? (now ? "door-close" : "door-open") : "click", at: f + 12, volume: 0.5 });
+        if (tp.kind === "door" && now) shakes.push({ kind: "impact", at: f + 12, dur: 10, strength: 0.25, seed: f });
         f += 18;
         break;
       }
@@ -710,7 +721,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         if (dur) { setPose(c, f + dur, before); f += dur; } else f += 12;
         break;
       }
-      case "mood": if (a.mood) c.moods.push([f, a.mood]); if (a.mood === "sad" || a.mood === "tired") foley.push({ name: "sigh", at: f + 4, volume: 0.35 }); break;
+      case "mood": if (a.mood) c.moods.push([f, a.mood]); if (a.mood === "surprised") shakes.push({ kind: "pulse", at: f, dur: 14, strength: 0.8 }); if (a.mood === "sad" || a.mood === "tired") foley.push({ name: "sigh", at: f + 4, volume: 0.35 }); break;
       case "jump": {
         f = standUp(c, f);
         const before = c.pose === "walk" || c.pose === "run" ? "stand" : c.pose;
@@ -718,9 +729,11 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         for (let i = 0; i < times; i++) {
           // crouch, spring up, land, absorb
           setPose(c, f, "crouch"); setPose(c, f + 5, "jump");
-          c.ys.push([f + 5, c.y], [f + 13, c.y - 110 * c.s], [f + 21, c.y]);
+          // up decelerating, down accelerating
+          c.ys.push([f + 5, c.y], [f + 13, c.y - 110 * c.s, "rise"], [f + 21, c.y, "fall"]);
           setPose(c, f + 21, "crouch");
           foley.push({ name: "thud", at: f + 21, volume: 0.3 });
+          shakes.push({ kind: "impact", at: f + 21, dur: 12, strength: 0.3, seed: f });
           f += 27;
         }
         setPose(c, f, before); f += 4;
@@ -771,6 +784,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
           const drop = f + 8, dx = c.x + (c.flip ? -1 : 1) * 160 * c.s;
           if (last) last.until = drop;
           item.xs.push([drop - 1, item.x], [drop, dx]); item.ys.push([drop - 1, item.y], [drop, ground]);
+          drops.push({ item, at: drop, by: c.layerIndex });
           if (item.s !== c.s) item.ss.push([drop - 1, item.s], [drop, c.s]);
           item.zs.push([drop, c.z + 1]);
           Object.assign(item, { x: dx, y: ground, s: c.s, z: c.z + 1, row: c.row, support: "floor", holder: undefined });
@@ -779,11 +793,12 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         // backwards onto the floor: the body pivots on the feet, head away from where they face
         const r = c.flip ? 90 : -90;
         setPose(c, f, "lie");
-        key(c.rs, f, c.r, r, 12); c.r = r;
+        key(c.rs, f, c.r, r, 12, "fall"); c.r = r;
         const y = ground - 72 * c.s;
-        key(c.ys, f, c.y, y, 12); c.y = y;
+        key(c.ys, f, c.y, y, 12, "fall"); c.y = y;
         c.lying = "floor";
         foley.push({ name: "thud", at: f + 11, volume: 0.6 }, { name: "cloth", at: f + 2, volume: 0.4 });
+        shakes.push({ kind: "impact", at: f + 11, dur: 22, strength: 1, dir: 90, seed: f });
         if (a.mood) c.moods.push([f, a.mood]);
         f += 16;
         break;
@@ -880,6 +895,25 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   }
   layers.push(...late);
 
+  // dropped things: start from the actual hand (only known now the body is posed) and fall with gravity
+  for (const d of drops) {
+    const carrier = layers[d.by] as FilmLayer & { t: "person" }, l = layers[d.item.layerIndex] as FilmLayer & { t: "prop" };
+    const st = personState(carrier, d.by, d.at - 1), [hx, hy] = carryPoint(st, d.at - 1);
+    const s0 = val(l.s, d.at - 1, 1), g = PROPS[d.item.kind].grip ?? [0, -PROPS[d.item.kind].h / 2];
+    const sx = hx - g[0] * s0 * (l.flip ? -1 : 1), sy = hy - g[1] * s0;
+    const FALL = 10;
+    for (const [axis, start, ease] of [["x", sx, "linear"], ["y", sy, "fall"]] as const) {
+      const a = l[axis] as { keys: Key[] };
+      if (typeof a !== "object" || !("keys" in a)) continue;
+      const i = a.keys.findIndex((k) => k[0] === d.at);
+      if (i < 0) continue;
+      const end = a.keys[i][1];
+      a.keys.splice(i, 1, [d.at, start], [d.at + FALL, end, ease]);
+    }
+    // the scale change happens when it lands, not when it leaves the hand
+    if (typeof l.s === "object" && "keys" in l.s) for (const k of l.s.keys) if (k[0] === d.at) k[0] = d.at + FALL;
+  }
+
   // ── light & weather ──
   const fxl = (kind: string, extra: object = {}) => layers.push({ t: "fx", kind, amount: 1, x: 960, y: 540, at: 0, ...extra } as FilmLayer);
   if (shot.time === "rain") fxl("rain", { amount: 0.8 });
@@ -891,13 +925,14 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   if (shot.place !== "black" && shot.place !== "paper") { fxl("vignette", { amount: shot.time === "night" ? 1 : 0.6 }); fxl("grain"); }
   for (const cp of shot.captions) layers.push({ t: "caption", style: cp.style, text: cp.text, at: F(cp.at), until: cp.dur ? F(cp.at + cp.dur) : undefined, x: 960, y: cp.style === "title" ? 560 : 150, big: true } as FilmLayer);
 
-  const film = FilmSchema.parse({ layers, cam: camera(), fadeIn: F(shot.fadeIn), fadeOut: F(shot.fadeOut), foley: foley.filter((s) => s.at < total - 2) });
+  if (shot.camera.feel === "handheld") shakes.push({ kind: "handheld", at: 0, dur: total, seed: total });
+  const film = FilmSchema.parse({ layers, cam: { ...camera(), ...(shakes.length ? { shakes } : {}) }, fadeIn: F(shot.fadeIn), fadeOut: F(shot.fadeOut), foley: foley.filter((s) => s.at < total - 2) });
   return { film, warnings };
 
   // ── helpers that need the state above ──
-  function keyed(arr: [number, number][], last: number, ease: "linear" | "inout" = "inout") {
+  function keyed(arr: Key[], last: number, ease: Ease = "inout") {
     if (!arr.length) return last;
-    return { keys: [[0, arr[0][1]], ...arr].sort((a, b) => a[0] - b[0]) as [number, number][], ease };
+    return { keys: [[0, arr[0][1]] as Key, ...arr].sort((a, b) => a[0] - b[0]), ease };
   }
 
   function camera(): FilmSpec["cam"] {
@@ -935,6 +970,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       const b = union(on.map((id) => boxAt(id, f)).filter((x): x is Box => !!x));
       if (b) samples.push({ f, box: b });
     }
+    const clampC = (z: number, x: number, y: number): [number, number] => [Math.max(960 / z, Math.min(W - 960 / z, x)), Math.max(540 / z, Math.min(H - 540 / z, y))];
     let zoom = 1, cx = 960, cy = 540;
     const all = union(samples.map((x) => x.box));
     if (all && size !== "wide") {
@@ -945,19 +981,11 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         zoom = zAll; cx = (all.x0 + all.x1) / 2; cy = (all.y0 + all.y1) / 2;
       } else {
         // too far apart over time for one frame at this size: the camera travels with the action, at one steady zoom
-        const z = zTight;
-        const clamp = (x: number, y: number) => [Math.max(960 / z, Math.min(W - 960 / z, x)), Math.max(540 / z, Math.min(H - 540 / z, y))];
-        const keysX: [number, number][] = [], keysY: [number, number][] = [];
-        for (const smp of samples.filter((_, i) => i % 2 === 0)) {
-          const win = union(samples.filter((o) => Math.abs(o.f - smp.f) <= 15).map((o) => o.box))!;
-          const [x, y] = clamp((win.x0 + win.x1) / 2, (win.y0 + win.y1) / 2);
-          keysX.push([smp.f, x]); keysY.push([smp.f, y]);
-        }
-        if (keysX.length >= 2) return { zoom: { from: z, to: z * 1.02, dur: total, ease: "linear" }, x: { keys: keysX, ease: "inout" }, y: { keys: keysY, ease: "inout" } };
-        zoom = z; cx = keysX[0]?.[1] ?? cx; cy = keysY[0]?.[1] ?? cy;
+        const followed = track(zTight, on);
+        if (followed) return followed;
+        zoom = zTight;
       }
     }
-    const clampC = (z: number, x: number, y: number): [number, number] => [Math.max(960 / z, Math.min(W - 960 / z, x)), Math.max(540 / z, Math.min(H - 540 / z, y))];
     const mv = shot.camera.move;
     if (mv === "push-in" || mv === "pull-out") {
       const z0 = mv === "push-in" ? Math.max(1, zoom * 0.86) : zoom * 1.22, z1 = mv === "push-in" ? zoom : Math.max(1, zoom);
@@ -970,16 +998,43 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       return { zoom: z, x: { from: ax, to: bx, dur: total, ease: "inout" }, y: ay };
     }
     if (mv === "follow" && on.length) {
-      const c = cast.get(on[0]);
-      const l = c && (layers[c.layerIndex] as FilmLayer & { t: "person" });
-      if (l && typeof l.x === "object" && "keys" in l.x) {
-        const z = Math.max(zoom, 1.3);
-        return { zoom: z, x: { keys: l.x.keys.map(([f, x]) => [f, clampC(z, x, cy)[0]] as [number, number]), ease: "inout" }, y: clampC(z, cx, cy)[1] };
-      }
+      const followed = track(Math.max(zoom, 1.3), [on[0]]);
+      if (followed) return followed;
     }
     const [sx, sy] = clampC(zoom, cx, cy);
     // even a "static" shot breathes: a very slow push
     return { zoom: { from: zoom, to: zoom * 1.03, dur: total, ease: "linear" }, x: sx, y: sy };
+
+    /**
+     * A camera operator following the action: it aims a little ahead of where the subjects are going (look-ahead), holds
+     * still while they move inside a central zone (dead zone), and glides after them on a critically damped spring, so it
+     * eases in, settles and never wobbles. One key per frame (linear), clamped to the set.
+     */
+    function track(z: number, ids: string[]): FilmSpec["cam"] | undefined {
+      const LEAD = 8, LAG = 16, DEAD = 0.12;
+      const centre = (f: number): [number, number] | undefined => {
+        const b = union(ids.map((id) => boxAt(id, f)).filter((x): x is Box => !!x));
+        return b && [(b.x0 + b.x1) / 2, (b.y0 + b.y1) / 2];
+      };
+      const keysX: [number, number][] = [], keysY: [number, number][] = [];
+      let last: [number, number] | undefined, x = 0, y = 0, vx = 0, vy = 0, hx = 0, hy = 0;
+      for (let f = 0; f < total; f++) {
+        const t = centre(Math.min(total - 1, f + LEAD)) ?? centre(f) ?? last;
+        if (!t) continue;
+        if (!last) { x = hx = t[0]; y = hy = t[1]; }
+        last = t;
+        // the aim moves only once the subject leaves the dead zone around it
+        const dx = (DEAD * 960) / z, dy = (DEAD * 540) / z;
+        hx = Math.max(t[0] - dx, Math.min(t[0] + dx, hx));
+        hy = Math.max(t[1] - dy, Math.min(t[1] + dy, hy));
+        [x, vx] = damp(x, vx, hx, LAG);
+        [y, vy] = damp(y, vy, hy, LAG);
+        const [cx2, cy2] = clampC(z, x, y);
+        keysX.push([f, cx2]); keysY.push([f, cy2]);
+      }
+      if (keysX.length < 2) return undefined;
+      return { zoom: { from: z, to: z * 1.02, dur: total, ease: "linear" }, x: { keys: keysX, ease: "linear" }, y: { keys: keysY, ease: "linear" } };
+    }
   }
 }
 

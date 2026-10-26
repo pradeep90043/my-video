@@ -8,9 +8,10 @@ import { Hand } from "./hand";
 import { Person } from "./person";
 import { resolveAvatar } from "./avatar";
 import { PropArt, PROPS } from "./props";
-import { frontHandWorld, personState, stepAt, talkingAt } from "./rig";
+import { carryPoint, personState, stepAt, talkingAt } from "./rig";
 import { Books, Calendar, Caption, Phone, Poster, Screen, Sign } from "./ui";
 import { val } from "./anim";
+import { overscan, shakeAt } from "./camfx";
 import type { FilmLayer, FilmSpec } from "./schema";
 
 const W = 1920, H = 1080;
@@ -70,9 +71,11 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
   const envLayer = film.layers.find((l) => l.t === "env");
   const grade = envLayer && envLayer.t === "env" ? envLayer.grade : "day";
   const zoom = val(film.cam.zoom, frame, 1), cx = val(film.cam.x, frame, 960), cy = val(film.cam.y, frame, 540);
+  // camera feel (handheld drift, impact kicks, zoom pulses), with just enough overscan never to show past the set
+  const fx = shakeAt(film.cam.shakes, frame), over = film.cam.shakes?.length ? overscan(fx) : 1;
   const camT = (d: number) => {
-    const z = 1 + (zoom - 1) * d, px = 960 + (cx - 960) * d, py = 540 + (cy - 540) * d;
-    return `translate(960,540) scale(${z}) translate(${-px},${-py})`;
+    const z = (1 + (zoom - 1) * d) * fx.z * over, px = 960 + (cx - 960) * d, py = 540 + (cy - 540) * d;
+    return `translate(${960 + fx.x},${540 + fx.y}) rotate(${fx.r}) scale(${z}) translate(${-px},${-py})`;
   };
   // an env layer fans out into a back and a front pass
   type Item = { z: number; key: string; layer: FilmLayer; part?: "back" | "front" };
@@ -129,9 +132,10 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
         const carrier = hold && (hold.until === undefined || frame < hold.until) ? film.layers[hold.by] : undefined;
         if (carrier && carrier.t === "person") {
           const st = personState(carrier, hold!.by, frame);
-          const [hx, hy] = frontHandWorld(st, frame);
+          const [hx, hy] = carryPoint(st, frame);
           const g = hold!.grip ?? PROPS[l.kind].grip ?? [0, -PROPS[l.kind].h / 2];
-          const fl = l.flip !== st.place.flip;
+          // a carried thing keeps its own orientation in the world (it does not mirror when it changes hands or the carrier turns)
+          const fl = l.flip;
           return (
             <g key={it.key} transform={camT(1)} opacity={o}>
               <g transform={`translate(${hx},${hy}) scale(${s * (fl ? -1 : 1)},${s}) translate(${-g[0]},${-g[1]})`}><PropArt layer={{ ...l, on: lit, shadow: false }} frame={frame} grade={grade} /></g>

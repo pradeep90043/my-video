@@ -5,11 +5,13 @@
  */
 import { z } from "zod";
 import { AvatarSchema } from "./avatar";
+import { EASES } from "./anim";
 
 const AnimSchema = z.union([
   z.number(),
-  z.object({ from: z.number(), to: z.number(), at: z.number().optional(), dur: z.number().optional(), ease: z.enum(["linear", "in", "out", "inout"]).optional() }),
-  z.object({ keys: z.array(z.tuple([z.number(), z.number()])).min(2), ease: z.enum(["linear", "in", "out", "inout"]).optional() }),
+  z.object({ from: z.number(), to: z.number(), at: z.number().optional(), dur: z.number().optional(), ease: z.enum(EASES).optional() }),
+  // a key may carry the ease of the stretch arriving at it
+  z.object({ keys: z.array(z.tuple([z.number(), z.number()]).rest(z.enum(EASES))).min(2), ease: z.enum(EASES).optional() }),
 ]);
 
 export const ENV_KINDS = [
@@ -152,7 +154,11 @@ export type FilmLayer = z.infer<typeof FilmLayerSchema>;
 
 export const FilmSchema = z.object({
   layers: z.array(FilmLayerSchema).min(1).max(40),
-  cam: z.object({ zoom: AnimSchema.default(1), x: AnimSchema.default(960), y: AnimSchema.default(540) }).default({ zoom: 1, x: 960, y: 540 }),
+  cam: z.object({
+    zoom: AnimSchema.default(1), x: AnimSchema.default(960), y: AnimSchema.default(540),
+    /** camera feel on top of the framing (camfx.ts): handheld drift, impact kicks, zoom pulses */
+    shakes: z.array(z.object({ kind: z.enum(["handheld", "impact", "pulse"]), at: z.number(), dur: z.number().min(1), strength: z.number().min(0).max(3).optional(), dir: z.number().optional(), seed: z.number().optional() })).optional(),
+  }).default({ zoom: 1, x: 960, y: 540 }),
   /** sounds the director knows happen (a chair scrapes when sat on, a phone is put down): frames into the shot */
   foley: z.array(z.object({ name: z.string(), at: z.number(), volume: z.number().optional(), seconds: z.number().optional() })).default([]),
   /** fade from / to black over this many frames */
