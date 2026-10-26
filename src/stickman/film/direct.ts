@@ -203,7 +203,7 @@ interface CastState {
 
 export interface Directed { film: FilmSpec; warnings: string[] }
 
-const WALK_SPEED = 18, RUN_SPEED = 27; // px per frame at scale 1: matched to the stride so the feet do not slide
+const WALK_SPEED = 16, RUN_SPEED = 27; // px per frame at scale 1 (the rig fits the leg phase to the distance, so feet stay planted)
 const surfaceFrac = (at: number | undefined, i: number, n: number) => at ?? (n === 1 ? 0.5 : 0.15 + (0.7 * i) / (n - 1));
 
 export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Directed {
