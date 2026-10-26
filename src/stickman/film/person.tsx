@@ -262,6 +262,22 @@ export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, m
 };
 
 /**
+ * The hair cap as an explicit outline (head frame): the arc of the scalp over the top from behind the ear to the forehead,
+ * then the hairline curving back. Built from sampled points, not an SVG arc, whose short-way/long-way flag once flipped when the
+ * cap passed half the head and left the crown bald above a band of hair (tests check the crown stays covered).
+ */
+export function hairCap(T: number, dip: number): [number, number][] {
+  const R = 58, cx = -5 * T, cy = -68, Rh = R + 4;
+  const a0 = ((200 - 78 * T) * Math.PI) / 180, a1 = ((340 - 18 * T) * Math.PI) / 180;
+  const pts: [number, number][] = [];
+  for (let i = 0; i <= 24; i++) { const a = a0 + ((a1 - a0) * i) / 24; pts.push([cx + Math.cos(a) * Rh, cy + Math.sin(a) * Rh]); }
+  // hairline: a quadratic from the forehead end back to the start, bowing towards the crown by `dip`
+  const [sx, sy] = pts[pts.length - 1], [ex, ey] = pts[0], qx = cx + 6 - 26 * T, qy = cy - R * dip;
+  for (let i = 1; i < 12; i++) { const u = i / 12, v = 1 - u; pts.push([v * v * sx + 2 * u * v * qx + u * u * ex, v * v * sy + 2 * u * v * qy + u * u * ey]); }
+  return pts;
+}
+
+/**
  * The head, in the neck's frame (neck at 0,0). A round cranium over a narrower jaw makes an egg from the front. Turning side-on
  * (T: 0 → 1 = the head turns 0 → 90°) every feature sits at an angle on a ball and SLIDES, nothing fades (a half-transparent eye or
  * nose reads as a ghost): x = r·sin(angle + turn), narrowed by cos(angle + turn). The eye on the side the head turns towards goes
@@ -307,7 +323,7 @@ const Head: React.FC<{ av: Avatar; p: Paint; pose: PoseParams; frame: number; se
   const Rh = R + 4;
   const px = (a: number, r = Rh) => cx + Math.cos(a) * r, py = (a: number, r = Rh) => cy + Math.sin(a) * r;
   const pt = (a: number, r = Rh) => `${px(a, r).toFixed(1)},${py(a, r).toFixed(1)}`;
-  const capPath = (dip: number) => `M${pt(a0)} A${Rh},${Rh} 0 0 1 ${pt(a1)} Q${(cx + 6 - 26 * T).toFixed(1)},${(cy - R * dip).toFixed(1)} ${pt(a0)} Z`;
+  const capPath = (dip: number) => "M" + hairCap(T, dip).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" L") + " Z";
   const hairFill = { fill: p.hair, stroke: p.line, strokeWidth: p.lineW };
   // a side parting is lopsided: it grows in from nothing as the head turns, so the mirror at the front shows no jump
   const part = band(0.08, 0.45, T);
