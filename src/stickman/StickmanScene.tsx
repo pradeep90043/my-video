@@ -211,9 +211,38 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
   // slow parallax drift of the dot grid so the background is never static
   const drift = (frame * 0.35) % 60;
 
+  // the karaoke caption of the narrated line: drawn on every kind of scene (director shots too)
+  const captionEl = active ? (() => {
+    const local = frame - speakFrom;
+    const pop = spring({ frame: local - active.start, fps, config: { damping: 14, stiffness: 220, mass: 0.5 } });
+    // never wider than the frame: shrink the font for a chunk that is still too long (Inter 800 is ~0.62em per glyph)
+    const capSize = Math.max(36, Math.min(vertical ? 70 : 50, (world.width - 100) / (Math.max(1, active.text.length) * 0.62)));
+    return (
+      <g opacity={capOpacity} transform={`translate(${world.width / 2},${(vertical ? world.height - 420 : 985) + (1 - pop) * 14}) scale(${0.94 + 0.06 * pop})`}>
+        <text textAnchor="middle" fontSize={capSize} fontWeight={800} fontFamily={withDevanagari(inter.fontFamily)}
+          stroke={theme.bg} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
+          {active.words.map((w, i) => {
+            const spoken = local >= w.start;
+            const current = spoken && local < w.end;
+            return (
+              <tspan key={i} fill={current ? accent : theme.ink} fillOpacity={spoken ? 1 : 0.5}>
+                {w.text}{i < active.words.length - 1 ? " " : ""}
+              </tspan>
+            );
+          })}
+        </text>
+      </g>
+    );
+  })() : null;
+
   // a director shot fills exactly this scene's time (a narrated beat lasts as long as its voice)
   const film = v.film ?? (v.shot ? directForScene(v.shot, durationFrames, fps).film : undefined);
-  if (film) return <AbsoluteFill style={{ backgroundColor: "#000" }}><FilmStage film={film} frame={frame} durationFrames={durationFrames} /></AbsoluteFill>;
+  if (film) return (
+    <AbsoluteFill style={{ backgroundColor: "#000" }}>
+      <FilmStage film={film} frame={frame} durationFrames={durationFrames} />
+      {captionEl && <AbsoluteFill><svg viewBox={`0 0 ${world.width} ${world.height}`} width="100%" height="100%">{captionEl}</svg></AbsoluteFill>}
+    </AbsoluteFill>
+  );
 
   return (
     <AbsoluteFill style={{ backgroundColor: theme.bg }}>
@@ -303,28 +332,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
         {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
         {v.callouts.length > 0 && !hasPanel && <CalloutRow items={v.callouts} color={accent} range={layout.calloutRange} world={world} />}
 
-        {active && (() => {
-          const local = frame - speakFrom;
-          const pop = spring({ frame: local - active.start, fps, config: { damping: 14, stiffness: 220, mass: 0.5 } });
-          // never wider than the frame: shrink the font for a chunk that is still too long (Inter 800 is ~0.62em per glyph)
-          const capSize = Math.max(36, Math.min(vertical ? 70 : 50, (world.width - 100) / (Math.max(1, active.text.length) * 0.62)));
-          return (
-            <g opacity={capOpacity} transform={`translate(${world.width / 2},${(vertical ? world.height - 420 : 985) + (1 - pop) * 14}) scale(${0.94 + 0.06 * pop})`}>
-              <text textAnchor="middle" fontSize={capSize} fontWeight={800} fontFamily={withDevanagari(inter.fontFamily)}
-                stroke={theme.bg} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
-                {active.words.map((w, i) => {
-                  const spoken = local >= w.start;
-                  const current = spoken && local < w.end;
-                  return (
-                    <tspan key={i} fill={current ? accent : theme.ink} fillOpacity={spoken ? 1 : 0.5}>
-                      {w.text}{i < active.words.length - 1 ? " " : ""}
-                    </tspan>
-                  );
-                })}
-              </text>
-            </g>
-          );
-        })()}
+        {captionEl}
         </g>
 
         {transition === "wipe" && frame < 10 && (
