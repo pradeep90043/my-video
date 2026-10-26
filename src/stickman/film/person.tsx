@@ -32,6 +32,8 @@ export interface PoseParams {
   turn?: number;
   /** the body's own turn while turning round (rig.ts): 1 = side-on as drawn, 0 = facing the camera */
   spin?: number;
+  /** walk-cycle phase in radians (rig.ts: from the distance walked); time-based when missing */
+  phase?: number;
 }
 
 /** a kneeling figure's shins rest 148 below the hip, so the director lowers it by 250 − 148 to put them on the floor */
@@ -47,7 +49,7 @@ export const POSES: Record<string, PoseParams> = {
   slump: { ...STAND, lean: 12, head: 20, armF: [-2, 4], armB: [4, 4], shoulders: -8, turn: 0.7 },
   hold: { ...STAND, lean: 3, head: 6, armF: [38, 52], armB: [34, 52], carry: true, turn: 0.85 },
   reach: { ...STAND, lean: 6, armF: [104, 6], armB: [4, 8], turn: 1 },
-  walk: { ...STAND, lean: 3, stride: 26, armF: [0, 8], armB: [0, 8], turn: 1 },
+  walk: { ...STAND, lean: 3, stride: 22, armF: [0, 10], armB: [0, 10], turn: 1 },
   run: { ...STAND, lean: 14, head: -2, stride: 40, armF: [10, 85], armB: [10, 85], turn: 1 },
   sit: { ...STAND, lean: 6, head: 8, armF: [32, 58], armB: [28, 58], noLegs: true, turn: 0.7 },
   "sit-read": { ...STAND, lean: 12, head: 24, armF: [30, 60], armB: [26, 62], noLegs: true, turn: 0.95 },
@@ -127,13 +129,17 @@ const Limb: React.FC<{ a: [number, number]; w: number; hand?: "mitt" | "point" |
   );
 };
 
-/** One straight leg from the hip, with a shoe pointing forward. */
-const Leg: React.FC<{ p: Paint; dx: number; a: number; spin: number }> = ({ p, dx, a, spin }) => (
+/** A leg from the hip: thigh, a knee that bends backwards (positive = the foot swings back and up), shin and a forward shoe. */
+const Leg: React.FC<{ p: Paint; dx: number; a: number; knee: number; spin: number }> = ({ p, dx, a, knee, spin }) => (
   <g transform={`translate(${dx},0) rotate(${a})`}>
-    <rect x={-LEG_W / 2} y={-6} width={LEG_W} height={250} rx={LEG_W / 2} fill={p.bottom} stroke={p.line} strokeWidth={p.lineW} />
-    {!p.silhouette && <rect x={-LEG_W / 2} y={-6} width={LEG_W} height={250} rx={LEG_W / 2} fill="url(#fl-sil)" opacity={p.shade} />}
+    <rect x={-LEG_W / 2} y={-6} width={LEG_W} height={138} rx={LEG_W / 2} fill={p.bottom} stroke={p.line} strokeWidth={p.lineW} />
+    {!p.silhouette && <rect x={-LEG_W / 2} y={-6} width={LEG_W} height={138} rx={LEG_W / 2} fill="url(#fl-sil)" opacity={p.shade} />}
+    <g transform={`translate(0,125) rotate(${knee}) translate(0,-125)`}>
+    <rect x={-LEG_W / 2 + 2} y={100} width={LEG_W - 4} height={150} rx={(LEG_W - 4) / 2} fill={p.bottom} stroke={p.line} strokeWidth={p.lineW} />
+    {!p.silhouette && <rect x={-LEG_W / 2 + 2} y={100} width={LEG_W - 4} height={150} rx={(LEG_W - 4) / 2} fill="url(#fl-sil)" opacity={p.shade} />}
     {/* the shoe points the way the body faces; facing the camera it is seen toe-on, short and centred */}
     <path d="M-26,236 Q-26,222 -8,222 L22,224 Q46,228 46,242 Q46,252 30,252 L-20,252 Q-26,252 -26,244 Z" transform={`translate(${(1 - spin) * -8},0) scale(${0.5 + 0.5 * spin},1)`} fill={p.silhouette ? p.skin : "#1b1b1f"} stroke={p.line} strokeWidth={p.lineW} />
+    </g>
   </g>
 );
 
@@ -158,8 +164,11 @@ export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, m
   const sole = seatSole ?? 228;
   const breathe = Math.sin((frame + seed * 13) / 22) * 3;
   const sway = Math.sin((frame + seed * 7) / 47) * 1.2;
-  const strideA = pose.stride * Math.sin(frame * 0.26);
-  const bob = pose.stride ? Math.abs(Math.sin(frame * 0.26)) * -7 : 0;
+  // walk cycle (rig.ts mirrors this for the hands): thighs swing with the phase, the swinging leg's knee bends to lift the foot
+  const ph = pose.phase ?? frame * 0.26;
+  const strideA = pose.stride * Math.sin(ph);
+  const bob = pose.stride ? -7 * Math.min(1.2, pose.stride / 26) * Math.cos(ph) ** 2 : 0;
+  const kneeK = Math.min(1.4, pose.stride / 26);
   // the rig (rig.ts) computes hands from pose.lean, so the drawing must use exactly that
   const lean = pose.lean;
   // turning round: 0 = facing the camera (front details move to the middle of the chest)
@@ -181,8 +190,8 @@ export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, m
         {/* legs */}
         {!pose.noLegs && (
           <g transform="translate(0,-250)">
-            <Leg p={p} dx={-26} a={strideA} spin={spin} />
-            <Leg p={p} dx={26} a={-strideA} spin={spin} />
+            <Leg p={p} dx={-26} a={strideA} knee={kneeK * (4 + 30 * Math.max(0, -Math.cos(ph)))} spin={spin} />
+            <Leg p={p} dx={26} a={-strideA} knee={kneeK * (4 + 30 * Math.max(0, Math.cos(ph)))} spin={spin} />
           </g>
         )}
         {pose.seat && (
@@ -263,6 +272,11 @@ const Head: React.FC<{ av: Avatar; p: Paint; pose: PoseParams; frame: number; se
   const closed = mood === "sleep";
   const eyeR = (mood === "surprised" ? 1.2 : 1) * size.eyes;
   const gazeY = Math.max(-1, Math.min(1, pose.head / 25));
+  // alive when still: the head drifts a little, and eyes that are not looking at anything glance about now and then
+  const still = pose.stride < 1 ? 1 : 0;
+  const drift = still * (Math.sin(frame / 71 + seed * 3) * 2 + Math.sin(frame / 29 + seed) * 0.7);
+  const glanceN = Math.floor((frame + seed * 37) / 64), glanceT = (frame + seed * 37) % 64;
+  const glance = Math.abs(look) < 0.15 && still ? (((glanceN * 7919 + seed * 31) % 5) - 2) * 0.22 * Math.min(1, glanceT / 3) : 0;
   const talk = talking ? Math.abs(Math.sin(frame * 0.55 + seed)) * (0.6 + 0.4 * Math.abs(Math.sin(frame * 0.19))) : 0;
 
   // geometry
@@ -304,7 +318,7 @@ const Head: React.FC<{ av: Avatar; p: Paint; pose: PoseParams; frame: number; se
     <g transform={`translate(${e.x},${eyeY}) scale(${e.k * eyeR},${eyeR})`}>
       {closed ? <path d="M-10,2 Q0,8 10,2" stroke={p.ink} strokeWidth={3.5} fill="none" strokeLinecap="round" opacity={0.85} /> : <>
         <ellipse cx={0} cy={0} rx={10.5} ry={12.5 * blink} fill={p.white} stroke={p.silhouette ? "none" : p.pupil} strokeWidth={1.5} />
-        <circle cx={Math.max(-5, Math.min(5, look * 4 + T * 3))} cy={1 + gazeY * 3} r={4.8 * blink} fill={p.pupil} />
+        <circle cx={Math.max(-5, Math.min(5, (look + glance) * 4 + T * 3))} cy={1 + gazeY * 3} r={4.8 * blink} fill={p.pupil} />
         {lidDrop > 0 && <rect x={-12} y={-14} width={24} height={14 * lidDrop * 2} fill={p.skin} />}
       </>}
       {!closed && <path d={`M-14,${-21 + browLift + (isFar ? 1 : -1) * browTilt * 0.3} L14,${-21 + browLift - (isFar ? 1 : -1) * browTilt * 0.3}`} stroke={old(av) ? "#d8d8d4" : av.skin === "silhouette" ? p.ink : p.hair} strokeWidth={female ? 3.5 : 4.5} strokeLinecap="round" opacity={0.9} />}
@@ -314,7 +328,7 @@ const Head: React.FC<{ av: Avatar; p: Paint; pose: PoseParams; frame: number; se
   const glass = p.silhouette ? "rgba(255,255,255,0.55)" : "#1d1d22";
 
   return (
-    <g transform={`translate(0,-190) rotate(${pose.head + sway}) scale(${size.head})`}>
+    <g transform={`translate(0,-190) rotate(${pose.head + sway + drift}) scale(${size.head})`}>
       <defs><clipPath id={id}><ellipse cx={jx} cy={jy} rx={jrx + 2} ry={jry + 2} /></clipPath></defs>
       {/* behind the head: long hair, ponytail, hijab drape, the far ear (and, on a silhouette, the near ear: inside the head it would read as an eye) */}
       {av.hair === "long" && <path d={`M${-R - 6},${-70} Q${-R - 10},${30} ${-R + 4},${46} L${R + 4 - (R + 10) * T},${46} Q${R + 10 - (R + 10) * T},${30} ${R + 6 - (R + 6) * T},-70 Z`} {...hairFill} />}

@@ -143,3 +143,17 @@ test("avatars: a child is smaller with dangling feet on a chair; kneeling knees 
   assert.equal(Math.abs(fl.place.r), 90);
   assert.ok(Math.abs(fl.place.y + 72 * fl.place.s - floor) < 2, "lying on the floor after the fall");
 });
+
+test("walking: the leg phase follows the distance walked and the stride the speed (no skating at the start and end)", () => {
+  const { film } = direct({ secs: 5, place: "park", cast: [{ id: "a", at: 0.1 }], actions: [{ at: 0.2, who: "a", do: "walk", to: 0.6 }] });
+  const [[p, i]] = people(film.layers);
+  const keys = (p.x as { keys: [number, number][] }).keys;
+  const [f0, f1] = [keys[1][0], keys[keys.length - 1][0]];
+  const mid = Math.round((f0 + f1) / 2);
+  const a = personState(p, i, mid), b = personState(p, i, mid + 4);
+  assert.ok(a.pose.stride > 15, `striding mid-walk (${a.pose.stride.toFixed(1)})`);
+  assert.ok(b.pose.phase! > a.pose.phase!, "the phase advances with the distance");
+  const start = personState(p, i, f0 + 1);
+  assert.ok(start.pose.stride < a.pose.stride * 0.5, `small first steps (${start.pose.stride.toFixed(1)})`);
+  assert.equal(personState(p, i, f1 + 30).pose.stride, 0, "standing still after arriving");
+});

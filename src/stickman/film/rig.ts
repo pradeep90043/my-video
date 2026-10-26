@@ -31,8 +31,11 @@ const rot = (x: number, y: number, a: number): [number, number] => {
 const dir = (a: number): [number, number] => [Math.sin(rad(a)), Math.cos(rad(a))];
 
 export const sway = (frame: number, seed: number) => Math.sin((frame + seed * 7) / 47) * 1.2;
-export const bobOf = (pose: PoseParams, frame: number) => (pose.stride ? Math.abs(Math.sin(frame * 0.26)) * -7 : 0);
-export const strideOf = (pose: PoseParams, frame: number) => pose.stride * Math.sin(frame * 0.26);
+/** the walk cycle's phase: from the distance covered when the rig knows it (feet stay planted), else from time */
+export const phaseOf = (pose: PoseParams, frame: number) => pose.phase ?? frame * 0.26;
+/** the body is highest as the legs pass each other and lowest with them spread */
+export const bobOf = (pose: PoseParams, frame: number) => (pose.stride ? -7 * Math.min(1.2, pose.stride / 26) * Math.cos(phaseOf(pose, frame)) ** 2 : 0);
+export const strideOf = (pose: PoseParams, frame: number) => pose.stride * Math.sin(phaseOf(pose, frame));
 
 /** The front hand's centre in the figure's local space. */
 export function frontHandLocal(pose: PoseParams, frame: number, seed: number): [number, number] {
@@ -83,6 +86,20 @@ export function stepAt<T>(keys: readonly (readonly [number, T])[] | undefined, f
 export interface PersonState { pose: PoseParams; place: Placement; mood: Mood; look: number; seed: number }
 
 const smooth = (t: number) => { const k = Math.max(0, Math.min(1, t)); return k * k * (3 - 2 * k); };
+/** ease in, then settle with a slight overshoot (limbs carry a little momentum into a new pose) */
+const settle = (t: number) => { const k = smooth(t) - 1; return 1 + 2.2 * k * k * k + 1.2 * k * k; };
+
+/** distance a person has walked by each frame (world px; a row change counts its depth), cached per layer */
+const travelledCache = new WeakMap<object, number[]>();
+function travelled(l: PersonLayer, frame: number): number {
+  let arr = travelledCache.get(l);
+  if (!arr) { arr = [0]; travelledCache.set(l, arr); }
+  const f = Math.max(0, Math.round(frame));
+  for (let i = arr.length; i <= f; i++) arr.push(arr[i - 1] + Math.hypot(val(l.x, i, 960) - val(l.x, i - 1, 960), (val(l.y, i, 540) - val(l.y, i - 1, 540)) * 1.6));
+  return arr[f];
+}
+/** a straight leg swinging ±A° moves the foot 2·250·sin A per half cycle: the distance per radian of walk phase */
+const strideLen = (A: number) => (2 * BODY.hip * Math.sin((A * Math.PI) / 180)) / Math.PI;
 
 /** Everything a person layer is at one frame: blended pose (+ reaching arm), where it stands, which way it faces, its mood. */
 export function personState(l: PersonLayer, index: number, frame: number): PersonState {
@@ -91,12 +108,21 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
   timeline.sort((a, b) => a[0] - b[0]);
   const { v, since, prev } = stepAt(timeline.slice(1), frame, timeline[0][1]);
   const a = POSES[prev] ?? POSES.stand, b = POSES[v] ?? POSES.stand;
-  let pose = since === 0 && v === timeline[0][1] ? b : blendPose(a, b, smooth((frame - since) / Math.max(1, l.poseDur)));
+  let pose = since === 0 && v === timeline[0][1] ? b : blendPose(a, b, settle((frame - since) / Math.max(1, l.poseDur)));
 
   const place: Placement = {
     x: val(l.x, frame, 960), y: val(l.y, frame, 540), s: val(l.s, frame, 1), r: val(l.r, frame, 0),
     flip: stepAt(l.faces, frame, l.flip).v,
   };
+
+  // walking: the leg phase follows the ground actually covered, so the planted foot stays put; the stride follows the speed,
+  // so a walk eases in and out instead of skating
+  const A = Math.max(a.stride, b.stride);
+  if (A > 0 && typeof l.x === "object") {
+    const len = strideLen(A) * place.s;
+    const v = (travelled(l, frame + 1) - travelled(l, Math.max(0, frame - 1))) / 2;
+    pose = { ...pose, phase: travelled(l, frame) / len, stride: pose.stride * Math.min(1.25, v / (len * 0.26)) };
+  }
 
   // turning round: around each change of facing the head and body pass through the front (spin 0) over ~0.8 s, instead of a
   // mirror flip; the mirror happens at the middle, when the figure faces the camera and looks the same both ways

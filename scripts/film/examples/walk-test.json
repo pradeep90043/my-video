@@ -1,0 +1,19 @@
+{
+ "title": "Walk test",
+ "shots": [
+  {
+   "secs": 7, "place": "park", "time": "day",
+   "cast": [
+    { "id": "aman", "age": "teen", "hair": "spiky", "outfit": "tshirt", "top": "#3e6fa8", "bottom": "#2b3142", "skin": "medium", "at": 0.1 },
+    { "id": "maa", "gender": "female", "hair": "bun", "outfit": "saree", "top": "#c0392b", "bottom": "#e0b84a", "skin": "tan", "at": 0.9, "facing": "left" }
+   ],
+   "actions": [
+    { "at": 0.3, "who": "aman", "do": "walk", "to": 0.55 },
+    { "at": 0.6, "who": "maa", "do": "walk", "to": 0.72 },
+    { "at": 3.6, "who": "aman", "do": "run", "to": 0.15 },
+    { "at": 5.2, "who": "aman", "do": "walk", "to": 0.4 }
+   ],
+   "camera": { "shot": "wide", "move": "static" }
+  }
+ ]
+}
