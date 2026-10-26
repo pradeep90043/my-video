@@ -649,6 +649,8 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
         if (last) last.until = rel;
         item.xs.push([rel - 1, item.x], [rel, sx]); item.ys.push([rel - 1, item.y], [rel, sy]);
         if (ss !== item.s) item.ss.push([rel - 1, item.s], [rel, ss]);
+        // it leaves the hand from where the hand really got to (if the arm fell short it travels the rest, never teleports)
+        drops.push({ item, at: rel, by: c.layerIndex });
         item.zs.push([rel, sz]);
         Object.assign(item, { x: sx, y: sy, s: ss, z: sz, row, support, holder: undefined });
         c.holding = undefined;
