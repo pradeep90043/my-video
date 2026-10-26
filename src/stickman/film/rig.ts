@@ -15,7 +15,8 @@ export type Mood = PersonLayer["mood"];
 export const BODY = {
   hip: 250, // the hip line above the feet
   shoulderF: [50, -148] as const, // front shoulder in the torso's frame (origin = hip)
-  upper: 150, lower: 140, mitt: 14, // the hand's centre sits 14 past the end of the forearm
+  // a resting hand hangs at the upper thigh (shoulder 398 above the feet, hand centre ~156): proportions, not a gorilla reach
+  upper: 122, lower: 108, mitt: 12, // the hand's centre sits 12 past the end of the forearm
   height: 560, // feet to the top of the head, standing
   head: 440, // feet to the middle of the head, standing
 };
