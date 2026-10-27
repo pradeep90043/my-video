@@ -15,7 +15,8 @@ export interface StickmanProjectData {
   totalFrames?: number;
   orientation?: "horizontal" | "vertical";
   /** realism sounds (all default on): looping ambience, one-shot foley, and picking them from the narration text */
-  fx?: { ambience?: boolean; foley?: boolean; autoSound?: boolean };
+  /** transitionSound: the whoosh at each scene change (off when every scene is one sentence: it lands on every sentence end) */
+  fx?: { ambience?: boolean; foley?: boolean; autoSound?: boolean; transitionSound?: boolean };
   /** optional music files under public/ (e.g. "audio/music-2.mp3"); a new one starts at every chapter scene, crossfaded. No default: the old bundled track matched a commercial song (Content ID risk), so music is opt-in and must be copyright-cleared. */
   music?: string[];
   /** Lip-sync: mouth level 0..1 per video frame (voiceover.env.json); absent = generic flap */
@@ -55,7 +56,7 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
   const musicSections = tracks.length === 0 ? [] : bounds.slice(0, -1).map((from, i) => ({ from, to: bounds[i + 1], src: tracks[i % tracks.length] }));
   const risers = chapterStarts.map((f) => Math.max(0, f - RISER_FRAMES + 6));
 
-  const fx = { ambience: true, foley: true, autoSound: true, ...data.fx };
+  const fx = { ambience: true, foley: true, autoSound: true, transitionSound: true, ...data.fx };
   const sounds = React.useMemo(() => planSounds(data.scenes, data.fps, { autoSound: fx.autoSound, vertical: data.orientation === "vertical" }), [data.scenes, data.fps, fx.autoSound, data.orientation]);
 
   let prevPose: PoseName = "idle";
@@ -68,7 +69,7 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
         const visual = StickmanVisualSchema.parse(scene.visual ?? {});
         const el = (
           <Sequence key={scene.id} from={from} durationInFrames={duration} name={scene.id}>
-            <StickmanScene cast={data.cast} index={index} words={scene.words} text={scene.text} visual={visual} durationFrames={duration} startFrame={from} mouth={data.mouth} theme={theme} prevPose={prevPose} prevMood={prevMood} vertical={data.orientation === "vertical"}
+            <StickmanScene cast={data.cast} index={index} words={scene.words} text={scene.text} visual={visual} durationFrames={duration} startFrame={from} mouth={data.mouth} theme={theme} prevPose={prevPose} prevMood={prevMood} vertical={data.orientation === "vertical"} transitionSound={fx.transitionSound}
               speakFrom={Math.round((scene.pauseBefore ?? 0) * data.fps)}
               speakFrames={scene.duration !== undefined ? Math.round(scene.duration * data.fps) : undefined} />
           </Sequence>
