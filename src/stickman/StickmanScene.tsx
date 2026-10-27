@@ -36,6 +36,8 @@ interface SceneProps {
   speakFrom?: number;
   speakFrames?: number;
   muteSfx?: boolean;
+  /** the whoosh when this scene starts with a transition (default on) */
+  transitionSound?: boolean;
   vertical?: boolean;
   /** position in the video; drives the "auto" transition rotation */
   index?: number;
@@ -142,7 +144,7 @@ const CalloutRow: React.FC<{ items: string[]; color: string; range: [number, num
   );
 };
 
-export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, vertical = false, startFrame = 0, mouth, index = 0, words }) => {
+export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, transitionSound = true, vertical = false, startFrame = 0, mouth, index = 0, words }) => {
   const world: World = vertical ? WORLD_VERTICAL : WORLD;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -334,7 +336,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
       {!muteSfx && v.title && (
         <Sequence from={4} durationInFrames={30}><Audio src={staticFile("audio/text-pop.mp3")} volume={0.25} /></Sequence>
       )}
-      {!muteSfx && transition !== "cut" && (
+      {!muteSfx && transitionSound && transition !== "cut" && (
         <Sequence durationInFrames={30}><Audio src={staticFile("audio/text-whoosh.mp3")} volume={0.25} /></Sequence>
       )}
     </AbsoluteFill>

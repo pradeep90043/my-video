@@ -13,6 +13,8 @@ export interface StickmanProjectData {
   theme?: ThemeName;
   totalFrames?: number;
   orientation?: "horizontal" | "vertical";
+  /** transitionSound: the whoosh at each scene change (off when every scene is one sentence: it lands on every sentence end) */
+  fx?: { transitionSound?: boolean };
   /** optional music files under public/ (e.g. "audio/music-2.mp3"); a new one starts at every chapter scene, crossfaded. No default: the old bundled track matched a commercial song (Content ID risk), so music is opt-in and must be copyright-cleared. */
   music?: string[];
   /** Lip-sync: mouth level 0..1 per video frame (voiceover.env.json); absent = generic flap */
@@ -52,6 +54,8 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
   const musicSections = tracks.length === 0 ? [] : bounds.slice(0, -1).map((from, i) => ({ from, to: bounds[i + 1], src: tracks[i % tracks.length] }));
   const risers = chapterStarts.map((f) => Math.max(0, f - RISER_FRAMES + 6));
 
+  const fx = { transitionSound: true, ...data.fx };
+
   let prevPose: PoseName = "idle";
   let prevMood: Mood | undefined;
   return (
@@ -62,7 +66,7 @@ export const StickmanVideo: React.FC<StickmanVideoProps> = ({ project, data, bgM
         const visual = StickmanVisualSchema.parse(scene.visual ?? {});
         const el = (
           <Sequence key={scene.id} from={from} durationInFrames={duration} name={scene.id}>
-            <StickmanScene cast={data.cast} index={index} words={scene.words} text={scene.text} visual={visual} durationFrames={duration} startFrame={from} mouth={data.mouth} theme={theme} prevPose={prevPose} prevMood={prevMood} vertical={data.orientation === "vertical"}
+            <StickmanScene cast={data.cast} index={index} words={scene.words} text={scene.text} visual={visual} durationFrames={duration} startFrame={from} mouth={data.mouth} theme={theme} prevPose={prevPose} prevMood={prevMood} vertical={data.orientation === "vertical"} transitionSound={fx.transitionSound}
               speakFrom={Math.round((scene.pauseBefore ?? 0) * data.fps)}
               speakFrames={scene.duration !== undefined ? Math.round(scene.duration * data.fps) : undefined} />
           </Sequence>
