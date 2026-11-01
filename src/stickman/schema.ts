@@ -370,7 +370,7 @@ export const StickmanVisualSchema = z.object({
   story: StorySchema.optional(),
   props: z.array(PropSchema).default([]),
   title: z.string().max(60).optional(),
-  callouts: z.array(z.string().max(48)).max(4).default([]),
+  callouts: z.array(z.string().max(64)).max(8).default([]),
   camera: z.enum(["none", "push", "pull", "pan-left", "pan-right"]).default("none"),
   // "auto" (default) rotates slide / zoom / iris / wipe by scene so consecutive scenes never feel the same; "cut" is a hard cut.
   // not an animation: a per-scene setting that StickmanScene drives from useCurrentFrame()

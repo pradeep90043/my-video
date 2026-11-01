@@ -81,61 +81,137 @@ const Title: React.FC<{ text: string; theme: Theme; color: string; world: World 
   );
 };
 
-const Callout: React.FC<{ text: string; width: number; delay: number; color: string }> = ({ text, width, delay, color }) => {
+const Callout: React.FC<{
+  text: string;
+  width: number;
+  height?: number;
+  delay: number;
+  color: string;
+  index: number;
+  total: number;
+}> = ({ text, width, height = 72, delay, color, index, total }) => {
   const s = useSpring(delay);
+  const m = /^(\d+)[.)]\s*(.*)$/.exec(text);
+  const badge = m ? m[1] : total > 1 ? String(index + 1) : "⚡";
+  const label = m ? m[2] : text;
+
   return (
-    <g transform={`translate(${width / 2},38) scale(${Math.max(0.001, s)}) translate(${-width / 2},-38)`} opacity={Math.min(1, s * 2)}>
-      <rect width={width} height={76} rx={38} fill={color} />
-      <text x={width / 2} y={51} textAnchor="middle" fontSize={Math.max(20, Math.min(36, Math.floor((width - 36) / (0.6 * Math.max(1, text.length)))))} fontWeight={800} fontFamily={withDevanagari(inter.fontFamily)} fill="#fff">{text}</text>
+    <g
+      transform={`translate(${width / 2},${height / 2 + (1 - s) * 20}) scale(${Math.max(0.001, s)}) translate(${-width / 2},${-height / 2})`}
+      opacity={Math.min(1, s * 2.5)}
+    >
+      {/* Outer dark card container with glowing border */}
+      <rect
+        width={width}
+        height={height}
+        rx={18}
+        fill="#0c1222"
+        fillOpacity={0.94}
+        stroke={color}
+        strokeWidth={2.5}
+      />
+      {/* Accent strip on left */}
+      <rect x={0} y={0} width={7} height={height} rx={3.5} fill={color} />
+      {/* Badge circle */}
+      <circle cx={38} cy={height / 2} r={18} fill={color} />
+      <text
+        x={38}
+        y={height / 2 + 6}
+        textAnchor="middle"
+        fontSize={badge.length > 1 ? 16 : 19}
+        fontWeight={900}
+        fontFamily={withDevanagari(inter.fontFamily)}
+        fill="#ffffff"
+      >
+        {badge}
+      </text>
+      {/* Main label text */}
+      <text
+        x={68}
+        y={height / 2 + 7}
+        fontSize={label.length > 24 ? 22 : label.length > 18 ? 26 : 29}
+        fontWeight={800}
+        fontFamily={withDevanagari(inter.fontFamily)}
+        fill="#f8fafc"
+        letterSpacing={0.5}
+      >
+        {label.toUpperCase()}
+      </text>
     </g>
   );
 };
 
 /** Laid out inside `range` (the screen side the figure is not on); stacked when one row does not fit. */
 const CalloutRow: React.FC<{ items: string[]; color: string; range: [number, number]; world: World }> = ({ items, color, range, world }) => {
-  if (world.width < world.height) {
-    // vertical: stack the pills in a centred column
+  const isVertical = world.width < world.height;
+  const n = items.length;
+
+  if (isVertical) {
+    // vertical (Shorts / Reels: 1080x1920): stack cards in a centred column
+    const cardH = n >= 5 ? 68 : 74;
+    const gap = n >= 5 ? 12 : 16;
+    const startY = 270;
+    const maxW = world.width - 80;
+
     return (
-      <g transform="translate(0,270)">
+      <g transform={`translate(0,${startY})`}>
         {items.map((t, i) => {
-          const w = Math.min(world.width - 80, Math.max(240, t.length * 26 + 70));
+          const m = /^(\d+)[.)]\s*(.*)$/.exec(t);
+          const raw = m ? m[2] : t;
+          const w = Math.min(maxW, Math.max(340, raw.length * 20 + 110));
           return (
-            <g key={i} transform={`translate(${(world.width - w) / 2},${i * 100})`}>
-              <Callout text={t} width={w} delay={18 + i * 10} color={color} />
+            <g key={i} transform={`translate(${(world.width - w) / 2},${i * (cardH + gap)})`}>
+              <Callout text={t} width={w} height={cardH} delay={14 + i * 8} color={color} index={i} total={n} />
             </g>
           );
         })}
       </g>
     );
   }
+
+  // landscape (1920x1080): inside range [lo, hi]
   const [lo, hi] = range;
   const avail = hi - lo;
-  const widths = items.map((t) => Math.min(avail, Math.max(240, t.length * 26 + 70)));
-  const gap = 28;
-  const total = widths.reduce((a, b) => a + b, 0) + gap * (items.length - 1);
-  if (total > avail) {
-    // too wide for one row: stack them
-    const left = lo + (avail - Math.max(...widths)) / 2;
+  const cardH = n >= 5 ? 62 : 68;
+  const gap = n >= 5 ? 10 : 14;
+
+  const widths = items.map((t) => {
+    const m = /^(\d+)[.)]\s*(.*)$/.exec(t);
+    const raw = m ? m[2] : t;
+    return Math.min(avail, Math.max(260, raw.length * 20 + 110));
+  });
+
+  const rowGap = 28;
+  const total = widths.reduce((a, b) => a + b, 0) + rowGap * (n - 1);
+
+  if (n >= 3 || total > avail) {
+    // 3 or more items or too wide for a single row: sleek vertical card stack
+    const maxCardW = Math.min(avail - 20, Math.max(...widths));
+    const left = lo + (avail - maxCardW) / 2;
+    const startY = n >= 5 ? 230 : 250;
+
     return (
-      <g transform="translate(0,262)">
+      <g transform={`translate(0,${startY})`}>
         {items.map((t, i) => (
-          <g key={i} transform={`translate(${left},${i * 96})`}>
-            <Callout text={t} width={widths[i]} delay={18 + i * 10} color={color} />
+          <g key={i} transform={`translate(${left},${i * (cardH + gap)})`}>
+            <Callout text={t} width={maxCardW} height={cardH} delay={14 + i * 8} color={color} index={i} total={n} />
           </g>
         ))}
       </g>
     );
   }
+
+  // 1 or 2 small items that fit on a single line: horizontal row
   let x = lo + (avail - total) / 2;
   return (
     <g transform="translate(0,262)">
       {items.map((t, i) => {
         const el = (
           <g key={i} transform={`translate(${x},0)`}>
-            <Callout text={t} width={widths[i]} delay={18 + i * 10} color={color} />
+            <Callout text={t} width={widths[i]} height={72} delay={14 + i * 8} color={color} index={i} total={n} />
           </g>
         );
-        x += widths[i] + gap;
+        x += widths[i] + rowGap;
         return el;
       })}
     </g>
@@ -334,6 +410,16 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
       {!muteSfx && v.title && (
         <Sequence from={4} durationInFrames={30}><Audio src={staticFile("audio/text-pop.mp3")} volume={0.25} /></Sequence>
       )}
+      {!muteSfx && v.callouts.length > 0 && v.callouts.map((_, i) => (
+        <Sequence key={`callout-${i}`} from={14 + i * 8} durationInFrames={30}>
+          <Audio src={staticFile("audio/sfx/pop.mp3")} volume={0.35} />
+        </Sequence>
+      ))}
+      {!muteSfx && v.steps?.items && v.steps.items.map((_, i) => (
+        <Sequence key={`step-${i}`} from={12 + i * 10} durationInFrames={30}>
+          <Audio src={staticFile("audio/sfx/pop.mp3")} volume={0.3} />
+        </Sequence>
+      ))}
       {!muteSfx && transition !== "cut" && (
         <Sequence durationInFrames={30}><Audio src={staticFile("audio/text-whoosh.mp3")} volume={0.25} /></Sequence>
       )}
