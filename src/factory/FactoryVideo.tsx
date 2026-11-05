@@ -185,12 +185,13 @@ const KaraokeSubtitles: React.FC<{
               fontFamily: FONT_PRIMARY,
               fontSize: isLandscape ? (isCurrent ? 44 : 38) : (isCurrent ? 38 : 32),
               fontWeight: 900,
-              letterSpacing: "0.02em",
+              letterSpacing: "-0.01em",
               color: isCurrent ? COLORS.primary : isPast ? COLORS.text : "rgba(255, 255, 255, 0.45)",
               transform: isCurrent ? "scale(1.15)" : "scale(1)",
               textShadow: isCurrent ? COLORS.activeGlow : "0 2px 12px rgba(0,0,0,0.85)",
               transition: "transform 0.1s ease, color 0.1s ease",
               display: "inline-block",
+              margin: isLandscape ? "0 4px" : "0 3px",
             }}
           >
             {item.word}
