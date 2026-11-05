@@ -18,6 +18,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { execSync } from "child_process";
 import { VoiceProvider } from "./LLMProvider";
+import { EdgeTTSProvider } from "./EdgeTTSProvider";
 import { runOmniVoiceOnKaggle } from "./KaggleOmniVoiceRunner";
 import { normalizeHindiNumbersForTTS } from "../utils/hindiNumberTTS";
 
@@ -165,60 +166,72 @@ export class OmniVoiceProvider implements VoiceProvider {
       } catch (err: any) {
         const msg = `Direct Kaggle OmniVoice execution failed: ${err.message}`;
         await alertTelegram(msg);
-        throw new Error(`[OmniVoice] ${msg}`);
+        console.warn(`  [omni-voice] ⚠️ ${msg}. Gracefully falling back to EdgeTTSProvider (hi-IN-MadhurNeural)...`);
+        const fallback = new EdgeTTSProvider("hi-IN-MadhurNeural");
+        return await fallback.synthesize(text, outputPath);
       }
     }
 
     // HTTP tunnel path (when OMNI_VOICE_URL is provided)
-    await this.checkHealth();
-
-    console.log(`  [omni-voice] Synthesizing ${text.length} chars via ${this.baseUrl} ...`);
-    let res: Response;
     try {
-      res = await fetch(`${this.baseUrl}/synthesize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-        signal: AbortSignal.timeout(this.synthesisTimeoutMs),
-      });
-    } catch (err) {
-      const msg =
-        `OmniVoice synthesis request failed.\n` +
-        `URL: ${this.baseUrl}/synthesize\n` +
-        `Error: ${(err as Error).message}`;
-      await alertTelegram(msg);
-      throw new Error(`[OmniVoice] ${msg}`);
+      await this.checkHealth();
+
+      console.log(`  [omni-voice] Synthesizing ${text.length} chars via ${this.baseUrl} ...`);
+      let res: Response;
+      try {
+        res = await fetch(`${this.baseUrl}/synthesize`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+          signal: AbortSignal.timeout(this.synthesisTimeoutMs),
+        });
+      } catch (err) {
+        const msg =
+          `OmniVoice synthesis request failed.\n` +
+          `URL: ${this.baseUrl}/synthesize\n` +
+          `Error: ${(err as Error).message}`;
+        await alertTelegram(msg);
+        console.warn(`  [omni-voice] ⚠️ ${msg}. Gracefully falling back to EdgeTTSProvider...`);
+        const fallback = new EdgeTTSProvider("hi-IN-MadhurNeural");
+        return await fallback.synthesize(text, outputPath);
+      }
+
+      if (!res.ok) {
+        const body = await res.text().catch(() => "(no body)");
+        const msg =
+          `OmniVoice synthesis returned HTTP ${res.status}.\n` +
+          `Response: ${body.slice(0, 300)}`;
+        await alertTelegram(msg);
+        console.warn(`  [omni-voice] ⚠️ ${msg}. Gracefully falling back to EdgeTTSProvider...`);
+        const fallback = new EdgeTTSProvider("hi-IN-MadhurNeural");
+        return await fallback.synthesize(text, outputPath);
+      }
+
+      const wavPath = outputPath.replace(/\.mp3$/, ".wav");
+      const audioBuffer = Buffer.from(await res.arrayBuffer());
+      fs.writeFileSync(wavPath, audioBuffer);
+
+      execSync(
+        `ffmpeg -y -i "${wavPath}" -codec:a libmp3lame -b:a 192k "${outputPath}"`,
+        { stdio: "pipe" },
+      );
+      fs.unlinkSync(wavPath);
+
+      let durationSecs = 30;
+      try {
+        const probe = execSync(
+          `ffprobe -v quiet -show_entries format=duration -of csv=p=0 "${outputPath}"`,
+          { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] },
+        ).trim();
+        durationSecs = parseFloat(probe) || durationSecs;
+      } catch {}
+
+      console.log(`  [omni-voice] ✅ Audio saved: ${outputPath} (${durationSecs.toFixed(1)}s)`);
+      return { path: outputPath, durationSecs };
+    } catch (err: any) {
+      console.warn(`  [omni-voice] ⚠️ ${err.message}. Gracefully falling back to EdgeTTSProvider...`);
+      const fallback = new EdgeTTSProvider("hi-IN-MadhurNeural");
+      return await fallback.synthesize(text, outputPath);
     }
-
-    if (!res.ok) {
-      const body = await res.text().catch(() => "(no body)");
-      const msg =
-        `OmniVoice synthesis returned HTTP ${res.status}.\n` +
-        `Response: ${body.slice(0, 300)}`;
-      await alertTelegram(msg);
-      throw new Error(`[OmniVoice] ${msg}`);
-    }
-
-    const wavPath = outputPath.replace(/\.mp3$/, ".wav");
-    const audioBuffer = Buffer.from(await res.arrayBuffer());
-    fs.writeFileSync(wavPath, audioBuffer);
-
-    execSync(
-      `ffmpeg -y -i "${wavPath}" -codec:a libmp3lame -b:a 192k "${outputPath}"`,
-      { stdio: "pipe" },
-    );
-    fs.unlinkSync(wavPath);
-
-    let durationSecs = 30;
-    try {
-      const probe = execSync(
-        `ffprobe -v quiet -show_entries format=duration -of csv=p=0 "${outputPath}"`,
-        { encoding: "utf-8", stdio: ["pipe", "pipe", "pipe"] },
-      ).trim();
-      durationSecs = parseFloat(probe) || durationSecs;
-    } catch {}
-
-    console.log(`  [omni-voice] ✅ Audio saved: ${outputPath} (${durationSecs.toFixed(1)}s)`);
-    return { path: outputPath, durationSecs };
   }
 }

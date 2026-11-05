@@ -14,9 +14,15 @@ import { VoiceProvider } from "./LLMProvider";
 export class EdgeTTSProvider implements VoiceProvider {
   name = "edge-tts";
 
-  private voice = process.env.EDGE_TTS_VOICE ?? "en-IN-NeerjaNeural";
-  private rate = process.env.EDGE_TTS_RATE ?? "+0%";   // e.g. "+10%" to speed up
-  private pitch = process.env.EDGE_TTS_PITCH ?? "+0Hz";
+  private voice: string;
+  private rate: string;
+  private pitch: string;
+
+  constructor(voice?: string) {
+    this.voice = voice ?? process.env.EDGE_TTS_VOICE ?? "hi-IN-MadhurNeural";
+    this.rate = process.env.EDGE_TTS_RATE ?? "+0%";
+    this.pitch = process.env.EDGE_TTS_PITCH ?? "+0Hz";
+  }
 
   async synthesize(text: string, outputPath: string): Promise<{ path: string; durationSecs: number }> {
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
