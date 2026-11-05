@@ -96,13 +96,11 @@ function ensureDirs(): void {
 function buildLLM(): LLMProvider {
   if (MODELS.llm === "claude-cli") return new ClaudeCLIProvider();
   if (MODELS.llm === "claude") return new ClaudeProvider(process.env.ANTHROPIC_API_KEY ?? "");
-  if (process.env.GEMINI_API_KEY) {
-    return new GeminiProvider(process.env.GEMINI_API_KEY);
-  }
-  // Fallback to FreeLLMAPI (running on dev server or Docker)
-  const freellmUrl = process.env.FREELLMAPI_URL;
+
+  // In test / dev session environment: use FreeLLMAPI which holds the test environment keys
   const freellmKey = process.env.FREELLMAPI_KEY;
-  if (freellmUrl && freellmKey) {
+  const freellmUrl = process.env.FREELLMAPI_URL || (freellmKey ? "http://freellmapi-dev:3001" : undefined);
+  if (freellmKey && freellmUrl) {
     return new OpenAICompatibleProvider({
       baseUrl: `${freellmUrl.replace(/\/+$/, "")}/v1`,
       apiKey: freellmKey,
@@ -110,6 +108,12 @@ function buildLLM(): LLMProvider {
       name: "freellmapi",
     });
   }
+
+  // Direct Gemini API Key
+  if (process.env.GEMINI_API_KEY) {
+    return new GeminiProvider(process.env.GEMINI_API_KEY);
+  }
+
   // Fallback to Groq
   if (process.env.GROQ_API_KEY) {
     return new OpenAICompatibleProvider({
