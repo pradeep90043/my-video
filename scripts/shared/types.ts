@@ -24,6 +24,24 @@ export const WordTimingSchema = z.object({
   endMs: z.number(),
 });
 
+export const FigureItemSchema = z.object({
+  label: z.string(),
+  value: z.string().optional(),
+  secondary: z.string().optional(),
+  color: z.enum(["primary", "accent", "danger", "success", "warning", "purple"]).default("primary"),
+  icon: z.string().optional(),
+});
+
+export const SceneFigureSchema = z.object({
+  type: z.enum(["comparison", "stats", "roadmap", "metric", "alert", "poll", "code"]),
+  title: z.string(),
+  subtitle: z.string().optional(),
+  badge: z.string().optional(),
+  items: z.array(FigureItemSchema).default([]),
+  highlight: z.string().optional(),
+});
+export type SceneFigure = z.infer<typeof SceneFigureSchema>;
+
 export const SceneSchema = z.object({
   id: z.string(),
   duration: z.number().min(2).max(60),
@@ -36,6 +54,7 @@ export const SceneSchema = z.object({
   animation: AnimationTypeSchema.default("fade"),
   background: z.string().default("#0B0B0B"),
   cameraMove: CameraMoveSchema.default("static"),
+  figure: SceneFigureSchema.optional(),
 });
 
 export const VideoScriptSchema = z.object({

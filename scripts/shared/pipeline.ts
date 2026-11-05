@@ -348,7 +348,10 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
   onStep(12, TOTAL, "Assembling video JSON");
   const isLong = publishMode === "day1-long";
   const sceneDurationTotal = scenes.reduce((acc, s) => acc + (s.duration || 0), 0);
-  const effectiveDuration = Math.max(voiceDuration, sceneDurationTotal, isLong ? 600 : 30);
+  const fallbackDuration = targetDuration ?? (isLong ? 600 : 30);
+  const effectiveDuration = targetDuration
+    ? Math.max(voiceDuration, sceneDurationTotal, targetDuration)
+    : Math.max(voiceDuration, sceneDurationTotal, fallbackDuration);
 
   const videoJSON: FactoryVideoJSON = {
     id: videoId,

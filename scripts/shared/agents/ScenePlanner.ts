@@ -19,6 +19,31 @@ const SCENE_SCHEMA = {
           animation: { type: "string", enum: ["fade","slide","scale","pop","typing","zoom"] },
           background: { type: "string" },
           cameraMove: { type: "string", enum: ["static","zoom-in","zoom-out","pan-left","pan-right","shake"] },
+          figure: {
+            type: "object",
+            properties: {
+              type: { type: "string", enum: ["comparison","stats","roadmap","metric","alert","poll","code"] },
+              title: { type: "string" },
+              subtitle: { type: "string" },
+              badge: { type: "string" },
+              items: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    label: { type: "string" },
+                    value: { type: "string" },
+                    secondary: { type: "string" },
+                    color: { type: "string", enum: ["primary","accent","danger","success","warning","purple"] },
+                    icon: { type: "string" },
+                  },
+                  required: ["label"],
+                },
+              },
+              highlight: { type: "string" },
+            },
+            required: ["type","title","items"],
+          },
         },
         required: ["id","duration","text","voiceText","subtitle","imagePrompt","animation","background","cameraMove"],
       },
@@ -101,6 +126,13 @@ Create EXACTLY ${sceneCount} scenes. Each scene:
 - animation: one of fade, slide, scale, pop, typing, zoom (vary for retention)
 - background: hex color or "image" to use generated image
 - cameraMove: one of static, zoom-in, zoom-out, pan-left, pan-right, shake (vary for engagement)
+- figure: Live dynamic Remotion figure/diagram to illustrate the script concept:
+  - type: one of "comparison", "stats", "roadmap", "metric", "alert", "poll", "code"
+  - title: short bold title of the figure
+  - subtitle: context or units
+  - badge: e.g. "TREND", "BENCHMARK", "CASE STUDY", "ACTION PLAN", "VOTE"
+  - items: array of 2-3 items with { label, value, secondary, color, icon }
+  - highlight: key punchline takeaway
 
 Scene types to use (mix and vary throughout):
 - intro: Opening hook with shake/zoom-in camera. Pop animation. Dark background.

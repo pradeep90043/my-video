@@ -17,22 +17,39 @@ export class RenderAgent {
 
     // Copy scene images → update paths to relative
     const updatedScenes = videoJSON.scenes.map((scene) => {
+      let resolved = "";
       if (scene.imagePath && fs.existsSync(scene.imagePath)) {
-        const dest = path.join(publicImagesDir, path.basename(scene.imagePath));
-        if (path.resolve(scene.imagePath) !== path.resolve(dest)) {
-          fs.copyFileSync(scene.imagePath, dest);
+        resolved = scene.imagePath;
+      } else if (scene.imagePath && fs.existsSync(path.join(PATHS.public, scene.imagePath))) {
+        resolved = path.join(PATHS.public, scene.imagePath);
+      } else if (fs.existsSync(path.join(publicImagesDir, path.basename(scene.imagePath || "")))) {
+        resolved = path.join(publicImagesDir, path.basename(scene.imagePath));
+      }
+      if (resolved) {
+        const dest = path.join(publicImagesDir, path.basename(resolved));
+        if (path.resolve(resolved) !== path.resolve(dest)) {
+          fs.copyFileSync(resolved, dest);
         }
-        return { ...scene, imagePath: `content/factory/${slug}/images/${path.basename(scene.imagePath)}` };
+        return { ...scene, imagePath: `content/factory/${slug}/images/${path.basename(resolved)}` };
       }
       return scene;
     });
 
-    // Copy voiceover → relative path
+    // Copy voiceover → relative path (resolve absolute, public-relative, or existing destination)
     let publicVoicePath = "";
+    let resolvedVoice = "";
     if (voice && fs.existsSync(voice)) {
+      resolvedVoice = voice;
+    } else if (voice && fs.existsSync(path.join(PATHS.public, voice))) {
+      resolvedVoice = path.join(PATHS.public, voice);
+    } else if (fs.existsSync(path.join(publicDir, "voiceover.mp3"))) {
+      resolvedVoice = path.join(publicDir, "voiceover.mp3");
+    }
+
+    if (resolvedVoice) {
       const destVoice = path.join(publicDir, "voiceover.mp3");
-      if (path.resolve(voice) !== path.resolve(destVoice)) {
-        fs.copyFileSync(voice, destVoice);
+      if (path.resolve(resolvedVoice) !== path.resolve(destVoice)) {
+        fs.copyFileSync(resolvedVoice, destVoice);
       }
       publicVoicePath = `content/factory/${slug}/voiceover.mp3`;
     }
@@ -70,7 +87,7 @@ export class RenderAgent {
 
     console.log(`\n  Remotion: rendering ${totalFrames} frames (${width}x${height} ${isLong ? "landscape" : "portrait"})...`);
     execSync(
-      `npx remotion render FactoryVideo "${silentPath}" --width=${width} --height=${height} --concurrency=2 --duration-in-frames=${totalFrames} --props='${escapedProps}'`,
+      `npx remotion render FactoryVideo "${silentPath}" --width=${width} --height=${height} --concurrency=4 --duration-in-frames=${totalFrames} --props='${escapedProps}'`,
       { stdio: "inherit", cwd: PATHS.root },
     );
 
@@ -90,14 +107,43 @@ export class RenderAgent {
       }
     })();
 
-    if (hasRenderedAudio) {
+    // Check if voiceover was actually rendered into silentPath (speech volume is > -26 dB; BGM only is ~ -34 dB)
+    const isVoiceRendered = (() => {
+      if (!hasVoice || !hasRenderedAudio) return false;
+      try {
+        const out = execSync(
+          `ffmpeg -i "${silentPath}" -af "volumedetect" -vn -sn -dn -f null /dev/null 2>&1`,
+          { encoding: "utf-8" },
+        );
+        const match = out.match(/mean_volume:\s*(-?\d+(\.\d+)?)\s*dB/);
+        if (match) {
+          const meanVol = parseFloat(match[1]);
+          return meanVol > -26;
+        }
+        return false;
+      } catch {
+        return false;
+      }
+    })();
+
+    if (isVoiceRendered) {
       // Remotion already rendered complete mix (voice + BGM + SFX) — preserve it!
       fs.renameSync(silentPath, mergedPath);
+    } else if (hasVoice && hasRenderedAudio) {
+      // Remotion rendered BGM/SFX but dropped voiceover → mix voiceover with Remotion audio!
+      const voiceAbs = path.join(PATHS.public, publicVoicePath);
+      console.log(`\n  Audio: mixing voiceover (${publicVoicePath}) with Remotion sound design...`);
+      execSync(
+        `ffmpeg -y -i "${silentPath}" -i "${voiceAbs}" -filter_complex "[0:a]volume=0.35[bg];[1:a]volume=1.0[vo];[vo][bg]amix=inputs=2:duration=first:dropout_transition=2[a]" -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k "${mergedPath}"`,
+        { stdio: "inherit" },
+      );
+      fs.unlinkSync(silentPath);
     } else if (hasVoice) {
       const voiceAbs = path.join(PATHS.public, publicVoicePath);
+      console.log(`\n  Audio: merging voiceover (${publicVoicePath}) into silent video...`);
       execSync(
         `ffmpeg -y -i "${silentPath}" -i "${voiceAbs}" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k "${mergedPath}"`,
-        { stdio: "pipe" },
+        { stdio: "inherit" },
       );
       fs.unlinkSync(silentPath);
     } else {

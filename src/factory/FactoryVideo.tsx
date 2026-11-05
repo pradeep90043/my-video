@@ -35,6 +35,7 @@ import {
   useTypingText,
 } from "../shared/lib/factory-animations";
 import { DuckedMusic } from "../shared/components/DuckedMusic";
+import { LiveSceneFigure } from "./LiveSceneFigure";
 
 // ── Schema ─────────────────────────────────────────────────────────────────────
 
@@ -73,6 +74,26 @@ export const factoryVideoSchema = z.object({
           animation: z.string().default("fade"),
           background: z.string().default("#0B0B0B"),
           cameraMove: z.string().default("static"),
+          figure: z
+            .object({
+              type: z.enum(["comparison", "stats", "roadmap", "metric", "alert", "poll", "code"]),
+              title: z.string(),
+              subtitle: z.string().optional(),
+              badge: z.string().optional(),
+              items: z
+                .array(
+                  z.object({
+                    label: z.string(),
+                    value: z.string().optional(),
+                    secondary: z.string().optional(),
+                    color: z.enum(["primary", "accent", "danger", "success", "warning", "purple"]).default("primary"),
+                    icon: z.string().optional(),
+                  }),
+                )
+                .default([]),
+              highlight: z.string().optional(),
+            })
+            .optional(),
         }),
       ),
     })
@@ -191,6 +212,7 @@ interface SceneData {
   animation: string;
   background: string;
   cameraMove: string;
+  figure?: any;
 }
 
 const FactoryScene: React.FC<{
@@ -214,12 +236,12 @@ const FactoryScene: React.FC<{
   const punchProgress = isPunch ? cycleFrame / (fps * 0.35) : 0;
   const patternPunchScale = isPunch ? 1 + 0.045 * Math.sin(punchProgress * Math.PI) : 1;
 
-  // ── Camera moves ─────────────────────────────────────────────────────────────
-  const zoomInScale = useCameraZoomIn(0.06);
-  const zoomOutScale = useCameraZoomOut(0.06);
-  const panX = useCameraPan("left", 40);
-  const panRightX = useCameraPan("right", 40);
-  const shakeX = useCameraShake(6, 8);
+  // ── Dynamic Cinematic Camera moves (18% zoom & pan so images never feel static) ─────
+  const zoomInScale = useCameraZoomIn(0.18);
+  const zoomOutScale = useCameraZoomOut(0.18);
+  const panX = useCameraPan("left", 80);
+  const panRightX = useCameraPan("right", 80);
+  const shakeX = useCameraShake(8, 10);
 
   let cameraTransform = "";
   switch (scene.cameraMove) {
@@ -230,16 +252,17 @@ const FactoryScene: React.FC<{
       cameraTransform = `scale(${zoomOutScale * patternPunchScale})`;
       break;
     case "pan-left":
-      cameraTransform = `translateX(${panX}px) scale(${patternPunchScale})`;
+      cameraTransform = `translateX(${panX}px) scale(${zoomInScale * 0.5 + 0.5}) scale(${patternPunchScale})`;
       break;
     case "pan-right":
-      cameraTransform = `translateX(${panRightX}px) scale(${patternPunchScale})`;
+      cameraTransform = `translateX(${panRightX}px) scale(${zoomInScale * 0.5 + 0.5}) scale(${patternPunchScale})`;
       break;
     case "shake":
-      cameraTransform = `translateX(${shakeX}px) scale(${patternPunchScale})`;
+      cameraTransform = `translateX(${shakeX}px) scale(${zoomInScale * patternPunchScale})`;
       break;
     default:
-      cameraTransform = `scale(${patternPunchScale})`;
+      // Even default scenes get a smooth 12% push-in so the image has active motion
+      cameraTransform = `scale(${useCameraZoomIn(0.12) * patternPunchScale})`;
   }
 
   // ── Text Entrance Animations ─────────────────────────────────────────────────
@@ -324,6 +347,15 @@ const FactoryScene: React.FC<{
           pointerEvents: "none",
         }}
       />
+
+      {/* Live Animated Remotion Figures */}
+      {scene.figure && (
+        <LiveSceneFigure
+          figure={scene.figure}
+          fps={fps}
+          isLandscape={isLandscape}
+        />
+      )}
 
       {/* Subtitles & Dynamic Word-Level Karaoke Block */}
       <div
