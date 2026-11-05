@@ -103,7 +103,8 @@ function computeItemTriggerFrames(
 
     const match = words.find((w) => {
       const clean = w.word.toLowerCase().replace(/[^\w\u0900-\u097F]/g, "");
-      return tokens.some((t) => clean.includes(t) || t.includes(clean));
+      if (clean.length < 3) return false;
+      return tokens.some((t) => t === clean || (t.length >= 4 && clean.includes(t)));
     });
 
     if (match) {
@@ -113,20 +114,21 @@ function computeItemTriggerFrames(
 
     // 2. Intelligent staggered distribution across narration:
     // Items appear sequentially as terms are coined in speech
-    const slot = (idx + 0.45) / (count + 0.35);
+    const slot = (idx + 0.25) / (count + 0.5);
     const fallbackMs = minMs + slot * spanMs;
     return Math.round((fallbackMs / 1000) * fps);
   });
 
-  // Guarantee strictly ascending order with at least 24 frames (~0.8s) separation
-  const minFirstFrame = Math.max(10, Math.round(fps * 0.35));
+  // Guarantee strictly ascending order with at least 25 frames (~0.85s) separation
+  const minFirstFrame = Math.max(10, Math.round(fps * 0.4));
+  const maxFirstFrame = Math.round(fps * 1.5); // First coined term enters within 1.5s
   const result: number[] = [];
   for (let i = 0; i < rawFrames.length; i++) {
     let f = rawFrames[i];
     if (i === 0) {
-      f = Math.max(minFirstFrame, f);
+      f = Math.min(maxFirstFrame, Math.max(minFirstFrame, f));
     } else {
-      f = Math.max(result[i - 1] + Math.round(fps * 0.8), f);
+      f = Math.max(result[i - 1] + Math.round(fps * 0.85), f);
     }
     f = Math.min(f, Math.max(10, durationFrames - (count - i) * Math.round(fps * 0.55)));
     result.push(f);
@@ -627,8 +629,8 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: 20,
-              maxWidth: isLandscape ? 1050 : "95%",
+              gap: 24,
+              maxWidth: isLandscape ? 820 : "92%",
               margin: "0 auto",
               width: "100%",
             }}
@@ -665,11 +667,12 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    gap: 20,
+                    gap: 24,
+                    width: "100%",
                     // NO BACKGROUND CARD! Pure floating kinetic list items
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 18, flex: 1, minWidth: 0 }}>
                     {/* Glowing Circular Step Ring */}
                     <span
                       style={{
@@ -692,7 +695,7 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                     </span>
 
                     {/* Floating Step Title & Subtext */}
-                    <div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
                       <div
                         style={{
                           fontSize: isLandscape ? 24 : 19,
@@ -729,7 +732,13 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                         color: colorTheme.text,
                         fontFamily: "'JetBrains Mono', monospace",
                         textShadow: `0 0 20px ${colorTheme.glow}, 0 2px 10px rgba(0,0,0,0.9)`,
+                        background: "rgba(0, 0, 0, 0.6)",
+                        padding: "6px 18px",
+                        borderRadius: 14,
+                        border: `1.5px solid ${colorTheme.border}`,
+                        boxShadow: `0 0 15px ${colorTheme.glow}`,
                         flexShrink: 0,
+                        whiteSpace: "nowrap",
                       }}
                     >
                       {item.value}
