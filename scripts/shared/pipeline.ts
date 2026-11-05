@@ -22,6 +22,7 @@ import { GeminiProvider } from "./providers/GeminiProvider";
 import { ClaudeProvider } from "./providers/ClaudeProvider";
 import { ClaudeCLIProvider } from "./providers/ClaudeCLIProvider";
 import { OmniVoiceProvider } from "./providers/OmniVoiceProvider";
+import { OpenAICompatibleProvider } from "./providers/OpenAICompatibleProvider";
 import { CompositeImageProvider } from "./providers/CompositeImageProvider";
 import { TopicAgent } from "./agents/TopicAgent";
 import { ScriptAgent } from "./agents/ScriptAgent";
@@ -95,6 +96,29 @@ function ensureDirs(): void {
 function buildLLM(): LLMProvider {
   if (MODELS.llm === "claude-cli") return new ClaudeCLIProvider();
   if (MODELS.llm === "claude") return new ClaudeProvider(process.env.ANTHROPIC_API_KEY ?? "");
+  if (process.env.GEMINI_API_KEY) {
+    return new GeminiProvider(process.env.GEMINI_API_KEY);
+  }
+  // Fallback to FreeLLMAPI (running on dev server or Docker)
+  const freellmUrl = process.env.FREELLMAPI_URL;
+  const freellmKey = process.env.FREELLMAPI_KEY;
+  if (freellmUrl && freellmKey) {
+    return new OpenAICompatibleProvider({
+      baseUrl: `${freellmUrl.replace(/\/+$/, "")}/v1`,
+      apiKey: freellmKey,
+      model: process.env.TEXT_MODEL_PIN || "auto",
+      name: "freellmapi",
+    });
+  }
+  // Fallback to Groq
+  if (process.env.GROQ_API_KEY) {
+    return new OpenAICompatibleProvider({
+      baseUrl: "https://api.groq.com/openai/v1",
+      apiKey: process.env.GROQ_API_KEY,
+      model: "llama-3.3-70b-versatile",
+      name: "groq",
+    });
+  }
   return new GeminiProvider(process.env.GEMINI_API_KEY ?? "");
 }
 
