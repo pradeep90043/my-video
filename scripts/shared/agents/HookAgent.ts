@@ -1,5 +1,6 @@
 import { LLMProvider } from "../providers/LLMProvider";
 import { VideoScript } from "../types";
+import { normalizeHindiNumbersForTTS } from "../utils/hindiNumberTTS";
 
 /** A single generated hook variant with its scoring axes. */
 export interface HookVariant {
@@ -95,7 +96,8 @@ CTA: ${script.cta}
 
 ## Task
 Generate exactly 10 hook variants — one for each style listed below. Each hook must:
-- Be written in pure Devanagari Hindi (देवनागरी लिपि) — natural conversational Hindi in native script (e.g., "अगर आप आज भी सिर्फ...", "क्या 2025 में कर्सर AI...", "डेली शॉर्ट्स अपलोड करना..."). Technical keywords like AI, React, TypeScript can be in Devanagari transliteration (कर्सर AI, रिएक्ट, टाइपस्क्रिप्ट) or clean acronyms. DO NOT write in Romanized Latin Hinglish — OmniVoice requires native Devanagari Hindi for authentic human voice generation.
+- Be written in pure Devanagari Hindi (देवनागरी लिपि) — natural conversational Hindi in native script (e.g., "अगर आप आज भी सिर्फ...", "क्या दो हज़ार पच्चीस में कर्सर AI...", "डेली शॉर्ट्स अपलोड करना..."). Technical keywords like AI, React, TypeScript can be in Devanagari transliteration (कर्सर AI, रिएक्ट, टाइपस्क्रिप्ट) or clean acronyms. DO NOT write in Romanized Latin Hinglish — OmniVoice requires native Devanagari Hindi for authentic human voice generation.
+- Digit & Number Pronunciation: Any digits, numbers, years, percentages, or metrics in the hook MUST be spelled out phonetically in Devanagari Hindi words (e.g. "दो हज़ार पच्चीस" instead of 2025, "सत्तर परसेंट" instead of 70%, "दो गुना" instead of 2x) for flawless TTS pronunciation.
 - Be MAX 2 sentences
 - Be designed to stop the scroll within 3 seconds — the opening 1-3 words in Devanagari must create a pattern interrupt
 - Feel like spoken dialogue, NOT a written sentence
@@ -175,7 +177,7 @@ export class HookAgent {
         const best = variants[0];
 
         const result: HookResult = {
-          hook: best.hook,
+          hook: normalizeHindiNumbersForTTS(best.hook),
           score: best.compositeScore,
           style: best.style,
           allHooks: variants,
@@ -195,7 +197,7 @@ export class HookAgent {
 
     // Return best available after exhausting retries or fallback
     return bestResult || {
-      hook: script.hook || "क्या आपको पता है 2025 में कोडिंग का तरीका पूरी तरह बदल चुका है?",
+      hook: normalizeHindiNumbersForTTS(script.hook || "क्या आपको पता है दो हज़ार पच्चीस में कोडिंग का तरीका पूरी तरह बदल चुका है?"),
       score: 8.5,
       style: "shocking_stat",
       allHooks: [],

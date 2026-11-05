@@ -61,4 +61,45 @@ export class SubtitleAgent {
     fs.writeFileSync(outputPath, JSON.stringify(timings, null, 2));
     return { jsonPath: outputPath, timings };
   }
+
+  /**
+   * Generates word-level timings from scene subtitles (in English),
+   * distributing words proportionally across each scene's time window.
+   * Ensures that on-screen karaoke subtitles are 100% in English while
+   * syncing with speech during each scene.
+   */
+  generateSceneWordLevel(
+    scenes: Scene[],
+    videoId: string,
+    outputDir?: string,
+  ): { jsonPath: string; timings: WordTiming[] } {
+    const outputPath = outputDir
+      ? path.join(outputDir, "word-level.json")
+      : path.join(PATHS.subtitles, videoId, "word-level.json");
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+
+    const timings: WordTiming[] = [];
+    let currentMs = 0;
+
+    for (const scene of scenes) {
+      const sceneDurationMs = Math.max(1, Math.round((scene.duration || 5) * 1000));
+      const text = (scene.subtitle || scene.text || "").trim();
+      const words = text.split(/\s+/).filter(Boolean);
+
+      if (words.length > 0) {
+        const msPerWord = sceneDurationMs / words.length;
+        for (let i = 0; i < words.length; i++) {
+          timings.push({
+            word: words[i],
+            startMs: Math.round(currentMs + i * msPerWord),
+            endMs: Math.round(currentMs + (i + 1) * msPerWord),
+          });
+        }
+      }
+      currentMs += sceneDurationMs;
+    }
+
+    fs.writeFileSync(outputPath, JSON.stringify(timings, null, 2));
+    return { jsonPath: outputPath, timings };
+  }
 }

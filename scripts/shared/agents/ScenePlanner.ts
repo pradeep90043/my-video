@@ -1,6 +1,7 @@
 import { LLMProvider } from "../providers/LLMProvider";
 import { Scene, VideoScript } from "../types";
 import { IMAGE_STYLE } from "../config";
+import { normalizeHindiNumbersForTTS } from "../utils/hindiNumberTTS";
 
 const SCENE_SCHEMA = {
   type: "object",
@@ -85,9 +86,9 @@ Topic: ${script.topic}
 Create 4-7 scenes. Each scene:
 - id: "scene-1", "scene-2", etc. (sequential)
 - duration: seconds for this scene (must sum to ~${script.durationSecs}s)
-- text: short bold English or Hindi headline displayed on screen
-- voiceText: exact Devanagari Hindi (देवनागरी लिपि) narration for this scene
-- subtitle: Devanagari Hindi or English subtitle shown during voiceover
+- text: short bold ENGLISH ONLY headline displayed on screen (no Hindi on screen)
+- voiceText: exact Devanagari Hindi (देवनागरी लिपि) narration for this scene. All digits/numbers/percentages/years/metrics MUST be spelled out phonetically in Devanagari Hindi words (e.g. "दो हज़ार पच्चीस", "सत्तर परसेंट", "दो गुना") for flawless TTS pronunciation.
+- subtitle: concise ENGLISH ONLY caption displayed on screen during voiceover
 - imagePrompt: detailed cinematic AI image prompt. Style: ${IMAGE_STYLE}
 - animation: one of fade, slide, scale, pop, typing, zoom
 - background: hex color (use #0B0B0B for pure black) or "image" to use generated image
@@ -101,7 +102,12 @@ Scene types:
     const result = await this.llm.generateJSON<{ scenes: Omit<Scene,"imagePath"|"audioPart">[] }>(
       prompt, SCENE_SCHEMA, { temperature: 0.7 },
     );
-    return result.scenes.map((s) => ({ ...s, imagePath: "", audioPart: "" }));
+    return result.scenes.map((s) => ({
+      ...s,
+      voiceText: normalizeHindiNumbersForTTS(s.voiceText || ""),
+      imagePath: "",
+      audioPart: "",
+    }));
   }
 
   private async _planLong(script: VideoScript): Promise<Scene[]> {
@@ -119,20 +125,20 @@ Topic: ${script.topic}
 Create EXACTLY ${sceneCount} scenes. Each scene:
 - id: "scene-1", "scene-2", etc. (sequential)
 - duration: around ${avgDuration} seconds per scene (all scene durations MUST sum exactly to ~${script.durationSecs}s)
-- text: short bold English or Hindi headline displayed on screen
-- voiceText: detailed Devanagari Hindi (देवनागरी लिपि) narration for this scene
-- subtitle: Devanagari Hindi or English subtitle shown during voiceover
+- text: short bold ENGLISH ONLY headline displayed on screen (no Hindi on screen, e.g. "The 2025 Developer Shift", "Cursor AI vs GitHub Copilot")
+- voiceText: detailed Devanagari Hindi (देवनागरी लिपि) narration for this scene. All digits/numbers/percentages/years/metrics MUST be spelled out phonetically in Devanagari Hindi words (e.g. "दो हज़ार पच्चीस", "सत्तर परसेंट", "दस हज़ार") for flawless TTS pronunciation.
+- subtitle: concise ENGLISH ONLY caption displayed on screen during voiceover (1-2 punchy English sentences)
 - imagePrompt: detailed cinematic AI image prompt for 1920x1080 landscape. Style: ${IMAGE_STYLE}
 - animation: one of fade, slide, scale, pop, typing, zoom (vary for retention)
 - background: hex color or "image" to use generated image
 - cameraMove: one of static, zoom-in, zoom-out, pan-left, pan-right, shake (vary for engagement)
-- figure: Live dynamic Remotion figure/diagram to illustrate the script concept:
+- figure: Live dynamic Remotion figure/diagram to illustrate the script concept. ALL TEXT IN FIGURE MUST BE 100% IN ENGLISH:
   - type: one of "comparison", "stats", "roadmap", "metric", "alert", "poll", "code"
-  - title: short bold title of the figure
-  - subtitle: context or units
-  - badge: e.g. "TREND", "BENCHMARK", "CASE STUDY", "ACTION PLAN", "VOTE"
-  - items: array of 2-3 items with { label, value, secondary, color, icon }
-  - highlight: key punchline takeaway
+  - title: short bold ENGLISH title of the figure (e.g. "Productivity Benchmark", "AI Adoption Rate")
+  - subtitle: context or units in ENGLISH (e.g. "Lines of Code per Hour", "Survey of 5,000 Devs")
+  - badge: ENGLISH badge, e.g. "TREND", "BENCHMARK", "CASE STUDY", "ACTION PLAN", "VOTE"
+  - items: array of 2-3 items with { label, value, secondary, color, icon } — ALL LABELS AND VALUES IN ENGLISH (e.g. label: "Cursor AI", value: "2.5x", secondary: "Faster Ship Rate")
+  - highlight: key punchline takeaway in ENGLISH (e.g. "70% increase in sprint velocity")
 
 Scene types to use (mix and vary throughout):
 - intro: Opening hook with shake/zoom-in camera. Pop animation. Dark background.
@@ -152,6 +158,11 @@ Guidelines for long-form retention:
     const result = await this.llm.generateJSON<{ scenes: Omit<Scene,"imagePath"|"audioPart">[] }>(
       prompt, SCENE_SCHEMA, { temperature: 0.8 },
     );
-    return result.scenes.map((s) => ({ ...s, imagePath: "", audioPart: "" }));
+    return result.scenes.map((s) => ({
+      ...s,
+      voiceText: normalizeHindiNumbersForTTS(s.voiceText || ""),
+      imagePath: "",
+      audioPart: "",
+    }));
   }
 }

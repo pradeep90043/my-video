@@ -77,19 +77,20 @@ Write a compelling 30-60 second video script for: "${topic}" (Category: ${catego
 Brand voice:
 - Language: Native Devanagari Hindi (देवनागरी लिपि) for voiceover narration (hook, body, cta).
 - Format: Write exclusively in Hindi using Devanagari script (e.g., "नमस्ते दोस्तों! आज हम बात करेंगे...").
+- Digit & Number Pronunciation: Any digits, numbers, years, percentages, or metrics in voiceover MUST be spelled out phonetically in Devanagari Hindi words (e.g., "दो हज़ार पच्चीस" instead of 2025, "सत्तर परसेंट" instead of 70%, "दो गुना" instead of 2x, "दस हज़ार" instead of 10,000, "पांच लाख" instead of 500k) so the TTS engine pronounces them with 100% natural Indian pronunciation.
 - Technical Terms: Common tech words (like Cursor AI, React, TypeScript, bug, junior dev) should be written in natural Devanagari transliteration (e.g., कर्सर AI, रिएक्ट, टाइपस्क्रिप्ट, कोड, बग्स, जूनियर डेवलपर). DO NOT use Romanized Latin Hinglish for sentences. OmniVoice TTS requires native Devanagari Hindi for authentic human inflection.
 - Tone: Confident, slightly provocative, knowledgeable Indian tech creator
-- Text on screen: English or Devanagari concise headline
+- Text on screen: 100% English ONLY concise headline (no Hindi on screen)
 - Tagline: "Stop Guessing. Start Knowing."
 
 Script structure:
-1. HOOK (0-3s): A shocking statement or question in Devanagari Hindi. Must grab in 3 seconds.
-2. BODY (3-50s): Single best insight with punchy supporting facts in Devanagari Hindi. Max 2 sentences per point.
+1. HOOK (0-3s): A shocking statement or question in Devanagari Hindi (with numbers spelled out). Must grab in 3 seconds.
+2. BODY (3-50s): Single best insight with punchy supporting facts in Devanagari Hindi (with numbers spelled out). Max 2 sentences per point.
 3. CTA (50-60s): Strong call to action in Devanagari Hindi — comment, follow, share.${linkedVideoUrl ? ' Must include "पूरा वीडियो देखने के लिए डिस्क्रिप्शन में लिंक चेक करें 👇".' : ""}
 
 Rules:
-- hook: Devanagari Hindi (देवनागरी), spoken naturally, 1-2 sentences max
-- body: Devanagari Hindi (देवनागरी), mix of facts and narrative
+- hook: Devanagari Hindi (देवनागरी), spoken naturally, 1-2 sentences max, numbers in Hindi words
+- body: Devanagari Hindi (देवनागरी), mix of facts and narrative, numbers in Hindi words
 - cta: Devanagari Hindi (देवनागरी), direct, creates engagement
 - durationSecs: between ${VIDEO.minDurationSecs} and ${VIDEO.maxDurationSecs}
 - topic: verbatim
@@ -118,24 +119,25 @@ Write a compelling ${Math.round(d / 60)}-minute (${d} second) long-form video sc
 Brand voice:
 - Language: Native Devanagari Hindi (देवनागरी लिपि) for all voiceText narration.
 - Format: Write exclusively in Hindi using Devanagari script (e.g., "नमस्ते दोस्तों! आज हम बात करेंगे...").
+- Digit & Number Pronunciation: Any digits, numbers, years, percentages, or metrics in voiceText MUST be spelled out phonetically in Devanagari Hindi words (e.g., "दो हज़ार पच्चीस" instead of 2025, "सत्तर परसेंट" instead of 70%, "दो गुना" instead of 2x, "दस हज़ार" instead of 10,000, "पांच लाख" instead of 500k) so the TTS engine pronounces them with 100% natural Indian pronunciation.
 - Technical Terms: Common tech words (like Cursor AI, React, TypeScript, bugs, production, junior dev) should be written in natural Devanagari transliteration or clear context (e.g., कर्सर AI, रिएक्ट, टाइपस्क्रिप्ट, कोड, बग्स, प्रोडक्शन, डेवलपर). DO NOT use Romanized Latin Hinglish for sentences. OmniVoice TTS requires native Devanagari Hindi for authentic human inflection.
 - Tone: Confident, slightly provocative, knowledgeable Indian tech creator — like a smart senior dev explaining to juniors
-- Text on screen (screenText): English only or Devanagari, concise bullet or headline per section
+- Text on screen (screenText): 100% English ONLY, concise bullet or headline per section (no Hindi on screen)
 - Tagline: "Stop Guessing. Start Knowing."
 
 Generate EXACTLY 6 sections in this order:
-1. id: "intro"       | label: "Introduction"        | timestamp: "0:00"  | durationSecs: ${dIntro}  — Why this matters, context, hook the viewer in Devanagari Hindi (~${Math.round(dIntro * 2.5)} words)
-2. id: "problem"     | label: "The Problem"          | timestamp: "0:${dIntro.toString().padStart(2, "0")}"  | durationSecs: ${dProblem} — The core problem explained with real data/stats in Devanagari Hindi (~${Math.round(dProblem * 2.5)} words)
-3. id: "deepdive1"   | label: "Deep Dive Part 1"     | timestamp: "..."  | durationSecs: ${dDeep1} — Deep dive point 1 with surprising stats/examples in Devanagari Hindi (~${Math.round(dDeep1 * 2.5)} words)
-4. id: "deepdive2"   | label: "Deep Dive Part 2"     | timestamp: "..."  | durationSecs: ${dDeep2} — Deep dive point 2 with story-telling angle in Devanagari Hindi (~${Math.round(dDeep2 * 2.5)} words)
-5. id: "solution"    | label: "What To Do Instead"   | timestamp: "..."  | durationSecs: ${dSolution}  — Actionable steps, what developers should actually do in Devanagari Hindi (~${Math.round(dSolution * 2.5)} words)
+1. id: "intro"       | label: "Introduction"        | timestamp: "0:00"  | durationSecs: ${dIntro}  — Why this matters, context, hook the viewer in Devanagari Hindi with numbers spelled out (~${Math.round(dIntro * 2.5)} words)
+2. id: "problem"     | label: "The Problem"          | timestamp: "0:${dIntro.toString().padStart(2, "0")}"  | durationSecs: ${dProblem} — The core problem explained with real data/stats in Devanagari Hindi with numbers spelled out (~${Math.round(dProblem * 2.5)} words)
+3. id: "deepdive1"   | label: "Deep Dive Part 1"     | timestamp: "..."  | durationSecs: ${dDeep1} — Deep dive point 1 with surprising stats/examples in Devanagari Hindi with numbers spelled out (~${Math.round(dDeep1 * 2.5)} words)
+4. id: "deepdive2"   | label: "Deep Dive Part 2"     | timestamp: "..."  | durationSecs: ${dDeep2} — Deep dive point 2 with story-telling angle in Devanagari Hindi with numbers spelled out (~${Math.round(dDeep2 * 2.5)} words)
+5. id: "solution"    | label: "What To Do Instead"   | timestamp: "..."  | durationSecs: ${dSolution}  — Actionable steps, what developers should actually do in Devanagari Hindi with numbers spelled out (~${Math.round(dSolution * 2.5)} words)
 6. id: "cta"         | label: "Final Thoughts"       | timestamp: "..."  | durationSecs: ${dCta}  — Specific thought-provoking comment prompt question + subscribe ask in Devanagari Hindi (~${Math.round(dCta * 2.5)} words)
 
 Rules:
-- voiceText: Pure Devanagari Hindi (देवनागरी लिपि), spoken naturally as if talking to a friend
+- voiceText: Pure Devanagari Hindi (देवनागरी लिपि), spoken naturally as if talking to a friend, all numbers spelled out phonetically
 - TOTAL SPOKEN WORDS BUDGET: Target around ${targetWordBudget} words total across all 6 sections combined (~${sectionBudget} words per section). Keep the narration concise and tightly paced so speech matches the ${d}-second duration.
-- screenText: English only, concise bullet or headline per section
-- hook: Leave as a single impactful opening statement in Devanagari Hindi (the hook that plays before intro)
+- screenText: 100% English ONLY, concise bullet or headline per section
+- hook: Leave as a single impactful opening statement in Devanagari Hindi (with numbers spelled out)
 - body: Will be auto-generated as concatenation of all sections — do NOT include separately
 - cta: Must be identical to sections[5].voiceText in Devanagari Hindi
 - durationSecs: ${d}
@@ -167,6 +169,26 @@ Rules:
     // Build body as concatenation of all section voiceTexts
     const body = safeSections.map((s) => `[${s.label || "Scene"} ${s.timestamp || "0:00"}]\n${s.voiceText || ""}`).join("\n\n");
 
+    let secElapsed = 0;
+    const mappedSections = safeSections.map((s) => {
+      const startSec = secElapsed;
+      const endSec = startSec + (s.durationSecs || 0);
+      secElapsed = endSec;
+      const fmt = (sec: number) => {
+        const m = Math.floor(sec / 60);
+        const secRem = Math.floor(sec % 60);
+        return `${String(m).padStart(2, "0")}:${String(secRem).padStart(2, "0")}`;
+      };
+      return {
+        id: s.id || "section",
+        label: s.label || "Section",
+        startTime: fmt(startSec),
+        endTime: fmt(endSec),
+        durationSecs: s.durationSecs || 0,
+        voiceText: s.voiceText || "",
+      };
+    });
+
     // cta mirrors the last section (index 5)
     const ctaSection = safeSections[5] ?? safeSections[safeSections.length - 1];
     const cta = ctaSection?.voiceText ?? raw?.cta ?? "कमेंट्स में अपनी राय जरूर बताएं और चैनल को सब्सक्राइब करें!";
@@ -180,6 +202,7 @@ Rules:
       topic: raw?.topic || topic,
       category: raw?.category || category,
       mode: "long" as const,
+      sections: mappedSections,
     };
   }
 }

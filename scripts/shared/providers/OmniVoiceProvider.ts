@@ -19,6 +19,7 @@ import * as path from "path";
 import { execSync } from "child_process";
 import { VoiceProvider } from "./LLMProvider";
 import { runOmniVoiceOnKaggle } from "./KaggleOmniVoiceRunner";
+import { normalizeHindiNumbersForTTS } from "../utils/hindiNumberTTS";
 
 /** Send a critical Telegram alert when OmniVoice is unreachable */
 async function alertTelegram(message: string): Promise<void> {
@@ -111,6 +112,7 @@ export class OmniVoiceProvider implements VoiceProvider {
     text: string,
     outputPath: string,
   ): Promise<{ path: string; durationSecs: number }> {
+    text = normalizeHindiNumbersForTTS(text);
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
     // Mock mode for fast preview testing when specified

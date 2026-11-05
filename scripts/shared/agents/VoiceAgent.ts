@@ -2,6 +2,7 @@ import * as path from "path";
 import { VoiceProvider } from "../providers/LLMProvider";
 import { VideoScript } from "../types";
 import { PATHS } from "../config";
+import { normalizeHindiNumbersForTTS } from "../utils/hindiNumberTTS";
 
 export class VoiceAgent {
   constructor(private provider: VoiceProvider) {}
@@ -18,7 +19,8 @@ export class VoiceAgent {
     videoId: string,
     outputDir?: string,
   ): Promise<{ path: string; durationSecs: number; narration: string }> {
-    const narration = this.buildNarration(script);
+    const rawNarration = this.buildNarration(script);
+    const narration = normalizeHindiNumbersForTTS(rawNarration);
     const outputPath = outputDir
       ? path.join(outputDir, "voiceover.mp3")
       : path.join(PATHS.audio, videoId, "voiceover.mp3");

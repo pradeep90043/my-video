@@ -106,8 +106,8 @@ export type FactoryVideoProps = z.infer<typeof factoryVideoSchema>;
 
 // ── Design Tokens ──────────────────────────────────────────────────────────────
 
-const FONT_DEVANAGARI =
-  '"Noto Sans Devanagari", "Devanagari Sangam MN", "Kohinoor Devanagari", "Inter", -apple-system, system-ui, sans-serif';
+const FONT_PRIMARY =
+  '"Inter", "Noto Sans Devanagari", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
 
 const COLORS = {
   bg: "#0B0B0B",
@@ -137,7 +137,7 @@ const KaraokeSubtitles: React.FC<{
     return (
       <div
         style={{
-          fontFamily: FONT_DEVANAGARI,
+          fontFamily: FONT_PRIMARY,
           fontSize: isLandscape ? 40 : 34,
           fontWeight: 800,
           color: COLORS.text,
@@ -182,7 +182,7 @@ const KaraokeSubtitles: React.FC<{
           <span
             key={`${item.word}-${item.startMs}`}
             style={{
-              fontFamily: FONT_DEVANAGARI,
+              fontFamily: FONT_PRIMARY,
               fontSize: isLandscape ? (isCurrent ? 44 : 38) : (isCurrent ? 38 : 32),
               fontWeight: 900,
               letterSpacing: "0.02em",
@@ -378,7 +378,7 @@ const FactoryScene: React.FC<{
         {/* Scene Title / Hook Punchline */}
         <div
           style={{
-            fontFamily: FONT_DEVANAGARI,
+            fontFamily: FONT_PRIMARY,
             fontSize: titleSize,
             fontWeight: 800,
             color: COLORS.text,

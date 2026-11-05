@@ -13,13 +13,6 @@ const METADATA_SCHEMA = {
   required: ["title","description","tags","hashtags","filename","slug"],
 };
 
-const LONG_VIDEO_CHAPTER_TIMESTAMPS = `00:00 Introduction
-00:30 The Problem
-02:30 Why This Happens
-05:00 Deep Dive
-07:30 What To Do Instead
-09:00 Final Thoughts`;
-
 export class MetadataAgent {
   constructor(private llm: LLMProvider) {}
 
@@ -51,21 +44,21 @@ export class MetadataAgent {
 
     const buildPrompt = (titleConstraintNote: string) => `You are the SEO & metadata expert for CodeOrCap — a viral Indian developer YouTube channel.
 
-Generate complete video metadata for:
+Generate complete video metadata in 100% ENGLISH ONLY for:
 Topic: ${script.topic}
 Category: ${script.category}
 Hook: ${script.hook}
-Mode: ${isLong ? "Long-form (10-minute video)" : "Short-form (YouTube Shorts)"}
+Mode: ${isLong ? `Long-form (${Math.round((script.durationSecs || 600) / 60)}-minute video)` : "Short-form (YouTube Shorts)"}
 Channel: ${BRAND.name} | ${BRAND.handle}
 
 ${titleConstraintNote}
 
-Generate:
-- title: YouTube title. English. SEO-optimised. HARD LIMIT: 55 characters MAX (count carefully!). Curiosity-driving. Primary keyword MUST appear in the first 3 words.
-- description: YouTube description ~150 words. Hook first (first line ≤ 125 chars). Keywords natural. Ends with: "Subscribe to ${BRAND.name} → ${BRAND.handle} | ${BRAND.tagline}"
-- tags: 15 SEO tags (English) — mix broad and niche developer keywords
-- hashtags: 9 hashtags — mix Hindi tech + English dev tags (#CodeOrCap #TechMythBuster #ReactJS)
-- filename: kebab-case without extension (e.g. "mern-stack-outdated-2025")
+Generate (ALL FIELDS MUST BE 100% IN ENGLISH, NO HINDI TEXT):
+- title: YouTube title. 100% ENGLISH ONLY. SEO-optimised. HARD LIMIT: 55 characters MAX (count carefully!). Curiosity-driving. Primary keyword MUST appear in the first 3 words.
+- description: YouTube description ~150 words in 100% ENGLISH ONLY. Hook first (first line ≤ 125 chars). Keywords natural. Ends with: "Subscribe to ${BRAND.name} → ${BRAND.handle} | ${BRAND.tagline}"
+- tags: 15 SEO tags in 100% ENGLISH ONLY — mix broad and niche developer keywords
+- hashtags: 9 hashtags in ENGLISH ONLY (#CodeOrCap #WebDev #ReactJS #CursorAI #SoftwareEngineering #TechNews)
+- filename: kebab-case without extension in English (e.g. "mern-stack-outdated-2025")
 - slug: same as filename`;
 
     let result = await this.llm.generateJSON<VideoMetadata>(
@@ -133,7 +126,32 @@ Generate:
 
     // --- Chapter timestamps for long-form videos ---
     if (isLong) {
-      result.description = `${result.description}\n\n⏱️ Chapters:\n${LONG_VIDEO_CHAPTER_TIMESTAMPS}`;
+      let chapterLines = "";
+      if (script.sections && script.sections.length > 0) {
+        chapterLines = script.sections
+          .map((s) => {
+            const ts = s.startTime?.includes(":") ? s.startTime.padStart(5, "0") : "00:00";
+            return `${ts} ${s.label}`;
+          })
+          .join("\n");
+      }
+      if (!chapterLines) {
+        const dur = script.durationSecs || 600;
+        const fmt = (sec: number) => {
+          const m = Math.floor(sec / 60);
+          const s = Math.floor(sec % 60);
+          return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+        };
+        chapterLines = [
+          `00:00 Introduction`,
+          `${fmt(Math.round(dur * 0.1))} The Problem`,
+          `${fmt(Math.round(dur * 0.32))} Why This Happens`,
+          `${fmt(Math.round(dur * 0.57))} Deep Dive`,
+          `${fmt(Math.round(dur * 0.82))} What To Do Instead`,
+          `${fmt(Math.round(dur * 0.92))} Final Thoughts`,
+        ].join("\n");
+      }
+      result.description = `${result.description}\n\n⏱️ Chapters:\n${chapterLines}`;
     }
 
     return result;

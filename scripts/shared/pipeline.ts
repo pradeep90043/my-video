@@ -355,16 +355,15 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
     narration = [script.hook, script.body, script.cta].join(" ").trim();
     onLog("Voice skipped");
   }
+  onLog(`Voiceover text (${narration.length} chars): ${narration.slice(0, 50)}...`);
 
   // ── 9. Subtitles ────────────────────────────────────────────────────────────
   onStep(9, TOTAL, "Generating subtitles");
   const { srtPath: subtitlePath } = subtitleAgent.generate(scenes, videoId, videoFolder);
-  let wordTimings: WordTiming[] = [];
-  if (narration) {
-    const wl = subtitleAgent.generateWordLevel(narration, voiceDuration, videoId, videoFolder);
-    wordTimings = wl.timings;
-  }
-  onStepDone(`${wordTimings.length} word timings`);
+  // Generate English word timings from English scene subtitles so on-screen karaoke is 100% English
+  const wl = subtitleAgent.generateSceneWordLevel(scenes, videoId, videoFolder);
+  const wordTimings: WordTiming[] = wl.timings;
+  onStepDone(`${wordTimings.length} English word timings`);
 
   // ── 10. Metadata ────────────────────────────────────────────────────────────
   onStep(10, TOTAL, "Finalising metadata");
