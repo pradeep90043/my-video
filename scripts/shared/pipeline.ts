@@ -354,16 +354,44 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
   let voiceDuration = script.durationSecs;
   let narration = "";
   if (!skipVoice && voiceAgent) {
-    const voice = await voiceAgent.generate(script, videoId, videoFolder);
+    const voice = await voiceAgent.generate(script, videoId, videoFolder, scenes);
     voicePath = voice.path;
     voiceDuration = voice.durationSecs;
     narration = voice.narration;
     onStepDone(`${voiceDuration.toFixed(1)}s voiceover`);
   } else {
-    narration = [script.hook, script.body, script.cta].join(" ").trim();
+    narration = voiceAgent
+      ? voiceAgent.buildNarration(script, scenes)
+      : [script.hook, script.body, script.cta].join(" ").trim();
     onLog("Voice skipped");
   }
   onLog(`Voiceover text (${narration.length} chars): ${narration.slice(0, 50)}...`);
+
+  // ── Synchronize Scene Durations to Match Spoken Audio ───────────────────────
+  // When narration is generated, each scene's duration MUST match its spoken words
+  // so scene transitions land precisely when the speaker moves to the next topic.
+  if (voiceDuration > 0 && scenes.length > 0) {
+    const sceneWordCounts = scenes.map((s) => {
+      const text = (s.voiceText || s.subtitle || s.text || "").replace(/\[[^\]]+\]/g, "").trim();
+      return Math.max(1, text.split(/\s+/).filter(Boolean).length);
+    });
+    const totalWords = sceneWordCounts.reduce((a, b) => a + b, 0);
+
+    let runningSec = 0;
+    scenes.forEach((s, idx) => {
+      if (idx === scenes.length - 1) {
+        // Last scene takes the remaining duration so the sum equals voiceDuration exactly
+        s.duration = Math.max(2, Math.round((voiceDuration - runningSec) * 10) / 10);
+      } else {
+        const share = sceneWordCounts[idx] / totalWords;
+        s.duration = Math.max(2, Math.round(share * voiceDuration * 10) / 10);
+        runningSec += s.duration;
+      }
+    });
+
+    const syncedTotal = scenes.reduce((sum, s) => sum + s.duration, 0);
+    onLog(`  ✓ Synchronized ${scenes.length} scene durations to match ${voiceDuration.toFixed(1)}s voiceover (sum: ${syncedTotal.toFixed(1)}s)`);
+  }
 
   // ── 9. Subtitles ────────────────────────────────────────────────────────────
   onStep(9, TOTAL, "Generating subtitles");
@@ -395,10 +423,16 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
   onStep(12, TOTAL, "Assembling video JSON");
   const isLong = publishMode === "day1-long";
   const sceneDurationTotal = scenes.reduce((acc, s) => acc + (s.duration || 0), 0);
-  const fallbackDuration = targetDuration ?? (isLong ? 600 : 30);
-  const effectiveDuration = targetDuration
-    ? Math.max(voiceDuration, sceneDurationTotal, targetDuration)
-    : Math.max(voiceDuration, sceneDurationTotal, fallbackDuration);
+  // Video duration MUST equal voiceover duration to eliminate trailing dead silence
+  const effectiveDuration = voiceDuration > 0 ? voiceDuration : sceneDurationTotal;
+
+  // ── Audio-Video Sync Verification ───────────────────────────────────────────
+  const durationDrift = Math.abs(sceneDurationTotal - effectiveDuration);
+  if (durationDrift > 0.5) {
+    onWarn(`  ⚠️ Audio-Video sync drift: scenes=${sceneDurationTotal.toFixed(1)}s, voice=${effectiveDuration.toFixed(1)}s`);
+  } else {
+    onLog(`  ✓ Audio-Video sync verified: ${scenes.length} scenes perfectly aligned with ${effectiveDuration.toFixed(1)}s audio`);
+  }
 
   const videoJSON: FactoryVideoJSON = {
     id: videoId,

@@ -113,20 +113,30 @@ Scene types:
   private async _planLong(script: VideoScript): Promise<Scene[]> {
     const sceneCount = Math.max(4, Math.min(30, Math.round(script.durationSecs / 20)));
     const avgDuration = Math.round(script.durationSecs / sceneCount);
+    const sectionsContext =
+      script.sections && script.sections.length > 0
+        ? script.sections
+            .map(
+              (s, i) =>
+                `Scene ${i + 1} (${s.label || `Section ${i + 1}`}):\nSpoken Narration: ${s.voiceText}\n`,
+            )
+            .join("\n")
+        : `HOOK: ${script.hook}\nBODY: ${script.body}\nCTA: ${script.cta}`;
+
     const prompt = `You are a video director for a long-form YouTube channel (${script.durationSecs} second video).
 
 Convert this script into a scene-by-scene plan for a ${script.durationSecs}s landscape video (1920x1080).
 
-HOOK: ${script.hook}
-BODY: ${script.body}
-CTA: ${script.cta}
 Topic: ${script.topic}
+
+SECTIONS & NARRATION:
+${sectionsContext}
 
 Create EXACTLY ${sceneCount} scenes. Each scene:
 - id: "scene-1", "scene-2", etc. (sequential)
 - duration: around ${avgDuration} seconds per scene (all scene durations MUST sum exactly to ~${script.durationSecs}s)
 - text: short bold ENGLISH ONLY headline displayed on screen (no Hindi on screen, e.g. "The 2025 Developer Shift", "Cursor AI vs GitHub Copilot")
-- voiceText: detailed Devanagari Hindi (देवनागरी लिपि) narration for this scene. All digits/numbers/percentages/years/metrics MUST be spelled out phonetically in Devanagari Hindi words (e.g. "दो हज़ार पच्चीस", "सत्तर परसेंट", "दस हज़ार") for flawless TTS pronunciation.
+- voiceText: exact Devanagari Hindi (देवनागरी लिपि) narration for this scene. Match the corresponding section narration text above verbatim. All digits/numbers/percentages/years/metrics MUST be spelled out phonetically in Devanagari Hindi words for flawless TTS pronunciation.
 - subtitle: concise ENGLISH ONLY caption displayed on screen during voiceover (1-2 punchy English sentences)
 - imagePrompt: detailed cinematic AI image prompt for 1920x1080 landscape. Style: ${IMAGE_STYLE}
 - animation: one of fade, slide, scale, pop, typing, zoom (vary for retention)

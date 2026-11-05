@@ -134,11 +134,11 @@ Generate EXACTLY 6 sections in this order:
 6. id: "cta"         | label: "Final Thoughts"       | timestamp: "..."  | durationSecs: ${dCta}  — Specific thought-provoking comment prompt question + subscribe ask in Devanagari Hindi (~${Math.round(dCta * 2.5)} words)
 
 Rules:
-- voiceText: Pure Devanagari Hindi (देवनागरी लिपि), spoken naturally as if talking to a friend, all numbers spelled out phonetically
-- TOTAL SPOKEN WORDS BUDGET: Target around ${targetWordBudget} words total across all 6 sections combined (~${sectionBudget} words per section). Keep the narration concise and tightly paced so speech matches the ${d}-second duration.
+- voiceText: Pure Devanagari Hindi (देवनागरी लिपि), spoken naturally as if talking to a friend, all numbers spelled out phonetically.
+- MINIMUM SPOKEN WORDS REQUIREMENT: To fill the ${d}-second duration naturally, each section MUST contain at least ${Math.round(sectionBudget * 0.9)} to ${Math.round(sectionBudget * 1.15)} spoken Hindi words (totaling ~${targetWordBudget} words across all 6 sections). Do NOT write brief 1-2 sentence summaries; provide deep, engaging technical insights, context, and developer dialogue so the speech naturally spans the full ${d} seconds.
 - screenText: 100% English ONLY, concise bullet or headline per section
 - hook: Leave as a single impactful opening statement in Devanagari Hindi (with numbers spelled out)
-- body: Will be auto-generated as concatenation of all sections — do NOT include separately
+- body: Pure narration text of sections joined by newlines (NO section labels or timestamps in body text)
 - cta: Must be identical to sections[5].voiceText in Devanagari Hindi
 - durationSecs: ${d}
 - topic: verbatim
@@ -166,8 +166,8 @@ Rules:
     });
 
     const safeSections = Array.isArray(raw?.sections) ? raw.sections : [];
-    // Build body as concatenation of all section voiceTexts
-    const body = safeSections.map((s) => `[${s.label || "Scene"} ${s.timestamp || "0:00"}]\n${s.voiceText || ""}`).join("\n\n");
+    // Build body as pure narration of all section voiceTexts (no bracketed timestamps or labels that TTS could pronounce)
+    const body = safeSections.map((s) => (s.voiceText || "").trim()).filter(Boolean).join("\n\n");
 
     let secElapsed = 0;
     const mappedSections = safeSections.map((s) => {
