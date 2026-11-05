@@ -76,15 +76,18 @@ function computeScore(criteria: QAResult["criteria"]): number {
 
 function buildPrompt(script: VideoScript, mode: "short" | "long" = "short"): string {
   const isLong = mode === "long";
+  const durationSecs = script.durationSecs || (isLong ? 600 : 45);
+  const durationLabel = `${Math.round(durationSecs / 60)}-minute (${durationSecs}s)`;
   const pacingRule = isLong
-    ? "2. pacingCheck (weight 20%): For long-form (10-min content), evaluate narrative progression across the 6 sections (intro, problem, deep dives, solution, cta). Does it avoid monotonous monologue walls and maintain viewer engagement with frequent conceptual hooks, rhetorical questions, and story beats? Score high if well-structured and engaging."
+    ? `2. pacingCheck (weight 20%): For long-form (${durationLabel} content), evaluate narrative progression across the 6 sections (intro, problem, deep dives, solution, cta). Does it fit the ${durationLabel} duration appropriately, avoid monotonous monologue walls, and maintain viewer engagement with frequent conceptual hooks, rhetorical questions, and story beats? Score high if well-structured and engaging for a ${durationLabel} video.`
     : "2. pacingCheck (weight 20%): For shorts (30-60s), is each spoken body point punchy (≤ 12 seconds) without trailing sentences or filler words?";
 
-  return `You are a strict ${isLong ? "long-form (10-minute) YouTube" : "YouTube Shorts"} script QA evaluator for CodeOrCap — an Indian developer channel.
+  return `You are a strict ${isLong ? `long-form (${durationLabel}) YouTube` : "YouTube Shorts"} script QA evaluator for CodeOrCap — an Indian developer channel.
 
-## Script to evaluate (${isLong ? "10-Minute Long Form Video" : "YouTube Shorts"})
+## Script to evaluate (${isLong ? `${durationLabel} Long Form Video` : "YouTube Shorts"})
 Topic: ${script.topic}
 Category: ${script.category}
+Target Duration: ${durationSecs} seconds (${Math.round(durationSecs / 60)} minutes)
 
 HOOK:
 ${script.hook}

@@ -221,11 +221,12 @@ const FactoryScene: React.FC<{
   isLandscape: boolean;
   sceneWords: WordTiming[];
   sceneStartMs: number;
-}> = ({ scene, fps, isLandscape, sceneWords, sceneStartMs }) => {
+  sceneDurationFrames: number;
+}> = ({ scene, fps, isLandscape, sceneWords, sceneStartMs, sceneDurationFrames }) => {
   const frame = useCurrentFrame();
-  const { width, durationInFrames } = useVideoConfig();
+  const { width } = useVideoConfig();
 
-  const sceneOpacity = useSceneTransition(durationInFrames, 6);
+  const sceneOpacity = useSceneTransition(sceneDurationFrames, 6);
   const localMs = (frame / fps) * 1000;
   const currentGlobalMs = sceneStartMs + localMs;
 
@@ -300,7 +301,7 @@ const FactoryScene: React.FC<{
   const textPaddingH = isLandscape ? 140 : 40;
   const textBottom = isLandscape ? 70 : 180;
 
-  const progress = frame / durationInFrames;
+  const progress = frame / sceneDurationFrames;
   const progressWidth = width * progress;
 
   return (
@@ -354,6 +355,9 @@ const FactoryScene: React.FC<{
           figure={scene.figure}
           fps={fps}
           isLandscape={isLandscape}
+          sceneWords={sceneWords}
+          sceneStartMs={sceneStartMs}
+          sceneDurationFrames={sceneDurationFrames}
         />
       )}
 
@@ -493,6 +497,7 @@ export const FactoryVideo: React.FC<FactoryVideoProps> = ({
             isLandscape={isLandscape}
             sceneWords={sceneWords}
             sceneStartMs={sceneStartMs}
+            sceneDurationFrames={durationFrames}
           />
         </Sequence>
       ))}

@@ -28,14 +28,14 @@ export const VIDEO = {
   minDurationSecs: 30,
   maxDurationSecs: 60,
   defaultDurationSecs: 45,
-  // Long-form (10-min videos) — landscape
+  // Long-form (10-min videos in prod, 2-min in dev/test) — landscape
   longForm: {
     width: 1920,
     height: 1080,
     fps: 30,
-    minDurationSecs: 540,   // 9 min
-    maxDurationSecs: 660,   // 11 min
-    defaultDurationSecs: 600, // 10 min
+    minDurationSecs: process.env.BOT_ENV === "dev" ? 60 : 540,   // 1 min in dev, 9 min in prod
+    maxDurationSecs: process.env.BOT_ENV === "dev" ? 180 : 660,  // 3 min in dev, 11 min in prod
+    defaultDurationSecs: Number(process.env.LONG_TARGET_SEC) || (process.env.BOT_ENV === "dev" ? 120 : 600), // 2 min test in dev
   },
 } as const;
 

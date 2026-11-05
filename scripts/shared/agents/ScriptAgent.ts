@@ -54,7 +54,9 @@ export class ScriptAgent {
     targetDurationSecs?: number,
   ): Promise<VideoScript> {
     if (mode === "long") {
-      return this.generateLong(topic, category, targetDurationSecs ?? 600);
+      const defaultDuration =
+        Number(process.env.LONG_TARGET_SEC) || (process.env.BOT_ENV === "dev" ? 120 : 600);
+      return this.generateLong(topic, category, targetDurationSecs ?? defaultDuration);
     }
     return this.generateShort(topic, category, linkedVideoUrl);
   }
@@ -105,6 +107,10 @@ Rules:
     const dSolution = Math.max(10, Math.round(d * 0.10));
     const dCta = Math.max(10, d - (dIntro + dProblem + dDeep1 + dDeep2 + dSolution));
 
+    // Speaking rate for OmniVoice Hindi is ~2.5 words/second (~150 words/min)
+    const targetWordBudget = Math.round(d * 2.5);
+    const sectionBudget = Math.round(targetWordBudget / 6);
+
     const prompt = `You are the content writer for CodeOrCap — a viral Indian developer YouTube channel.
 
 Write a compelling ${Math.round(d / 60)}-minute (${d} second) long-form video script for: "${topic}" (Category: ${category})
@@ -118,15 +124,16 @@ Brand voice:
 - Tagline: "Stop Guessing. Start Knowing."
 
 Generate EXACTLY 6 sections in this order:
-1. id: "intro"       | label: "Introduction"        | timestamp: "0:00"  | durationSecs: ${dIntro}  — Why this matters, context, hook the viewer in Devanagari Hindi
-2. id: "problem"     | label: "The Problem"          | timestamp: "0:${dIntro.toString().padStart(2, "0")}"  | durationSecs: ${dProblem} — The core problem explained with real data/stats in Devanagari Hindi
-3. id: "deepdive1"   | label: "Deep Dive Part 1"     | timestamp: "..."  | durationSecs: ${dDeep1} — Deep dive point 1 with surprising stats/examples in Devanagari Hindi
-4. id: "deepdive2"   | label: "Deep Dive Part 2"     | timestamp: "..."  | durationSecs: ${dDeep2} — Deep dive point 2 with story-telling angle in Devanagari Hindi
-5. id: "solution"    | label: "What To Do Instead"   | timestamp: "..."  | durationSecs: ${dSolution}  — Actionable steps, what developers should actually do in Devanagari Hindi
-6. id: "cta"         | label: "Final Thoughts"       | timestamp: "..."  | durationSecs: ${dCta}  — Specific thought-provoking comment prompt question + subscribe ask in Devanagari Hindi
+1. id: "intro"       | label: "Introduction"        | timestamp: "0:00"  | durationSecs: ${dIntro}  — Why this matters, context, hook the viewer in Devanagari Hindi (~${Math.round(dIntro * 2.5)} words)
+2. id: "problem"     | label: "The Problem"          | timestamp: "0:${dIntro.toString().padStart(2, "0")}"  | durationSecs: ${dProblem} — The core problem explained with real data/stats in Devanagari Hindi (~${Math.round(dProblem * 2.5)} words)
+3. id: "deepdive1"   | label: "Deep Dive Part 1"     | timestamp: "..."  | durationSecs: ${dDeep1} — Deep dive point 1 with surprising stats/examples in Devanagari Hindi (~${Math.round(dDeep1 * 2.5)} words)
+4. id: "deepdive2"   | label: "Deep Dive Part 2"     | timestamp: "..."  | durationSecs: ${dDeep2} — Deep dive point 2 with story-telling angle in Devanagari Hindi (~${Math.round(dDeep2 * 2.5)} words)
+5. id: "solution"    | label: "What To Do Instead"   | timestamp: "..."  | durationSecs: ${dSolution}  — Actionable steps, what developers should actually do in Devanagari Hindi (~${Math.round(dSolution * 2.5)} words)
+6. id: "cta"         | label: "Final Thoughts"       | timestamp: "..."  | durationSecs: ${dCta}  — Specific thought-provoking comment prompt question + subscribe ask in Devanagari Hindi (~${Math.round(dCta * 2.5)} words)
 
 Rules:
 - voiceText: Pure Devanagari Hindi (देवनागरी लिपि), spoken naturally as if talking to a friend
+- TOTAL SPOKEN WORDS BUDGET: Target around ${targetWordBudget} words total across all 6 sections combined (~${sectionBudget} words per section). Keep the narration concise and tightly paced so speech matches the ${d}-second duration.
 - screenText: English only, concise bullet or headline per section
 - hook: Leave as a single impactful opening statement in Devanagari Hindi (the hook that plays before intro)
 - body: Will be auto-generated as concatenation of all sections — do NOT include separately
@@ -134,7 +141,7 @@ Rules:
 - durationSecs: ${d}
 - topic: verbatim
 - category: verbatim
-- Make each section substantial — pacing matched for a ${d}-second video`;
+- Make each section substantial — pacing strictly matched for a ${d}-second video`;
 
     interface LongScriptRaw {
       hook: string;
