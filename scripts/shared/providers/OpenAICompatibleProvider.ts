@@ -20,27 +20,59 @@ export class OpenAICompatibleProvider implements LLMProvider {
     this.model = opts.model;
   }
 
-  async generate(prompt: string, options: LLMOptions = {}): Promise<string> {
+  private async fetchWithRetry(body: Record<string, unknown>, maxRetries = 3): Promise<Response> {
     const url = `${this.baseUrl}/chat/completions`;
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${this.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: this.model,
-        messages: [{ role: "user", content: prompt }],
-        temperature: options.temperature ?? 0.7,
-        max_tokens: options.maxTokens ?? 4096,
-      }),
-    });
+    let delayMs = 1500;
+    let currentModel = (body.model as string) || this.model;
 
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(`OpenAICompatible [${this.name}] error ${res.status}: ${err}`);
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      const payload = { ...body, model: currentModel };
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.apiKey}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) return res;
+
+        // On 502 (upstream provider error), 503 (high demand), or 429 (rate limit)
+        if ((res.status === 502 || res.status === 503 || res.status === 429) && attempt < maxRetries) {
+          // If a specific model was pinned, switch to "auto" so FreeLLMAPI routes across healthy providers
+          if (currentModel !== "auto") {
+            console.warn(`    [${this.name}] Model "${currentModel}" busy (HTTP ${res.status}). Switching to "auto"...`);
+            currentModel = "auto";
+          }
+          console.warn(`    [${this.name}] HTTP ${res.status} encountered, retrying in ${delayMs}ms (attempt ${attempt + 1}/${maxRetries})...`);
+          await new Promise((r) => setTimeout(r, delayMs));
+          delayMs *= 2;
+          continue;
+        }
+
+        const errText = await res.text();
+        throw new Error(`OpenAICompatible [${this.name}] error ${res.status}: ${errText}`);
+      } catch (err: any) {
+        if (attempt >= maxRetries) throw err;
+        console.warn(`    [${this.name}] Request failed (${err.message}), retrying in ${delayMs}ms...`);
+        await new Promise((r) => setTimeout(r, delayMs));
+        delayMs *= 2;
+      }
     }
+    throw new Error(`OpenAICompatible [${this.name}] failed after ${maxRetries} retries.`);
+  }
 
+  async generate(prompt: string, options: LLMOptions = {}): Promise<string> {
+    const body: Record<string, unknown> = {
+      model: this.model,
+      messages: [{ role: "user", content: prompt }],
+      temperature: options.temperature ?? 0.7,
+      max_tokens: options.maxTokens ?? 4096,
+    };
+
+    const res = await this.fetchWithRetry(body);
     const data = (await res.json()) as any;
     return data.choices?.[0]?.message?.content ?? "";
   }

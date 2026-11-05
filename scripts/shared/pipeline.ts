@@ -23,6 +23,7 @@ import { ClaudeProvider } from "./providers/ClaudeProvider";
 import { ClaudeCLIProvider } from "./providers/ClaudeCLIProvider";
 import { OmniVoiceProvider } from "./providers/OmniVoiceProvider";
 import { OpenAICompatibleProvider } from "./providers/OpenAICompatibleProvider";
+import { FallbackLLMProvider } from "./providers/FallbackLLMProvider";
 import { CompositeImageProvider } from "./providers/CompositeImageProvider";
 import { TopicAgent } from "./agents/TopicAgent";
 import { ScriptAgent } from "./agents/ScriptAgent";
@@ -97,32 +98,42 @@ function buildLLM(): LLMProvider {
   if (MODELS.llm === "claude-cli") return new ClaudeCLIProvider();
   if (MODELS.llm === "claude") return new ClaudeProvider(process.env.ANTHROPIC_API_KEY ?? "");
 
-  // In test / dev session environment: use FreeLLMAPI which holds the test environment keys
+  const providers: LLMProvider[] = [];
+
+  // FreeLLMAPI (running on dev runner with pre-configured keys)
   const freellmKey = process.env.FREELLMAPI_KEY;
   const freellmUrl = process.env.FREELLMAPI_URL || (freellmKey ? "http://freellmapi-dev:3001" : undefined);
   if (freellmKey && freellmUrl) {
-    return new OpenAICompatibleProvider({
-      baseUrl: `${freellmUrl.replace(/\/+$/, "")}/v1`,
-      apiKey: freellmKey,
-      model: process.env.TEXT_MODEL_PIN || "auto",
-      name: "freellmapi",
-    });
+    providers.push(
+      new OpenAICompatibleProvider({
+        baseUrl: `${freellmUrl.replace(/\/+$/, "")}/v1`,
+        apiKey: freellmKey,
+        model: "auto",
+        name: "freellmapi",
+      }),
+    );
   }
 
-  // Direct Gemini API Key
+  // Direct Gemini API
   if (process.env.GEMINI_API_KEY) {
-    return new GeminiProvider(process.env.GEMINI_API_KEY);
+    providers.push(new GeminiProvider(process.env.GEMINI_API_KEY));
   }
 
-  // Fallback to Groq
+  // Groq
   if (process.env.GROQ_API_KEY) {
-    return new OpenAICompatibleProvider({
-      baseUrl: "https://api.groq.com/openai/v1",
-      apiKey: process.env.GROQ_API_KEY,
-      model: "llama-3.3-70b-versatile",
-      name: "groq",
-    });
+    providers.push(
+      new OpenAICompatibleProvider({
+        baseUrl: "https://api.groq.com/openai/v1",
+        apiKey: process.env.GROQ_API_KEY,
+        model: "llama-3.3-70b-versatile",
+        name: "groq",
+      }),
+    );
   }
+
+  if (providers.length === 1) return providers[0];
+  if (providers.length > 1) return new FallbackLLMProvider(providers);
+
   return new GeminiProvider(process.env.GEMINI_API_KEY ?? "");
 }
 
