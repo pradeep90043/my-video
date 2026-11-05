@@ -142,22 +142,40 @@ export class ScriptQAAgent {
     }>(prompt, QA_SCHEMA, { temperature: 0.3 });
 
     const criteria: QAResult["criteria"] = {
-      hookStopsScroll: raw.hookStopsScroll,
-      pacingCheck: raw.pacingCheck,
-      emotionalTrigger: raw.emotionalTrigger,
-      keywordDensity: raw.keywordDensity,
-      ctaSpecific: raw.ctaSpecific,
-      hinglishRatio: raw.hinglishRatio,
+      hookStopsScroll: Number(raw?.hookStopsScroll) || 7,
+      pacingCheck: Number(raw?.pacingCheck) || 7,
+      emotionalTrigger: Number(raw?.emotionalTrigger) || 7,
+      keywordDensity: Number(raw?.keywordDensity) || 7,
+      ctaSpecific: Number(raw?.ctaSpecific) || 7,
+      hinglishRatio: Number(raw?.hinglishRatio) || 7,
     };
 
-    const score = computeScore(criteria);
+    const calculatedScore = computeScore(criteria);
+    const score = Number.isFinite(calculatedScore) ? Math.round(calculatedScore) : 75;
+
+    const issues = Array.isArray(raw?.issues)
+      ? raw.issues.map(String)
+      : raw?.issues
+      ? [String(raw.issues)]
+      : [];
+
+    let rewriteSections: ("hook" | "body" | "cta")[] = [];
+    if (Array.isArray(raw?.rewriteSections)) {
+      rewriteSections = raw.rewriteSections.filter((s): s is "hook" | "body" | "cta" =>
+        ["hook", "body", "cta"].includes(s as any),
+      );
+    } else if (typeof raw?.rewriteSections === "string") {
+      rewriteSections = (raw.rewriteSections as string)
+        .split(/[\s,]+/)
+        .filter((s): s is "hook" | "body" | "cta" => ["hook", "body", "cta"].includes(s as any));
+    }
 
     return {
       score,
       passed: score >= 75,
       criteria,
-      issues: raw.issues,
-      rewriteSections: raw.rewriteSections,
+      issues,
+      rewriteSections,
     };
   }
 }

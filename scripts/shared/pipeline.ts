@@ -273,23 +273,31 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
     onLog(`QA score: ${qaResult.score}/100 | Passed: ${qaResult.passed}`);
 
     if (!qaResult.passed) {
-      onWarn(`QA failed (score=${qaResult.score}). Issues: ${qaResult.issues.join("; ")}. Rewriting sections: ${qaResult.rewriteSections.join(", ")}`);
+      const safeIssues = Array.isArray(qaResult.issues) ? qaResult.issues : [];
+      let safeSections = Array.isArray(qaResult.rewriteSections) && qaResult.rewriteSections.length > 0
+        ? qaResult.rewriteSections
+        : (["hook", "body"] as ("hook" | "body" | "cta")[]);
+
+      onWarn(`QA failed (score=${qaResult.score}). Issues: ${safeIssues.join("; ")}. Rewriting sections: ${safeSections.join(", ")}`);
 
       // Attempt up to 2 rewrites of failing sections
       for (let attempt = 1; attempt <= 2 && !qaResult.passed; attempt++) {
-        onLog(`QA rewrite attempt ${attempt}/2 for sections: ${qaResult.rewriteSections.join(", ")}`);
+        safeSections = Array.isArray(qaResult.rewriteSections) && qaResult.rewriteSections.length > 0
+          ? qaResult.rewriteSections
+          : (["hook", "body"] as ("hook" | "body" | "cta")[]);
+        onLog(`QA rewrite attempt ${attempt}/2 for sections: ${safeSections.join(", ")}`);
 
-        if (qaResult.rewriteSections.includes("hook")) {
+        if (safeSections.includes("hook")) {
           const newHook = await hookAgent.generate(script, hookWeights);
           script = { ...script, hook: newHook.hook };
           onLog(`Hook rewritten [score=${newHook.score.toFixed(1)}]`);
         }
-        if (qaResult.rewriteSections.includes("body") || qaResult.rewriteSections.includes("cta")) {
+        if (safeSections.includes("body") || safeSections.includes("cta")) {
           const rewritten = await scriptAgent.generate(topicResult.topic, topicResult.category, scriptMode, linkedVideoUrl);
           script = {
             ...script,
-            body: qaResult.rewriteSections.includes("body") ? rewritten.body : script.body,
-            cta: qaResult.rewriteSections.includes("cta") ? rewritten.cta : script.cta,
+            body: safeSections.includes("body") ? rewritten.body : script.body,
+            cta: safeSections.includes("cta") ? rewritten.cta : script.cta,
           };
         }
 
