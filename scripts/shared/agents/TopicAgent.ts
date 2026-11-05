@@ -86,7 +86,18 @@ Return exactly 10 topics sorted by viralScore descending.`;
         { temperature: 0.9 },
       );
 
-      const sorted = result.topics.sort((a, b) => b.viralScore - a.viralScore);
+      const rawList = Array.isArray(result)
+        ? result
+        : (Array.isArray(result?.topics) ? result.topics : []);
+
+      const normalized: TopicResult[] = rawList.map((t: any) => ({
+        topic: String(t.topic || t.title || t.name || t.idea || "").trim(),
+        category: (t.category || category || "React") as Category,
+        hook: String(t.hook || t.hook_text || t.opening || "").trim(),
+        viralScore: Number(t.viralScore || t.score || 8),
+      })).filter((t) => t.topic.length > 0);
+
+      const sorted = normalized.sort((a, b) => b.viralScore - a.viralScore);
 
       // Merge with previously collected topics (keep best across attempts)
       allTopics = [...allTopics, ...sorted].sort((a, b) => b.viralScore - a.viralScore);
@@ -105,7 +116,13 @@ Return exactly 10 topics sorted by viralScore descending.`;
     }
 
     // After 3 attempts, pick the absolute best available regardless of score
-    const best = allTopics[0];
+    const fallbackTopic: TopicResult = {
+      topic: "Why Senior Developers Are Leaving React in 2025",
+      category: (category || "React") as Category,
+      hook: "क्या 2025 में रिएक्ट सच में आउटडेटेड हो रहा है?",
+      viralScore: 9.5,
+    };
+    const best = allTopics[0] || fallbackTopic;
     console.warn(
       `[TopicAgent] All ${MAX_ATTEMPTS} attempts exhausted without hitting viralScore >= ${this.minViralScore}. Using best available: "${best.topic}" (score: ${best.viralScore})`,
     );

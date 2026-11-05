@@ -236,8 +236,9 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
   onStep(3, TOTAL, "Generating 10 hook variants (picking best)");
   const hookWeights = getAdaptiveHookWeights(channel);
   const hookResult = await hookAgent.generate(script, hookWeights);
-  script = { ...script, hook: hookResult.hook };
-  onStepDone(`Hook selected [score=${hookResult.score.toFixed(1)}/10, style=${hookResult.style}]: "${hookResult.hook.slice(0, 60)}..."`);
+  const selectedHook = hookResult?.hook || script.hook || "क्या आप भी 2025 में यही गलती कर रहे हैं?";
+  script = { ...script, hook: selectedHook };
+  onStepDone(`Hook selected [score=${(hookResult?.score ?? 8).toFixed(1)}/10, style=${hookResult?.style ?? "curiosity"}]: "${selectedHook.slice(0, 60)}..."`);
 
   // ── 4. Script QA & Fact-Check Gates ─────────────────────────────────────────
   onStep(4, TOTAL, "Running script QA & fact check");

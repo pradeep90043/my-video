@@ -156,20 +156,22 @@ Rules:
       temperature: 0.8,
     });
 
+    const safeSections = Array.isArray(raw?.sections) ? raw.sections : [];
     // Build body as concatenation of all section voiceTexts
-    const body = raw.sections.map((s) => `[${s.label} ${s.timestamp}]\n${s.voiceText}`).join("\n\n");
+    const body = safeSections.map((s) => `[${s.label || "Scene"} ${s.timestamp || "0:00"}]\n${s.voiceText || ""}`).join("\n\n");
 
     // cta mirrors the last section (index 5)
-    const ctaSection = raw.sections[5] ?? raw.sections[raw.sections.length - 1];
-    const cta = ctaSection?.voiceText ?? raw.cta;
+    const ctaSection = safeSections[5] ?? safeSections[safeSections.length - 1];
+    const cta = ctaSection?.voiceText ?? raw?.cta ?? "कमेंट्स में अपनी राय जरूर बताएं और चैनल को सब्सक्राइब करें!";
+    const hook = raw?.hook || (safeSections[0]?.voiceText ? safeSections[0].voiceText.slice(0, 100) : "क्या आपको पता है 2025 में कोडिंग का तरीका पूरी तरह बदल चुका है?");
 
     return {
-      hook: raw.hook,
-      body,
+      hook,
+      body: body || (raw as any)?.body || hook,
       cta,
       durationSecs: d,
-      topic: raw.topic,
-      category: raw.category,
+      topic: raw?.topic || topic,
+      category: raw?.category || category,
       mode: "long" as const,
     };
   }
