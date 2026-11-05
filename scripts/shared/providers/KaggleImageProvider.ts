@@ -7,8 +7,10 @@ export class KaggleImageProvider implements ImageProvider {
   name = "kaggle-image";
 
   isAvailable(): boolean {
+    const home = process.env.HOME || "";
     return !!(process.env.KAGGLE_USERNAME && process.env.KAGGLE_KEY) ||
-      fs.existsSync(path.join(process.env.HOME || "", ".kaggle", "kaggle.json"));
+      fs.existsSync(path.join(home, ".kaggle", "kaggle.json")) ||
+      fs.existsSync(path.join(home, ".kaggle", "access_token"));
   }
 
   async generate(prompt: string, outputPath: string): Promise<string> {
