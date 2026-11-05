@@ -26,7 +26,7 @@ export const WordTimingSchema = z.object({
 
 export const SceneSchema = z.object({
   id: z.string(),
-  duration: z.number().min(2).max(15),
+  duration: z.number().min(2).max(60),
   text: z.string(),
   voiceText: z.string(),
   subtitle: z.string(),
@@ -42,9 +42,18 @@ export const VideoScriptSchema = z.object({
   hook: z.string(),
   body: z.string(),
   cta: z.string(),
-  durationSecs: z.number().min(30).max(60),
+  durationSecs: z.number().min(30).max(660),
   topic: z.string(),
   category: z.string(),
+  mode: z.enum(["long", "short"]).default("short"),
+  sections: z.array(z.object({
+    id: z.string(),
+    label: z.string(),
+    startTime: z.string(),   // "00:00"
+    endTime: z.string(),     // "02:30"
+    durationSecs: z.number(),
+    voiceText: z.string(),
+  })).optional(),
 });
 
 export const VideoMetadataSchema = z.object({
@@ -54,11 +63,17 @@ export const VideoMetadataSchema = z.object({
   hashtags: z.array(z.string()),
   filename: z.string(),
   slug: z.string(),
+  chapterTimestamps: z.array(z.object({
+    time: z.string(),   // "00:00"
+    label: z.string(),
+  })).optional(),
+  linkedVideoUrl: z.string().optional(),
 });
 
 export const FactoryVideoJSONSchema = z.object({
   id: z.string(),
   title: z.string(),
+  mode: z.enum(["long", "short"]).default("short"),
   script: VideoScriptSchema,
   voice: z.string().default(""),
   thumbnail: z.string().default(""),
@@ -69,6 +84,8 @@ export const FactoryVideoJSONSchema = z.object({
   musicTrack: z.string().default(""),
   metadata: VideoMetadataSchema,
   createdAt: z.string(),
+  channel: z.string().default(""),
+  publishMode: z.enum(["day1-long", "day2-short"]).default("day2-short"),
 });
 
 export type AnimationType = z.infer<typeof AnimationTypeSchema>;
@@ -78,6 +95,34 @@ export type Scene = z.infer<typeof SceneSchema>;
 export type VideoScript = z.infer<typeof VideoScriptSchema>;
 export type VideoMetadata = z.infer<typeof VideoMetadataSchema>;
 export type FactoryVideoJSON = z.infer<typeof FactoryVideoJSONSchema>;
+
+export type VideoSection = {
+  id: string;
+  label: string;
+  startTime: string;
+  endTime: string;
+  durationSecs: number;
+  voiceText: string;
+};
+
+export type PublishMode = "day1-long" | "day2-short";
+
+export interface TopicState {
+  currentTopic: string;
+  currentCategory: string;
+  channel: string;
+  publishMode: PublishMode;
+  longVideoId: string;
+  longVideoUrl: string;
+  publishedAt: string;
+  nextPublishAfter: string;
+  slug: string;
+  analyticsSnapshot: {
+    views24h: number;
+    avgViewDuration: number;
+    stayToWatchRate: number;
+  };
+}
 
 export interface LLMMessage {
   role: "user" | "assistant" | "system";

@@ -1,16 +1,27 @@
 import * as fs from "fs";
 import * as path from "path";
 import { ImageProvider } from "./LLMProvider";
+import { PexelsImageProvider } from "./PexelsImageProvider";
 import { MODELS } from "../config";
 
 export class GeminiImageProvider implements ImageProvider {
   name = "gemini-image";
+  private fallbackProvider = new PexelsImageProvider();
 
   constructor(private apiKey: string = process.env.GEMINI_API_KEY ?? "") {
     if (!this.apiKey) throw new Error("GEMINI_API_KEY not set");
   }
 
   async generate(prompt: string, outputPath: string): Promise<string> {
+    try {
+      return await this.generateInternal(prompt, outputPath);
+    } catch (err: any) {
+      console.warn(`[GeminiImage] Primary image generation failed (${err.message}). Using Pexels cinematic stock image...`);
+      return await this.fallbackProvider.generate(prompt, outputPath);
+    }
+  }
+
+  private async generateInternal(prompt: string, outputPath: string): Promise<string> {
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
     const suffix = "in a consistent hand-cut collage style with white torn paper edges, isolated on transparent background, high resolution, flat design aesthetic.";

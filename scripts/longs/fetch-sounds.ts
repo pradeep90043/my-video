@@ -93,6 +93,7 @@ const FOLEY: Record<FoleyName, FoleySpec> = {
   bell: { src: K("impactBell_heavy_001.ogg") },
   applause: { src: { commons: "Sound Effects - Applause after a concert.ogg" }, ss: 1, t: 6 },
   laughter: { src: { commons: "Laughter(s).ogg" }, t: 5 },
+  hiss: { src: { synth: "anoisesrc=color=white:amplitude=0.3:d=3:r=44100" }, t: 2, af: "highpass=f=2000,lowpass=f=8000" },
 };
 
 // ───────────────────────────── downloads ─────────────────────────────

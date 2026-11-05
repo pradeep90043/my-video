@@ -1,5 +1,6 @@
 import * as path from "path";
 import * as dotenv from "dotenv";
+dotenv.config({ path: path.resolve(__dirname, "../../../.env"), quiet: true } as any);
 dotenv.config({ quiet: true } as any);
 
 export const BRAND = {
@@ -20,12 +21,22 @@ export const BRAND = {
 } as const;
 
 export const VIDEO = {
+  // Short-form (Shorts/Reels) — portrait
   width: 1080,
   height: 1920,
   fps: 30,
   minDurationSecs: 30,
   maxDurationSecs: 60,
   defaultDurationSecs: 45,
+  // Long-form (10-min videos) — landscape
+  longForm: {
+    width: 1920,
+    height: 1080,
+    fps: 30,
+    minDurationSecs: 540,   // 9 min
+    maxDurationSecs: 660,   // 11 min
+    defaultDurationSecs: 600, // 10 min
+  },
 } as const;
 
 export const PATHS = {
@@ -45,10 +56,17 @@ export const PATHS = {
 
 export const MODELS = {
   llm: (process.env.LLM_PROVIDER as "gemini" | "claude" | "claude-cli") ?? "gemini",
-  gemini: process.env.GEMINI_MODEL ?? "gemini-2.0-flash",
+  gemini: process.env.GEMINI_MODEL ?? "gemini-2.5-flash",
   claude: process.env.CLAUDE_MODEL ?? "claude-sonnet-4-6",
-  imageModel: process.env.IMAGE_MODEL ?? "imagen-4.0-generate-001",
-  voiceProvider: (process.env.VOICE_PROVIDER as "google-tts" | "mac-tts" | "edge-tts" | "openai-fm") ?? "openai-fm",
+  imageModel: process.env.IMAGE_MODEL ?? "imagen-3.0-generate-002",
+  // Voice is locked to OmniVoice — VOICE_PROVIDER env var is intentionally ignored now
+  voiceProvider: "omni-voice" as const,
+} as const;
+
+/** OmniVoice Kaggle/Cloudflare tunnel config — REQUIRED */
+export const OMNI_VOICE = {
+  /** Tunnel URL set by Kaggle notebook — e.g. https://xxxx.trycloudflare.com */
+  url: process.env.OMNI_VOICE_URL?.trim().replace(/\/$/, "") ?? "",
 } as const;
 
 export const GOOGLE_TTS = {
@@ -75,3 +93,12 @@ export type Category = (typeof CATEGORIES)[number];
 
 export const IMAGE_STYLE =
   "in a consistent hand-cut collage style with white torn paper edges, isolated on transparent background, high resolution, flat design aesthetic";
+
+export const CHANNELS = [
+  { id: "codeorcap",  name: "CodeOrCap",   niche: "tech/dev",        day1Hour: 9,  day2Hour: 9  },
+  { id: "storiyum",   name: "Storiyum",    niche: "stories",         day1Hour: 14, day2Hour: 14 },
+  { id: "infoonspot", name: "InfoOnSpot",  niche: "news/AI",         day1Hour: 18, day2Hour: 18 },
+  { id: "promptgag",  name: "PromptGag",   niche: "comedy/memes",    day1Hour: 21, day2Hour: 21 },
+] as const;
+
+export type ChannelId = typeof CHANNELS[number]["id"];

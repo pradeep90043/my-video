@@ -79,3 +79,40 @@ export async function uploadVideoToYouTube(
     return { success: false, error: err.message };
   }
 }
+
+/**
+ * Fetch video statistics (views, likes, comments) via YouTube Data API.
+ */
+export async function fetchYouTubeVideoStats(
+  videoId: string,
+  credentials?: YouTubeCredentials
+): Promise<{ views: number; likes: number; comments: number } | null> {
+  const clientId = credentials?.clientId ?? process.env.YOUTUBE_CLIENT_ID;
+  const clientSecret = credentials?.clientSecret ?? process.env.YOUTUBE_CLIENT_SECRET;
+  const refreshToken = credentials?.refreshToken ?? process.env.YOUTUBE_REFRESH_TOKEN;
+
+  if (!clientId || !clientSecret || !refreshToken) return null;
+
+  try {
+    const oauth2Client = new google.auth.OAuth2(clientId, clientSecret);
+    oauth2Client.setCredentials({ refresh_token: refreshToken });
+    const youtube = google.youtube({ version: "v3", auth: oauth2Client });
+
+    const res = await youtube.videos.list({
+      part: ["statistics"],
+      id: [videoId],
+    });
+
+    const item = res.data.items?.[0];
+    if (!item?.statistics) return null;
+
+    return {
+      views: parseInt(item.statistics.viewCount ?? "0", 10),
+      likes: parseInt(item.statistics.likeCount ?? "0", 10),
+      comments: parseInt(item.statistics.commentCount ?? "0", 10),
+    };
+  } catch (err: any) {
+    console.warn(`[YouTube API] Failed to fetch stats for ${videoId}: ${err.message}`);
+    return null;
+  }
+}

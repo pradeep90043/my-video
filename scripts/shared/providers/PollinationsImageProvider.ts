@@ -17,9 +17,13 @@ export class PollinationsImageProvider implements ImageProvider {
       finalPrompt = `${finalPrompt}, ${suffix}`;
     }
 
+    const isPortrait = prompt.toLowerCase().includes("9:16") || prompt.toLowerCase().includes("portrait");
+    const width = isPortrait ? 1080 : 1920;
+    const height = isPortrait ? 1920 : 1080;
+
     const cleanPrompt = finalPrompt.replace(/\s+/g, " ").trim();
     const encodedPrompt = encodeURIComponent(cleanPrompt);
-    const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1920&height=1080&nologo=true&seed=${Date.now()}`;
+    const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&seed=${Date.now()}`;
 
     const res = await fetch(url);
     if (!res.ok) {

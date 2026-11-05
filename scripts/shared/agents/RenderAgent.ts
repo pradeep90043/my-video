@@ -6,7 +6,7 @@ import { PATHS, VIDEO, BRAND } from "../config";
 import { addBranding } from "../branding";
 
 export class RenderAgent {
-  async render(videoJSON: FactoryVideoJSON): Promise<string> {
+  async render(videoJSON: FactoryVideoJSON, testFrames?: number): Promise<string> {
     const { metadata, voice, wordTimings } = videoJSON;
     const slug = metadata.slug;
 
@@ -37,9 +37,24 @@ export class RenderAgent {
       publicVoicePath = `content/factory/${slug}/voiceover.mp3`;
     }
 
+    // Derive fps + frame count from mode: long = 30fps landscape (1920x1080), short = 30fps portrait (1080x1920)
+    const isLong =
+      (videoJSON as { mode?: string })?.mode === "long" ||
+      (videoJSON.script as { mode?: string })?.mode === "long" ||
+      videoJSON.publishMode === "day1-long";
+    const renderFps = isLong ? VIDEO.longForm.fps : VIDEO.fps;
+    const width = isLong ? VIDEO.longForm.width : VIDEO.width;
+    const height = isLong ? VIDEO.longForm.height : VIDEO.height;
+    const totalFrames = testFrames && testFrames > 0
+      ? testFrames
+      : Math.ceil((videoJSON.duration + 2) * renderFps);
+
     // Write public JSON with updated paths
     const publicJSON = {
       ...videoJSON,
+      mode: isLong ? "long" : "short",
+      fps: renderFps,
+      totalFrames,
       scenes: updatedScenes,
       voice: publicVoicePath,
       wordTimings,
@@ -49,25 +64,39 @@ export class RenderAgent {
     // ── 2. Remotion render (video without audio) ──────────────────────────────
     fs.mkdirSync(PATHS.videos, { recursive: true });
     const silentPath = path.join(PATHS.videos, `${slug}-silent.mp4`);
-    const totalFrames = Math.ceil((videoJSON.duration + 2) * VIDEO.fps);
 
     const props = JSON.stringify({ slug, videoPath: `content/factory/${slug}/video.json` });
     const escapedProps = props.replace(/'/g, "'\\''");
 
-    console.log(`\n  Remotion: rendering ${totalFrames} frames...`);
+    console.log(`\n  Remotion: rendering ${totalFrames} frames (${width}x${height} ${isLong ? "landscape" : "portrait"})...`);
     execSync(
-      `npx remotion render FactoryVideo "${silentPath}" --concurrency=2 --duration-in-frames=${totalFrames} --props='${escapedProps}'`,
+      `npx remotion render FactoryVideo "${silentPath}" --width=${width} --height=${height} --concurrency=2 --duration-in-frames=${totalFrames} --props='${escapedProps}'`,
       { stdio: "inherit", cwd: PATHS.root },
     );
 
-    // ── 3. FFmpeg: merge voiceover into video ────────────────────────────────
+    // ── 3. Audio handling: preserve Remotion audio mix (BGM + SFX + VO) ─────
     const mergedPath = path.join(PATHS.videos, `${slug}-merged.mp4`);
     const hasVoice = publicVoicePath && fs.existsSync(path.join(PATHS.public, publicVoicePath));
 
-    if (hasVoice) {
+    const hasRenderedAudio = (() => {
+      try {
+        const out = execSync(
+          `ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of csv=p=0 "${silentPath}"`,
+          { encoding: "utf-8" },
+        ).trim();
+        return out.length > 0;
+      } catch {
+        return false;
+      }
+    })();
+
+    if (hasRenderedAudio) {
+      // Remotion already rendered complete mix (voice + BGM + SFX) — preserve it!
+      fs.renameSync(silentPath, mergedPath);
+    } else if (hasVoice) {
       const voiceAbs = path.join(PATHS.public, publicVoicePath);
       execSync(
-        `ffmpeg -y -i "${silentPath}" -i "${voiceAbs}" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest "${mergedPath}"`,
+        `ffmpeg -y -i "${silentPath}" -i "${voiceAbs}" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k "${mergedPath}"`,
         { stdio: "pipe" },
       );
       fs.unlinkSync(silentPath);

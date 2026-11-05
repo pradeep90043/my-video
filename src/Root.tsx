@@ -4,7 +4,8 @@ import { PuppetSheet } from "./stickman/story/puppet/PuppetSheet";
 import elephantPuppet from "./stickman/story/puppet/examples/elephant.json";
 import "./index.css";
 import React from "react";
-import { Composition } from "remotion";
+import { Composition, staticFile } from "remotion";
+import { FactoryVideo, factoryVideoSchema } from "./factory/FactoryVideo";
 import {
   VibeCodingNotProgrammingVideo,
   vibeCodingSchema,
@@ -19,7 +20,6 @@ import vibeShortData from "../public/content/VibeCodingNotProgrammingShort/video
 import maaKiDiaryData from "../public/content/MaaKiDiary/video.json";
 import collageData from "../public/content/collage-animation/video.json";
 import { StickmanVideo, stickmanSchema, type StickmanProjectData } from "./stickman/StickmanVideo";
-import { staticFile } from "remotion";
 import { DoodleCatalog } from "./stickman/doodle/DoodleCatalog";
 import {
   CollageAnimationVideo,
@@ -146,6 +146,55 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="Story3DDemo" component={Story3DDemo} width={720} height={1280} fps={30} durationInFrames={120} />
       <Composition id="PuppetSheet" component={PuppetSheet as React.FC<any>} width={1500} height={1080} fps={30} durationInFrames={1} defaultProps={{ spec: elephantPuppet }} />
       <Composition id="ActivityDemo" component={ActivityDemo} width={720} height={1280} fps={30} durationInFrames={360} />
+
+      {/**
+       * FactoryVideo — universal pipeline-driven composition.
+       *
+       * Dimensions and duration are resolved at render time via calculateMetadata()
+       * from the video.json written by the pipeline:
+       *   mode: "long"  → landscape 1920×1080  (10-min long-form)
+       *   mode: "short" → portrait  1080×1920  (30-60s Short/Reel)
+       *
+       * Render with:
+       *   npx remotion render FactoryVideo --props='{"slug":"my-slug","videoPath":"content/factory/my-slug/video.json"}'
+       */}
+      <Composition
+        id="FactoryVideo"
+        component={FactoryVideo}
+        fps={30}
+        width={1920}
+        height={1080}
+        durationInFrames={18000}
+        schema={factoryVideoSchema}
+        defaultProps={{
+          slug: "factory-preview",
+          videoPath: "content/factory/factory-preview/video.json",
+          bgMusicVolume: 0.1,
+          voVolume: 1,
+        }}
+        calculateMetadata={async ({ props }) => {
+          const res = await fetch(staticFile(props.videoPath));
+          if (!res.ok) {
+            // Fallback: landscape defaults if no video.json yet
+            return { width: 1920, height: 1080, durationInFrames: 18000, fps: 30, props };
+          }
+          const data = await res.json();
+          const isLong =
+            data.mode === "long" ||
+            data.script?.mode === "long" ||
+            data.publishMode === "day1-long" ||
+            data.metadata?.mode === "long";
+          const videoFps: number = data.fps ?? 30;
+          const totalFrames: number = data.totalFrames ?? (isLong ? 18000 : 1800);
+          return {
+            fps: videoFps,
+            width: isLong ? 1920 : 1080,
+            height: isLong ? 1080 : 1920,
+            durationInFrames: Math.max(1, totalFrames),
+            props: { ...props, data: { ...data, mode: isLong ? "long" : "short" } },
+          };
+        }}
+      />
     </>
   );
 };

@@ -30,6 +30,7 @@ import { runPipeline, type PipelineOptions, type PipelineResult } from "./pipeli
 import type { Category } from "./config";
 import { publishReel, sendDM, replyToComment } from "./instagram";
 import { uploadVideoToYouTube } from "./youtube";
+import { loadTopicState, resolvePublishMode } from "./topic-state";
 
 // ── Job store ─────────────────────────────────────────────────────────────────
 
@@ -90,11 +91,14 @@ async function runJob(job: Job): Promise<void> {
 
 function bodyToOpts(body: Record<string, unknown>): PipelineOptions {
   return {
+    publishMode: typeof body.publishMode === "string" ? (body.publishMode as "day1-long" | "day2-short") : undefined,
+    channel: typeof body.channel === "string" ? body.channel : undefined,
     topic: typeof body.topic === "string" ? body.topic : undefined,
     category: typeof body.category === "string" ? (body.category as Category) : undefined,
     skipImages: body.skipImages === true || body.skip_images === true,
     skipVoice: body.skipVoice === true || body.skip_voice === true,
     skipRender: body.skipRender === true || body.skip_render === true,
+    skipQA: body.skipQA === true || body.skip_qa === true,
   };
 }
 
@@ -303,6 +307,19 @@ app.post("/webhook/instagram", async (req: Request, res: Response) => {
         }
       }
     }
+  }
+});
+
+// ── Topic State Endpoint ──────────────────────────────────────────────────────
+app.get("/api/topic-state/:channel", (req: Request, res: Response) => {
+  try {
+    const { channel } = req.params;
+    const state = loadTopicState(String(channel));
+    const mode = resolvePublishMode(String(channel));
+    res.json({ channel, mode, state });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    res.status(500).json({ error: msg });
   }
 });
 
