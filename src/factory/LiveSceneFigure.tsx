@@ -4,7 +4,6 @@ import {
   Easing,
   interpolate,
   Sequence,
-  spring,
   staticFile,
   useCurrentFrame,
 } from "remotion";
@@ -25,53 +24,56 @@ export interface LiveSceneFigureProps {
   sceneDurationFrames?: number;
 }
 
-const COLOR_MAP: Record<string, { bg: string; border: string; text: string; glow: string; gradient: string }> = {
+const COLOR_MAP: Record<
+  string,
+  { bg: string; border: string; text: string; glow: string; gradient: string }
+> = {
   primary: {
     bg: "rgba(88, 166, 255, 0.16)",
-    border: "rgba(88, 166, 255, 0.65)",
+    border: "rgba(88, 166, 255, 0.75)",
     text: "#58A6FF",
-    glow: "rgba(88, 166, 255, 0.4)",
+    glow: "rgba(88, 166, 255, 0.55)",
     gradient: "linear-gradient(135deg, #58A6FF, #1F6FEB)",
   },
   accent: {
     bg: "rgba(255, 184, 0, 0.16)",
-    border: "rgba(255, 184, 0, 0.65)",
+    border: "rgba(255, 184, 0, 0.75)",
     text: "#FFB800",
-    glow: "rgba(255, 184, 0, 0.4)",
+    glow: "rgba(255, 184, 0, 0.55)",
     gradient: "linear-gradient(135deg, #FFD000, #FF9100)",
   },
   success: {
     bg: "rgba(63, 185, 80, 0.16)",
-    border: "rgba(63, 185, 80, 0.65)",
+    border: "rgba(63, 185, 80, 0.75)",
     text: "#3FB950",
-    glow: "rgba(63, 185, 80, 0.4)",
+    glow: "rgba(63, 185, 80, 0.55)",
     gradient: "linear-gradient(135deg, #56D364, #2EA043)",
   },
   danger: {
     bg: "rgba(248, 81, 73, 0.16)",
-    border: "rgba(248, 81, 73, 0.65)",
+    border: "rgba(248, 81, 73, 0.75)",
     text: "#F85149",
-    glow: "rgba(248, 81, 73, 0.4)",
+    glow: "rgba(248, 81, 73, 0.55)",
     gradient: "linear-gradient(135deg, #FF7B72, #DA3633)",
   },
   warning: {
     bg: "rgba(210, 153, 34, 0.16)",
-    border: "rgba(210, 153, 34, 0.65)",
+    border: "rgba(210, 153, 34, 0.75)",
     text: "#D29922",
-    glow: "rgba(210, 153, 34, 0.4)",
+    glow: "rgba(210, 153, 34, 0.55)",
     gradient: "linear-gradient(135deg, #E3B341, #BB8009)",
   },
   purple: {
     bg: "rgba(188, 140, 255, 0.16)",
-    border: "rgba(188, 140, 255, 0.65)",
+    border: "rgba(188, 140, 255, 0.75)",
     text: "#BC8CFF",
-    glow: "rgba(188, 140, 255, 0.4)",
+    glow: "rgba(188, 140, 255, 0.55)",
     gradient: "linear-gradient(135deg, #D2A8FF, #8957E5)",
   },
 };
 
 /**
- * Calculates accurate trigger frames for each stat item based on voiceover speech timestamps.
+ * Calculates staggered trigger frames for each coined term/concept across the narration.
  */
 function computeItemTriggerFrames(
   items: SceneFigure["items"],
@@ -82,6 +84,7 @@ function computeItemTriggerFrames(
 ): number[] {
   if (!items || items.length === 0) return [];
   const words = sceneWords || [];
+  const count = items.length;
 
   const minMs = words.length > 0 ? Math.max(0, words[0].startMs - sceneStartMs) : 0;
   const maxMs =
@@ -108,23 +111,24 @@ function computeItemTriggerFrames(
       return Math.round((relMs / 1000) * fps);
     }
 
-    // 2. Proportional spacing across spoken window
-    const slot = (idx + 0.4) / (items.length + 0.2);
+    // 2. Intelligent staggered distribution across narration:
+    // Items appear sequentially as terms are coined in speech
+    const slot = (idx + 0.45) / (count + 0.35);
     const fallbackMs = minMs + slot * spanMs;
     return Math.round((fallbackMs / 1000) * fps);
   });
 
-  // Guarantee strictly ascending order with at least 20 frames separation
-  const minFirstFrame = Math.max(10, Math.round((minMs / 1000) * fps) + 4);
+  // Guarantee strictly ascending order with at least 24 frames (~0.8s) separation
+  const minFirstFrame = Math.max(10, Math.round(fps * 0.35));
   const result: number[] = [];
   for (let i = 0; i < rawFrames.length; i++) {
     let f = rawFrames[i];
     if (i === 0) {
       f = Math.max(minFirstFrame, f);
     } else {
-      f = Math.max(result[i - 1] + 20, f);
+      f = Math.max(result[i - 1] + Math.round(fps * 0.8), f);
     }
-    f = Math.min(f, Math.max(10, durationFrames - (items.length - i) * 12));
+    f = Math.min(f, Math.max(10, durationFrames - (count - i) * Math.round(fps * 0.55)));
     result.push(f);
   }
   return result;
@@ -163,7 +167,7 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
 
   if (!figure || !figure.items || figure.items.length === 0) return null;
 
-  // Compute trigger frames for each stat item synced to voiceover
+  // Compute trigger frames for each coined term/concept synced to narration
   const triggerFrames = computeItemTriggerFrames(
     figure.items,
     sceneWords,
@@ -172,45 +176,59 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
     fps,
   );
 
-  // Header entrance at frame 6 (~0.2s)
-  const headerOpacity = interpolate(frame, [4, 12], [0, 1], {
+  // Header entrance at frame 4 (~0.13s)
+  const headerOpacity = interpolate(frame, [3, 10], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const headerTranslateY = interpolate(frame, [4, 14], [-20, 0], {
+  const headerTranslateY = interpolate(frame, [3, 12], [-22, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
     easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
 
-  // Highlight banner entrance at ~72% of the scene duration
+  // Highlight banner entrance at climax (~80% into scene duration)
   const highlightFrame = Math.max(
-    (triggerFrames[triggerFrames.length - 1] || 60) + 30,
-    Math.round(sceneDurationFrames * 0.7),
+    (triggerFrames[triggerFrames.length - 1] || 60) + Math.round(fps * 0.9),
+    Math.round(sceneDurationFrames * 0.8),
   );
   const showHighlight = figure.highlight && frame >= highlightFrame;
-  const highlightProgress = spring({
-    frame: Math.max(0, frame - highlightFrame),
-    fps,
-    config: { damping: 14, stiffness: 120 },
+  const highlightFrameOffset = Math.max(0, frame - highlightFrame);
+  const highlightProgress = interpolate(highlightFrameOffset, [0, 12], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.16, 1, 0.3, 1),
   });
+  const highlightScale = interpolate(highlightFrameOffset, [0, 8, 14], [0.6, 1.08, 1.0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.bezier(0.34, 1.56, 0.64, 1),
+  });
+
+  // List of sound effects to play as each term is coined
+  const SFX_LIST = [
+    "audio/sfx/pop.mp3",
+    "audio/text-pop.mp3",
+    "audio/sfx/ding.mp3",
+    "audio/sfx/tada.mp3",
+  ];
 
   return (
     <>
-      {/* ── Sound Effects Triggered Exactly on Stat Appearance ──────────────── */}
-      {triggerFrames.map((tFrame, idx) => (
-        <Sequence
-          key={`stat-sfx-${idx}`}
-          from={tFrame}
-          durationInFrames={Math.round(fps * 0.8)}
-          layout="none"
-        >
-          <Audio
-            src={staticFile(idx === 0 ? "audio/sfx/ding.mp3" : "audio/text-pop.mp3")}
-            volume={0.35}
-          />
-        </Sequence>
-      ))}
+      {/* ── Sound Effects Triggered Exactly as Each Term is Coined ─────────── */}
+      {triggerFrames.map((tFrame, idx) => {
+        const sfxSrc = SFX_LIST[idx % SFX_LIST.length];
+        return (
+          <Sequence
+            key={`term-sfx-${idx}`}
+            from={tFrame}
+            durationInFrames={Math.round(fps * 0.8)}
+            layout="none"
+          >
+            <Audio src={staticFile(sfxSrc)} volume={0.65} />
+          </Sequence>
+        );
+      })}
 
       {/* ── Highlight Whoosh Sound Effect ──────────────────────────────────── */}
       {figure.highlight && (
@@ -219,21 +237,21 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
           durationInFrames={Math.round(fps * 1.0)}
           layout="none"
         >
-          <Audio src={staticFile("audio/text-whoosh.mp3")} volume={0.3} />
+          <Audio src={staticFile("audio/text-whoosh.mp3")} volume={0.55} />
         </Sequence>
       )}
 
-      {/* ── Floating Header Banner (No giant enclosing card!) ───────────────── */}
+      {/* ── Floating Header Banner (Pure typography, no dark enclosing card!) ─ */}
       <div
         style={{
           position: "absolute",
-          top: isLandscape ? 36 : 75,
+          top: isLandscape ? 60 : 120,
           left: "50%",
           transform: `translateX(-50%) translateY(${headerTranslateY}px)`,
           opacity: headerOpacity,
           display: "flex",
           alignItems: "center",
-          gap: 14,
+          gap: 16,
           zIndex: 15,
           pointerEvents: "none",
         }}
@@ -241,18 +259,16 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
         {figure.badge && (
           <span
             style={{
-              padding: "5px 16px",
+              padding: "6px 18px",
               borderRadius: 20,
-              background: "rgba(15, 23, 42, 0.75)",
-              backdropFilter: "blur(14px)",
-              WebkitBackdropFilter: "blur(14px)",
-              border: "1.5px solid rgba(255, 184, 0, 0.6)",
+              background: "rgba(0, 0, 0, 0.7)",
+              border: "1.5px solid rgba(255, 184, 0, 0.75)",
               color: "#FFB800",
-              fontSize: 13,
-              fontWeight: 800,
-              letterSpacing: "0.1em",
+              fontSize: isLandscape ? 14 : 12,
+              fontWeight: 900,
+              letterSpacing: "0.12em",
               textTransform: "uppercase",
-              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 184, 0, 0.25)",
+              boxShadow: "0 0 20px rgba(255, 184, 0, 0.35), 0 4px 16px rgba(0, 0, 0, 0.8)",
               display: "inline-flex",
               alignItems: "center",
               gap: 8,
@@ -260,11 +276,11 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
           >
             <span
               style={{
-                width: 7,
-                height: 7,
+                width: 8,
+                height: 8,
                 borderRadius: "50%",
                 background: "#FFB800",
-                boxShadow: "0 0 8px #FFB800",
+                boxShadow: "0 0 10px #FFB800",
               }}
             />
             {figure.badge}
@@ -273,11 +289,11 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
         <h2
           style={{
             margin: 0,
-            fontSize: isLandscape ? 28 : 22,
+            fontSize: isLandscape ? 32 : 24,
             fontWeight: 900,
             color: "#FFFFFF",
-            letterSpacing: "-0.01em",
-            textShadow: "0 2px 20px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0,0,0,0.8)",
+            letterSpacing: "-0.02em",
+            textShadow: "0 2px 20px rgba(0, 0, 0, 0.95), 0 0 35px rgba(0, 0, 0, 0.9)",
             fontFamily: "'Inter', system-ui, sans-serif",
           }}
         >
@@ -285,29 +301,30 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
         </h2>
       </div>
 
-      {/* ── Direct Animated Stats (Kinetic Infographics) ────────────────────── */}
+      {/* ── Direct Kinetic Terms & Infographics (Open Canvas — No Background Cards!) ─ */}
       <div
         style={{
           position: "absolute",
-          top: isLandscape ? 95 : 140,
+          top: isLandscape ? 175 : 250,
           left: "50%",
           transform: "translateX(-50%)",
-          width: isLandscape ? "92%" : "94%",
-          maxWidth: isLandscape ? 1320 : 800,
+          width: isLandscape ? "92%" : "90%",
+          maxWidth: isLandscape ? 1380 : 850,
           zIndex: 15,
           pointerEvents: "none",
           fontFamily: "'Inter', system-ui, sans-serif",
         }}
       >
-        {/* Render Layout: Side-by-side Pods for 'stats' & 'metric' */}
+        {/* ── Layout A: Direct Animated Stats & Metrics (Open Floating Typography) ── */}
         {(figure.type === "stats" || figure.type === "metric") && (
           <div
             style={{
               display: "flex",
               flexDirection: isLandscape ? "row" : "column",
               justifyContent: "center",
-              alignItems: "stretch",
-              gap: isLandscape ? 24 : 14,
+              alignItems: "center",
+              gap: isLandscape ? 56 : 28,
+              width: "100%",
             }}
           >
             {figure.items.map((item, idx) => {
@@ -315,9 +332,9 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
               const hasTriggered = frame >= tFrame;
               const itemFrame = Math.max(0, frame - tFrame);
 
-              // Spring pop & overshoot on entrance
+              // Spring pop & overshoot on entrance (0.35 -> 1.15 -> 1.0)
               const itemScale = hasTriggered
-                ? interpolate(itemFrame, [0, 8, 16], [0.35, 1.1, 1.0], {
+                ? interpolate(itemFrame, [0, 8, 16], [0.35, 1.15, 1.0], {
                     extrapolateLeft: "clamp",
                     extrapolateRight: "clamp",
                     easing: Easing.bezier(0.34, 1.56, 0.64, 1),
@@ -330,11 +347,17 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                   })
                 : 0;
               const itemTranslateY = hasTriggered
-                ? interpolate(itemFrame, [0, 12], [35, 0], {
+                ? interpolate(itemFrame, [0, 12], [45, 0], {
                     extrapolateLeft: "clamp",
                     extrapolateRight: "clamp",
+                    easing: Easing.bezier(0.16, 1, 0.3, 1),
                   })
-                : 35;
+                : 45;
+
+              // Subtle ambient breathing/floating once coined (3px subtle sine wave)
+              const ambientFloat = hasTriggered
+                ? Math.sin((frame + idx * 25) / 18) * 3
+                : 0;
 
               // Count-up progress over 22 frames
               const countProgress = hasTriggered
@@ -353,93 +376,84 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                   key={idx}
                   style={{
                     flex: 1,
-                    minWidth: isLandscape ? 320 : "100%",
-                    opacity: itemOpacity,
-                    transform: `translateY(${itemTranslateY}px) scale(${itemScale})`,
-                    background: "rgba(10, 16, 26, 0.72)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    border: `1.5px solid ${colorTheme.border}`,
-                    borderRadius: 22,
-                    padding: isLandscape ? "24px 28px" : "18px 20px",
-                    boxShadow: `0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px ${colorTheme.glow}`,
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "space-between",
-                    position: "relative",
-                    overflow: "hidden",
+                    alignItems: "center",
+                    textAlign: "center",
+                    opacity: itemOpacity,
+                    transform: `translateY(${itemTranslateY + ambientFloat}px) scale(${itemScale})`,
+                    // NO BACKGROUND CARD! Pure open canvas kinetic presentation
                   }}
                 >
-                  {/* Top Row: Icon + Glow Pill */}
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: 28 }}>{item.icon || "⚡"}</span>
-                    <span
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 800,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        color: colorTheme.text,
-                        background: colorTheme.bg,
-                        border: `1px solid ${colorTheme.border}`,
-                        padding: "3px 10px",
-                        borderRadius: 12,
-                      }}
-                    >
-                      LIVE METRIC
-                    </span>
-                  </div>
-
-                  {/* Big Kinetic Counter */}
+                  {/* Top Floating Coined Icon / Indicator */}
                   <div
                     style={{
-                      margin: "12px 0 6px 0",
-                      fontSize: isLandscape ? 64 : 48,
+                      fontSize: isLandscape ? 38 : 30,
+                      filter: `drop-shadow(0 0 16px ${colorTheme.glow}) drop-shadow(0 4px 10px rgba(0,0,0,0.9))`,
+                      marginBottom: 8,
+                    }}
+                  >
+                    {item.icon || "⚡"}
+                  </div>
+
+                  {/* Massive Glowing Kinetic Metric Number */}
+                  <div
+                    style={{
+                      fontSize: isLandscape ? 84 : 60,
                       fontWeight: 900,
                       color: colorTheme.text,
-                      lineHeight: 1.05,
-                      letterSpacing: "-0.02em",
-                      textShadow: `0 0 30px ${colorTheme.glow}`,
+                      lineHeight: 1.0,
+                      letterSpacing: "-0.03em",
                       fontFamily: "'JetBrains Mono', 'Inter', monospace",
+                      textShadow: `0 0 35px ${colorTheme.glow}, 0 4px 20px rgba(0, 0, 0, 0.95), 0 0 55px rgba(0, 0, 0, 0.9)`,
+                      marginBottom: 10,
                     }}
                   >
                     {animatedValue || item.value}
                   </div>
 
-                  {/* Label & Context */}
-                  <div>
-                    <div
-                      style={{
-                        fontSize: isLandscape ? 18 : 16,
-                        fontWeight: 800,
-                        color: "#FFFFFF",
-                        lineHeight: 1.25,
-                      }}
-                    >
-                      {item.label}
-                    </div>
-                    {item.secondary && (
-                      <div
-                        style={{
-                          fontSize: 13,
-                          color: "rgba(255, 255, 255, 0.7)",
-                          marginTop: 4,
-                          lineHeight: 1.3,
-                        }}
-                      >
-                        {item.secondary}
-                      </div>
-                    )}
+                  {/* High-Impact Floating Term Label */}
+                  <div
+                    style={{
+                      fontSize: isLandscape ? 24 : 19,
+                      fontWeight: 900,
+                      color: "#FFFFFF",
+                      lineHeight: 1.2,
+                      letterSpacing: "-0.01em",
+                      textTransform: "uppercase",
+                      textShadow: "0 2px 18px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.85)",
+                      marginBottom: item.secondary ? 6 : 0,
+                    }}
+                  >
+                    {item.label}
                   </div>
 
-                  {/* Bottom Animated Neon Accent Bar */}
+                  {/* Secondary Context Callout */}
+                  {item.secondary && (
+                    <div
+                      style={{
+                        fontSize: isLandscape ? 16 : 14,
+                        fontWeight: 600,
+                        color: "rgba(255, 255, 255, 0.88)",
+                        lineHeight: 1.3,
+                        textShadow: "0 2px 10px rgba(0, 0, 0, 0.95)",
+                        maxWidth: isLandscape ? 340 : 280,
+                      }}
+                    >
+                      {item.secondary}
+                    </div>
+                  )}
+
+                  {/* Kinetic Neon Underline Accent (Fills as counter completes) */}
                   <div
                     style={{
                       marginTop: 14,
+                      width: isLandscape ? 180 : 130,
                       height: 4,
                       borderRadius: 2,
-                      background: "rgba(255, 255, 255, 0.1)",
+                      background: "rgba(255, 255, 255, 0.15)",
                       overflow: "hidden",
+                      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.8)",
                     }}
                   >
                     <div
@@ -447,7 +461,7 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                         height: "100%",
                         width: `${countProgress * 100}%`,
                         background: colorTheme.gradient,
-                        boxShadow: `0 0 12px ${colorTheme.glow}`,
+                        boxShadow: `0 0 16px ${colorTheme.glow}`,
                       }}
                     />
                   </div>
@@ -457,15 +471,16 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
           </div>
         )}
 
-        {/* Render Layout: High-Impact Comparison Bars for 'comparison' */}
+        {/* ── Layout B: Direct High-Impact Comparison Meters (No Card Boxes!) ──── */}
         {figure.type === "comparison" && (
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: 14,
-              maxWidth: 1040,
+              gap: 24,
+              maxWidth: isLandscape ? 1100 : "95%",
               margin: "0 auto",
+              width: "100%",
             }}
           >
             {figure.items.map((item, idx) => {
@@ -477,11 +492,17 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                 ? interpolate(itemFrame, [0, 6], [0, 1], { extrapolateRight: "clamp" })
                 : 0;
               const itemTranslateX = hasTriggered
-                ? interpolate(itemFrame, [0, 12], [idx % 2 === 0 ? -40 : 40, 0], {
+                ? interpolate(itemFrame, [0, 12], [idx % 2 === 0 ? -50 : 50, 0], {
                     extrapolateRight: "clamp",
                     easing: Easing.bezier(0.16, 1, 0.3, 1),
                   })
-                : -40;
+                : idx % 2 === 0 ? -50 : 50;
+              const itemScale = hasTriggered
+                ? interpolate(itemFrame, [0, 8, 14], [0.85, 1.05, 1.0], {
+                    extrapolateRight: "clamp",
+                    easing: Easing.bezier(0.34, 1.56, 0.64, 1),
+                  })
+                : 0.85;
 
               // Parse percentage or calculate bar scale
               const rawPct =
@@ -506,37 +527,50 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                   key={idx}
                   style={{
                     opacity: itemOpacity,
-                    transform: `translateX(${itemTranslateX}px)`,
-                    background: "rgba(10, 16, 26, 0.75)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    border: `1.5px solid ${colorTheme.border}`,
-                    borderRadius: 18,
-                    padding: "16px 24px",
-                    boxShadow: `0 15px 40px rgba(0, 0, 0, 0.7), 0 0 25px ${colorTheme.glow}`,
+                    transform: `translateX(${itemTranslateX}px) scale(${itemScale})`,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10,
+                    // NO BACKGROUND CARD! Pure floating comparison meters
                   }}
                 >
-                  {/* Row Header */}
+                  {/* Row Header: Floating Label & Floating Huge Metric */}
                   <div
                     style={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      marginBottom: 10,
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <span style={{ fontSize: 24 }}>{item.icon || "📊"}</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                      <span
+                        style={{
+                          fontSize: 30,
+                          filter: `drop-shadow(0 0 12px ${colorTheme.glow})`,
+                        }}
+                      >
+                        {item.icon || "📊"}
+                      </span>
                       <div>
-                        <span style={{ fontSize: 18, fontWeight: 800, color: "#FFFFFF" }}>
+                        <span
+                          style={{
+                            fontSize: isLandscape ? 26 : 20,
+                            fontWeight: 900,
+                            color: "#FFFFFF",
+                            textShadow: "0 2px 16px rgba(0,0,0,0.95), 0 0 25px rgba(0,0,0,0.85)",
+                            letterSpacing: "-0.01em",
+                          }}
+                        >
                           {item.label}
                         </span>
                         {item.secondary && (
                           <span
                             style={{
-                              marginLeft: 12,
-                              fontSize: 13,
-                              color: "rgba(255, 255, 255, 0.65)",
+                              marginLeft: 14,
+                              fontSize: isLandscape ? 16 : 13,
+                              fontWeight: 600,
+                              color: "rgba(255, 255, 255, 0.8)",
+                              textShadow: "0 2px 10px rgba(0,0,0,0.9)",
                             }}
                           >
                             • {item.secondary}
@@ -544,18 +578,15 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                         )}
                       </div>
                     </div>
+
                     {item.value && (
                       <span
                         style={{
-                          fontSize: 22,
+                          fontSize: isLandscape ? 32 : 24,
                           fontWeight: 900,
                           color: colorTheme.text,
-                          background: colorTheme.bg,
-                          border: `1px solid ${colorTheme.border}`,
-                          padding: "4px 14px",
-                          borderRadius: 12,
-                          boxShadow: `0 0 15px ${colorTheme.glow}`,
                           fontFamily: "'JetBrains Mono', monospace",
+                          textShadow: `0 0 25px ${colorTheme.glow}, 0 2px 12px rgba(0,0,0,0.95)`,
                         }}
                       >
                         {item.value}
@@ -563,13 +594,13 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                     )}
                   </div>
 
-                  {/* Kinetic Gauge Bar */}
+                  {/* Floating Kinetic Gauge Bar */}
                   <div
                     style={{
-                      height: 18,
-                      borderRadius: 9,
-                      background: "rgba(255, 255, 255, 0.08)",
-                      border: "1px solid rgba(255, 255, 255, 0.12)",
+                      height: isLandscape ? 20 : 16,
+                      borderRadius: 10,
+                      background: "rgba(255, 255, 255, 0.12)",
+                      boxShadow: "0 4px 16px rgba(0, 0, 0, 0.8)",
                       overflow: "hidden",
                       position: "relative",
                     }}
@@ -579,8 +610,8 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                         height: "100%",
                         width: `${barFill}%`,
                         background: colorTheme.gradient,
-                        borderRadius: 9,
-                        boxShadow: `0 0 16px ${colorTheme.glow}`,
+                        borderRadius: 10,
+                        boxShadow: `0 0 20px ${colorTheme.glow}`,
                       }}
                     />
                   </div>
@@ -590,15 +621,16 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
           </div>
         )}
 
-        {/* Render Layout: Action Roadmap, Alerts & Polls for other types */}
+        {/* ── Layout C: Direct Action Roadmap, Steps, Alerts & Polls ─────────── */}
         {figure.type !== "stats" && figure.type !== "metric" && figure.type !== "comparison" && (
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: 12,
-              maxWidth: 980,
+              gap: 20,
+              maxWidth: isLandscape ? 1050 : "95%",
               margin: "0 auto",
+              width: "100%",
             }}
           >
             {figure.items.map((item, idx) => {
@@ -610,14 +642,18 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                 ? interpolate(itemFrame, [0, 6], [0, 1], { extrapolateRight: "clamp" })
                 : 0;
               const itemTranslateY = hasTriggered
-                ? interpolate(itemFrame, [0, 10], [25, 0], {
+                ? interpolate(itemFrame, [0, 10], [35, 0], {
                     extrapolateRight: "clamp",
                     easing: Easing.bezier(0.16, 1, 0.3, 1),
                   })
-                : 25;
+                : 35;
+              const itemScale = hasTriggered
+                ? interpolate(itemFrame, [0, 8, 14], [0.85, 1.06, 1.0], {
+                    extrapolateRight: "clamp",
+                    easing: Easing.bezier(0.34, 1.56, 0.64, 1),
+                  })
+                : 0.85;
 
-              // Highlight currently speaking step
-              const isCurrentSpeech = frame >= tFrame && frame < tFrame + 90;
               const colorTheme = COLOR_MAP[item.color || "primary"] || COLOR_MAP.primary;
 
               return (
@@ -625,66 +661,74 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                   key={idx}
                   style={{
                     opacity: itemOpacity,
-                    transform: `translateY(${itemTranslateY}px)`,
-                    background: isCurrentSpeech ? "rgba(18, 28, 45, 0.85)" : "rgba(10, 16, 26, 0.72)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    border: `1.5px solid ${isCurrentSpeech ? colorTheme.border : "rgba(255,255,255,0.14)"}`,
-                    borderRadius: 16,
-                    padding: "14px 22px",
-                    boxShadow: isCurrentSpeech
-                      ? `0 15px 45px rgba(0,0,0,0.7), 0 0 30px ${colorTheme.glow}`
-                      : "0 10px 30px rgba(0,0,0,0.5)",
+                    transform: `translateY(${itemTranslateY}px) scale(${itemScale})`,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    gap: 18,
-                    transition: "border 0.2s, box-shadow 0.2s",
+                    gap: 20,
+                    // NO BACKGROUND CARD! Pure floating kinetic list items
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+                    {/* Glowing Circular Step Ring */}
                     <span
                       style={{
-                        width: 38,
-                        height: 38,
-                        borderRadius: 12,
-                        background: colorTheme.bg,
-                        border: `1.5px solid ${colorTheme.border}`,
+                        width: isLandscape ? 52 : 42,
+                        height: isLandscape ? 52 : 42,
+                        borderRadius: "50%",
+                        background: "rgba(0, 0, 0, 0.65)",
+                        border: `2px solid ${colorTheme.border}`,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: 18,
+                        fontSize: isLandscape ? 22 : 18,
                         fontWeight: 900,
                         color: colorTheme.text,
-                        boxShadow: `0 0 14px ${colorTheme.glow}`,
+                        boxShadow: `0 0 20px ${colorTheme.glow}, 0 4px 12px rgba(0,0,0,0.8)`,
+                        flexShrink: 0,
                       }}
                     >
                       {item.icon || String(idx + 1).padStart(2, "0")}
                     </span>
+
+                    {/* Floating Step Title & Subtext */}
                     <div>
-                      <div style={{ fontSize: 18, fontWeight: 800, color: "#FFFFFF" }}>
+                      <div
+                        style={{
+                          fontSize: isLandscape ? 24 : 19,
+                          fontWeight: 900,
+                          color: "#FFFFFF",
+                          textShadow: "0 2px 16px rgba(0,0,0,0.95), 0 0 25px rgba(0,0,0,0.8)",
+                          letterSpacing: "-0.01em",
+                        }}
+                      >
                         {item.label}
                       </div>
                       {item.secondary && (
-                        <div style={{ fontSize: 13, color: "rgba(255, 255, 255, 0.65)", marginTop: 2 }}>
+                        <div
+                          style={{
+                            fontSize: isLandscape ? 16 : 14,
+                            fontWeight: 600,
+                            color: "rgba(255, 255, 255, 0.85)",
+                            marginTop: 4,
+                            textShadow: "0 2px 10px rgba(0,0,0,0.9)",
+                          }}
+                        >
                           {item.secondary}
                         </div>
                       )}
                     </div>
                   </div>
 
+                  {/* Floating Metric Badge */}
                   {item.value && (
                     <span
                       style={{
-                        fontSize: 18,
-                        fontWeight: 800,
+                        fontSize: isLandscape ? 26 : 20,
+                        fontWeight: 900,
                         color: colorTheme.text,
-                        background: colorTheme.bg,
-                        border: `1px solid ${colorTheme.border}`,
-                        padding: "4px 14px",
-                        borderRadius: 10,
-                        boxShadow: `0 0 12px ${colorTheme.glow}`,
                         fontFamily: "'JetBrains Mono', monospace",
+                        textShadow: `0 0 20px ${colorTheme.glow}, 0 2px 10px rgba(0,0,0,0.9)`,
                         flexShrink: 0,
                       }}
                     >
@@ -697,33 +741,31 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
           </div>
         )}
 
-        {/* ── Floating Highlight Punchline (Appears at climax of explanation) ── */}
+        {/* ── Floating Highlight Takeaway (Appears at climax with whoosh) ────── */}
         {showHighlight && (
           <div
             style={{
-              marginTop: 18,
               opacity: highlightProgress,
-              transform: `scale(${interpolate(highlightProgress, [0, 1], [0.92, 1])})`,
-              background: "rgba(255, 184, 0, 0.12)",
-              backdropFilter: "blur(18px)",
-              WebkitBackdropFilter: "blur(18px)",
-              border: "1.5px solid rgba(255, 184, 0, 0.65)",
-              borderRadius: 16,
-              padding: "14px 24px",
-              boxShadow: "0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 184, 0, 0.25)",
+              transform: `scale(${highlightScale})`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: 12,
+              gap: 14,
               color: "#FFB800",
-              fontSize: isLandscape ? 17 : 14,
-              fontWeight: 800,
+              fontSize: isLandscape ? 22 : 17,
+              fontWeight: 900,
               textAlign: "center",
-              maxWidth: 960,
-              margin: "18px auto 0 auto",
+              maxWidth: 1000,
+              margin: isLandscape ? "42px auto 0 auto" : "28px auto 0 auto",
+              padding: "10px 30px",
+              borderRadius: 30,
+              background: "rgba(0, 0, 0, 0.7)",
+              border: "1.5px solid rgba(255, 184, 0, 0.8)",
+              boxShadow: "0 0 35px rgba(255, 184, 0, 0.35), 0 8px 24px rgba(0,0,0,0.8)",
+              textShadow: "0 0 20px rgba(255, 184, 0, 0.5), 0 2px 10px rgba(0,0,0,0.9)",
             }}
           >
-            <span style={{ fontSize: 22 }}>💡</span>
+            <span style={{ fontSize: 26 }}>💡</span>
             <span>{figure.highlight}</span>
           </div>
         )}

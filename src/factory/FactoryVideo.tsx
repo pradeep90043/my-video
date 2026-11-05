@@ -118,89 +118,13 @@ const COLORS = {
   activeGlow: "0 0 24px rgba(255, 184, 0, 0.85)",
 };
 
-// ── Karaoke Subtitle Component ─────────────────────────────────────────────────
+// ── Word Timing Definition ───────────────────────────────────────────────────
 
 interface WordTiming {
   word: string;
   startMs: number;
   endMs: number;
 }
-
-const KaraokeSubtitles: React.FC<{
-  words: WordTiming[];
-  globalMs: number;
-  fallbackText: string;
-  isLandscape: boolean;
-}> = ({ words, globalMs, fallbackText, isLandscape }) => {
-  // If no word timings provided, render fallback text
-  if (!words || words.length === 0) {
-    return (
-      <div
-        style={{
-          fontFamily: FONT_PRIMARY,
-          fontSize: isLandscape ? 40 : 34,
-          fontWeight: 800,
-          color: COLORS.text,
-          textAlign: "center",
-          textShadow: "0 2px 18px rgba(0,0,0,0.9)",
-          lineHeight: 1.3,
-        }}
-      >
-        {fallbackText}
-      </div>
-    );
-  }
-
-  // Active word index
-  const activeIndex = words.findIndex(
-    (w) => globalMs >= w.startMs - 50 && globalMs <= w.endMs + 50,
-  );
-
-  // Group into readable chunk of words around the active one (5-8 words visible)
-  const windowSize = isLandscape ? 9 : 6;
-  const pivot = activeIndex >= 0 ? activeIndex : 0;
-  const startIdx = Math.max(0, Math.min(pivot - 2, Math.max(0, words.length - windowSize)));
-  const visibleWords = words.slice(startIdx, startIdx + windowSize);
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: isLandscape ? "14px 18px" : "10px 14px",
-        padding: "0 20px",
-      }}
-    >
-      {visibleWords.map((item, idx) => {
-        const absoluteIdx = startIdx + idx;
-        const isCurrent = absoluteIdx === activeIndex;
-        const isPast = absoluteIdx < activeIndex;
-
-        return (
-          <span
-            key={`${item.word}-${item.startMs}`}
-            style={{
-              fontFamily: FONT_PRIMARY,
-              fontSize: isLandscape ? (isCurrent ? 44 : 38) : (isCurrent ? 38 : 32),
-              fontWeight: 900,
-              letterSpacing: "-0.01em",
-              color: isCurrent ? COLORS.primary : isPast ? COLORS.text : "rgba(255, 255, 255, 0.45)",
-              transform: isCurrent ? "scale(1.15)" : "scale(1)",
-              textShadow: isCurrent ? COLORS.activeGlow : "0 2px 12px rgba(0,0,0,0.85)",
-              transition: "transform 0.1s ease, color 0.1s ease",
-              display: "inline-block",
-              margin: isLandscape ? "0 4px" : "0 3px",
-            }}
-          >
-            {item.word}
-          </span>
-        );
-      })}
-    </div>
-  );
-};
 
 // ── Single Scene Component ─────────────────────────────────────────────────────
 
@@ -228,8 +152,6 @@ const FactoryScene: React.FC<{
   const { width } = useVideoConfig();
 
   const sceneOpacity = useSceneTransition(sceneDurationFrames, 6);
-  const localMs = (frame / fps) * 1000;
-  const currentGlobalMs = sceneStartMs + localMs;
 
   // ── Visual Pattern Interrupt (Micro-punch every 3.5s for >85% retention) ─────
   const patternPeriod = Math.round(fps * 3.5);
@@ -362,45 +284,37 @@ const FactoryScene: React.FC<{
         />
       )}
 
-      {/* Subtitles & Dynamic Word-Level Karaoke Block */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: textBottom,
-          left: textPaddingH,
-          right: textPaddingH,
-          zIndex: 10,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          ...textStyle,
-        }}
-      >
-        {/* Scene Title / Hook Punchline */}
+      {/* Clean Scene Title (rendered only when no live figure is present to avoid visual clutter) */}
+      {!scene.figure && headerText && (
         <div
           style={{
-            fontFamily: FONT_PRIMARY,
-            fontSize: titleSize,
-            fontWeight: 800,
-            color: COLORS.text,
-            textAlign: "center",
-            lineHeight: 1.25,
-            textShadow: "0 2px 24px rgba(0,0,0,0.95), 0 0 45px rgba(0,0,0,0.7)",
-            letterSpacing: "-0.02em",
-            marginBottom: 20,
+            position: "absolute",
+            bottom: textBottom,
+            left: textPaddingH,
+            right: textPaddingH,
+            zIndex: 10,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            ...textStyle,
           }}
         >
-          {headerText}
+          <div
+            style={{
+              fontFamily: FONT_PRIMARY,
+              fontSize: titleSize,
+              fontWeight: 800,
+              color: COLORS.text,
+              textAlign: "center",
+              lineHeight: 1.25,
+              textShadow: "0 2px 24px rgba(0,0,0,0.95), 0 0 45px rgba(0,0,0,0.7)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {headerText}
+          </div>
         </div>
-
-        {/* Word-by-Word Karaoke Subtitles */}
-        <KaraokeSubtitles
-          words={sceneWords}
-          globalMs={currentGlobalMs}
-          fallbackText={scene.subtitle || ""}
-          isLandscape={isLandscape}
-        />
-      </div>
+      )}
 
       {/* Progress Bar (Landscape 10-min Long Form) */}
       {isLandscape && (
