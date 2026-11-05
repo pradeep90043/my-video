@@ -216,8 +216,8 @@ export const LiveSceneFigure: React.FC<LiveSceneFigureProps> = ({
                     left: 0,
                     width: `${barWidth}%`,
                     maxWidth:
-                      item.value && item.value.includes("%")
-                        ? parseFloat(item.value) + "%"
+                      item.value && String(item.value).includes("%")
+                        ? parseFloat(String(item.value)) + "%"
                         : "100%",
                     background: colorTheme.bg,
                     zIndex: 0,
