@@ -297,8 +297,8 @@ export const StorySchema = z.object({
 export type StorySpec = z.infer<typeof StorySchema>;
 
 export const PhotoSchema = z.object({
-  /** https URL of the image file itself */
-  url: z.string().url().max(600),
+  /** https URL of the image file itself, or a path inside the project's public folder (e.g. "content/<slug>/images/s3.jpg": an AI-made picture shipped in the bundle) */
+  url: z.string().min(1).max(600).refine((u) => /^https?:\/\//i.test(u) || /^content\/[\w./-]+$/.test(u), "url must be https or a content/ path"),
   /** who to credit, e.g. "Photo: Jane Doe / Wikimedia Commons" */
   credit: z.string().min(1).max(100),
   /** e.g. "CC BY-SA 4.0", "Public domain", "Pexels License" */
