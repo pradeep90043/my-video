@@ -70,7 +70,6 @@ jobs:
       progress_url: ${{ steps.args.outputs.progress_url }}
       progress_token: ${{ steps.args.outputs.progress_token }}
       publish_url: ${{ steps.args.outputs.publish_url }}
-      upload_url: ${{ steps.args.outputs.upload_url }}
       chunks: ${{ steps.plan.outputs.chunks }}
       matrix: ${{ steps.plan.outputs.matrix }}
       audio_chunks: ${{ steps.plan.outputs.audio_chunks }}
@@ -148,9 +147,6 @@ jobs:
           echo "progress_url=${{ inputs.progress_url }}" >> "$GITHUB_OUTPUT"
           echo "progress_token=${{ inputs.progress_token }}" >> "$GITHUB_OUTPUT"
           echo "publish_url=${{ inputs.publish_url }}" >> "$GITHUB_OUTPUT"
-          UPLOAD_URL="${{ inputs.upload_url }}"
-          if [ -n "$UPLOAD_URL" ]; then echo "::add-mask::$UPLOAD_URL"; fi
-          echo "upload_url=$UPLOAD_URL" >> "$GITHUB_OUTPUT"
 
       - name: Fetch Dynamic Project Bundle if Provided
         if: steps.args.outputs.bundle_url != ''
@@ -415,12 +411,14 @@ jobs:
       # If this fails the mp4 is still uploaded as the artifact below and the dashboard downloads it as before.
       - name: Upload video to the bucket
         id: bucket
-        if: needs.prepare.outputs.upload_url != ''
+        if: inputs.upload_url != ''
         continue-on-error: true
         timeout-minutes: 40
         env:
-          UPLOAD_URL: ${{ needs.prepare.outputs.upload_url }}
+          UPLOAD_URL: ${{ inputs.upload_url }}
         run: |
+          # read straight from the input: a masked value cannot travel through job outputs (GitHub drops it)
+          echo "::add-mask::$UPLOAD_URL"
           FILE="out/${{ needs.prepare.outputs.project }}.mp4"
           [ -s "$FILE" ] || { echo "no output file"; exit 1; }
           echo "Uploading $(du -h "$FILE" | cut -f1) to the bucket..."
@@ -428,7 +426,7 @@ jobs:
           echo "Uploaded."
 
       - name: Upload Video Artifact
-        if: needs.prepare.outputs.upload_url == '' || steps.bucket.outcome != 'success'
+        if: inputs.upload_url == '' || steps.bucket.outcome != 'success'
         uses: actions/upload-artifact@v4
         with:
           name: video-${{ needs.prepare.outputs.project }}-${{ github.run_number }}
