@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { OffthreadVideo, continueRender, delayRender, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { OffthreadVideo, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import type { PhotoSpec } from "./schema";
 import type { Theme } from "./theme";
 import { PANEL } from "./PanelGeometry";
@@ -12,6 +12,8 @@ import { PANEL } from "./PanelGeometry";
 export const PhotoPanel: React.FC<{ spec: PhotoSpec; theme: Theme; accent: string; durationFrames: number }> = ({ spec, theme, durationFrames }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  // a picture that ships inside the project ("content/<slug>/images/..") is read from the public folder; anything else is an https URL
+  const src = /^https?:\/\//i.test(spec.url) ? spec.url : staticFile(spec.url);
   const [handle] = useState(() => delayRender(`photo ${spec.url}`, { timeoutInMilliseconds: 45000 }));
   const [ok, setOk] = useState(false);
   useEffect(() => {
@@ -21,8 +23,8 @@ export const PhotoPanel: React.FC<{ spec: PhotoSpec; theme: Theme; accent: strin
     const done = (good: boolean) => { setOk(good); continueRender(handle); };
     img.onload = () => done(true);
     img.onerror = () => done(false);
-    img.src = spec.url;
-  }, [spec.url, handle]);
+    img.src = src;
+  }, [src, handle]);
 
   const enter = spring({ frame: frame - 2, fps, config: { damping: 14, stiffness: 110, mass: 0.7 } });
   const t = frame / Math.max(1, durationFrames);
@@ -37,11 +39,11 @@ export const PhotoPanel: React.FC<{ spec: PhotoSpec; theme: Theme; accent: strin
         <rect width={W} height={H} fill={theme.bg} />
         {ok && spec.video && (
           <foreignObject x={0} y={0} width={W} height={H}>
-            <OffthreadVideo src={spec.url} muted startFrom={Math.round(spec.startFrom * fps)} style={{ width: W, height: H, objectFit: "cover", transform: `scale(${zoom})` }} />
+            <OffthreadVideo src={src} muted startFrom={Math.round(spec.startFrom * fps)} style={{ width: W, height: H, objectFit: "cover", transform: `scale(${zoom})` }} />
           </foreignObject>
         )}
         {ok && !spec.video && (
-          <image href={spec.url} x={panX} y={0} width={W} height={H} preserveAspectRatio="xMidYMid slice"
+          <image href={src} x={panX} y={0} width={W} height={H} preserveAspectRatio="xMidYMid slice"
             transform={`translate(${W / 2},${H / 2}) scale(${zoom}) translate(${-W / 2},${-H / 2})`} />
         )}
         {spec.caption && (
