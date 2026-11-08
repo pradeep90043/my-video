@@ -5,7 +5,7 @@ import type { Theme } from "./theme";
 import { PANEL } from "./PanelGeometry";
 
 /**
- * A real licensed photo in a rounded card with a slow Ken-Burns move and its credit line. The image is preloaded under
+ * A real licensed photo in a rounded card with a slow Ken-Burns move (credits go in the video description, not on screen). The image is preloaded under
  * delayRender so a frame is never rendered before the picture arrives; a picture that cannot load is skipped (the card
  * shows the credit on a plain background) instead of failing the whole render.
  */
@@ -13,7 +13,7 @@ export const PhotoPanel: React.FC<{ spec: PhotoSpec; theme: Theme; accent: strin
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   // a picture that ships inside the project ("content/<slug>/images/..") is read from the public folder; anything else is an https URL
-  const src = /^https?:\/\//i.test(spec.url) ? spec.url : staticFile(spec.url);
+  const src = !spec.url ? "" : /^https?:\/\//i.test(spec.url) ? spec.url : staticFile(spec.url);
   const [handle] = useState(() => delayRender(`photo ${spec.url}`, { timeoutInMilliseconds: 45000 }));
   const [ok, setOk] = useState(false);
   useEffect(() => {
@@ -31,11 +31,10 @@ export const PhotoPanel: React.FC<{ spec: PhotoSpec; theme: Theme; accent: strin
   const zoom = interpolate(t, [0, 1], [1.04, 1.16]);
   const panX = interpolate(t, [0, 1], [-14, 14]);
   const W = PANEL.w, H = PANEL.h;
-  const credit = `${spec.credit}${spec.license ? ` · ${spec.license}` : ""}`;
   return (
     <g transform={`translate(${PANEL.x},${PANEL.y + (1 - enter) * 40})`} opacity={Math.min(1, enter * 2)}>
-      <defs><clipPath id="photo-card-clip"><rect width={W} height={H} rx={40} /></clipPath></defs>
-      <g clipPath="url(#photo-card-clip)">
+      <defs><clipPath id={`photo-card-clip-${handle}`}><rect width={W} height={H} rx={40} /></clipPath></defs>
+      <g clipPath={`url(#photo-card-clip-${handle})`}>
         <rect width={W} height={H} fill={theme.bg} />
         {ok && spec.video && (
           <foreignObject x={0} y={0} width={W} height={H}>
@@ -52,8 +51,6 @@ export const PhotoPanel: React.FC<{ spec: PhotoSpec; theme: Theme; accent: strin
             <text x={W / 2} y={H - 78} textAnchor="middle" fontSize={46} fontWeight={800} fill="#FFFFFF" fontFamily="Montserrat, Arial, sans-serif">{spec.caption}</text>
           </>
         )}
-        <rect x={0} y={H - 40} width={W} height={40} fill="#000000" opacity={0.7} />
-        <text x={18} y={H - 12} fontSize={26} fill="#FFFFFF" fontFamily="Arial, sans-serif">{credit}</text>
       </g>
       <rect width={W} height={H} rx={40} fill="none" stroke={theme.ink} strokeWidth={8} />
     </g>

@@ -298,7 +298,7 @@ export type StorySpec = z.infer<typeof StorySchema>;
 
 export const PhotoSchema = z.object({
   /** https URL of the image file itself, or a path inside the project's public folder (e.g. "content/<slug>/images/s3.jpg": an AI-made picture shipped in the bundle) */
-  url: z.string().min(1).max(600).refine((u) => /^https?:\/\//i.test(u) || (/^content\/[\w./-]+$/.test(u) && !u.includes("..")), "url must be https or a content/ path"),
+  url: z.string().max(600).refine((u) => u === "" || /^https?:\/\//i.test(u) || (/^content\/[\w./-]+$/.test(u) && !u.includes("..")), "url must be https or a content/ path (empty = no picture, full-screen words only)"),
   /** who to credit, e.g. "Photo: Jane Doe / Wikimedia Commons" */
   credit: z.string().min(1).max(100),
   /** e.g. "CC BY-SA 4.0", "Public domain", "Pexels License" */
@@ -309,6 +309,14 @@ export const PhotoSchema = z.object({
   video: z.boolean().default(false),
   /** seconds to skip at the start of a clip (agency clips open on a title slate) */
   startFrom: z.number().min(0).max(300).default(0),
+  /** a full-screen "visual scene": the picture/clip fills the frame (no stickman) with the headline and the points on top */
+  full: z.boolean().optional(),
+  /** full: the big words on screen (about 5 words) */
+  headline: z.string().max(60).optional(),
+  /** full: 2-4 short steps shown one after another as a flow */
+  points: z.array(z.string().min(1).max(44)).max(4).optional(),
+  /** full: the picture is an AI image (vague): darken it so the words carry the scene */
+  dim: z.boolean().optional(),
 });
 
 /** A timed one-shot sound (footsteps, door, alarm, …) inside a scene. */

@@ -14,6 +14,7 @@ import { buildCaptions, type SpokenWord } from "./captions";
 import { CodePanel, ContainerPanel, QuizPanel, StepsPanel } from "./Panels";
 import { ScenePanel } from "./doodle/ScenePanel";
 import { PhotoPanel } from "./PhotoPanel";
+import { CinematicScene } from "./CinematicScene";
 import { StoryStage } from "./story/StoryStage";
 import type { CastMember } from "./story/cast";
 import {
@@ -229,6 +230,8 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
 
   const pose = blendedPose(prevPose, v.pose, frame, fps);
   const hop = v.pose === "celebrate" || v.pose === "laugh" ? Math.abs(Math.sin(frame * 0.2)) * (v.pose === "laugh" ? 12 : 26) : 0;
+  // a full-screen visual scene (real picture + words, no stickman)
+  const cine = !!v.photo?.full;
   const hasPanel = PANEL_KEYS.some((k) => v[k]);
   // The panel owns one side of the frame, the figure stands on the other; props and callouts keep clear of it.
   const layout = layoutScene({
@@ -315,7 +318,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
             cont={v.story.cont} words={words} speakFrom={speakFrom} startFrame={startFrame} fps={fps}
             look={v.story.look} props={v.story.props} fx={v.story.fx} headline={v.story.headline} stat={v.story.stat} place={v.story.place} />
         )}
-        {!v.story && (<>
+        {!v.story && !cine && (<>
         <rect x={-60} y={-60} width={world.width + 120} height={world.height + 120} fill="url(#dots)" opacity={0.7} transform={`translate(${-drift},${-drift})`} />
 
         {v.setting !== "none" && <g opacity={hasPanel ? 0.5 : 1}><Backdrop setting={v.setting} t={frame} theme={theme} world={world} accent={theme.accents[v.accent]} /></g>}
@@ -344,7 +347,9 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
 
         </>)}
 
-        {!v.calm && !v.story && <ScreenFx mood={v.mood} frame={frame} w={world.width} h={world.height} accent={accent} />}
+        {!v.calm && !v.story && !cine && <ScreenFx mood={v.mood} frame={frame} w={world.width} h={world.height} accent={accent} />}
+
+        {cine && v.photo && <CinematicScene spec={v.photo} theme={theme} accent={accent} durationFrames={durationFrames} world={world} font={inter.fontFamily} />}
 
         {v.chapter && (
           <g transform="translate(48,48)" opacity={Math.min(1, frame / 8)}>
@@ -368,12 +373,12 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
         {v.alert && <AlertPanel spec={v.alert} theme={theme} accent={accent} />}
         {v.svg && <SvgPanel spec={v.svg} durationFrames={durationFrames} theme={theme} accent={accent} />}
         {v.news && <NewsPanel spec={v.news} theme={theme} accent={accent} />}
-        {v.photo && <PhotoPanel spec={v.photo} theme={theme} accent={accent} durationFrames={durationFrames} />}
+        {v.photo && !cine && <PhotoPanel spec={v.photo} theme={theme} accent={accent} durationFrames={durationFrames} />}
         {v.scene && <ScenePanel spec={v.scene} durationFrames={durationFrames} theme={theme} accent={accent} />}
         </g>
 
-        {v.title && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
-        {v.callouts.length > 0 && !hasPanel && <CalloutRow items={v.callouts} color={accent} range={layout.calloutRange} world={world} />}
+        {v.title && !cine && <g filter="url(#rough)"><Title text={v.title} theme={theme} color={accent} world={world} /></g>}
+        {v.callouts.length > 0 && !hasPanel && !cine && <CalloutRow items={v.callouts} color={accent} range={layout.calloutRange} world={world} />}
 
         {active && (() => {
           const local = frame - speakFrom;
@@ -383,12 +388,12 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
           return (
             <g opacity={capOpacity} transform={`translate(${world.width / 2},${(vertical ? world.height - 420 : 985) + (1 - pop) * 14}) scale(${0.94 + 0.06 * pop})`}>
               <text textAnchor="middle" fontSize={capSize} fontWeight={800} fontFamily={withDevanagari(inter.fontFamily)}
-                stroke={theme.bg} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
+                stroke={cine ? "#000000" : theme.bg} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
                 {active.words.map((w, i) => {
                   const spoken = local >= w.start;
                   const current = spoken && local < w.end;
                   return (
-                    <tspan key={i} fill={current ? accent : theme.ink} fillOpacity={spoken ? 1 : 0.5}>
+                    <tspan key={i} fill={current ? accent : cine ? "#FFFFFF" : theme.ink} fillOpacity={spoken ? 1 : 0.55}>
                       {w.text}{i < active.words.length - 1 ? " " : ""}
                     </tspan>
                   );
