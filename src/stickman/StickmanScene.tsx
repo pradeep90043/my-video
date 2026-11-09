@@ -20,6 +20,7 @@ import { FilmStage } from "./film/FilmStage";
 import { directForScene } from "./film/direct";
 import type { CastMember } from "./story/cast";
 import { ShotView, sceneShot } from "../illustrated/IllustratedVideo";
+import { FlatShotLayer } from "../flat/FlatShot";
 import {
   AlertPanel, NewsPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
   ProgressPanel, SvgPanel, TablePanel, TerminalPanel,
@@ -235,7 +236,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, sceneries, text, vis
   const pose = blendedPose(prevPose, v.pose, frame, fps);
   const hop = v.pose === "celebrate" || v.pose === "laugh" ? Math.abs(Math.sin(frame * 0.2)) * (v.pose === "laugh" ? 12 : 26) : 0;
   // a full-screen visual scene (real picture + words, no stickman)
-  const cine = !!v.photo?.full || !!v.illustrated;
+  const cine = !!v.photo?.full || !!v.illustrated || !!v.flat;
   const hasPanel = PANEL_KEYS.some((k) => v[k]);
   // The panel owns one side of the frame, the figure stands on the other; props and callouts keep clear of it.
   const layout = layoutScene({
@@ -301,7 +302,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, sceneries, text, vis
     // never wider than the frame: shrink the font for a chunk that is still too long (Inter 800 is ~0.62em per glyph)
     const capSize = Math.max(36, Math.min(vertical ? 70 : 50, (world.width - 100) / (Math.max(1, active.text.length) * 0.62)));
     return (
-      <g opacity={capOpacity} transform={`translate(${world.width / 2},${(vertical ? world.height - 420 : 985) + (1 - pop) * 14}) scale(${0.94 + 0.06 * pop})`}>
+      <g opacity={capOpacity} transform={`translate(${world.width / 2},${(v.flat && vertical ? world.height * 0.165 : vertical ? world.height - 420 : 985) + (1 - pop) * 14}) scale(${0.94 + 0.06 * pop})`}>
         <text textAnchor="middle" fontSize={capSize} fontWeight={800} fontFamily={withDevanagari(inter.fontFamily)}
           stroke={cine ? "#000000" : theme.bg} strokeWidth={14} paintOrder="stroke" strokeLinejoin="round">
           {active.words.map((w, i) => {
@@ -322,6 +323,15 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, sceneries, text, vis
   if (v.illustrated) return (
     <AbsoluteFill style={{ backgroundColor: "#000" }}>
       <ShotView shot={sceneShot(v.illustrated, durationFrames / fps, index)} fadeIn={!v.illustrated.cont} fadeOut={false} />
+      {captionEl && <AbsoluteFill><svg viewBox={`0 0 ${world.width} ${world.height}`} width="100%" height="100%">{captionEl}</svg></AbsoluteFill>}
+    </AbsoluteFill>
+  );
+  // a flat-vector shot (FLAT-VECTOR): the same caption on top; a shot that continues the previous one does not fade in
+  if (v.flat) return (
+    <AbsoluteFill style={{ backgroundColor: "#000" }}>
+      <AbsoluteFill style={{ opacity: v.flat.shot?.cont ? 1 : interpolate(frame, [0, 8], [0, 1], { extrapolateRight: "clamp" }) }}>
+        <FlatShotLayer shot={v.flat.shot} characters={v.flat.cast} durationFrames={durationFrames} uid={`fs${index}`} />
+      </AbsoluteFill>
       {captionEl && <AbsoluteFill><svg viewBox={`0 0 ${world.width} ${world.height}`} width="100%" height="100%">{captionEl}</svg></AbsoluteFill>}
     </AbsoluteFill>
   );

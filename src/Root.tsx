@@ -3,6 +3,9 @@ import { ActivityDemo } from "./three3d/ActivityDemo";
 import { PuppetSheet } from "./stickman/story/puppet/PuppetSheet";
 import { IllustratedVideo, illustratedFrames, type IllustratedSpec } from "./illustrated/IllustratedVideo";
 import { StageDemo } from "./stickman/story/StageDemo";
+import { FlatVideo, flatFrames } from "./flat/FlatVideo";
+import { FLAT_DEMO, FLAT_SHEET_SHOT } from "./flat/demo";
+import type { FlatVideoSpec } from "./flat/spec";
 import { RideSheet } from "./stickman/story/puppet/RideSheet";
 import horsePuppet from "./stickman/story/puppet/examples/horse.json";
 import kingPuppet from "./stickman/story/puppet/examples/king.json";
@@ -153,6 +156,10 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="RideSheet" component={RideSheet as React.FC<any>} width={1500} height={1080} fps={30} durationInFrames={1} defaultProps={{ mount: horsePuppet, rider: kingPuppet }} />
       <Composition id="StageDemo" component={StageDemo as React.FC<any>} width={1920} height={1080} fps={30} durationInFrames={1} defaultProps={{ scenery: { id: "x", sky: ["#7EC8F2", "#E9F7FF"], layers: [] }, cast: [], chars: [] }} />
       <Composition id="Illustrated" component={IllustratedVideo as unknown as React.FC<Record<string, unknown>>} width={1920} height={1080} fps={30} durationInFrames={300} defaultProps={{ shots: [] } as unknown as Record<string, unknown>} calculateMetadata={({ props }) => ({ durationInFrames: Math.max(30, illustratedFrames(props as unknown as IllustratedSpec)) })} />
+      {/* FLAT-VECTOR: the flat 2D engine on its own (props = a FlatVideoSpec); FlatVideoWide is the 16:9 version, FlatSheet the cast side by side */}
+      <Composition id="FlatVideo" component={FlatVideo as unknown as React.FC<Record<string, unknown>>} width={1080} height={1920} fps={30} durationInFrames={300} defaultProps={FLAT_DEMO as unknown as Record<string, unknown>} calculateMetadata={({ props }) => ({ durationInFrames: flatFrames(props as unknown as FlatVideoSpec, 30) })} />
+      <Composition id="FlatVideoWide" component={FlatVideo as unknown as React.FC<Record<string, unknown>>} width={1920} height={1080} fps={30} durationInFrames={300} defaultProps={FLAT_DEMO as unknown as Record<string, unknown>} calculateMetadata={({ props }) => ({ durationInFrames: flatFrames(props as unknown as FlatVideoSpec, 30) })} />
+      <Composition id="FlatSheet" component={FlatVideo as unknown as React.FC<Record<string, unknown>>} width={2400} height={1100} fps={30} durationInFrames={60} defaultProps={{ characters: FLAT_DEMO.characters, shots: [{ ...FLAT_SHEET_SHOT(FLAT_DEMO.characters.map((c) => c.id)), sec: 2 }] } as unknown as Record<string, unknown>} />
       <Composition id="ActivityDemo" component={ActivityDemo} width={720} height={1280} fps={30} durationInFrames={360} />
 
       {/**
