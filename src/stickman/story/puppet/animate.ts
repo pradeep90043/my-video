@@ -13,8 +13,10 @@ export interface Channels {
   arm: number; armSwing: number; lie: number; shake: number; jaw: number; blink: number;
   /** frame (for travelling waves) and how strongly legless bodies undulate */
   time: number; slither: number;
+  /** 1 = a four-legged creature gallops (fore legs together, hind legs together); 1 = a rider sits with its legs forward */
+  gallop: number; sit: number;
 }
-const KEYS: (keyof Channels)[] = ["legSwing", "kneeA", "kneeB", "head", "tilt", "lean", "bounce", "wing", "trunk", "tail", "ear", "arm", "armSwing", "lie", "shake", "jaw", "blink", "time", "slither"];
+const KEYS: (keyof Channels)[] = ["legSwing", "kneeA", "kneeB", "head", "tilt", "lean", "bounce", "wing", "trunk", "tail", "ear", "arm", "armSwing", "lie", "shake", "jaw", "blink", "time", "slither", "gallop", "sit"];
 
 interface Target { gait?: "walk" | "run" | "hop"; head?: number; tilt?: number; lean?: number; bounce?: number; wing?: number; trunk?: number; tail?: number; arm?: number; lie?: number; shake?: number; jaw?: number; peck?: number }
 const T: Record<CharPose, Target> = {
@@ -29,13 +31,15 @@ const T: Record<CharPose, Target> = {
   shout: { head: -28, trunk: 75, jaw: 1, wing: 0.5 }, tired: { head: 28, lean: 10 }, jump: { gait: "hop", bounce: 60, wing: 1, arm: 150 },
 };
 
-export interface MotionInput { frame: number; talking?: boolean; mouthLevel?: number; react?: string; mood?: CharMood }
+export interface MotionInput { gallop?: boolean; seated?: boolean; frame: number; talking?: boolean; mouthLevel?: number; react?: string; mood?: CharMood }
 
 export function channelsFor(pose: CharPose, o: MotionInput): Channels {
   const f = o.frame, t = T[pose] ?? T.stand, sin = (k: number, ph = 0) => Math.sin(f * k + ph);
-  const freq = t.gait === "run" ? 0.55 : t.gait === "walk" ? 0.3 : t.gait === "hop" ? 0.3 : 0;
+  const gal = !!o.gallop && t.gait === "run";
+  const freq = gal ? 0.5 : t.gait === "run" ? 0.55 : t.gait === "walk" ? 0.3 : t.gait === "hop" ? 0.3 : 0;
   const amp = t.gait === "run" ? 38 : t.gait === "walk" ? 22 : t.gait === "hop" ? 20 : 0;
   const ph = f * freq;
+  const seated = !!o.seated;
   const rf = o.react ? f % 90 : 999, rAmt = o.react ? Math.max(0, 1 - rf / 70) : 0;
   const wing = t.wing ?? 0;
   const talk = o.talking ? Math.min(1, (o.mouthLevel ?? 0.5) * 1.5) : 0;
@@ -46,8 +50,8 @@ export function channelsFor(pose: CharPose, o: MotionInput): Channels {
     kneeB: freq ? Math.max(0, -Math.cos(ph)) * amp * 0.9 : 0,
     head: (t.head ?? 0) + (t.peck ?? 0) * eating + (pose === "struggle" ? sin(1.0) * 24 : 0) + (o.react === "yes" ? sin(0.5) * 14 * rAmt : 0) + (pose === "shout" || pose === "talk" ? sin(0.4) * 3 * (o.talking ? 1 : 0) : 0),
     tilt: (o.react === "no" ? sin(0.6) * 16 * rAmt : 0) + (t.tilt ?? 0),
-    lean: t.lean ?? 0,
-    bounce: (t.gait === "hop" ? Math.abs(sin(0.3)) * (t.bounce ?? 0) : (t.bounce ?? 0) * Math.abs(sin(0.25))) + (t.gait === "walk" ? Math.abs(Math.sin(ph)) * 4 : t.gait === "run" ? Math.abs(Math.sin(ph)) * 10 : 0) + (o.react === "surprise" ? Math.max(0, 1 - rf / 14) * 26 : 0) + sin(0.1) * 1.5,
+    lean: (t.lean ?? 0) + (gal ? Math.sin(ph + 1) * 4 : 0),
+    bounce: (t.gait === "hop" ? Math.abs(sin(0.3)) * (t.bounce ?? 0) : (t.bounce ?? 0) * Math.abs(sin(0.25))) + (t.gait === "walk" ? Math.abs(Math.sin(ph)) * 4 : t.gait === "run" ? Math.abs(Math.sin(ph)) * (gal ? 16 : 10) : 0) + (o.react === "surprise" ? Math.max(0, 1 - rf / 14) * 26 : 0) + sin(0.1) * 1.5,
     wing: wing * (-30 - 40 * Math.sin(f * (pose === "scared" ? 1.3 : 0.7))) + (1 - wing) * sin(0.09) * 2,
     trunk: (t.trunk ?? 0) + sin(0.07) * 4 + (pose === "shout" ? sin(0.5) * 6 : 0),
     tail: (sin(pose === "happy" || pose === "jump" ? 0.7 : 0.15)) * (pose === "scared" ? 4 : 14) + (t.tail ?? 0) * 8,
@@ -58,6 +62,8 @@ export function channelsFor(pose: CharPose, o: MotionInput): Channels {
     shake: (t.shake ?? 0) * (pose === "struggle" ? sin(1.2) * 8 : pose === "scared" ? sin(1.6) * 3 : sin(1.1) * 2),
     jaw: Math.max(t.jaw ?? 0, talk, pose === "eat" ? eating * 0.7 : 0, o.mood === "laugh" ? 0.8 : 0, pose === "struggle" ? 0.45 + 0.35 * Math.abs(sin(1.0)) : 0),
     time: f,
+    gallop: gal ? 1 : 0,
+    sit: seated ? 1 : 0,
     slither: t.gait === "run" ? 1.7 : t.gait === "walk" ? 1 : t.gait === "hop" ? 1.3 : pose === "struggle" || pose === "fight" ? 1.4 : pose === "shout" || pose === "angry" ? 0.7 : 0,
     blink: pose === "sleep" || f % 120 > 113 ? 0.12 : 1,
   };
@@ -82,8 +88,18 @@ export function boneAngle(b: PuppetBone, c: Channels): number {
     case "ear": return rest + c.ear * amp;
     case "wing": return rest + c.wing * amp;
     case "trunk": return rest - c.trunk * amp + Math.sin(c.tail * 0.2) * 2;
-    case "leg": return rest + (c.legSwing * side + c.lie * 80) * amp;
-    case "lower": return rest - (side > 0 ? c.kneeA : c.kneeB) * amp;
+    case "leg": {
+      const walking = rest + (c.legSwing * side + c.lie * 80) * amp;
+      if (c.sit > 0) return walking * (1 - c.sit) + (rest - 78) * c.sit; // thighs forward on the saddle
+      if (c.gallop > 0) { const ph = c.time * 0.5 + (b.at[0] >= 0 ? 0 : 0.9); return walking * (1 - c.gallop) + (rest + Math.sin(ph) * 40 * amp) * c.gallop; }
+      return walking;
+    }
+    case "lower": {
+      const walking = rest - (side > 0 ? c.kneeA : c.kneeB) * amp;
+      if (c.sit > 0) return walking * (1 - c.sit) + (rest + 82) * c.sit; // shins hang down
+      if (c.gallop > 0) { const ph = c.time * 0.5 + (b.at[0] >= 0 ? 0 : 0.9); return walking * (1 - c.gallop) + (rest - Math.max(0, Math.cos(ph)) * 55 * amp) * c.gallop; }
+      return walking;
+    }
     case "arm": return rest - (c.arm * amp) + c.armSwing * side * amp;
     case "forearm": return rest - c.arm * 0.3 * amp - Math.max(0, c.armSwing * side) * 0.5 * amp;
     default: return rest + c.tail * 0.5 * amp;

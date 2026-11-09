@@ -39,6 +39,10 @@ export interface PuppetSpec {
   bones: PuppetBone[];
   /** eyes drawn on a bone: blink and mood are animated for any creature */
   eyes?: { bone: string; at: [number, number]; r: number }[];
+  /** a four-legged creature whose "run" is a gallop (fore legs together, hind legs together) */
+  gallop?: boolean;
+  /** where a rider sits: a point in `bone`'s frame (the rider's hip is placed there and follows the bone) */
+  seat?: { bone: string; at: [number, number] };
 }
 
 const ALLOWED_TAGS = new Set(["g", "path", "circle", "ellipse", "rect", "polygon", "polyline", "line"]);
@@ -97,6 +101,7 @@ export function validatePuppet(p: unknown): PuppetIssue[] {
     while (cur && cur.parent !== null && hops++ < 40) cur = s.bones.find((x) => x.id === cur!.parent);
     if (hops >= 40) out.push({ bone: b.id, problem: "cycle" });
   }
+  if (s.seat && (!ids.has(s.seat.bone) || !(Array.isArray(s.seat.at) && s.seat.at.every((n) => Number.isFinite(n) && Math.abs(n) < 800)))) out.push({ problem: "seat must name an existing bone and a point" });
   for (const e of s.eyes ?? []) if (!ids.has(e.bone)) out.push({ problem: `eye on unknown bone ${e.bone}` });
   return out;
 }

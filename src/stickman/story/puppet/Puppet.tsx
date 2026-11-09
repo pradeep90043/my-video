@@ -16,11 +16,15 @@ interface Props {
   /** the pose it comes from and how far into the new one it is (spring, may overshoot) */
   prevPose?: CharPose;
   blend?: number;
+  /** drawn sitting on this puppet's `seat` (a horse, an elephant ...); it moves with the bone it sits on */
+  rider?: { spec: PuppetSpec; mood?: CharMood };
+  /** this puppet is itself a rider: legs forward, no ground shadow, hip at the origin */
+  seated?: boolean;
 }
 
 /** Draws any PuppetSpec: nested joints, art per bone, animated eyes, held prop, soft ground shadow. Origin between the feet, facing +x. */
-export const Puppet: React.FC<Props> = ({ spec, pose, mood, frame, talking, mouthLevel, react, holds, prevPose, blend = 1 }) => {
-  const input = { frame, talking, mouthLevel, react, mood };
+export const Puppet: React.FC<Props> = ({ spec, pose, mood, frame, talking, mouthLevel, react, holds, prevPose, blend = 1, rider, seated }) => {
+  const input = { frame, talking, mouthLevel, react, mood, gallop: spec.gallop, seated };
   const to = channelsFor(pose, input);
   const c = prevPose && prevPose !== pose ? mixChannels(channelsFor(prevPose, input), to, Math.max(0, Math.min(1.25, blend))) : to;
   const kids = (id: string | null) => spec.bones.filter((b) => b.parent === id);
@@ -47,11 +51,20 @@ export const Puppet: React.FC<Props> = ({ spec, pose, mood, frame, talking, mout
         {art(b)}
         {eyesOn(b)}
         {front.map(render)}
+        {rider && spec.seat?.bone === b.id && (
+          <g transform={`translate(${spec.seat.at[0]},${spec.seat.at[1]})`}>
+            <Puppet spec={rider.spec} pose="stand" mood={rider.mood ?? mood} frame={frame} talking={talking} mouthLevel={mouthLevel} seated />
+          </g>
+        )}
       </g>
     );
   };
   const root = spec.bones.find((b) => b.parent === null);
   if (!root) return null;
+  if (seated) {
+    const k = spec.scale ?? 1;
+    return <g transform={`scale(${k}) translate(${-root.at[0]},${-root.at[1]})`}>{render(root)}</g>;
+  }
   const lift = bodyOffset(spec, c) + groundShift(spec);
   return (
     <g transform={`translate(${c.shake},0)`}>

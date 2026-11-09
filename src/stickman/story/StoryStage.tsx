@@ -187,7 +187,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
             {(() => {
               const animal = (!!member.species && member.species !== "monkey") || !!member.puppet;
               const topY = animal
-                ? -((member.puppet ? member.puppet.height : animalHeight(member.species!)) * 0.92 + 12)
+                ? -((member.puppet ? (member.mount ? member.mount.height + member.puppet.height * 0.55 : member.puppet.height) : animalHeight(member.species!)) * 0.92 + 12)
                 : -((510 + 64 * (member.age === "child" ? 1.22 : member.age === "teen" ? 1.08 : 1)) * (member.age === "child" ? 0.62 : member.age === "teen" ? 0.86 : 1) + 62);
               const saysText = c.says && local >= 8 && local < 100 ? c.says : "";
               return (

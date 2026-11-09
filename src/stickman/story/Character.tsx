@@ -78,6 +78,9 @@ export const Character: React.FC<Props> = ({ member: m, pose: poseIn, prevPose, 
   const poseA: CharPose = prevPose ?? poseIn, poseB: CharPose = poseIn;
   const bt = prevPose ? Math.max(0, Math.min(1.25, blend)) : 1;
   // a drawn (generated) character is animated by the shared puppet rig
+  if (m.puppet && m.mount) {
+    return <g transform={`scale(${(typeof flip === "number" ? flip : flip ? -1 : 1)},1)`}><Puppet spec={m.mount} pose={poseIn} prevPose={prevPose} blend={blend} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} rider={{ spec: m.puppet, mood }} /></g>;
+  }
   if (m.puppet) {
     return <g transform={`scale(${(typeof flip === "number" ? flip : flip ? -1 : 1)},1)`}><Puppet spec={m.puppet} pose={poseIn} prevPose={prevPose} blend={blend} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} react={react} holds={holds} /></g>;
   }
