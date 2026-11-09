@@ -279,6 +279,8 @@ export const StoryPropSchema = z.object({
 });
 export const StorySchema = z.object({
   bg: z.enum(STORY_BGS),
+  /** id of a designed background (project level `sceneries`); `bg` stays as the fallback */
+  scenery: z.string().max(24).optional(),
   time: z.enum(STORY_TIMES).default("day"),
   chars: z.array(StoryCharSchema).min(1).max(5),
   /** same place and people as the previous beat: no transition, no re-entrance, the shot just goes on */

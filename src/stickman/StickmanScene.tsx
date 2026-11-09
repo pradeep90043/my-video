@@ -51,6 +51,7 @@ interface SceneProps {
   mouth?: number[];
   /** the storyboard cast (project level); scenes with a `story` place these characters */
   cast?: CastMember[];
+  sceneries?: import("./story/Scenery").Scenery[];
 }
 
 
@@ -223,7 +224,7 @@ const CalloutRow: React.FC<{ items: string[]; color: string; range: [number, num
   );
 };
 
-export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, transitionSound = true, vertical = false, startFrame = 0, mouth, index = 0, words }) => {
+export const StickmanScene: React.FC<SceneProps> = ({ cast, sceneries, text, visual, durationFrames, theme, prevPose, prevMood, speakFrom = 0, speakFrames, muteSfx, transitionSound = true, vertical = false, startFrame = 0, mouth, index = 0, words }) => {
   const world: World = vertical ? WORLD_VERTICAL : WORLD;
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -348,7 +349,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, text, visual, durati
         <rect width={world.width} height={world.height} fill="url(#vignette)" />
         <g clipPath={transition === "iris" && tr < 1 ? "url(#irisClip)" : undefined} transform={sceneTransform}>
         {v.story && (
-          <StoryStage bg={v.story.bg} time={v.story.time} chars={v.story.chars} cast={cast ?? []} frame={frame} durationFrames={durationFrames}
+          <StoryStage scenery={sceneries?.find((x) => x.id === v.story!.scenery)} bg={v.story.bg} time={v.story.time} chars={v.story.chars} cast={cast ?? []} frame={frame} durationFrames={durationFrames}
             talking={talking} mouthLevel={mouthLevel} w={world.width} h={world.height} ground={world.ground} camera={v.camera}
             cont={v.story.cont} words={words} speakFrom={speakFrom} startFrame={startFrame} fps={fps}
             look={v.story.look} props={v.story.props} fx={v.story.fx} headline={v.story.headline} stat={v.story.stat} place={v.story.place} />

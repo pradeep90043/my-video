@@ -1,6 +1,7 @@
 import { Story3DDemo } from "./three3d/Story3DDemo";
 import { ActivityDemo } from "./three3d/ActivityDemo";
 import { PuppetSheet } from "./stickman/story/puppet/PuppetSheet";
+import { StageDemo } from "./stickman/story/StageDemo";
 import { RideSheet } from "./stickman/story/puppet/RideSheet";
 import horsePuppet from "./stickman/story/puppet/examples/horse.json";
 import kingPuppet from "./stickman/story/puppet/examples/king.json";
@@ -149,6 +150,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="Story3DDemo" component={Story3DDemo} width={720} height={1280} fps={30} durationInFrames={120} />
       <Composition id="PuppetSheet" component={PuppetSheet as React.FC<any>} width={1500} height={1080} fps={30} durationInFrames={1} defaultProps={{ spec: elephantPuppet }} />
       <Composition id="RideSheet" component={RideSheet as React.FC<any>} width={1500} height={1080} fps={30} durationInFrames={1} defaultProps={{ mount: horsePuppet, rider: kingPuppet }} />
+      <Composition id="StageDemo" component={StageDemo as React.FC<any>} width={1920} height={1080} fps={30} durationInFrames={1} defaultProps={{ scenery: { id: "x", sky: ["#7EC8F2", "#E9F7FF"], layers: [] }, cast: [], chars: [] }} />
       <Composition id="ActivityDemo" component={ActivityDemo} width={720} height={1280} fps={30} durationInFrames={360} />
 
       {/**

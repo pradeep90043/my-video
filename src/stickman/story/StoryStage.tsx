@@ -2,12 +2,16 @@ import React from "react";
 import { STORY_FONT } from "./font";
 import { StoryFxLayer, StoryPropArt, type StoryFx, type StoryPropName } from "./StoryProps";import { Easing, interpolate, spring } from "remotion";
 import { StoryBackground } from "./Backgrounds";
+import { SceneryBackground, type Scenery } from "./Scenery";
+import { MOUNTS } from "./puppet/library";
 import { Character, CHARACTER_HEIGHT } from "./Character";
 import { animalHeight } from "./Animal";
 import type { CharPose } from "./cast";
 import { DEFAULT_CAST, type CastMember, type StagedChar, type StoryBgName, type StoryLook, type StoryTime } from "./cast";
 
 interface Props {
+  /** a background the planner designed for this story; used instead of `bg` when present */
+  scenery?: Scenery;
   bg: StoryBgName;
   time: StoryTime;
   chars: StagedChar[];
@@ -94,7 +98,7 @@ const LookOverlay: React.FC<{ look: StoryLook; headline?: string; stat?: { label
 };
 
 /** A storyboard frame: the story's background and the people in it, placed left to right, entering with a short walk. */
-export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, durationFrames, talking, mouthLevel, w, h, ground, camera, cont = false, words, speakFrom = 0, startFrame = 0, fps = 30, look = "story", props = [], fx = "none", headline, stat, place }) => {
+export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, durationFrames, talking, mouthLevel, w, h, ground, camera, cont = false, words, speakFrom = 0, startFrame = 0, fps = 30, look = "story", props = [], fx = "none", headline, stat, place, scenery }) => {
   const p = interpolate(frame, [0, durationFrames], [0, 1], { extrapolateRight: "clamp", easing: Easing.inOut(Easing.sin) });
   // a storyboard shot does not zoom: every beat restarting the push looked like the frame jumping
   void p; void camera;
@@ -125,7 +129,7 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
   return (
     <g>
     <g transform={`translate(${w / 2 + camX * 0.45},${ground}) scale(${cam * 1.07}) translate(${-w / 2},${-ground})`}>
-      <StoryBackground bg={bg} time={time} frame={clock} w={w} h={h} ground={ground} />
+      {scenery ? <SceneryBackground scenery={scenery} frame={clock} w={w} h={h} ground={ground} /> : <StoryBackground bg={bg} time={time} frame={clock} w={w} h={h} ground={ground} />}
     </g>
     <g transform={`translate(${w / 2 + camX},${ground}) scale(${cam}) translate(${-w / 2},${-ground})`}>
       {props.map((pr, k) => {
@@ -185,9 +189,9 @@ export const StoryStage: React.FC<Props> = ({ bg, time, chars, cast, frame, dura
           <g key={c.id + i} transform={`translate(${x},${ground + 6 + (c.scale > 1 ? 14 : 0)}) scale(${s})`} opacity={local < 0 ? 0 : popIn}>
             <Character member={member} pose={poseNow} prevPose={poseFrom} blend={blendNow} mood={c.mood} frame={clock} talking={speaks} mouthLevel={speaks ? voiceMouth : undefined} flip={faceNow} energy={speaks ? energy : 0} gesture={gestureFloat + i} listening={talking && (anySpeaker || look !== "story") && !isSpeaker} envelope={envelope} poseWeight={poseWeight} holds={c.holds as StoryPropName | undefined} react={c.react ? (local >= 4 && local < 80 ? c.react : undefined) : undefined} />
             {(() => {
-              const animal = (!!member.species && member.species !== "monkey") || !!member.puppet;
+              const animal = (!!member.species && member.species !== "monkey") || !!member.puppet || !!member.mount;
               const topY = animal
-                ? -((member.puppet ? (member.mount ? member.mount.height + member.puppet.height * 0.55 : member.puppet.height) : animalHeight(member.species!)) * 0.92 + 12)
+                ? -((member.puppet || member.mount ? (member.mount ? ((typeof member.mount === "string" ? MOUNTS[member.mount]?.height : member.mount.height) ?? 340) + 180 : member.puppet!.height) : animalHeight(member.species!)) * 0.92 + 12)
                 : -((510 + 64 * (member.age === "child" ? 1.22 : member.age === "teen" ? 1.08 : 1)) * (member.age === "child" ? 0.62 : member.age === "teen" ? 0.86 : 1) + 62);
               const saysText = c.says && local >= 8 && local < 100 ? c.says : "";
               return (

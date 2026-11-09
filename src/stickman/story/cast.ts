@@ -53,7 +53,9 @@ export interface CastMember {
   /** a drawn character (see puppet/spec.ts): used instead of the built-in people and animals */
   puppet?: import("./puppet/spec").PuppetSpec;
   /** the character rides this drawn mount (needs `puppet`; the mount's `seat` places it); walking / running moves the mount */
-  mount?: import("./puppet/spec").PuppetSpec;
+  mount?: string | import("./puppet/spec").PuppetSpec;
+  /** the rider wears a crown (a king or queen on a mount) */
+  crown?: boolean;
 }
 
 export const SKINS = ["#F3C9A0", "#E7B07F", "#D39A68", "#B9794A", "#8D5A3B", "#6B4128"] as const;

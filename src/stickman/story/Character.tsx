@@ -3,6 +3,7 @@ import { ACTION_POSES, type CastMember, type CharMood, type CharPose } from "./c
 import { StoryPropArt, type StoryPropName } from "./StoryProps";
 import { AnimalCharacter } from "./Animal";
 import { Puppet } from "./puppet/Puppet";
+import { MOUNTS, riderFor } from "./puppet/library";
 
 /**
  * A flat-vector storyboard character. Origin = the point between the feet; the body grows upwards (negative y).
@@ -78,8 +79,10 @@ export const Character: React.FC<Props> = ({ member: m, pose: poseIn, prevPose, 
   const poseA: CharPose = prevPose ?? poseIn, poseB: CharPose = poseIn;
   const bt = prevPose ? Math.max(0, Math.min(1.25, blend)) : 1;
   // a drawn (generated) character is animated by the shared puppet rig
-  if (m.puppet && m.mount) {
-    return <g transform={`scale(${(typeof flip === "number" ? flip : flip ? -1 : 1)},1)`}><Puppet spec={m.mount} pose={poseIn} prevPose={prevPose} blend={blend} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} rider={{ spec: m.puppet, mood }} /></g>;
+  const mount = typeof m.mount === "string" ? MOUNTS[m.mount] : m.mount;
+  if (mount) {
+    const rider = m.puppet ?? riderFor(m);
+    return <g transform={`scale(${(typeof flip === "number" ? flip : flip ? -1 : 1)},1)`}><Puppet spec={mount} pose={poseIn} prevPose={prevPose} blend={blend} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} rider={{ spec: rider, mood }} /></g>;
   }
   if (m.puppet) {
     return <g transform={`scale(${(typeof flip === "number" ? flip : flip ? -1 : 1)},1)`}><Puppet spec={m.puppet} pose={poseIn} prevPose={prevPose} blend={blend} mood={mood} frame={frame} talking={talking} mouthLevel={mouthLevel} react={react} holds={holds} /></g>;
