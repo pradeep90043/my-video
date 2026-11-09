@@ -31,7 +31,7 @@ export interface Shot {
   title?: string;
   subs?: { text: string; at: number; dur: number }[];
   actors: Actor[];
-  fx?: "fireflies" | "rays" | "embers";
+  fx?: "fireflies" | "rays" | "embers" | "rain";
   /** narration for this shot (starts `voiceAt` seconds in) */
   voice?: string; voiceAt?: number;
 }
@@ -97,11 +97,15 @@ const Fx: React.FC<{ kind: Shot["fx"]; t: number; W: number; H: number }> = ({ k
       return <div key={i} style={{ position: "absolute", left: x, top: y, width: 7, height: 7, borderRadius: 4, background: kind === "embers" ? "#ffb347" : "#f7ffb0", boxShadow: `0 0 14px 5px ${kind === "embers" ? "rgba(255,150,60,0.6)" : "rgba(230,255,150,0.6)"}`, opacity: o }} />;
     })}</AbsoluteFill>;
   }
+  if (kind === "rain") return <AbsoluteFill>{Array.from({ length: 90 }).map((_, i) => {
+    const x = rnd(i + 7) * (W + 200) - 100, sp = 900 + rnd(i + 3) * 500, y = ((rnd(i + 11) * H + t * sp) % (H + 120)) - 60;
+    return <div key={i} style={{ position: "absolute", left: x, top: y, width: 2, height: 46, background: "rgba(200,215,240,0.45)", transform: "rotate(14deg)" }} />;
+  })}</AbsoluteFill>;
   if (kind === "rays") return <AbsoluteFill style={{ background: `linear-gradient(${115 + Math.sin(t * 0.3) * 3}deg, rgba(255,240,190,0.0) 30%, rgba(255,236,170,0.22) 45%, rgba(255,240,190,0.0) 52%, rgba(255,236,170,0.16) 60%, rgba(255,240,190,0) 70%)`, mixBlendMode: "screen" }} />;
   return null;
 };
 
-const ShotView: React.FC<{ shot: Shot }> = ({ shot }) => {
+export const ShotView: React.FC<{ shot: Shot; fadeIn?: boolean; fadeOut?: boolean }> = ({ shot, fadeIn = true, fadeOut = true }) => {
   const frame = useCurrentFrame();
   const { fps, width: W, height: H } = useVideoConfig();
   const t = frame / fps, n = shot.secs * fps;
@@ -109,7 +113,7 @@ const ShotView: React.FC<{ shot: Shot }> = ({ shot }) => {
   const cam = shot.camera ?? { from: [1.04, 0.5, 0.5], to: [1.12, 0.52, 0.5] };
   const z = cam.from[0] + (cam.to[0] - cam.from[0]) * p, cx = cam.from[1] + (cam.to[1] - cam.from[1]) * p, cy = cam.from[2] + (cam.to[2] - cam.from[2]) * p;
   const g = GRADE[shot.grade ?? "day"];
-  const fade = Math.min(1, frame / FADE, (n - frame) / FADE);
+  const fade = Math.min(1, fadeIn ? frame / FADE : 1, fadeOut ? (n - frame) / FADE : 1);
   const stage = (depth: number) => `translate(${W / 2}px, ${H / 2}px) scale(${1 + (z - 1) * depth}) translate(${-cx * W}px, ${-cy * H}px)`;
   return (
     <AbsoluteFill style={{ opacity: Math.max(0, fade), backgroundColor: "#000", overflow: "hidden" }}>
@@ -156,3 +160,24 @@ export const IllustratedVideo: React.FC<IllustratedSpec> = (spec) => {
     </AbsoluteFill>
   );
 };
+
+
+/** A painted scene inside the stickman video (visual.illustrated, written by the server's illustrated.ts), as a Shot. */
+export interface SceneShot {
+  bg: string; grade?: "day" | "dusk" | "night"; fx?: Shot["fx"]; cont?: boolean;
+  actors: { id: string; url: string; meta: ActorMeta; height: number; x: number; ground: number; fromX?: number; flip?: boolean; talking?: boolean; walk?: boolean }[];
+}
+export function sceneShot(s: SceneShot, secs: number, index: number): Shot {
+  // the camera keeps moving through the painting: alternate a push-in and a slow pan, so consecutive beats never repeat the same move
+  const k = index % 3;
+  const camera: Shot["camera"] = k === 0 ? { from: [1.04, 0.5, 0.52], to: [1.12, 0.5, 0.54] } : k === 1 ? { from: [1.1, 0.44, 0.53], to: [1.1, 0.56, 0.53] } : { from: [1.14, 0.55, 0.54], to: [1.06, 0.5, 0.52] };
+  return {
+    secs, bg: s.bg, grade: s.grade ?? "day", fx: s.fx, camera,
+    actors: s.actors.map((a) => ({
+      id: a.id, src: a.url, meta: a.meta, height: a.height, ground: a.ground, flip: a.flip,
+      x: a.fromX ?? a.x,
+      moves: a.fromX !== undefined ? [{ at: 0.2, dur: Math.max(0.8, secs * 0.7), to: a.x, walk: true }] : a.walk ? [{ at: 0.1, dur: Math.max(0.8, secs * 0.8), to: Math.max(0.08, Math.min(0.92, a.x + (a.flip ? -0.12 : 0.12))), walk: true }] : [],
+      talks: a.talking ? [[0.1, secs]] : [],
+    })),
+  };
+}

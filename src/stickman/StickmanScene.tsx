@@ -19,6 +19,7 @@ import { StoryStage } from "./story/StoryStage";
 import { FilmStage } from "./film/FilmStage";
 import { directForScene } from "./film/direct";
 import type { CastMember } from "./story/cast";
+import { ShotView, sceneShot } from "../illustrated/IllustratedVideo";
 import {
   AlertPanel, NewsPanel, BrowserPanel, ChartPanel, ComparePanel, CounterPanel, FlowPanel,
   ProgressPanel, SvgPanel, TablePanel, TerminalPanel,
@@ -234,7 +235,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, sceneries, text, vis
   const pose = blendedPose(prevPose, v.pose, frame, fps);
   const hop = v.pose === "celebrate" || v.pose === "laugh" ? Math.abs(Math.sin(frame * 0.2)) * (v.pose === "laugh" ? 12 : 26) : 0;
   // a full-screen visual scene (real picture + words, no stickman)
-  const cine = !!v.photo?.full;
+  const cine = !!v.photo?.full || !!v.illustrated;
   const hasPanel = PANEL_KEYS.some((k) => v[k]);
   // The panel owns one side of the frame, the figure stands on the other; props and callouts keep clear of it.
   const layout = layoutScene({
@@ -317,6 +318,13 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, sceneries, text, vis
     );
   })() : null;
 
+  // a painted shot (ILLUSTRATED): the painting fills the frame, the narrated line's caption stays on top
+  if (v.illustrated) return (
+    <AbsoluteFill style={{ backgroundColor: "#000" }}>
+      <ShotView shot={sceneShot(v.illustrated, durationFrames / fps, index)} fadeIn={!v.illustrated.cont} fadeOut={false} />
+      {captionEl && <AbsoluteFill><svg viewBox={`0 0 ${world.width} ${world.height}`} width="100%" height="100%">{captionEl}</svg></AbsoluteFill>}
+    </AbsoluteFill>
+  );
   // a director shot fills exactly this scene's time (a narrated beat lasts as long as its voice)
   const film = v.film ?? (v.shot ? directForScene(v.shot, durationFrames, fps).film : undefined);
   if (film) return (
