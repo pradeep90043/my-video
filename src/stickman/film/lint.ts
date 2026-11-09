@@ -5,7 +5,7 @@
  * round and a facing flip that happens while the face is side-on (where the mirror shows).
  */
 import { PROPS } from "./props";
-import { BODY, carryPoint, frontHandWorld, personState, toWorld, type PersonState } from "./rig";
+import { BODY, carryPoint, frontHandWorld, intoHand, personState, toWorld, type PersonState } from "./rig";
 import { val } from "./anim";
 import type { FilmLayer, FilmSpec } from "./schema";
 
@@ -70,7 +70,9 @@ export function smoothness(film: FilmSpec, frames: number): Pop[] {
         const [hx, hy] = carryPoint(carrier, f);
         const g = h!.grip ?? PROPS[p.kind].grip ?? [0, -PROPS[p.kind].h / 2];
         const fl = p.flip ? -1 : 1;
-        track.push([hx - g[0] * s * fl, hy - g[1] * s]);
+        // just picked up: it travels from where it lay into the hand (FilmStage draws the same)
+        const k = intoHand(p.held!, h!, f), rx = val(p.x, f, 960), ry = val(p.y, f, 540);
+        track.push([rx + (hx - g[0] * s * fl - rx) * k, ry + (hy - g[1] * s - ry) * k]);
       } else track.push([val(p.x, f, 960), val(p.y, f, 540)]);
     }
     for (const f of spikes(track, min)) pops.push({ frame: f, layer: i, part: `prop ${p.kind}`, detail: "carried thing jumps in one frame" });

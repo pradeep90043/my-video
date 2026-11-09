@@ -231,7 +231,7 @@ test("an AI-written shot that does not parse is dropped, the beat keeps its norm
   const Visual = schema.StickmanVisualSchema;
   assert.ok(Visual, "visual schema exported");
   const good = Visual.parse({ shot: { secs: 3, place: "park" } });
-  assert.equal(good.shot.place, "park");
+  assert.equal(good.shot?.place, "park");
   const bad = Visual.parse({ shot: { secs: 3, place: "moon-base", actions: "not a list" } });
   assert.equal(bad.shot, undefined);
 });

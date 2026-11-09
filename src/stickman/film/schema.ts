@@ -96,6 +96,8 @@ export const FilmLayerSchema = z.discriminatedUnion("t", [
     fg: z.boolean().default(false),
     /** what the figure carries */
     holds: z.enum(["box", "none"]).default("none"),
+    /** [from, until, z]: the front arm is drawn at draw order z (over another person: an arm round them in a hug) */
+    armOver: z.array(z.tuple([z.number(), z.number(), z.number()])).optional(),
   }),
   z.object({
     t: z.literal("hand"), ...base,

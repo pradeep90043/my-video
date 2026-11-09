@@ -163,11 +163,15 @@ export function personState(l: PersonLayer, index: number, frame: number): Perso
     const point: [number, number] = [rest[0] + (goal[0] - rest[0]) * w, rest[1] + (goal[1] - rest[1]) * w - lift];
     const ik = solveFrontArm(pose, frame, seed, point);
     // the solved arm takes over fully almost at once (solving the resting hand gives the resting arm, so there is no pop)
-    const k = smooth(Math.min(1, w * 4));
+    // (blending the angles instead would swing a tightly bent arm, like one round someone's back, straight out on the way)
+    const k = 1;
     pose = { ...pose, armF: [pose.armF[0] + (ik[0] - pose.armF[0]) * k, pose.armF[1] + (ik[1] - pose.armF[1]) * k] };
     // a resting hand on the desk is not something to stare at
     if (!rc.hold) attendTo(rc.x, rc.y, w * 0.85);
   }
+  // carrying in both hands: the back arm follows the front one onto the thing (it sits just behind it), so a gift or a box is
+  // held with two hands, not dangled from one
+  if (pose.carry) pose = { ...pose, armB: [pose.armF[0] - 6, pose.armF[1] + 4] };
   for (const g of l.gazes ?? []) {
     const end = g.until ?? Infinity;
     if (frame < g.at || frame > end + 10) continue;
@@ -221,4 +225,12 @@ export function frontHandWorld(st: PersonState, frame: number): [number, number]
 export function carryPoint(st: PersonState, frame: number): [number, number] {
   const [hx, hy] = frontHandWorld(st, frame), k = st.pose.spread ?? 0;
   return [hx + (st.place.x - hx) * k, hy];
+}
+
+/** How far a thing that was just picked up has travelled from where it lay into the hand (0..1, over 6 frames; a hand-off or a
+ * thing held from the start is in the hand at once). FilmStage draws it there and lint.ts checks the same path. */
+export function intoHand(held: readonly { from: number; until?: number }[], hold: { from: number }, frame: number): number {
+  if (hold.from === 0 || held.some((h) => h !== hold && h.until === hold.from)) return 1;
+  const t = Math.max(0, Math.min(1, (frame - hold.from) / 6));
+  return t * t * (3 - 2 * t);
 }

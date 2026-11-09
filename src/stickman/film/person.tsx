@@ -77,7 +77,7 @@ export const POSES: Record<string, PoseParams> = {
   pray: { ...STAND, lean: 2, head: 14, armF: [62, 112], armB: [58, 112], kneel: true, noLegs: true, turn: 0.9 },
   "clap-a": { ...STAND, head: -4, armF: [78, 44], armB: [74, 44], turn: 0.5 },
   "clap-b": { ...STAND, head: -4, armF: [62, 14], armB: [58, 14], turn: 0.5 },
-  hug: { ...STAND, lean: 8, head: 4, armF: [86, 64], armB: [84, 70], turn: 1 },
+  hug: { ...STAND, lean: 10, head: 6, armF: [6, 6], armB: [54, 124], turn: 1 }, // the front arm is put round the other person by the director (IK)
   "dance-a": { ...STAND, lean: -6, head: -8, armF: [150, 30], armB: [40, 80], shoulders: 6, turn: 0.4 },
   "dance-b": { ...STAND, lean: 6, head: 6, armF: [40, 80], armB: [150, 30], shoulders: -4, turn: 0.4 },
   push: { ...STAND, lean: 18, head: 0, armF: [88, 8], armB: [84, 8], stride: 10, turn: 1 },
@@ -163,9 +163,11 @@ export interface PersonProps {
   talking?: boolean;
   /** seated: how far below the hip line the soles are (fits the seat height; a child's feet dangle) */
   seatSole?: number;
+  /** "body": everything but the front arm; "arm": only the front arm (drawn over another person: an arm round someone in a hug) */
+  part?: "all" | "body" | "arm";
 }
 
-export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, mood, look, holds, seed, shadow, talking, seatSole }) => {
+export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, mood, look, holds, seed, shadow, talking, seatSole, part = "all" }) => {
   const p = paintOf(av);
   const sole = seatSole ?? 228;
   const breathe = Math.sin((frame + seed * 13) / 22) * 3;
@@ -189,6 +191,14 @@ export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, m
       <Limb a={[pose.armB[0] + strideA * -0.6, pose.armB[1]]} w={ARM_W} hand="mitt" p={p} sleeve={sleeve} />
     </g>
   );
+
+  const frontArm = (
+    <g transform={`translate(${50 + spread * SPREAD},-148)`}>
+      <Limb a={[pose.armF[0] + (pose.carry ? 0 : strideA * 0.6), pose.armF[1]]} w={ARM_W} hand={pose.point ? "point" : "mitt"} p={p} sleeve={sleeve} />
+    </g>
+  );
+  // only the front arm, along the same chain of transforms as in the full figure
+  if (part === "arm") return <g transform={`translate(0,${bob})`}><g transform={`translate(0,-250) rotate(${lean + sway * 0.4})`}>{frontArm}</g></g>;
 
   return (
     <g>
@@ -246,9 +256,7 @@ export const Person: React.FC<PersonProps> = ({ avatar: av, pose, frame, eyes, m
           {spread > 0.5 && <g transform={`rotate(${-(lean + sway * 0.4)}) translate(0,250)`}>{backArm}</g>}
           <Head av={av} p={p} pose={pose} frame={frame} seed={seed} sway={sway} eyes={eyes} mood={mood} look={look} talking={!!talking} />
           {/* front arm hangs from the torso's shoulder */}
-          <g transform={`translate(${50 + spread * SPREAD},-148)`}>
-            <Limb a={[pose.armF[0] + (pose.carry ? 0 : strideA * 0.6), pose.armF[1]]} w={ARM_W} hand={pose.point ? "point" : "mitt"} p={p} sleeve={sleeve} />
-          </g>
+          {part !== "body" && frontArm}
           {holds === "box" && (
             <g transform="translate(96,-70)">
               <rect x={-70} y={-34} width={140} height={68} rx={4} fill="#5f7184" stroke="#2f3946" strokeWidth={3} />

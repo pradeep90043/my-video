@@ -201,6 +201,8 @@ interface CastState {
   /** where the head looks (and the face turns): gaze targets, turns to the camera, speaking */
   gazes: { at: number; until?: number; x: number; y: number }[]; turns: [number, number][]; talks: [number, number][]; toCamera?: boolean;
   nods: [number, number, "nod" | "shake"][];
+  /** [from, until, z]: the front arm is drawn over someone (a hug) */
+  armOver: [number, number, number][];
   /** the frame this person is free again (actions queue up behind each other) */
   busy: number;
   initPose: string; initFlip: boolean; initZ: number;
@@ -368,7 +370,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     const st: CastState = {
       avatar, k,
       spec: c, layerIndex: -1, x, y: row.y, s: row.s * k, r: 0, row: rowName, flip: c.facing ? c.facing === "left" : x > W / 2 && n > 1, z: row.z + 2,
-      pose, xs: [], ys: [], ss: [], rs: [], zs: [], poses: [], faces: [], moods: [], looks: [], reach: [], gazes: [], turns: [], talks: [], nods: [], busy: 0,
+      pose, xs: [], ys: [], ss: [], rs: [], zs: [], poses: [], faces: [], moods: [], looks: [], reach: [], gazes: [], turns: [], talks: [], nods: [], armOver: [], busy: 0,
       initPose: pose, initFlip: false, initZ: 0,
     };
     st.layerIndex = layers.length + props.size + i;
@@ -451,6 +453,29 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     const arrive = walkTo(c, f, tx, rowName);
     setFace(c, arrive, wx < tx);
     return arrive;
+  };
+
+  /** put what the hand holds down on the floor beside the feet (before a hug, a clap...); returns the frame the hand is free */
+  const putDown = (c: CastState, f: number): number => {
+    const item = c.holding ? props.get(c.holding) : undefined;
+    if (!item) return f;
+    const sx = c.x + (c.flip ? -1 : 1) * 150 * c.s, sy = place.rows[c.row].y, ss = c.s * (item.spec.size ?? 1), sz = c.z + 1;
+    const g = PROPS[item.kind].grip ?? [0, -PROPS[item.kind].h / 2];
+    const R = 14;
+    setPose(c, f, "crouch");
+    c.reach.push({ at: f, dur: R, x: sx + g[0] * ss, y: sy + g[1] * ss });
+    const rel = f + R;
+    const last = item.held[item.held.length - 1];
+    if (last) last.until = rel;
+    item.xs.push([rel - 1, item.x], [rel, sx]); item.ys.push([rel - 1, item.y], [rel, sy]);
+    if (ss !== item.s) item.ss.push([rel - 1, item.s], [rel, ss]);
+    drops.push({ item, at: rel, by: c.layerIndex });
+    item.zs.push([rel, sz]);
+    Object.assign(item, { x: sx, y: sy, s: ss, z: sz, row: c.row, support: "floor", holder: undefined });
+    c.holding = undefined;
+    setPose(c, rel, "stand");
+    foley.push({ name: "thud", at: rel, volume: 0.2 });
+    return rel + 10;
   };
 
   const actions = [...shot.actions].sort((a, b) => a.at - b.at);
@@ -783,16 +808,36 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       }
       case "hug": {
         if (!tc) { warn(`${a.who} hug: hug whom?`); continue; }
-        if (c.holding || tc.holding) { warn(`${a.who} hug: hands full`); continue; }
-        f = walkTo(c, f, tc.x + (c.x < tc.x ? -1 : 1) * 150 * c.s, tc.row);
-        setFace(c, f, tc.x < c.x); setFace(tc, Math.max(f, tc.busy), c.x < tc.x);
-        const d = dur ?? F(1.8);
-        const bc = c.pose, bt = tc.pose;
-        setPose(c, f, "hug"); setPose(tc, Math.max(f, tc.busy) + 3, "hug");
-        foley.push({ name: "cloth", at: f + 6, volume: 0.4 });
-        setPose(c, f + d, bc === "walk" ? "stand" : bc); setPose(tc, f + d, bt === "hug" ? "stand" : bt);
-        c.moods.push([f, a.mood ?? "happy"]);
-        f += d;
+        // a real hug: what is in the hands is put down first, the two step chest to chest, and each wraps the near arm round the
+        // other's back (drawn OVER the other body) while the far arm goes round behind; they sway a little, squeeze, and let go
+        f = putDown(c, standUp(c, f));
+        const g0 = Math.max(f, tc.busy);
+        const tf = putDown(tc, standUp(tc, g0));
+        f = Math.max(f, tf);
+        const dirC = c.x < tc.x ? 1 : -1;
+        f = walkTo(c, f, tc.x - dirC * 128 * c.s, tc.row);
+        setFace(c, f, dirC < 0); setFace(tc, f, dirC > 0);
+        const d = dur ?? F(2.2), open = 10, rel = f + d;
+        const bc = c.pose === "walk" || c.pose === "run" ? "stand" : c.pose, bt = tc.pose === "hug" ? "stand" : tc.pose;
+        setPose(c, f, "hug"); setPose(tc, f + 3, "hug");
+        // hands on the partner's upper back (the side away from the other person), held until the release
+        const back = (who: CastState, toward: number): [number, number] => [who.x + toward * 52 * who.s, who.y - (BODY.hip + 112) * who.s];
+        const [bx, by] = back(tc, dirC), [ax, ay] = back(c, -dirC);
+        c.reach.push({ at: f + 2, dur: d - open, x: bx, y: by, hold: true, release: rel - open, ease: 12 });
+        tc.reach.push({ at: f + 5, dur: d - open, x: ax, y: ay, hold: true, release: rel - open, ease: 12 });
+        // each near arm is drawn over the other person's body
+        const zTop = Math.max(c.z, tc.z) + 1;
+        c.armOver.push([f + 2, rel + 4, zTop + 0.5]); tc.armOver.push([f + 5, rel + 4, zTop + 0.6]);
+        // the squeeze: both lean in and rock gently together
+        for (const who of [c, tc]) {
+          const sgn = who === c ? dirC : -dirC;
+          who.rs.push([f + 6, 0], [f + 6 + Math.round(d * 0.3), sgn * 3, "inout"], [f + 6 + Math.round(d * 0.6), sgn * -1.5, "inout"], [rel, 0, "inout"]);
+          who.gazes.push({ at: f, until: rel, x: who === c ? tc.x : c.x, y: (who === c ? tc.y : c.y) - BODY.head * who.s });
+        }
+        c.moods.push([f, a.mood ?? "happy"]); tc.moods.push([f + 4, a.mood ?? "happy"]);
+        foley.push({ name: "cloth", at: f + 6, volume: 0.45 }, { name: "sigh", at: f + Math.round(d * 0.4), volume: 0.25 });
+        setPose(c, rel, bc); setPose(tc, rel, bt);
+        f = rel + 6;
         tc.busy = Math.max(tc.busy, f);
         break;
       }
@@ -912,7 +957,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       looks: c.looks.length ? c.looks : undefined, reach: c.reach.length ? c.reach : undefined,
       gazes: c.gazes.length ? c.gazes : undefined, turns: c.turns.length ? c.turns : undefined, talks: c.talks.length ? c.talks : undefined,
       eyes: true, look: 0, fg: false, holds: "none", shadow: true, avatar: c.avatar,
-      nods: c.nods.length ? c.nods : undefined, seatSole: c.seatSole,
+      nods: c.nods.length ? c.nods : undefined, seatSole: c.seatSole, armOver: c.armOver.length ? c.armOver : undefined,
       ...(c.zs.length ? { zs: [[0, c.initZ] as [number, number], ...c.zs] } : { z: c.initZ }),
     } as unknown as FilmLayer;
   }

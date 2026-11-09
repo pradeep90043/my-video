@@ -8,7 +8,7 @@ import { Hand } from "./hand";
 import { Person } from "./person";
 import { resolveAvatar } from "./avatar";
 import { PropArt, PROPS } from "./props";
-import { carryPoint, personState, stepAt, talkingAt } from "./rig";
+import { carryPoint, intoHand, personState, stepAt, talkingAt } from "./rig";
 import { Books, Calendar, Caption, Phone, Poster, Screen, Sign } from "./ui";
 import { val } from "./anim";
 import { overscan, shakeAt } from "./camfx";
@@ -78,7 +78,7 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
     return `translate(${960 + fx.x},${540 + fx.y}) rotate(${fx.r}) scale(${z}) translate(${-px},${-py})`;
   };
   // an env layer fans out into a back and a front pass
-  type Item = { z: number; key: string; layer: FilmLayer; part?: "back" | "front" };
+  type Item = { z: number; key: string; layer: FilmLayer; part?: "back" | "front" | "body" | "arm" };
   const items: Item[] = [];
   film.layers.forEach((layer, i) => {
     if (layer.t === "env") {
@@ -86,7 +86,10 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
     } else {
       const zs = layer.t === "person" || layer.t === "prop" ? layer.zs : undefined;
       const z = (zs ? stepAt(zs, frame, zs[0]?.[1] ?? 20).v : undefined) ?? ("z" in layer ? layer.z : undefined) ?? (layer.t === "person" && layer.fg ? 25 : layer.t === "hand" && !layer.over ? 18 : DEFAULT_Z[layer.t] ?? 20);
-      items.push({ z, key: `l${i}`, layer });
+      // an arm round someone: the body keeps its place, the front arm is drawn over the other person
+      const over = layer.t === "person" ? layer.armOver?.find(([a, b]) => frame >= a && frame < b) : undefined;
+      if (over) items.push({ z, key: `l${i}`, layer, part: "body" }, { z: over[2], key: `l${i}a`, layer, part: "arm" });
+      else items.push({ z, key: `l${i}`, layer });
     }
   });
   items.sort((a, b) => a.z - b.z || a.key.localeCompare(b.key, undefined, { numeric: true }));
@@ -115,12 +118,12 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
     );
     switch (l.t) {
       case "person": {
-        const st = personState(l, Number(it.key.slice(1)), frame);
+        const st = personState(l, parseInt(it.key.slice(1), 10), frame);
         const p = st.place;
         return (
           <g key={it.key} transform={camT(1)} opacity={o} style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined}>
             <g transform={`translate(${p.x},${p.y}) rotate(${p.r}) scale(${p.s * (p.flip ? -1 : 1) * (p.sx ?? 1)},${p.s})`}>
-              <Person avatar={resolveAvatar(l.who, l.avatar, l.shirt)} pose={st.pose} frame={frame} eyes={l.eyes} mood={st.mood} look={st.look} holds={l.holds} seed={st.seed} shadow={l.shadow && p.r === 0} talking={talkingAt(l, frame)} seatSole={l.seatSole} />
+              <Person avatar={resolveAvatar(l.who, l.avatar, l.shirt)} pose={st.pose} frame={frame} eyes={l.eyes} mood={st.mood} look={st.look} holds={l.holds} seed={st.seed} shadow={l.shadow && p.r === 0} talking={talkingAt(l, frame)} seatSole={l.seatSole} part={it.part === "body" || it.part === "arm" ? it.part : "all"} />
             </g>
           </g>
         );
@@ -134,11 +137,19 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
           const st = personState(carrier, hold!.by, frame);
           const [hx, hy] = carryPoint(st, frame);
           const g = hold!.grip ?? PROPS[l.kind].grip ?? [0, -PROPS[l.kind].h / 2];
+          // taking it: for a few frames it travels from where it lay into the hand (a hand that stopped a little short never
+          // makes the thing jump)
+          const k = intoHand(l.held ?? [], hold!, frame);
+          let px = hx, py = hy;
+          if (k < 1) {
+            const rx = x + g[0] * s * (l.flip ? -1 : 1), ry = y + g[1] * s;
+            px = rx + (hx - rx) * k; py = ry + (hy - ry) * k;
+          }
           // a carried thing keeps its own orientation in the world (it does not mirror when it changes hands or the carrier turns)
           const fl = l.flip;
           return (
             <g key={it.key} transform={camT(1)} opacity={o}>
-              <g transform={`translate(${hx},${hy}) scale(${s * (fl ? -1 : 1)},${s}) translate(${-g[0]},${-g[1]})`}><PropArt layer={{ ...l, on: lit, shadow: false }} frame={frame} grade={grade} /></g>
+              <g transform={`translate(${px},${py}) scale(${s * (fl ? -1 : 1)},${s}) translate(${-g[0]},${-g[1]})`}><PropArt layer={{ ...l, on: lit, shadow: false }} frame={frame} grade={grade} /></g>
             </g>
           );
         }
