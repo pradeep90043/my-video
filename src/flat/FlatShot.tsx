@@ -7,6 +7,7 @@ import { Character, stateAt } from "./Character";
 import { Fx, FxFront, Graphic, popIn, wrap, type Box } from "./Graphics";
 import { Animal, SADDLE } from "./Animals";
 import { SetPiece } from "./SetPieces";
+import { DrawnArt, type DrawnLibrary } from "./drawn";
 import { PropIcon } from "./icons";
 import { CharacterSchema, ShotSchema, type CharacterSpec, type ShotSpec } from "./spec";
 
@@ -30,10 +31,11 @@ interface ShotProps {
   t: number; dur: number;
   uid: string;
   accent?: string;
+  drawn?: DrawnLibrary;
 }
 
 /** One shot drawn as SVG children (no wrapper), so it can sit inside another scene's <svg>. */
-export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawChars, W, H, t, dur, uid, accent = "#f2b53a" }) => {
+export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawChars, W, H, t, dur, uid, accent = "#f2b53a", drawn = {} }) => {
   const shot = ShotSchema.parse(raw);
   const chars = new Map(rawChars.map((c) => { const p = CharacterSchema.parse(c); return [p.id, p]; }));
   const vertical = H > W;
@@ -127,27 +129,27 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
           <g transform={`translate(${W / 2} ${H * 0.5 + Math.sin(t * 1.5) * 8 * u})`}>
             <circle r={Math.min(W, H) * 0.24} fill="#ffcf6b" opacity={0.12 + 0.05 * Math.sin(t * 2.5)} />
             <circle r={Math.min(W, H) * 0.14} fill="#ffcf6b" opacity={0.12} />
-            <g transform={`scale(${popIn(t, 0)})`}><PropIcon name={shot.object} size={Math.min(W, H) * 0.3} /></g>
+            <g transform={`scale(${popIn(t, 0)})`}>{shot.object.startsWith("drawn-") ? <DrawnArt part={drawn[shot.object]} size={Math.min(W, H) * 0.34} /> : <PropIcon name={shot.object} size={Math.min(W, H) * 0.3} />}</g>
           </g>
         )}
         {wide && shot.set.filter((sp) => !sp.front).map((sp, i) => (
-          <g key={`set${i}`} transform={`translate(${sp.x * W} ${groundY - sp.lift * H}) scale(${kBase * sp.scale})`}><SetPiece kind={sp.kind} t={t} /></g>
+          <g key={`set${i}`} transform={`translate(${sp.x * W} ${groundY - sp.lift * H}) scale(${kBase * sp.scale})`}>{sp.kind.startsWith("drawn-") ? <DrawnArt part={drawn[sp.kind]} t={t} /> : <SetPiece kind={sp.kind} t={t} />}</g>
         ))}
         {wide && shot.crowd > 0 && <Crowd n={shot.crowd} W={W} y={groundY} k={kBase} t={t} />}
         {animals.map((m, i) => (
           <g key={`an${i}`}>
             <ellipse cx={m.x} cy={groundY - 4 * u} rx={300 * m.k} ry={26 * m.k} fill="#000" opacity={0.2} />
-            <g transform={`translate(${m.x} ${groundY - (m.a.kind === "bird" ? H * 0.42 + Math.sin(t * 1.4 + i) * 20 * u : 0)}) scale(${m.k * (m.flip ? -1 : 1)} ${m.k})`}><Animal kind={m.a.kind} color={m.a.color} t={t + i} walking={m.walking} /></g>
+            <g transform={`translate(${m.x} ${groundY - (m.a.kind === "bird" ? H * 0.42 + Math.sin(t * 1.4 + i) * 20 * u : 0)}) scale(${m.k * (m.flip ? -1 : 1)} ${m.k})`}>{m.a.kind.startsWith("drawn-") ? <DrawnArt part={drawn[m.a.kind]} t={t + i} walking={m.walking} /> : <Animal kind={m.a.kind} color={m.a.color} t={t + i} walking={m.walking} />}</g>
           </g>
         ))}
         {people.map((q) => (
           <g key={q.c.id} opacity={q.opacity}>
             <ellipse cx={q.x} cy={q.y - 4 * u} rx={130 * q.k * (q.spec.age === "child" ? 0.7 : 1)} ry={22 * q.k} fill="#000" opacity={0.22} />
-            <g transform={`translate(${q.x} ${q.y}) scale(${q.k * q.sc})`}><Character c={q.spec} st={q.st} t={t + q.x * 0.001} fps={30} /></g>
+            <g transform={`translate(${q.x} ${q.y}) scale(${q.k * q.sc})`}><Character c={q.spec} st={q.st} t={t + q.x * 0.001} fps={30} drawn={drawn} /></g>
           </g>
         ))}
         {wide && shot.set.filter((sp) => sp.front).map((sp, i) => (
-          <g key={`setf${i}`} transform={`translate(${sp.x * W} ${groundY - sp.lift * H}) scale(${kBase * sp.scale})`}><SetPiece kind={sp.kind} t={t} /></g>
+          <g key={`setf${i}`} transform={`translate(${sp.x * W} ${groundY - sp.lift * H}) scale(${kBase * sp.scale})`}>{sp.kind.startsWith("drawn-") ? <DrawnArt part={drawn[sp.kind]} t={t} /> : <SetPiece kind={sp.kind} t={t} />}</g>
         ))}
         <FxFront kind={shot.fx} W={W} H={H} t={t} />
         {people.map((q) => {
@@ -228,13 +230,13 @@ const NameTag: React.FC<{ tag: { name: string; sub?: string }; x: number; chestY
 };
 
 /** A shot as a full-frame layer driven by the current frame (used inside the stickman video for `visual.flat`). */
-export const FlatShotLayer: React.FC<{ shot: ShotSpec; characters: CharacterSpec[]; durationFrames: number; uid: string; accent?: string }> = ({ shot, characters, durationFrames, uid, accent }) => {
+export const FlatShotLayer: React.FC<{ shot: ShotSpec; characters: CharacterSpec[]; durationFrames: number; uid: string; accent?: string; drawn?: DrawnLibrary }> = ({ shot, characters, durationFrames, uid, accent, drawn }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   return (
     <AbsoluteFill>
       <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-        <FlatShotSvg shot={shot} characters={characters} W={width} H={height} t={frame / fps} dur={durationFrames / fps} uid={uid} accent={accent} />
+        <FlatShotSvg shot={shot} characters={characters} W={width} H={height} t={frame / fps} dur={durationFrames / fps} uid={uid} accent={accent} drawn={drawn} />
       </svg>
     </AbsoluteFill>
   );

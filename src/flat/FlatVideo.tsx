@@ -43,7 +43,7 @@ export const FlatVideo: React.FC<FlatVideoSpec> = (spec) => {
         const el = (
           <Sequence key={i} from={from} durationInFrames={len + (start - from)}>
             <Fade len={FADE} on={fadeIn}>
-              <FlatShotLayer shot={s} characters={characters} durationFrames={len + (start - from)} uid={`s${i}`} />
+              <FlatShotLayer shot={s} characters={characters} durationFrames={len + (start - from)} uid={`s${i}`} drawn={spec.drawn} />
             </Fade>
             {spec.captions && s.caption && <Sequence from={start - from}><Subtitle text={s.caption} dur={len} /></Sequence>}
           </Sequence>

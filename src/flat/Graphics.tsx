@@ -146,9 +146,11 @@ export const Graphic: React.FC<{ g: GraphicSpec; box: Box; t: number; font: stri
       const target = g.value ?? 0, k = clamp01((t - 0.2) / 1.2), shown = Math.round(target * (1 - Math.pow(1 - k, 3)));
       return (
         <g transform={`translate(${cx} ${cy})`}>
-          {(() => { const label = `${shown.toLocaleString("en-IN")}${g.text ?? ""}`, full = `${target.toLocaleString("en-IN")}${g.text ?? ""}`;
+          {(() => { const unit = g.text && g.text.length <= 3 ? g.text : "";
+            const label = `${shown.toLocaleString("en-IN")}${unit}`, full = `${target.toLocaleString("en-IN")}${unit}`;
             return <g transform={`scale(${popIn(t, 0)})`}>{text(label, 0, 8 * u, Math.min(26 * u, (w * 0.9) / (full.length * 0.62)), { fill: accent, weight: 900 })}</g>; })()}
-          {(g.title ?? items[0]) && text(g.title ?? items[0], 0, 24 * u, 6.5 * u, { opacity: fadeIn(t, 0.6) })}
+          {/* a longer "unit" is a label: it goes under the number, with the title */}
+          {[g.text && g.text.length > 3 ? g.text : undefined, g.title ?? items[0]].filter(Boolean).map((l, i) => text(l!, 0, (24 + i * 9) * u, 6.5 * u, { opacity: fadeIn(t, 0.6 + i * 0.2) }))}
         </g>
       );
     }

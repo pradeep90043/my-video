@@ -382,7 +382,7 @@ export const StickmanVisualSchema = z.object({
   story: StorySchema.optional(),
   /** a painted shot (ILLUSTRATED engine: the server's illustrated.ts); drawn by src/illustrated, the story stays as the fallback */
   /** a flat-vector shot (FLAT-VECTOR engine: the server's flat.ts); drawn by src/flat, the story stays as the fallback */
-  flat: z.object({ shot: z.any(), cast: z.array(z.any()).max(8) }).optional(),
+  flat: z.object({ shot: z.any(), cast: z.array(z.any()).max(8), drawn: z.record(z.string(), z.any()).optional() }).optional(),
   illustrated: z.object({ bg: z.string(), grade: z.enum(["day", "dusk", "night"]).optional(), fx: z.enum(["fireflies", "rays", "embers", "rain"]).optional(), cont: z.boolean().optional(), actors: z.array(z.any()).max(6) }).optional(),
   /** cinematic shot made of layers (environment, silhouettes, hands, phone / calendar UI, captions, camera): replaces everything else */
   film: FilmSchema.optional(),

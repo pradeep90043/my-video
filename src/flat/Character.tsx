@@ -1,6 +1,7 @@
 import React from "react";
 import { type CharacterSpec, type CastInShot, GESTURES, MOODS, shade, skinColor } from "./spec";
 import { PropIcon, PROP_GRIP } from "./icons";
+import { DrawnArt, type DrawnLibrary } from "./drawn";
 
 /**
  * One flat-vector person: the same body template for everyone, dressed from the parts catalog. Local units: the feet stand
@@ -114,9 +115,11 @@ interface Props {
   /** seconds since the shot started (drives breathing, blinking, mouth, looping gestures) */
   t: number;
   fps: number;
+  /** parts the planner drew (a drawn head or held thing) */
+  drawn?: DrawnLibrary;
 }
 
-export const Character: React.FC<Props> = ({ c: spec, st, t }) => {
+export const Character: React.FC<Props> = ({ c: spec, st, t, drawn }) => {
   let c = spec;
   const body = bodyOf(c);
   const seed = seedOf(c.id);
@@ -345,7 +348,7 @@ export const Character: React.FC<Props> = ({ c: spec, st, t }) => {
     const size = grip.size;
     return (
       <g transform={`translate(${at.x + grip.dx * size} ${at.y + grip.dy * size}) rotate(${grip.rot})`}>
-        <PropIcon name={st.prop} size={size} silhouette={c.silhouette} />
+        {st.prop.startsWith("drawn-") ? <DrawnArt part={drawn?.[st.prop]} size={size} /> : <PropIcon name={st.prop} size={size} silhouette={c.silhouette} />}
       </g>
     );
   })() : null;
@@ -359,7 +362,7 @@ export const Character: React.FC<Props> = ({ c: spec, st, t }) => {
 
   const head = (
     <g transform={`translate(0 ${-720}) scale(${headK}) translate(0 ${720}) translate(0 ${breath * -120})`}>
-      {c.head !== "human" ? <AnimalHead c={c} skin={skin} ink={ink} mood={st.mood} blink={blink} talkOpen={talkOpen} lookDx={lookDx} /> : <>
+      {c.head.startsWith("drawn-") && drawn?.[c.head] ? <DrawnArt part={drawn[c.head]} blink={blink} talkOpen={talkOpen} /> : c.head !== "human" && !c.head.startsWith("drawn-") ? <AnimalHead c={c} skin={skin} ink={ink} mood={st.mood} blink={blink} talkOpen={talkOpen} lookDx={lookDx} /> : <>
       {/* ears + earrings */}
       {[-1, 1].map((s) => <ellipse key={s} cx={s * 84} cy={-806} rx={14} ry={21} fill={ink(shade(skinColor(c.skin), -0.08))} />)}
       <ellipse cx={0} cy={HEAD_CY} rx={HEAD_RX} ry={HEAD_RY} fill={skin} />

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { DRAWN_ID, DrawnPartSchema } from "./drawn";
 
 /**
  * FLAT-VECTOR: a general flat-2D engine. Characters are one body template dressed from a parts catalog (hair, headwear,
@@ -49,6 +50,10 @@ const color = (d: string) => hex.catch(d).default(d);
 /** A list that keeps its good entries: a bad one is dropped (not the whole list), a long one is cut to `max`. */
 const listOf = <S extends z.ZodTypeAny>(item: S, max: number) =>
   z.preprocess((v) => (Array.isArray(v) ? v.filter((x) => item.safeParse(x).success).slice(0, max) : []), z.array(item)).catch([]).default([]);
+/** a catalog value, or the id of a part the planner drew ("drawn-...") */
+const pickOrDrawn = <T extends readonly [string, ...string[]]>(list: T, d: T[number]) =>
+  z.union([z.enum(list), z.string().regex(DRAWN_ID)]).catch(d).default(d);
+const enumOrDrawn = <T extends readonly [string, ...string[]]>(list: T) => z.union([z.enum(list), z.string().regex(DRAWN_ID)]);
 const pick = <T extends readonly [string, ...string[]]>(list: T, d: T[number]) => z.enum(list).catch(d).default(d);
 
 /** A person, built from parts. `skin` is a SKINS name or any colour (blue, green, purple for gods, demons, aliens...). */
@@ -58,7 +63,7 @@ export const CharacterSchema = z.object({
   gender: pick(["male", "female"] as const, "male"),
   age: pick(["child", "teen", "adult", "old"] as const, "adult"),
   build: pick(["slim", "regular", "heavy"] as const, "regular"),
-  head: pick(HEADS, "human"),
+  head: pickOrDrawn(HEADS, "human"),
   skin: z.string().catch("wheat").default("wheat"),
   hair: pick(HAIR_STYLES, "short"),
   hairColor: color("#2b1d16"),
@@ -97,7 +102,7 @@ export const CastInShotSchema = z.object({
   gesture: pick(GESTURES, "idle"),
   mood: pick(MOODS, "neutral"),
   talking: z.boolean().catch(false).default(false),
-  prop: z.enum(PROPS).optional().catch(undefined),
+  prop: enumOrDrawn(PROPS).optional().catch(undefined),
   enter: pick(ENTERS, "fade"),
   posture: pick(POSTURES, "stand"),
   /** posture "ride": the index of the animal in the shot's animals list it sits on */
@@ -131,7 +136,7 @@ export const GraphicSchema = z.object({
 export type GraphicSpec = z.infer<typeof GraphicSchema>;
 
 export const AnimalSchema = z.object({
-  kind: z.enum(ANIMALS),
+  kind: enumOrDrawn(ANIMALS),
   x: z.number().min(0).max(1).optional().catch(undefined),
   scale: z.number().min(0.3).max(2.5).catch(1).default(1),
   /** faces left instead of right */
@@ -143,7 +148,7 @@ export const AnimalSchema = z.object({
 export type AnimalSpec = z.infer<typeof AnimalSchema>;
 
 export const SetPieceSchema = z.object({
-  kind: z.enum(SET_PIECES),
+  kind: enumOrDrawn(SET_PIECES),
   x: z.number().min(0).max(1).catch(0.5).default(0.5),
   scale: z.number().min(0.3).max(3).catch(1).default(1),
   /** lifted off the ground, 0-1 of the frame height (a hill held up on a finger) */
@@ -164,7 +169,7 @@ export const ShotSchema = z.object({
   cast: listOf(CastInShotSchema, 8),
   graphic: GraphicSchema.optional().catch(undefined),
   /** a single big object in the middle (with a glow) when there is no one on screen */
-  object: z.enum(PROPS).optional().catch(undefined),
+  object: enumOrDrawn(PROPS).optional().catch(undefined),
   /** wide: whole bodies; medium: from the waist up; close: head and shoulders (for feelings) */
   framing: pick(FRAMINGS, "wide"),
   animals: listOf(AnimalSchema, 6),
@@ -181,6 +186,8 @@ export const FlatVideoSchema = z.object({
   characters: z.array(CharacterSchema).max(8),
   shots: z.array(ShotSchema.extend({ sec: z.number().min(0.5).max(30), caption: z.string().optional() })),
   audio: z.string().optional(),
+  /** parts the planner drew (heads, animals, props, set pieces), by id */
+  drawn: z.record(z.string(), DrawnPartSchema).optional(),
   captions: z.boolean().optional(),
 });
 export type FlatVideoSpec = z.infer<typeof FlatVideoSchema>;

@@ -330,7 +330,7 @@ export const StickmanScene: React.FC<SceneProps> = ({ cast, sceneries, text, vis
   if (v.flat) return (
     <AbsoluteFill style={{ backgroundColor: "#000" }}>
       <AbsoluteFill style={{ opacity: v.flat.shot?.cont ? 1 : interpolate(frame, [0, 8], [0, 1], { extrapolateRight: "clamp" }) }}>
-        <FlatShotLayer shot={v.flat.shot} characters={v.flat.cast} durationFrames={durationFrames} uid={`fs${index}`} />
+        <FlatShotLayer shot={v.flat.shot} characters={v.flat.cast} durationFrames={durationFrames} uid={`fs${index}`} drawn={v.flat.drawn} />
       </AbsoluteFill>
       {captionEl && <AbsoluteFill><svg viewBox={`0 0 ${world.width} ${world.height}`} width="100%" height="100%">{captionEl}</svg></AbsoluteFill>}
     </AbsoluteFill>
