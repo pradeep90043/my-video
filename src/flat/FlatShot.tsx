@@ -20,6 +20,9 @@ const ease = (x: number) => { const k = clamp01(x); return k * k * (3 - 2 * k); 
 /** Default x positions for 1-5 people. */
 const SPREAD: Record<number, number[]> = { 1: [0.5], 2: [0.3, 0.7], 3: [0.2, 0.5, 0.8], 4: [0.14, 0.38, 0.62, 0.86], 5: [0.1, 0.3, 0.5, 0.7, 0.9] };
 const WALK_SEC = 1.2;
+/** how tall the catalog animals stand (body units), for their speech bubbles and name tags */
+const ANIMAL_LEN: Record<string, number> = { cow: 760, elephant: 1050, horse: 800, peacock: 760, snake: 420, mouse: 260, bird: 240, lion: 700, deer: 520, dog: 480 };
+const ANIMAL_HEIGHT: Record<string, number> = { cow: 700, elephant: 1050, horse: 800, peacock: 620, snake: 300, mouse: 120, bird: 160, lion: 650, deer: 850, dog: 450 };
 /** backgrounds bright enough that white text needs a dark plate behind it */
 const LIGHT_BGS = new Set(["palace", "sky", "village", "temple", "room", "office", "classroom", "mountains", "sea", "sunburst"]);
 
@@ -70,8 +73,19 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
   const wide = !crop;
 
   // animals first: riders sit on them
+  // every animal fits its share of the frame: a brachiosaurus in a vertical Short is scaled down, never cut off
+  const sizeOf = (kind: string) => {
+    const cr = kind.startsWith("drawn-") ? (drawn[kind]?.creature as { height?: number; length?: number } | undefined) : undefined;
+    return { len: cr?.length ?? drawn[kind]?.w ?? ANIMAL_LEN[kind] ?? 700, tall: cr?.height ?? drawn[kind]?.h ?? ANIMAL_HEIGHT[kind] ?? 600 };
+  };
+  const flies = (kind: string) => kind === "bird" || (kind.startsWith("drawn-") && !!(drawn[kind]?.creature as { wings?: boolean } | undefined)?.wings);
+  // one scale for the whole shot (the largest at which everyone stands side by side under the title), so a giant stays a giant
+  const onGround = shot.animals.filter((a) => !flies(a.kind));
+  const rowLen = onGround.reduce((n, a) => n + sizeOf(a.kind).len * a.scale, 0) || 1;
+  const maxTall = Math.max(1, ...shot.animals.map((a) => sizeOf(a.kind).tall * a.scale));
+  const kShot = Math.min(kBase, (W * 0.94) / rowLen, (groundY - H * 0.2) / maxTall);
   const animals = wide ? shot.animals.map((a, i) => {
-    const k = kBase * a.scale, x0 = (a.x ?? (i + 0.5) / shot.animals.length) * W;
+    const k = kShot * a.scale, x0 = (a.x ?? (i + 0.5) / shot.animals.length) * W;
     let x = x0, walking = false;
     if (a.moveTo != null) {
       const span = Math.max(1.5, (Math.abs(a.moveTo * W - x0) / (W * 0.22)));
@@ -139,7 +153,7 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
         {animals.map((m, i) => (
           <g key={`an${i}`}>
             <ellipse cx={m.x} cy={groundY - 4 * u} rx={300 * m.k} ry={26 * m.k} fill="#000" opacity={0.2} />
-            <g transform={`translate(${m.x} ${groundY - (m.a.kind === "bird" ? H * 0.42 + Math.sin(t * 1.4 + i) * 20 * u : 0)}) scale(${m.k * (m.flip ? -1 : 1)} ${m.k})`}>{m.a.kind.startsWith("drawn-") ? <DrawnArt part={drawn[m.a.kind]} t={t + i} walking={m.walking} /> : <Animal kind={m.a.kind} color={m.a.color} t={t + i} walking={m.walking} />}</g>
+            <g transform={`translate(${m.x} ${groundY - (flies(m.a.kind) ? H * 0.4 + Math.sin(t * 1.4 + i) * 20 * u : 0)}) scale(${m.k * (m.flip ? -1 : 1)} ${m.k})`}>{m.a.kind.startsWith("drawn-") ? <DrawnArt part={drawn[m.a.kind]} t={t + i} walking={m.walking} /> : <Animal kind={m.a.kind} color={m.a.color} t={t + i} walking={m.walking} />}</g>
           </g>
         ))}
         {people.map((q) => (
@@ -152,6 +166,16 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
           <g key={`setf${i}`} transform={`translate(${sp.x * W} ${groundY - sp.lift * H}) scale(${kBase * sp.scale})`}>{sp.kind.startsWith("drawn-") ? <DrawnArt part={drawn[sp.kind]} t={t} /> : <SetPiece kind={sp.kind} t={t} />}</g>
         ))}
         <FxFront kind={shot.fx} W={W} H={H} t={t} />
+        {animals.map((m, i) => {
+          // speech bubble and name tag of an animal hero, over its back
+          const tall = (m.a.kind.startsWith("drawn-") ? ((drawn[m.a.kind]?.creature as { height?: number } | undefined)?.height ?? drawn[m.a.kind]?.h ?? 600) : ANIMAL_HEIGHT[m.a.kind] ?? 600) * m.k;
+          return (
+            <g key={`anui${i}`}>
+              {m.a.say && <Bubble text={m.a.say} x={m.x} y={Math.max(H * (shot.title ? 0.2 : 0.12), groundY - tall - 30 * u)} W={W} u={u} t={t} />}
+              {m.a.tag && <NameTag tag={m.a.tag} x={m.x} chestY={groundY - tall * 0.6} halfW={tall * 0.45} W={W} u={u} t={t} accent={accent} />}
+            </g>
+          );
+        })}
         {people.map((q) => {
           const headTop = q.y - 1060 * q.k * (q.spec.age === "child" ? 0.72 : 1);
           return (

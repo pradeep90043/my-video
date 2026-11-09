@@ -101,6 +101,18 @@ export const SetPiece: React.FC<{ kind: string; t: number }> = ({ kind, t }) => 
         <path d="M -450 -1080 Q 0 -1300 450 -1080" stroke="#e7b24a" strokeWidth={40} fill="none" />
       </g>
     );
+    case "volcano": {
+      const puff = (i: number) => { const k = ((t * 0.25 + i / 4) % 1); return <circle key={i} cx={Math.sin(i * 2) * 60 + k * 120} cy={-1050 - k * 500} r={80 + k * 120} fill="#55505a" opacity={0.75 * (1 - k)} />; };
+      return (
+        <g>
+          {[0, 1, 2, 3].map(puff)}
+          <path d="M -800 0 L -160 -1000 L 160 -1000 L 800 0 Z" fill="#5a4a46" />
+          <path d="M -500 0 L -160 -700 L -60 -1000 L 60 -1000 L 160 -700 L 500 0 Z" fill="#6b5a54" />
+          <path d="M -160 -1000 Q 0 -1060 160 -1000 L 120 -980 Q 0 -1010 -120 -980 Z" fill="#ff7a1f" />
+          {[-60, 20, 80].map((x, i) => <path key={x} d={`M ${x} -990 Q ${x + 30} -800 ${x - 20} ${-560 + i * 80} L ${x + 20} ${-560 + i * 80} Q ${x + 60} -800 ${x + 30} -990 Z`} fill="#ff5a1a" opacity={0.6 + 0.4 * Math.sin(t * 3 + i)} />)}
+        </g>
+      );
+    }
     case "cloud": return (
       <g transform={`translate(0 ${Math.sin(t * 1.1) * 12})`} fill="#ffffff">
         <ellipse cx={0} cy={-60} rx={420} ry={90} /><circle cx={-200} cy={-120} r={120} /><circle cx={40} cy={-170} r={160} /><circle cx={250} cy={-110} r={110} />

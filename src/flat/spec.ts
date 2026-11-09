@@ -22,7 +22,7 @@ export const HEADS = ["human", "elephant", "monkey", "eagle"] as const;
 export const POSTURES = ["stand", "sit", "meditate", "kneel", "seated", "ride"] as const;
 export const FRAMINGS = ["wide", "medium", "close"] as const;
 export const ANIMALS = ["cow", "elephant", "horse", "peacock", "snake", "mouse", "bird", "lion", "deer", "dog"] as const;
-export const SET_PIECES = ["hill", "throne", "yagya", "lotus", "thali", "tree", "house", "boat", "chariot", "pillars", "cloud"] as const;
+export const SET_PIECES = ["hill", "throne", "yagya", "lotus", "thali", "tree", "house", "boat", "chariot", "pillars", "cloud", "volcano"] as const;
 export const MARKS = ["none", "bindi", "tilak", "tripundra", "namam", "scar", "freckles"] as const;
 export const FACIAL = ["none", "beard", "moustache", "beard-long", "stubble"] as const;
 export const EYES = ["normal", "glow", "closed", "big"] as const;
@@ -144,6 +144,9 @@ export const AnimalSchema = z.object({
   /** walks across to this x during the shot */
   moveTo: z.number().min(-0.3).max(1.3).optional().catch(undefined),
   color: hex.optional().catch(undefined),
+  /** an animal hero speaks (a speech bubble) and is named the first time it appears */
+  say: z.string().max(80).optional().catch(undefined),
+  tag: z.object({ name: z.string().max(30), sub: z.string().max(40).optional() }).optional().catch(undefined),
 });
 export type AnimalSpec = z.infer<typeof AnimalSchema>;
 

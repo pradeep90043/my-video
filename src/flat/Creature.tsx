@@ -36,6 +36,11 @@ export const CreatureSchema = z.object({
   tail: pick(["none", "thin", "bushy", "fan", "fish", "long"] as const, "thin"),
   wings: z.boolean().catch(false).default(false), wingColor: col("#8a6a4a"),
   pattern: pick(["none", "spots", "stripes", "scales"] as const, "none"), patternColor: col("#5a3a20"),
+  /** dinosaurs and dragons: plates or spikes along the back, a frill behind the head, small front arms (a biped), teeth */
+  plates: z.boolean().catch(false).default(false), plateColor: col("#c0502a"),
+  frill: z.boolean().catch(false).default(false),
+  arms: z.boolean().catch(false).default(false),
+  teeth: z.boolean().catch(false).default(false),
 });
 export type CreatureSpec = z.infer<typeof CreatureSchema>;
 
@@ -103,8 +108,15 @@ export const Creature: React.FC<{ spec: CreatureSpec; t: number; walking: boolea
         {c.horns === "curved" && <path d={`M ${hx - r * 0.2} ${hy - r * 0.7} Q ${hx - r * 0.9} ${hy - r * 1.6} ${hx - r * 0.2} ${hy - r * 1.9} Q ${hx - r * 0.5} ${hy - r * 1.4} ${hx + r * 0.1} ${hy - r * 0.8} Z`} fill={c.hornColor} />}
         {c.horns === "straight" && <path d={`M ${hx + r * 0.6} ${hy - r * 0.3} L ${hx + r * 1.0} ${hy - r * 1.3} L ${hx + r * 0.9} ${hy - r * 0.25} Z`} fill={c.hornColor} />}
         {c.horns === "antlers" && <path d={`M ${hx - r * 0.1} ${hy - r * 0.8} Q ${hx - r * 0.3} ${hy - r * 1.8} ${hx - r * 0.9} ${hy - r * 2.1} M ${hx - r * 0.2} ${hy - r * 1.4} Q ${hx - r * 0.6} ${hy - r * 1.5} ${hx - r * 0.9} ${hy - r * 1.3} M ${hx - r * 0.25} ${hy - r * 1.7} Q ${hx + r * 0.2} ${hy - r * 2.1} ${hx + r * 0.4} ${hy - r * 2.3}`} stroke="#7a5230" strokeWidth={r * 0.14} fill="none" strokeLinecap="round" />}
+        {c.frill && <g>
+          <circle cx={hx - r * 0.55} cy={hy - r * 0.35} r={r * 1.35} fill={c.plateColor} />
+          <circle cx={hx - r * 0.55} cy={hy - r * 0.35} r={r * 1.12} fill={shade(c.color, 0.12)} />
+          {/* a frilled head carries two brow horns as well as the nose horn */}
+          {c.horns === "straight" && [0, 1].map((i) => <path key={i} d={`M ${hx + r * (0.05 + i * 0.25)} ${hy - r * 0.55} L ${hx + r * (0.55 + i * 0.3)} ${hy - r * 1.55} L ${hx + r * (0.3 + i * 0.25)} ${hy - r * 0.45} Z`} fill={c.hornColor} />)}
+        </g>}
         <circle cx={hx} cy={hy} r={r} fill={c.color} />
         {muz}
+        {c.teeth && Array.from({ length: 5 }, (_, i) => <path key={i} d={`M ${hx + r * (0.4 + i * (c.head === "flat" ? 0.35 : 0.2))} ${hy + r * 0.42} l ${r * 0.07} ${r * 0.22} l ${r * 0.07} ${-r * 0.22} Z`} fill="#f7f2e4" />)}
         {c.ears === "floppy" && <ellipse cx={hx - r * 0.5} cy={hy + r * 0.1} rx={r * 0.3} ry={r * 0.65} fill={d} />}
         {c.trunk && <path d={`M ${hx + r * 0.6} ${hy} Q ${hx + r * 1.4} ${hy + r * 0.6} ${hx + r * 1.2} ${hy + r * 2.2} Q ${hx + r * 1.0} ${hy + r * 2.5} ${hx + r * 0.85} ${hy + r * 2.2} Q ${hx + r * 1.0} ${hy + r * 0.9} ${hx + r * 0.4} ${hy + r * 0.4} Z`} fill={c.color} />}
         {c.horns === "tusks" && <path d={`M ${hx + r * 0.7} ${hy + r * 0.45} Q ${hx + r * 1.4} ${hy + r * 0.6} ${hx + r * 1.5} ${hy - r * 0.1} Q ${hx + r * 1.2} ${hy + r * 0.35} ${hx + r * 0.65} ${hy + r * 0.25} Z`} fill={c.hornColor} />}
@@ -117,6 +129,10 @@ export const Creature: React.FC<{ spec: CreatureSpec; t: number; walking: boolea
       {tail}
       {c.legs > 0 && legXs.map((x, i) => leg(x + bodyW * 0.05, i, true))}
       {c.wings && <ellipse cx={-bodyW * 0.05} cy={cy - bodyH * 0.2} rx={bodyW * 0.42} ry={bodyH * 0.38} fill={c.wingColor} transform={`rotate(${-10 + Math.sin(t * 8) * (c.legs === 2 ? 12 : 3)} 0 ${cy})`} />}
+      {c.plates && Array.from({ length: 7 }, (_, i) => {
+        const px = -bodyW * 0.38 + i * bodyW * 0.12, top = cy - bodyH * (0.42 + 0.08 * Math.sin((i / 6) * Math.PI)), hgt = bodyH * (0.35 + 0.25 * Math.sin((i / 6) * Math.PI));
+        return <path key={i} d={`M ${px - bodyW * 0.05} ${top + bodyH * 0.1} L ${px} ${top - hgt} L ${px + bodyW * 0.05} ${top + bodyH * 0.1} Z`} fill={c.plateColor} />;
+      })}
       {neckLen > 4 && <path d={`M ${nx0 - hs * 0.25} ${ny0 + bodyH * 0.1} L ${hx - hs * 0.3} ${hy} L ${hx + hs * 0.15} ${hy + hs * 0.2} L ${nx0 + hs * 0.25} ${ny0 + bodyH * 0.3} Z`} fill={c.color} />}
       <ellipse cx={0} cy={cy} rx={bodyW / 2} ry={bodyH / 2} fill={c.color} />
       <ellipse cx={bodyW * 0.03} cy={cy + bodyH * 0.22} rx={bodyW * 0.36} ry={bodyH * 0.2} fill={c.belly} />
@@ -132,6 +148,7 @@ export const Creature: React.FC<{ spec: CreatureSpec; t: number; walking: boolea
         </g>
       )}
       {headEl}
+      {c.arms && [0, 1].map((i) => <path key={i} d={`M ${bodyW * 0.3} ${cy + bodyH * (0.05 + i * 0.06)} q ${bodyW * 0.12} ${bodyH * 0.12 + Math.sin(t * 3 + i) * 4} ${bodyW * 0.16} ${bodyH * 0.32}`} stroke={i ? d : c.color} strokeWidth={Math.max(8, legW * 0.35)} fill="none" strokeLinecap="round" />)}
       {c.legs > 0 && legXs.map((x, i) => leg(x, i, false))}
     </g>
   );
