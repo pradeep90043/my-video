@@ -7,6 +7,8 @@
 import React from "react";
 import type { FilmLayer } from "./schema";
 import { MARKER_FONT, UI_FONT } from "./fonts";
+import type { DrawnProp } from "./schema";
+import { paint, sanitizeSvg } from "../story/puppet/spec";
 
 type PropLayer = Extract<FilmLayer, { t: "prop" }>;
 export type PropKind = PropLayer["kind"];
@@ -25,7 +27,7 @@ export interface PropSpec {
   big?: boolean;
 }
 
-export const PROPS: Record<PropKind, PropSpec> = {
+export const PROPS = {
   desk: { w: 560, h: 236, mount: "floor", top: { y: 236, w: 540 }, big: true },
   table: { w: 600, h: 232, mount: "floor", top: { y: 232, w: 580 }, big: true },
   chair: { w: 180, h: 450, mount: "floor", seat: { y: 200, dx: 10 } },
@@ -80,7 +82,15 @@ export const PROPS: Record<PropKind, PropSpec> = {
   trophy: { w: 100, h: 150, mount: "surface", grip: [0, -60] },
   "flower-pot": { w: 100, h: 140, mount: "surface", grip: [0, -40] },
   food: { w: 150, h: 50, mount: "surface", grip: [60, -10] },
-};
+} as Record<PropKind, PropSpec>;
+
+/** Things the planner drew: registered by kind ("drawn-<id>") from the art they carry, so everything that looks a prop up by kind
+ * (placing, holding, sitting, putting down) treats them like the catalog's own. */
+export function registerDrawn(kind: string, art: DrawnProp): PropSpec {
+  const spec: PropSpec = { w: art.w, h: art.h, mount: art.mount ?? "surface", top: art.top, seat: art.seat, grip: art.grip ?? [0, -art.h / 2], big: art.big };
+  (PROPS as Record<string, PropSpec>)[kind] = spec;
+  return spec;
+}
 
 const SH = (w: number, o = 0.28) => <ellipse cx={0} cy={0} rx={w * 0.56} ry={Math.max(6, w * 0.05)} fill="#000" opacity={o} filter="url(#fl-soft2)" />;
 const WOOD = "#9a6b47", WOOD_D = "#6e4a30", METAL = "#5d6670", WHITE = "#eef0f2";
@@ -88,7 +98,15 @@ const WOOD = "#9a6b47", WOOD_D = "#6e4a30", METAL = "#5d6670", WHITE = "#eef0f2"
 /** The drawing, in local space (origin = bottom middle, y up is negative). */
 export const PropArt: React.FC<{ layer: PropLayer; frame: number; grade?: string }> = ({ layer, frame, grade }) => {
   const k = layer.kind, c = layer.color, on = layer.on, night = grade === "night" || grade === "rain";
-  const sp = PROPS[k];
+  const sp = PROPS[k] ?? (layer.art ? registerDrawn(k, layer.art) : undefined);
+  if (!sp) return null;
+  if (layer.art) {
+    // a drawn thing: its own shapes (only plain shapes pass), a soft shadow under it
+    const safe = sanitizeSvg(layer.art.svg);
+    if (!safe) return null;
+    const sh = layer.shadow && sp.mount !== "wall" ? SH(sp.w * 1.05, 0.3) : null;
+    return <g>{sh}<g dangerouslySetInnerHTML={{ __html: paint(safe, {}) }} /></g>;
+  }
   const body = (() => {
     switch (k) {
       case "desk":

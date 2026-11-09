@@ -1,6 +1,6 @@
 {
  "name": "horse",
- "height": 340,
+ "height": 578,
  "gallop": true,
  "seat": {
   "bone": "body",
@@ -177,5 +177,6 @@
    ],
    "r": 6
   }
- ]
+ ],
+ "scale": 1.7
 }

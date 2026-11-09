@@ -6,9 +6,11 @@ import React from "react";
 import { EnvBack, EnvFront, FilmDefs } from "./env";
 import { Hand } from "./hand";
 import { Person } from "./person";
+import { Puppet } from "../story/puppet/Puppet";
+import { creatureState, seatWorld } from "./creature";
 import { resolveAvatar } from "./avatar";
 import { PropArt, PROPS } from "./props";
-import { carryPoint, intoHand, personState, stepAt, talkingAt } from "./rig";
+import { BODY, carryPoint, intoHand, personState, stepAt, talkingAt } from "./rig";
 import { Books, Calendar, Caption, Phone, Poster, Screen, Sign } from "./ui";
 import { val } from "./anim";
 import { overscan, shakeAt } from "./camfx";
@@ -19,7 +21,7 @@ const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 const rnd = (seed: number) => { let s = Math.imul(seed + 1, 2654435761) >>> 0; return () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296); };
 
 /** Draw order when a layer does not set `z`. */
-const DEFAULT_Z: Record<string, number> = { env: 0, person: 10, prop: 20, poster: 12, sign: 16, books: 20, calendar: 20, phone: 20, screen: 20, hand: 35, fx: 40, caption: 60 };
+const DEFAULT_Z: Record<string, number> = { env: 0, person: 10, creature: 10, prop: 20, poster: 12, sign: 16, books: 20, calendar: 20, phone: 20, screen: 20, hand: 35, fx: 40, caption: 60 };
 
 const Fx: React.FC<{ layer: Extract<FilmLayer, { t: "fx" }>; frame: number }> = ({ layer, frame }) => {
   const a = layer.amount;
@@ -84,7 +86,7 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
     if (layer.t === "env") {
       items.push({ z: layer.z ?? 0, key: `e${i}b`, layer, part: "back" }, { z: (layer.z ?? 0) + 15, key: `e${i}f`, layer, part: "front" });
     } else {
-      const zs = layer.t === "person" || layer.t === "prop" ? layer.zs : undefined;
+      const zs = layer.t === "person" || layer.t === "prop" || layer.t === "creature" ? layer.zs : undefined;
       const z = (zs ? stepAt(zs, frame, zs[0]?.[1] ?? 20).v : undefined) ?? ("z" in layer ? layer.z : undefined) ?? (layer.t === "person" && layer.fg ? 25 : layer.t === "hand" && !layer.over ? 18 : DEFAULT_Z[layer.t] ?? 20);
       // an arm round someone: the body keeps its place, the front arm is drawn over the other person
       const over = layer.t === "person" ? layer.armOver?.find(([a, b]) => frame >= a && frame < b) : undefined;
@@ -119,7 +121,13 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
     switch (l.t) {
       case "person": {
         const st = personState(l, parseInt(it.key.slice(1), 10), frame);
-        const p = st.place;
+        let p = st.place;
+        // a rider sits on the creature's seat and faces the way it faces
+        const mount = l.rideOn !== undefined ? film.layers[l.rideOn] : undefined;
+        if (mount && mount.t === "creature") {
+          const ms = creatureState(mount, frame), seat = seatWorld(mount.spec, ms, frame);
+          if (seat) p = { ...p, x: seat[0], y: seat[1] + BODY.hip * p.s, flip: ms.flip }; // a seated figure's hips are BODY.hip above its origin
+        }
         return (
           <g key={it.key} transform={camT(1)} opacity={o} style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined}>
             <g transform={`translate(${p.x},${p.y}) rotate(${p.r}) scale(${p.s * (p.flip ? -1 : 1) * (p.sx ?? 1)},${p.s})`}>
@@ -154,6 +162,16 @@ export const FilmStage: React.FC<Props> = ({ film, frame, durationFrames }) => {
           );
         }
         return wrap(<PropArt layer={{ ...l, on: lit }} frame={frame} grade={grade} />, l.flip ? -1 : 1);
+      }
+      case "creature": {
+        const cs = creatureState(l, frame);
+        return (
+          <g key={it.key} transform={camT(1)} opacity={o} style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined}>
+            <g transform={`translate(${cs.x},${cs.y}) scale(${cs.s * (cs.flip ? -1 : 1)},${cs.s})`}>
+              <Puppet spec={l.spec} pose={cs.pose} prevPose={cs.prev} blend={cs.blend} mood={cs.mood} frame={frame} talking={cs.talking} mouthLevel={cs.talking ? 0.5 + 0.4 * Math.abs(Math.sin(frame * 0.7)) : 0} />
+            </g>
+          </g>
+        );
       }
       case "hand": return <g key={it.key} transform={camT(1)} style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined}><Hand layer={l} x={x} y={y} scale={s} frame={frame} opacity={o} /></g>;
       case "phone": return wrap(<Phone layer={l} frame={frame} />);

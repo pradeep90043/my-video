@@ -37,6 +37,21 @@ export const PROP_KINDS = [
   "laptop", "book", "book-open", "book-stack", "books-box", "notebook", "phone", "mug", "bottle", "glass", "plate", "bowl", "lamp-desk",
   "bag", "ball", "alarm-clock", "pillow", "pen", "paper", "box", "gift", "cake", "dumbbell", "guitar", "headphones", "trophy", "flower-pot", "food",
 ] as const;
+/** A thing the planner DREW (not in the catalog): its art and how it behaves. The kind is "drawn-<id>". */
+export const DrawnPropSchema = z.object({
+  /** plain SVG shapes (see story/puppet/spec.ts sanitizeSvg), drawn with the origin at the middle of the bottom edge, y up negative */
+  svg: z.string().max(8000),
+  w: z.number().min(10).max(1200), h: z.number().min(6).max(1000),
+  mount: z.enum(["floor", "surface", "wall"]).default("surface"),
+  grip: z.tuple([z.number(), z.number()]).optional(),
+  top: z.object({ y: z.number(), w: z.number() }).optional(),
+  seat: z.object({ y: z.number(), dx: z.number(), lie: z.boolean().optional() }).optional(),
+  big: z.boolean().optional(),
+  /** held in both hands (a big box, a baby) */
+  twoHands: z.boolean().optional(),
+});
+export type DrawnProp = z.infer<typeof DrawnPropSchema>;
+export const DRAWN_KIND = /^drawn-[a-z0-9-]{1,40}$/;
 export const FX_KINDS = ["rain", "dust", "vignette", "tint", "glow", "grain", "leaves", "sunrays"] as const;
 
 const base = {
@@ -98,6 +113,19 @@ export const FilmLayerSchema = z.discriminatedUnion("t", [
     holds: z.enum(["box", "none"]).default("none"),
     /** [from, until, z]: the front arm is drawn at draw order z (over another person: an arm round them in a hug) */
     armOver: z.array(z.tuple([z.number(), z.number(), z.number()])).optional(),
+    /** riding: sits on the seat of the creature layer with this index (and goes where it goes) */
+    rideOn: z.number().int().min(0).optional(),
+  }),
+  z.object({
+    t: z.literal("creature"), ...base,
+    /** the drawing (story/puppet/spec.ts PuppetSpec; checked by validatePuppet before it gets here) */
+    spec: z.any(),
+    pose: z.string().default("stand"), poses: z.array(z.tuple([z.number(), z.string()])).optional(),
+    flip: z.boolean().default(false), faces: z.array(z.tuple([z.number(), z.boolean()])).optional(),
+    mood: z.enum(MOODS).default("neutral"), moods: z.array(z.tuple([z.number(), z.enum(MOODS)])).optional(),
+    talks: z.array(z.tuple([z.number(), z.number()])).optional(),
+    zs: z.array(z.tuple([z.number(), z.number()])).optional(),
+    shadow: z.boolean().default(true),
   }),
   z.object({
     t: z.literal("hand"), ...base,
@@ -137,7 +165,7 @@ export const FilmLayerSchema = z.discriminatedUnion("t", [
   z.object({ t: z.literal("books"), ...base, kind: z.enum(BOOK_KINDS).default("box"), label: z.string().optional(), lid: AnimSchema.default(0) }),
   z.object({
     t: z.literal("prop"), ...base,
-    kind: z.enum(PROP_KINDS), label: z.string().optional(), color: z.string().optional(), flip: z.boolean().default(false),
+    kind: z.union([z.enum(PROP_KINDS), z.string().regex(DRAWN_KIND) as unknown as z.ZodType<`drawn-${string}`>]), art: DrawnPropSchema.optional(), label: z.string().optional(), color: z.string().optional(), flip: z.boolean().default(false),
     /** is it on (screen lit, lamp glowing, door open...) */
     on: z.boolean().default(false),
     /** carried: from..until it rides in the front hand of the person layer `by` (index into layers); `grip` is the held point, local */

@@ -9,13 +9,14 @@ import { z } from "zod";
 import type { FilmLayer, FilmSpec } from "./schema";
 import type { Ease, Key } from "./anim";
 import { damp, type Shake } from "./camfx";
-import { FilmSchema, MOODS, PERSON_POSES, PROP_KINDS, WHO } from "./schema";
-import { PROPS, type PropKind } from "./props";
+import { DRAWN_KIND, DrawnPropSchema, FilmSchema, MOODS, PERSON_POSES, PROP_KINDS, WHO } from "./schema";
+import { PROPS, registerDrawn, type PropKind } from "./props";
 import { BODY, REACH, carryPoint, personState } from "./rig";
 import { val } from "./anim";
 import { AGES, AvatarSchema, BEARDS, BUILDS, GENDERS, HAIRS, OUTFITS, SKINS, bodyScale, resolveAvatar, type Avatar } from "./avatar";
 import { KNEEL_DROP } from "./person";
 import { PARK_GROUND, ROOM_FLOOR } from "./env";
+import { validatePuppet, type PuppetSpec } from "../story/puppet/spec";
 
 const FPS = 30, W = 1920, H = 1080;
 
@@ -30,7 +31,9 @@ export const MOVES = ["static", "push-in", "pull-out", "pan-left", "pan-right", 
 const Pos = z.number().min(0).max(1);
 const PropSpecSchema = z.object({
   id: z.string().min(1),
-  kind: z.enum(PROP_KINDS),
+  /** a catalog thing, or (with `draw`) a thing the planner drew: then the kind is set to "drawn-<id>" */
+  kind: z.union([z.enum(PROP_KINDS), z.string().regex(DRAWN_KIND) as unknown as z.ZodType<`drawn-${string}`>]).optional(),
+  draw: DrawnPropSchema.optional(),
   /** "floor" / "wall", or the id of the prop (or built-in surface: "counter", "desk") it stands on */
   on: z.string().optional(),
   /** 0 = left edge of the screen (or of the surface it is on), 1 = right */
@@ -56,6 +59,10 @@ const CastSchema = z.object({
   holds: z.string().optional(),
   /** walks in from off-screen at the start */
   enter: z.enum(["left", "right"]).optional(),
+  /** not a person: a creature the planner drew (story/puppet/spec.ts PuppetSpec); it walks, runs, jumps, reacts, but has no hands */
+  draw: z.any().optional(),
+  /** a person riding the creature with this cast id (it must have a `seat`): wherever the rider goes, the creature carries them */
+  rides: z.string().optional(),
 }).merge(AvatarSchema);
 const ActionSchema = z.object({
   at: z.number().min(0),
@@ -96,7 +103,7 @@ export const ShotSchema = z.object({
 });
 export type ShotInput = z.input<typeof ShotSchema>;
 export type Shot = z.infer<typeof ShotSchema>;
-type PropIn = z.infer<typeof PropSpecSchema>;
+type PropIn = z.infer<typeof PropSpecSchema> & { kind: PropKind };
 type CastIn = z.infer<typeof CastSchema>;
 
 // ───────────────────────────── places ─────────────────────────────
@@ -201,6 +208,8 @@ interface CastState {
   /** where the head looks (and the face turns): gaze targets, turns to the camera, speaking */
   gazes: { at: number; until?: number; x: number; y: number }[]; turns: [number, number][]; talks: [number, number][]; toCamera?: boolean;
   nods: [number, number, "nod" | "shake"][];
+  /** a drawn creature instead of a person; `mount`: the creature this person rides */
+  creature?: PuppetSpec; mount?: CastState;
   /** [from, until, z]: the front arm is drawn over someone (a hug) */
   armOver: [number, number, number][];
   /** the frame this person is free again (actions queue up behind each other) */
@@ -218,6 +227,16 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   const shot = ShotSchema.parse(input);
   const warnings: string[] = [];
   const warn = (m: string) => warnings.push(m);
+  // drawn things become kinds of their own; a thing with neither a kind nor a drawing cannot be shown
+  const shotProps: PropIn[] = shot.props.flatMap((p): PropIn[] => {
+    if (p.draw) {
+      const kind = `drawn-${p.id.toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 40) || "thing"}` as PropKind;
+      registerDrawn(kind, p.draw);
+      return [{ ...p, kind }];
+    }
+    if (!p.kind) { warn(`${p.id}: no kind and no drawing — left out`); return []; }
+    return [{ ...p, kind: p.kind }];
+  });
   const F = (sec: number) => Math.round(sec * fps);
   const total = F(shot.secs);
   const place = placeOf(shot);
@@ -236,7 +255,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   }
 
   // ── props: furniture first, then what stands on it ──
-  const specs: PropIn[] = [...(shot.furnish ? place.furniture.filter((f) => !shot.props.some((p) => p.id === f.id)) : []), ...shot.props];
+  const specs: PropIn[] = [...(shot.furnish ? place.furniture.filter((f) => !shotProps.some((p) => p.id === f.id)) : []), ...shotProps];
   const props = new Map<string, PropState>();
   const placed = new Set<string>();
   const byId = new Map(specs.map((p) => [p.id, p]));
@@ -367,15 +386,26 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     const x = 100 + at * (W - 200);
     const pose = c.pose ?? (place.behind === rowName ? "sit" : "stand");
     const avatar = resolveAvatar(c.who, c, c.shirt), k = bodyScale(avatar);
+    const drawn = c.draw ? validatePuppet(c.draw) : [];
+    if (c.draw && drawn.length) warn(`${c.id}: the drawing is not usable (${drawn.slice(0, 3).map((d) => d.problem).join("; ")}) — shown as a person`);
     const st: CastState = {
       avatar, k,
       spec: c, layerIndex: -1, x, y: row.y, s: row.s * k, r: 0, row: rowName, flip: c.facing ? c.facing === "left" : x > W / 2 && n > 1, z: row.z + 2,
       pose, xs: [], ys: [], ss: [], rs: [], zs: [], poses: [], faces: [], moods: [], looks: [], reach: [], gazes: [], turns: [], talks: [], nods: [], armOver: [], busy: 0,
       initPose: pose, initFlip: false, initZ: 0,
     };
+    if (c.draw && !drawn.length) { st.creature = c.draw as PuppetSpec; st.s = row.s; }
     st.layerIndex = layers.length + props.size + i;
     cast.set(c.id, st);
   });
+  // riders sit on their creature from the start (seated on its back, legs forward); the creature starts where they were
+  for (const c of cast.values()) {
+    if (!c.spec.rides) continue;
+    const m = cast.get(c.spec.rides);
+    if (!m?.creature?.seat || c.creature) { warn(`${c.spec.id} rides "${c.spec.rides}": that is not a drawn creature with a seat`); continue; }
+    c.mount = m; c.pose = "sit-bench"; c.initPose = "sit-bench"; c.seatSole = 150; // feet in the stirrups, not to the ground
+    m.x = c.spec.at !== undefined ? c.x : m.x;
+  }
 
   // where things are in the world
   const propGrip = (p: PropState): [number, number] => {
@@ -584,8 +614,17 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   }
 
   for (const a of actions) {
-    const c = cast.get(a.who);
+    let c = cast.get(a.who);
     if (!c) { warn(`action ${a.do} at ${a.at}s: no cast member "${a.who}"`); continue; }
+    // a rider goes where the creature takes them: moving actions are the creature's
+    if (c.mount && ["walk", "run", "enter", "exit", "face", "jump"].includes(a.do)) c = c.mount;
+    // a creature has no hands
+    if (c.creature && ["pick", "put", "give", "use", "write", "press", "switch", "clap", "drink", "eat", "hug", "sit", "lie", "kneel", "pray"].includes(a.do)) {
+      warn(`${a.who} ${a.do}: a drawn creature cannot do that`); continue;
+    }
+    if (c.mount && ["sit", "lie", "kneel", "pray", "dance", "hug", "pick", "put", "give", "use", "write", "press", "switch", "drink", "eat", "fall"].includes(a.do)) {
+      warn(`${a.who} ${a.do}: is riding`); continue;
+    }
     let f = Math.max(F(a.at), c.busy);
     if (f >= total) { warn(`${a.who} ${a.do} at ${a.at}s starts after the shot ends`); continue; }
     const dur = a.dur ? F(a.dur) : undefined;
@@ -808,6 +847,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       }
       case "hug": {
         if (!tc) { warn(`${a.who} hug: hug whom?`); continue; }
+        if (tc.creature || tc.mount) { warn(`${a.who} hug: ${tc.spec.id} cannot be hugged here`); continue; }
         // a real hug: what is in the hands is put down first, the two step chest to chest, and each wraps the near arm round the
         // other's back (drawn OVER the other body) while the far arm goes round behind; they sway a little, squeeze, and let go
         f = putDown(c, standUp(c, f));
@@ -942,7 +982,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
     }
     const homeZ = p.held[0]?.from === 0 ? p.z : (p.zs.length ? zIn(p) : p.z);
     layers[p.layerIndex] = {
-      t: "prop", kind: p.kind, label: p.spec.label, color: p.spec.color, flip: p.flip, on: p.spec.lit ?? false, shadow: p.support !== "wall",
+      t: "prop", kind: p.kind, ...(p.spec.draw ? { art: p.spec.draw } : {}), label: p.spec.label, color: p.spec.color, flip: p.flip, on: p.spec.lit ?? false, shadow: p.support !== "wall",
       at: 0, x: keyed(p.xs, p.x, "linear"), y: keyed(p.ys, p.y, "linear"), s: keyed(p.ss, p.s, "linear"), r: 0, o: 1, blur: 0,
       ...(zs.length ? { zs: [[0, homeZ] as [number, number], ...zs].sort((a, b) => a[0] - b[0]) } : { z: p.z }),
       ons: p.ons.length ? p.ons : undefined, held,
@@ -950,6 +990,16 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
   }
   function zIn(p: PropState) { return p.zs.length ? p.zs[0][1] : p.z; }
   for (const c of cast.values()) {
+    if (c.creature) {
+      layers[c.layerIndex] = {
+        t: "creature", spec: c.creature, pose: c.initPose, poses: c.poses.length ? c.poses : undefined,
+        at: 0, x: keyed(c.xs, c.x), y: keyed(c.ys, c.y), s: keyed(c.ss, c.s), r: 0, o: 1, blur: 0,
+        flip: c.initFlip, faces: c.faces.length ? c.faces : undefined, mood: c.spec.mood, moods: c.moods.length ? c.moods : undefined,
+        talks: c.talks.length ? c.talks : undefined, shadow: true,
+        ...(c.zs.length ? { zs: [[0, c.initZ] as [number, number], ...c.zs] } : { z: c.initZ }),
+      } as unknown as FilmLayer;
+      continue;
+    }
     layers[c.layerIndex] = {
       t: "person", who: c.spec.who, pose: c.initPose, poses: c.poses.length ? c.poses : undefined, poseDur: 14, poseAt: 0,
       at: 0, x: keyed(c.xs, c.x), y: keyed(c.ys, c.y), s: keyed(c.ss, c.s), r: keyed(c.rs, c.r), o: 1, blur: 0,
@@ -958,6 +1008,7 @@ export function direct(input: ShotInput | Shot, opts: { fps?: number } = {}): Di
       gazes: c.gazes.length ? c.gazes : undefined, turns: c.turns.length ? c.turns : undefined, talks: c.talks.length ? c.talks : undefined,
       eyes: true, look: 0, fg: false, holds: "none", shadow: true, avatar: c.avatar,
       nods: c.nods.length ? c.nods : undefined, seatSole: c.seatSole, armOver: c.armOver.length ? c.armOver : undefined,
+      ...(c.mount ? { rideOn: c.mount.layerIndex, z: c.mount.initZ + 0.5, zs: undefined } : {}),
       ...(c.zs.length ? { zs: [[0, c.initZ] as [number, number], ...c.zs] } : { z: c.initZ }),
     } as unknown as FilmLayer;
   }
