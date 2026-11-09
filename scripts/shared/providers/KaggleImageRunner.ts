@@ -38,7 +38,7 @@ export function kernelMetadata(slot: string, env = process.env) {
     is_private: true,
     enable_gpu: true,
     enable_internet: true,
-    machine_shape: "NvidiaTeslaT4",
+    machine_shape: env.KAGGLE_MACHINE || "NvidiaTeslaT4",
     dataset_sources: [],
     competition_sources: [],
     kernel_sources: [],
@@ -69,14 +69,14 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 export async function runKaggleImageGen(
   prompts: KaggleImagePrompt[],
   outputDir: string,
-  opts: { slot?: string; giveUpMs?: number } = {},
+  opts: { slot?: string; giveUpMs?: number; runner?: string } = {},
 ): Promise<Map<string, string>> {
   const slot = opts.slot || "mv-image-gen";
   const kernel = `${kaggleUser()}/${slot}`;
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), `img-${slot}-`));
 
   console.log(`  [ImageGen-Kaggle] Packaging ${prompts.length} prompts for ${kernel}...`);
-  fs.writeFileSync(path.join(tmp, "runner.py"), embedPrompts(fs.readFileSync(RUNNER_SCRIPT, "utf8"), prompts));
+  fs.writeFileSync(path.join(tmp, "runner.py"), embedPrompts(fs.readFileSync(opts.runner ?? RUNNER_SCRIPT, "utf8"), prompts));
   fs.writeFileSync(path.join(tmp, "kernel-metadata.json"), JSON.stringify(kernelMetadata(slot), null, 2));
 
   console.log(`  [ImageGen-Kaggle] Pushing job to Kaggle GPU (${slot})...`);
