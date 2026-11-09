@@ -9,6 +9,8 @@ import { shade } from "./spec";
 
 export const SADDLE: Record<string, { x: number; y: number } | undefined> = {
   horse: { x: -20, y: -640 }, elephant: { x: -60, y: -1000 }, lion: { x: -30, y: -560 }, cow: { x: -40, y: -560 },
+  // Kartikeya's peacock: the rider sits on its back, in front of the fanned tail
+  peacock: { x: -20, y: -290 },
 };
 
 const DEFAULTS: Record<string, string> = {
