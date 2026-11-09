@@ -33,3 +33,20 @@ test("flat: beats change gesture and mood at their time, blended over a third of
   assert.equal(stateAt(cast, 3).blend, 1);
   assert.equal(stateAt(cast, 3).mood, "happy");
 });
+
+test("flat v2: framing, animals, set pieces, crowds and postures parse with safe fallbacks", () => {
+  const s = ShotSchema.parse({
+    bg: "village", framing: "close", crowd: 80,
+    animals: [{ kind: "elephant", x: 0.4, color: "#eef0f2" }, { kind: "dragon" }, { kind: "cow", scale: 9 }],
+    set: [{ kind: "hill", lift: 0.36 }, { kind: "castle" }],
+    cast: [{ id: "indra", posture: "ride", rides: 0 }, { id: "x", posture: "fly" }],
+  });
+  assert.equal(s.framing, "close");
+  assert.equal(s.crowd, 0, "an impossible crowd size falls back to none");
+  assert.deepEqual(s.animals.map((a) => a.kind), ["elephant", "cow"], "an unknown animal is dropped alone");
+  assert.equal(s.animals[1].scale, 1, "an impossible scale falls back");
+  assert.deepEqual(s.set.map((p) => [p.kind, p.lift]), [["hill", 0.36]]);
+  assert.deepEqual(s.cast.map((c) => [c.posture, c.rides]), [["ride", 0], ["stand", undefined]]);
+  assert.equal(CharacterSchema.parse({ id: "g", head: "elephant" }).head, "elephant");
+  assert.equal(CharacterSchema.parse({ id: "g", head: "robot" }).head, "human");
+});

@@ -11,17 +11,24 @@ import { z } from "zod";
 
 export const SKINS = { light: "#f3d2b6", fair: "#e9bf9c", wheat: "#d9a57c", tan: "#c58b5e", brown: "#a06b45", dark: "#6e4630" } as const;
 export const HAIR_STYLES = ["short", "side-part", "spiky", "curly", "bald", "long", "bun", "ponytail", "braid", "jata", "afro", "wavy"] as const;
-export const HEADWEAR = ["none", "crown", "mukut", "horns", "turban", "cap", "hijab", "veil", "halo", "helmet", "hat", "tiara", "peacock-feather", "headband"] as const;
+export const HEADWEAR = ["none", "crown", "mukut", "krishna-mukut", "horns", "turban", "cap", "hijab", "veil", "halo", "helmet", "hat", "tiara", "peacock-feather", "headband", "moon-jata"] as const;
 export const UPPER = ["tshirt", "shirt", "suit", "hoodie", "kurta", "bare", "armor", "blouse", "robe", "coat", "sweater", "uniform"] as const;
 export const LOWER = ["pants", "jeans", "shorts", "skirt", "dhoti", "saree", "lehenga", "none"] as const;
-export const ACCESSORIES = ["necklace", "earrings", "armlets", "bangles", "belt", "watch", "bag", "scarf", "sash", "glasses", "tie"] as const;
+export const ACCESSORIES = ["necklace", "earrings", "armlets", "bangles", "belt", "watch", "bag", "scarf", "sash", "glasses", "tie", "garland", "snake", "rudraksha"] as const;
+/** the head: a person's, or an animal head on a person's body (Ganesha, Hanuman, Garuda...) */
+export const HEADS = ["human", "elephant", "monkey", "eagle"] as const;
+/** how the body is held: standing, sitting cross-legged, meditating, kneeling, on a seat (throne, chair), riding an animal */
+export const POSTURES = ["stand", "sit", "meditate", "kneel", "seated", "ride"] as const;
+export const FRAMINGS = ["wide", "medium", "close"] as const;
+export const ANIMALS = ["cow", "elephant", "horse", "peacock", "snake", "mouse", "bird", "lion", "deer", "dog"] as const;
+export const SET_PIECES = ["hill", "throne", "yagya", "lotus", "thali", "tree", "house", "boat", "chariot", "pillars", "cloud"] as const;
 export const MARKS = ["none", "bindi", "tilak", "tripundra", "namam", "scar", "freckles"] as const;
 export const FACIAL = ["none", "beard", "moustache", "beard-long", "stubble"] as const;
 export const EYES = ["normal", "glow", "closed", "big"] as const;
 export const MOODS = ["neutral", "happy", "sad", "angry", "scared", "surprised", "evil", "calm"] as const;
 export const GESTURES = [
   "idle", "wave", "point", "namaste", "raise", "shrug", "arms-crossed", "hands-hips", "hold", "present", "cry", "think",
-  "attack", "bless", "talk", "hold-up", "cover-mouth", "salute",
+  "attack", "bless", "talk", "hold-up", "cover-mouth", "salute", "meditate", "lift",
 ] as const;
 export const PROPS = [
   "phone", "book", "diya", "sword", "bow", "flower", "cup", "gift", "laptop", "bag", "mic", "letter", "flag", "trident",
@@ -32,10 +39,10 @@ export const BACKGROUNDS = [
   "night", "sunburst", "glow", "sky", "city", "village", "palace", "temple", "room", "office", "classroom", "forest",
   "mountains", "sea", "space", "plain",
 ] as const;
-export const FX = ["none", "stars", "dust", "embers", "rings", "rays", "snow", "rain", "petals", "fireflies", "sparkle", "confetti"] as const;
+export const FX = ["none", "stars", "dust", "embers", "rings", "rays", "snow", "rain", "petals", "fireflies", "sparkle", "confetti", "storm", "flood", "clouds"] as const;
 export const ENTERS = ["none", "fade", "slide-left", "slide-right", "pop", "rise"] as const;
 export const CAMERAS = ["static", "push", "pull", "pan-left", "pan-right"] as const;
-export const GRAPHICS = ["calendar", "clock", "compass", "scroll", "nodes", "stat", "list", "versus", "timeline", "icon", "bars", "date-card", "statement"] as const;
+export const GRAPHICS = ["calendar", "clock", "compass", "scroll", "nodes", "stat", "list", "versus", "timeline", "icon", "bars", "date-card", "statement", "map"] as const;
 
 const hex = z.string().regex(/^#[0-9a-fA-F]{6}$/);
 const color = (d: string) => hex.catch(d).default(d);
@@ -51,6 +58,7 @@ export const CharacterSchema = z.object({
   gender: pick(["male", "female"] as const, "male"),
   age: pick(["child", "teen", "adult", "old"] as const, "adult"),
   build: pick(["slim", "regular", "heavy"] as const, "regular"),
+  head: pick(HEADS, "human"),
   skin: z.string().catch("wheat").default("wheat"),
   hair: pick(HAIR_STYLES, "short"),
   hairColor: color("#2b1d16"),
@@ -91,6 +99,9 @@ export const CastInShotSchema = z.object({
   talking: z.boolean().catch(false).default(false),
   prop: z.enum(PROPS).optional().catch(undefined),
   enter: pick(ENTERS, "fade"),
+  posture: pick(POSTURES, "stand"),
+  /** posture "ride": the index of the animal in the shot's animals list it sits on */
+  rides: z.number().int().min(0).max(5).optional().catch(undefined),
   /** a name tag next to the character: "The Prince" / "Son of King Hema" */
   tag: z.object({ name: z.string().max(30), sub: z.string().max(40).optional() }).optional().catch(undefined),
   /** a speech bubble above the head */
@@ -119,6 +130,29 @@ export const GraphicSchema = z.object({
 });
 export type GraphicSpec = z.infer<typeof GraphicSchema>;
 
+export const AnimalSchema = z.object({
+  kind: z.enum(ANIMALS),
+  x: z.number().min(0).max(1).optional().catch(undefined),
+  scale: z.number().min(0.3).max(2.5).catch(1).default(1),
+  /** faces left instead of right */
+  flip: z.boolean().catch(false).default(false),
+  /** walks across to this x during the shot */
+  moveTo: z.number().min(-0.3).max(1.3).optional().catch(undefined),
+  color: hex.optional().catch(undefined),
+});
+export type AnimalSpec = z.infer<typeof AnimalSchema>;
+
+export const SetPieceSchema = z.object({
+  kind: z.enum(SET_PIECES),
+  x: z.number().min(0).max(1).catch(0.5).default(0.5),
+  scale: z.number().min(0.3).max(3).catch(1).default(1),
+  /** lifted off the ground, 0-1 of the frame height (a hill held up on a finger) */
+  lift: z.number().min(0).max(0.8).catch(0).default(0),
+  /** drawn in front of the people instead of behind them */
+  front: z.boolean().catch(false).default(false),
+});
+export type SetPieceSpec = z.infer<typeof SetPieceSchema>;
+
 export const ShotSchema = z.object({
   bg: pick(BACKGROUNDS, "plain"),
   /** two colours that tint the background (sky / glow / rays), optional */
@@ -131,6 +165,12 @@ export const ShotSchema = z.object({
   graphic: GraphicSchema.optional().catch(undefined),
   /** a single big object in the middle (with a glow) when there is no one on screen */
   object: z.enum(PROPS).optional().catch(undefined),
+  /** wide: whole bodies; medium: from the waist up; close: head and shoulders (for feelings) */
+  framing: pick(FRAMINGS, "wide"),
+  animals: listOf(AnimalSchema, 6),
+  set: listOf(SetPieceSchema, 5),
+  /** a crowd of simple coloured figures behind the cast (villagers, an army, an audience) */
+  crowd: z.number().int().min(0).max(40).catch(0).default(0),
   /** carries on from the previous shot (same place): no fade between them */
   cont: z.boolean().catch(false).default(false),
 });
@@ -147,7 +187,7 @@ export type FlatVideoSpec = z.infer<typeof FlatVideoSchema>;
 
 /** The catalog as data, for the planner prompt and the server's sanitiser. */
 export const FLAT_CATALOG = {
-  skins: Object.keys(SKINS), hair: HAIR_STYLES, headwear: HEADWEAR, upper: UPPER, lower: LOWER, accessories: ACCESSORIES,
+  skins: Object.keys(SKINS), heads: HEADS, postures: POSTURES, framings: FRAMINGS, animals: ANIMALS, set: SET_PIECES, hair: HAIR_STYLES, headwear: HEADWEAR, upper: UPPER, lower: LOWER, accessories: ACCESSORIES,
   marks: MARKS, facial: FACIAL, eyes: EYES, moods: MOODS, gestures: GESTURES, props: PROPS, backgrounds: BACKGROUNDS, fx: FX,
   enters: ENTERS, cameras: CAMERAS, graphics: GRAPHICS,
 };

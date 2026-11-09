@@ -19,6 +19,8 @@ const ARM_W = 42, HAND_R = 25;
 const HEAD_CY = -810, HEAD_RX = 86, HEAD_RY = 98;
 const HIP_Y = -440;
 const TRADITIONAL_LOWER = new Set(["dhoti", "saree", "lehenga"]);
+/** how far the upper body comes down for each posture (body units) */
+export const POSTURE_DROP: Record<string, number> = { stand: 0, sit: 300, meditate: 300, kneel: 200, seated: 180, ride: 180 };
 /** hands close to the body: the elbow hangs down instead of sticking out */
 const ELBOW_DOWN = new Set<string>(["hold", "present", "cover-mouth", "think", "cry"]);
 
@@ -56,6 +58,10 @@ function handTarget(g: Gesture, s: number, body: Body, t: number): P {
     case "hold-up": return R ? { x: sw + 30, y: -1000 } : idle;
     case "cover-mouth": return R ? { x: 14, y: -752 } : idle;
     case "salute": return R ? { x: 58, y: -852 } : idle;
+    // hands resting on the knees of crossed legs (the body is lowered, so the knees are this low in body units)
+    case "meditate": return { x: s * 148, y: -390 };
+    // one arm straight up, the finger holding something above (a hill on a finger)
+    case "lift": return R ? { x: sw + 20, y: -1005 } : { x: -(sw + 40), y: -470 };
     default: return { x: idle.x + osc(0.25, 4 * s), y: idle.y + osc(0.33, 4) };
   }
 }
@@ -86,7 +92,7 @@ const lerp = (a: P, b: P, k: number): P => ({ x: a.x + (b.x - a.x) * k, y: a.y +
 export const seedOf = (s: string) => { let h = 2166136261; for (const ch of s) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return (h >>> 0) / 4294967295; };
 
 export interface CharacterState {
-  gesture: Gesture; prevGesture: Gesture; blend: number; mood: Mood; talking: boolean;
+  gesture: Gesture; prevGesture: Gesture; blend: number; mood: Mood; talking: boolean; posture?: string;
   look: "center" | "left" | "right" | "up"; prop?: string; walk: number; walking: boolean;
 }
 
@@ -99,7 +105,7 @@ export function stateAt(cast: CastInShot, t: number): CharacterState {
     if (b.mood) mood = b.mood;
     if (b.talking != null) talking = b.talking;
   }
-  return { gesture, prevGesture, blend: ease((t - since) / 0.35), mood, talking, look: cast.look, prop: cast.prop, walk: 0, walking: false };
+  return { gesture, prevGesture, blend: ease((t - since) / 0.35), mood, talking, look: cast.look, prop: cast.prop, walk: 0, walking: false, posture: cast.posture };
 }
 
 interface Props {
@@ -136,6 +142,8 @@ export const Character: React.FC<Props> = ({ c: spec, st, t }) => {
   // the renderer's own guard: no bare adult legs unless a robe covers them
   if (c.lower === "none" && c.upper !== "robe" && c.age !== "child") c = { ...c, lower: ["bare", "armor", "kurta", "blouse"].includes(c.upper) ? (c.gender === "female" ? "saree" : "dhoti") : "pants" };
   const longGarment = TRADITIONAL_LOWER.has(c.lower) || c.upper === "robe";
+  const posture = st.posture ?? "stand";
+  const drop = POSTURE_DROP[posture] ?? 0;
   const shoeColor = longGarment || c.upper === "armor" ? shade(c.accent, -0.25) : "#33261f";
 
   // ----- legs and feet -----
@@ -187,7 +195,8 @@ export const Character: React.FC<Props> = ({ c: spec, st, t }) => {
 
   // ----- torso / upper garment -----
   const { sw, ww, hw } = body;
-  const torsoBottom = c.upper === "kurta" ? -290 : c.upper === "coat" ? -250 : c.upper === "robe" ? -40 : HIP_Y + 6;
+  // sitting: long tops stop at the hips (the lap covers the rest)
+  const torsoBottom = drop > 0 ? HIP_Y + 6 : c.upper === "kurta" ? -290 : c.upper === "coat" ? -250 : c.upper === "robe" ? -40 : HIP_Y + 6;
   const botHalf = c.upper === "robe" ? hw + 40 : c.upper === "kurta" || c.upper === "coat" ? hw + 16 : hw;
   const torsoPath = body.female
     ? `M ${-sw} -632 Q ${-sw} -692 ${-sw + 46} -694 L ${sw - 46} -694 Q ${sw} -692 ${sw} -632 Q ${ww + 14} -580 ${ww} -530 Q ${botHalf} -480 ${botHalf} ${torsoBottom} L ${-botHalf} ${torsoBottom} Q ${-botHalf} -480 ${-ww} -530 Q ${-ww - 14} -580 ${-sw} -632 Z`
@@ -272,6 +281,23 @@ export const Character: React.FC<Props> = ({ c: spec, st, t }) => {
       {c.accessories.includes("scarf") && <path d="M -58 -700 Q 0 -660 58 -700 L 64 -680 Q 0 -630 -64 -680 Z M 24 -670 l 22 0 l 6 110 l -26 0 z" fill={ink(c.accent)} />}
       {c.accessories.includes("bag") && <><line x1={-sw + 30} y1={-692} x2={ww + 4} y2={-470} stroke={ink("#5b3b26")} strokeWidth={10} /><rect x={ww - 16} y={-490} width={64} height={52} rx={10} fill={ink("#7a4e30")} /></>}
       {c.accessories.includes("belt") && <rect x={-ww - 4} y={HIP_Y - 22} width={(ww + 4) * 2} height={18} fill={acc} rx={6} />}
+      {c.accessories.includes("rudraksha") && (
+        <g fill={ink("#6b3a22")}>{Array.from({ length: 13 }, (_, i) => { const a = Math.PI * (0.12 + (i / 12) * 0.76); return <circle key={i} cx={Math.cos(a) * 62} cy={-700 + Math.sin(a) * 70} r={8} />; })}</g>
+      )}
+      {c.accessories.includes("garland") && (
+        <g>{Array.from({ length: 19 }, (_, i) => {
+          const k = i / 18, x = (k - 0.5) * 2 * (sw - 34), y = -690 + (1 - Math.pow((k - 0.5) * 2, 2)) * 240;
+          return <circle key={i} cx={x} cy={y} r={15} fill={ink(["#f2b53a", "#e8443a", "#f7f3ea", "#3fa66b"][i % 4])} />;
+        })}</g>
+      )}
+      {c.accessories.includes("snake") && (
+        <g>
+          <path d={`M ${-58} -700 Q -70 -630 -20 -620 Q 30 -612 58 -660 Q 70 -690 52 -705`} stroke={ink("#3f8f5a")} strokeWidth={22} fill="none" strokeLinecap="round" />
+          <path d="M 50 -700 Q 90 -760 70 -800 Q 40 -790 46 -740 Z" fill={ink("#3f8f5a")} />
+          <ellipse cx={64} cy={-786} rx={26} ry={30} fill={ink("#4ea56b")} />
+          <circle cx={56} cy={-792} r={4} fill={ink("#111")} /><circle cx={72} cy={-792} r={4} fill={ink("#111")} />
+        </g>
+      )}
       {c.accessories.includes("necklace") && (
         <g fill={acc}>
           <path d="M -40 -694 Q 0 -620 40 -694" stroke={acc} strokeWidth={6} fill="none" />
@@ -333,6 +359,7 @@ export const Character: React.FC<Props> = ({ c: spec, st, t }) => {
 
   const head = (
     <g transform={`translate(0 ${-720}) scale(${headK}) translate(0 ${720}) translate(0 ${breath * -120})`}>
+      {c.head !== "human" ? <AnimalHead c={c} skin={skin} ink={ink} mood={st.mood} blink={blink} talkOpen={talkOpen} lookDx={lookDx} /> : <>
       {/* ears + earrings */}
       {[-1, 1].map((s) => <ellipse key={s} cx={s * 84} cy={-806} rx={14} ry={21} fill={ink(shade(skinColor(c.skin), -0.08))} />)}
       <ellipse cx={0} cy={HEAD_CY} rx={HEAD_RX} ry={HEAD_RY} fill={skin} />
@@ -347,11 +374,12 @@ export const Character: React.FC<Props> = ({ c: spec, st, t }) => {
         </g>
       ))}
       <HairFront c={c} color={ink(hairColor)} />
+      </>}
       <Headwear c={c} ink={ink} />
     </g>
   );
 
-  return (
+  if (drop === 0) return (
     <g transform={`translate(0 ${bob}) scale(${kid})`}>
       <HairBack c={c} color={ink(hairColor)} ink={ink} headK={headK} />
       {legs}
@@ -361,6 +389,65 @@ export const Character: React.FC<Props> = ({ c: spec, st, t }) => {
       {armEl(A, -1)}
       {armEl(B, 1)}
       {propEl}
+    </g>
+  );
+  // sitting, kneeling, on a seat or riding: the upper body comes down, the folded legs are drawn in front of the hips
+  return (
+    <g transform={`scale(${kid})`}>
+      <g transform={`translate(0 ${drop})`}>
+        <HairBack c={c} color={ink(hairColor)} ink={ink} headK={headK} />
+        {torso}
+        {head}
+      </g>
+      <FoldedLegs c={c} posture={posture} body={body} skin={skin} ink={ink} shoe={ink(shoeColor)} />
+      <g transform={`translate(0 ${drop})`}>
+        {armEl(A, -1)}
+        {armEl(B, 1)}
+        {propEl}
+      </g>
+    </g>
+  );
+};
+
+/** Legs folded under a sitting body: crossed (sit, meditate), kneeling, or hanging from a seat or a saddle. */
+const FoldedLegs: React.FC<{ c: CharacterSpec; posture: string; body: Body; skin: string; ink: (s: string) => string; shoe: string }> = ({ c, posture, body, skin, ink, shoe }) => {
+  const robe = c.upper === "robe";
+  const cloth = ink(robe ? c.upperColor : c.lower === "none" ? c.upperColor : c.lowerColor);
+  const clothD = ink(shade(robe ? c.upperColor : c.lowerColor, -0.15));
+  const trousers = c.lower === "pants" || c.lower === "jeans";
+  const border = TRADITIONAL_LOWER.has(c.lower) || robe ? ink(c.accent) : undefined;
+  if (posture === "sit" || posture === "meditate") return (
+    <g>
+      <path d="M -178 -36 Q -198 -150 -96 -178 L 96 -178 Q 198 -150 178 -36 Q 0 -6 -178 -36 Z" fill={cloth} />
+      {[-1, 1].map((s) => <ellipse key={s} cx={s * 140} cy={-74} rx={62} ry={50} fill={clothD} opacity={0.5} />)}
+      <path d="M -60 -96 Q 0 -70 60 -96" stroke={clothD} strokeWidth={6} fill="none" />
+      {posture === "meditate" && !trousers && [-1, 1].map((s) => <ellipse key={s} cx={s * 46} cy={-74} rx={30} ry={16} fill={skin} transform={`rotate(${s * -15} ${s * 46} -74)`} />)}
+      {border && <path d="M -178 -36 Q 0 -6 178 -36" stroke={border} strokeWidth={12} fill="none" />}
+    </g>
+  );
+  if (posture === "kneel") return (
+    <g>
+      <path d={`M ${-body.hw - 6} -250 L ${body.hw + 6} -250 L ${body.hw + 26} -20 Q 0 -6 ${-body.hw - 26} -20 Z`} fill={cloth} />
+      {border && <path d={`M ${-body.hw - 26} -20 Q 0 -6 ${body.hw + 26} -20`} stroke={border} strokeWidth={12} fill="none" />}
+    </g>
+  );
+  // seated / ride: a lap seen from the front, shins down to the feet (riding: astride, feet apart)
+  const spread = posture === "ride" ? 70 : 0;
+  const long = TRADITIONAL_LOWER.has(c.lower) || robe;
+  return (
+    <g>
+      {[-1, 1].map((s) => {
+        const knee = { x: s * (52 + spread * 0.6), y: -205 }, foot = { x: s * (56 + spread), y: -46 };
+        return (
+          <g key={s}>
+            {!long && <line x1={knee.x} y1={knee.y} x2={foot.x} y2={foot.y} stroke={trousers ? cloth : skin} strokeWidth={54} strokeLinecap="round" />}
+            <ellipse cx={foot.x + s * 8} cy={foot.y + 18} rx={38} ry={16} fill={shoe} />
+          </g>
+        );
+      })}
+      <rect x={-body.hw - 14 - spread * 0.5} y={-286} width={(body.hw + 14 + spread * 0.5) * 2} height={96} rx={44} fill={cloth} />
+      {long && <path d={`M ${-body.hw - 10 - spread * 0.5} -230 L ${body.hw + 10 + spread * 0.5} -230 L ${body.hw + 40 + spread} -58 Q 0 -44 ${-body.hw - 40 - spread} -58 Z`} fill={cloth} />}
+      {long && border && <path d={`M ${-body.hw - 40 - spread} -58 Q 0 -44 ${body.hw + 40 + spread} -58`} stroke={border} strokeWidth={12} fill="none" />}
     </g>
   );
 };
@@ -468,7 +555,8 @@ const HairBack: React.FC<{ c: CharacterSpec; color: string; ink: (s: string) => 
   if (c.headwear === "halo") inner.push(<circle key="halo" cx={0} cy={-830} r={132} fill="none" stroke={ink("#f6c453")} strokeWidth={10} opacity={0.9} />);
   if (c.headwear === "veil") inner.push(<path key="veil" d="M -100 -900 Q 0 -990 100 -900 L 150 -560 Q 0 -520 -150 -560 Z" fill={hw} />);
   if (c.headwear === "hijab") inner.push(<path key="hij" d="M -110 -840 Q -112 -960 0 -960 Q 112 -960 110 -840 L 130 -660 Q 0 -610 -130 -660 Z" fill={hw} />);
-  if (c.headwear !== "hijab" && c.headwear !== "helmet") {
+  // an animal head has no hair (a halo or a veil still goes behind it)
+  if (c.head === "human" && c.headwear !== "hijab" && c.headwear !== "helmet") {
     if (c.hair === "long") inner.push(<path key="long" d="M -96 -860 Q -112 -700 -120 -560 Q 0 -540 120 -560 Q 112 -700 96 -860 Z" fill={color} />);
     if (c.hair === "wavy") inner.push(<path key="wavy" d="M -96 -860 Q -126 -760 -104 -700 Q -134 -640 -112 -570 Q 0 -548 112 -570 Q 134 -640 104 -700 Q 126 -760 96 -860 Z" fill={color} />);
     if (c.hair === "bun") inner.push(<circle key="bun" cx={0} cy={-938} r={40} fill={color} />);
@@ -531,6 +619,75 @@ const Headwear: React.FC<{ c: CharacterSpec; ink: (s: string) => string }> = ({ 
       </g>
     );
     case "headband": return <rect x={-90} y={-880} width={180} height={18} rx={8} fill={col} />;
+    case "krishna-mukut": return (
+      <g>
+        <path d="M 30 -930 Q 80 -1040 52 -1110 Q 18 -1040 30 -930 Z" fill={ink("#2f8f5b")} />
+        <ellipse cx={54} cy={-1080} rx={20} ry={26} fill={ink("#1f5fa8")} /><ellipse cx={54} cy={-1078} rx={10} ry={13} fill={ink("#f2c14e")} /><circle cx={54} cy={-1078} r={5} fill={ink("#1b3f7a")} />
+        <path d="M -80 -878 Q -86 -950 -40 -972 Q 0 -1010 40 -972 Q 86 -950 80 -878 Z" fill={col} />
+        <path d="M -56 -904 Q 0 -930 56 -904" stroke={dark} strokeWidth={6} fill="none" />
+        <circle cx={0} cy={-940} r={12} fill={jewel} />
+        <rect x={-84} y={-892} width={168} height={18} fill={dark} rx={6} />
+        {[-50, -25, 0, 25, 50].map((x) => <circle key={x} cx={x} cy={-883} r={5} fill={ink("#f7f3ea")} />)}
+      </g>
+    );
+    case "moon-jata": return (
+      <g>
+        <path d="M -44 -900 Q -60 -1000 -20 -1050 Q 0 -1080 20 -1050 Q 60 -1000 44 -900 Z" fill={ink(c.hairColor)} />
+        {[-990, -950].map((y) => <path key={y} d={`M -40 ${y} Q 0 ${y - 16} 40 ${y}`} stroke={ink(shade(c.hairColor, 0.2))} strokeWidth={6} fill="none" />)}
+        <path d="M 44 -1030 Q 92 -1010 84 -960 Q 70 -1000 40 -1006 Z" fill={ink("#f4f1dc")} />
+        <rect x={-80} y={-896} width={160} height={14} rx={6} fill={ink("#6b3a22")} />
+      </g>
+    );
     default: return null;
   }
+};
+
+/** An animal head on a person's body: elephant (Ganesha), monkey (Hanuman), eagle (Garuda). */
+const AnimalHead: React.FC<{ c: CharacterSpec; skin: string; ink: (s: string) => string; mood: Mood; blink: number; talkOpen: number; lookDx: number }> = ({ c, skin, ink, mood, blink, talkOpen, lookDx }) => {
+  const dark = ink(shade(skinColor(c.skin), -0.18)), light = ink(shade(skinColor(c.skin), 0.35));
+  const eye = (x: number, y: number, r = 9) => blink < 0.5
+    ? <path key={x} d={`M ${x - 11} ${y} Q ${x} ${y + 6} ${x + 11} ${y}`} stroke="#2a1a14" strokeWidth={5} fill="none" strokeLinecap="round" />
+    : <g key={x}><ellipse cx={x} cy={y} rx={r + 5} ry={r + 3} fill="#fbf8f2" /><circle cx={x + lookDx * 0.6} cy={y + 1} r={r * 0.75} fill="#2a1a14" /><circle cx={x + lookDx * 0.6 + 2.5} cy={y - 2} r={2.2} fill="#fff" /></g>;
+  const browTilt = mood === "angry" ? 7 : mood === "sad" ? -7 : 0;
+  if (c.head === "elephant") return (
+    <g>
+      {[-1, 1].map((s) => <g key={s}><ellipse cx={s * 118} cy={-800} rx={78} ry={100} fill={dark} /><ellipse cx={s * 122} cy={-796} rx={52} ry={72} fill={ink("#e9a3a3")} opacity={c.silhouette ? 0 : 0.55} /></g>)}
+      <ellipse cx={0} cy={-812} rx={98} ry={104} fill={skin} />
+      {eye(-40, -820, 8)}{eye(40, -820, 8)}
+      {[-1, 1].map((s) => <line key={s} x1={s * 24} y1={-846 - browTilt * (s < 0 ? -1 : 1) * 0} x2={s * 58} y2={-850 + browTilt} stroke={dark} strokeWidth={7} strokeLinecap="round" />)}
+      {/* trunk: from between the eyes down, curling to one side */}
+      <path d={`M -26 -800 Q -30 -700 -16 -650 Q 0 -600 40 -602 Q 66 -606 64 -630 Q 46 -620 32 -628 Q 18 -640 22 -700 Q 26 -760 26 -800 Z`} fill={skin} />
+      {[-740, -700, -664].map((y) => <path key={y} d={`M -22 ${y} Q 0 ${y + 6} 22 ${y}`} stroke={dark} strokeWidth={3} fill="none" />)}
+      {/* tusks: one whole, one broken */}
+      <path d="M -40 -720 Q -66 -690 -72 -656 Q -52 -684 -30 -706 Z" fill={ink("#f7f2e4")} />
+      <path d="M 40 -720 Q 52 -708 56 -696 L 44 -700 Z" fill={ink("#f7f2e4")} />
+      {talkOpen > 0.1 && <ellipse cx={-48} cy={-708} rx={10} ry={4 + talkOpen * 6} fill="#5a1e1e" />}
+      {c.mark !== "none" && <g><line x1={-24} y1={-880} x2={24} y2={-880} stroke="#efe9dd" strokeWidth={5} /><circle cx={0} cy={-868} r={6} fill="#c0392b" /></g>}
+    </g>
+  );
+  if (c.head === "monkey") return (
+    <g>
+      {[-1, 1].map((s) => <g key={s}><circle cx={s * 92} cy={-812} r={30} fill={dark} /><circle cx={s * 92} cy={-812} r={17} fill={light} /></g>)}
+      <ellipse cx={0} cy={-815} rx={90} ry={98} fill={skin} />
+      {/* the lighter face: brow ridge over the eyes, a big muzzle below */}
+      <path d="M -70 -830 Q -70 -868 -30 -862 Q 0 -850 30 -862 Q 70 -868 70 -830 Q 70 -800 50 -790 Q 70 -760 56 -730 Q 30 -700 0 -702 Q -30 -700 -56 -730 Q -70 -760 -50 -790 Q -70 -800 -70 -830 Z" fill={light} />
+      {eye(-32, -828, 8)}{eye(32, -828, 8)}
+      <path d="M -50 -852 Q -30 -862 -12 -852 M 12 -852 Q 30 -862 50 -852" stroke={dark} strokeWidth={7} fill="none" strokeLinecap="round" />
+      <circle cx={-8} cy={-786} r={4.5} fill={dark} /><circle cx={8} cy={-786} r={4.5} fill={dark} />
+      {talkOpen > 0.1 ? <ellipse cx={0} cy={-748} rx={20} ry={5 + talkOpen * 10} fill="#5a1e1e" />
+        : <path d={mood === "sad" ? "M -22 -742 Q 0 -756 22 -742" : "M -24 -754 Q 0 -734 24 -754"} stroke="#5a1e1e" strokeWidth={6} fill="none" strokeLinecap="round" />}
+      {c.mark !== "none" && <path d="M -10 -900 L 0 -872 L 10 -900" stroke="#d4442a" strokeWidth={8} fill="none" />}
+    </g>
+  );
+  // eagle
+  return (
+    <g>
+      <path d="M -40 -910 Q -20 -980 0 -930 Q 20 -990 40 -912 Z" fill={ink(c.hairColor)} />
+      <ellipse cx={0} cy={-815} rx={86} ry={96} fill={skin} />
+      {eye(-40, -830, 9)}{eye(40, -830, 9)}
+      <path d={`M -60 -856 L -16 ${-846 + browTilt} M 60 -856 L 16 ${-846 + browTilt}`} stroke={dark} strokeWidth={8} strokeLinecap="round" />
+      <path d={`M -26 -800 Q 0 -820 26 -800 Q 30 ${-760 + talkOpen * 6} 0 -720 Q -8 -740 -6 -760 Q -20 -770 -26 -800 Z`} fill={ink("#f2a530")} />
+      {talkOpen > 0.1 && <path d={`M -18 -770 Q 0 ${-760 + talkOpen * 14} 16 -770`} stroke="#5a1e1e" strokeWidth={5} fill="none" />}
+    </g>
+  );
 };

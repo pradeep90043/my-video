@@ -245,6 +245,33 @@ export const Graphic: React.FC<{ g: GraphicSpec; box: Box; t: number; font: stri
         </g>
       );
     }
+    case "map": {
+      const mw = Math.min(w, h * 1.1) * 0.95, mh = mw * 0.8, mx = cx - mw / 2, my = cy - mh / 2;
+      const A = { x: mx + mw * 0.18, y: my + mh * 0.72 }, B = { x: mx + mw * 0.82, y: my + mh * 0.3 };
+      const ctrl = { x: mx + mw * 0.5, y: my + mh * 0.85 };
+      const k = clamp01((t - 0.5) / 1.6);
+      const along = (q: number) => ({ x: (1 - q) * (1 - q) * A.x + 2 * (1 - q) * q * ctrl.x + q * q * B.x, y: (1 - q) * (1 - q) * A.y + 2 * (1 - q) * q * ctrl.y + q * q * B.y });
+      const len = 900, mover = along(k);
+      return (
+        <g opacity={fadeIn(t, 0)}>
+          <rect x={mx} y={my} width={mw} height={mh} rx={2 * u} fill={PAPER} />
+          {[0.18, 0.36, 0.54].map((q) => <path key={q} d={`M ${mx + mw * q} ${my + mh * 0.18} l ${3 * u} ${-5 * u} l ${3 * u} ${5 * u} Z`} fill="#b39669" />)}
+          <path d={`M ${mx} ${my + mh * 0.5} Q ${mx + mw * 0.4} ${my + mh * 0.4} ${mx + mw} ${my + mh * 0.62}`} stroke="#7fb3d9" strokeWidth={1.4 * u} fill="none" />
+          <path d={`M ${A.x} ${A.y} Q ${ctrl.x} ${ctrl.y} ${B.x} ${B.y}`} stroke={RED} strokeWidth={0.9 * u} fill="none" strokeDasharray={`${2 * u} ${1.5 * u}`} pathLength={len} style={{ strokeDashoffset: 0 }} opacity={0.35} />
+          <path d={`M ${A.x} ${A.y} Q ${ctrl.x} ${ctrl.y} ${B.x} ${B.y}`} stroke={RED} strokeWidth={1.1 * u} fill="none" pathLength={1} strokeDasharray={`${k} 1`} />
+          {[A, B].map((p, i) => (
+            <g key={i} transform={`translate(${p.x} ${p.y}) scale(${popIn(t, 0.2 + i * 0.3)})`}>
+              <path d={`M 0 0 Q ${-4 * u} ${-5 * u} ${-4 * u} ${-8 * u} A ${4 * u} ${4 * u} 0 1 1 ${4 * u} ${-8 * u} Q ${4 * u} ${-5 * u} 0 0 Z`} fill={i ? RED : "#3b6fd1"} />
+              <circle cx={0} cy={-8.5 * u} r={1.6 * u} fill="#fff" />
+              {text(items[i] ?? "", 0, 6 * u, 4.6 * u, { fill: "#4a2c14", weight: 900 })}
+            </g>
+          ))}
+          {k > 0 && k < 1 && <g transform={`translate(${mover.x} ${mover.y - 3 * u})`}><PropIcon name={g.icons[0] ?? "star"} size={9 * u} /></g>}
+          <g transform={`translate(${mx + mw - 8 * u} ${my + mh - 8 * u})`}><circle r={5 * u} fill="none" stroke="#8b6b3e" strokeWidth={0.5 * u} /><path d={`M 0 ${-4.5 * u} L ${1.2 * u} 0 L 0 ${4.5 * u} L ${-1.2 * u} 0 Z`} fill="#8b6b3e" />{text("N", 0, -6.2 * u, 2.6 * u, { fill: "#8b6b3e" })}</g>
+          {g.title && text(g.title, cx, my - 3 * u, 6 * u, { fill: accent })}
+        </g>
+      );
+    }
     case "statement": {
       const lines = wrap((g.text ?? g.title ?? "").toUpperCase(), 16);
       const size = Math.min(13 * u, (w * 1.6) / Math.max(8, ...lines.map((l) => l.length)));
@@ -261,11 +288,52 @@ export const Graphic: React.FC<{ g: GraphicSpec; box: Box; t: number; font: stri
   }
 };
 
+/** Things in front of the people: flood water rising, the white flash of lightning. */
+export const FxFront: React.FC<{ kind: string; W: number; H: number; t: number }> = ({ kind, W, H, t }) => {
+  if (kind === "flood") {
+    const level = H * (0.86 - 0.1 * Math.min(1, t / 3));
+    return (
+      <g>
+        <path d={`M 0 ${level} ${Array.from({ length: 13 }, (_, i) => `Q ${(i + 0.5) * W / 12} ${level + (i % 2 ? 14 : -14) + Math.sin(t * 2 + i) * 6} ${(i + 1) * W / 12} ${level}`).join(" ")} L ${W} ${H} L 0 ${H} Z`} fill="#3d6f9e" opacity={0.85} />
+        {Array.from({ length: 10 }, (_, i) => <path key={i} d={`M ${((i * 137 + t * 40) % W)} ${level + 40 + (i % 3) * 40} q 20 -8 40 0`} stroke="#a8cdf0" strokeWidth={4} fill="none" />)}
+      </g>
+    );
+  }
+  if (kind === "storm") {
+    const cycle = t % 2.6, flash = cycle < 0.08 || (cycle > 0.16 && cycle < 0.22);
+    if (!flash) return null;
+    const x = W * (0.2 + ((Math.floor(t / 2.6) * 37) % 60) / 100);
+    return (
+      <g>
+        <rect width={W} height={H} fill="#ffffff" opacity={0.28} />
+        <path d={`M ${x} 0 L ${x - 40} ${H * 0.18} L ${x + 10} ${H * 0.18} L ${x - 50} ${H * 0.38}`} stroke="#fffbe0" strokeWidth={8} fill="none" />
+      </g>
+    );
+  }
+  return null;
+};
+
 /** Weather and light: drawn over the background, under the people (stars, dust, embers, snow, petals...). */
 export const Fx: React.FC<{ kind: string; W: number; H: number; t: number }> = ({ kind, W, H, t }) => {
   const r = (i: number) => { const v = Math.sin(i * 91.7 + 17.3) * 43758.5453; return v - Math.floor(v); };
   const n = kind === "rain" ? 90 : kind === "snow" || kind === "confetti" ? 60 : 40;
-  if (kind === "none") return null;
+  if (kind === "none" || kind === "flood") return null;
+  const clouds = (dark: boolean) => (
+    <g opacity={dark ? 0.95 : 0.8}>
+      {Array.from({ length: 7 }, (_, i) => {
+        const x = ((r(i + 90) * W * 1.4 + t * (14 + i * 3)) % (W * 1.4)) - W * 0.2, y = H * (0.02 + r(i + 40) * 0.12), k = Math.min(W, H) / 1080 * (1.1 + r(i + 5));
+        return <g key={i} transform={`translate(${x} ${y}) scale(${k})`} fill={dark ? (i % 2 ? "#2e3346" : "#3a4058") : "#ffffff"}><ellipse rx={150} ry={50} /><circle cx={-60} cy={-30} r={60} /><circle cx={40} cy={-50} r={74} /><circle cx={110} cy={-12} r={46} /></g>;
+      })}
+    </g>
+  );
+  if (kind === "clouds") return clouds(false);
+  if (kind === "storm") return (
+    <g>
+      <rect width={W} height={H} fill="#0b0e1a" opacity={0.35} />
+      {clouds(true)}
+      {Array.from({ length: 110 }, (_, i) => { const x0 = r(i) * W, y0 = r(i + 50) * H, yy = (y0 + t * 1000 * (0.6 + r(i + 7))) % H; return <line key={i} x1={x0} y1={yy} x2={x0 - 8} y2={yy + 30} stroke="#b9d6ff" strokeWidth={2.2} opacity={0.6} />; })}
+    </g>
+  );
   if (kind === "rays") return (
     <g opacity={0.22}>{[0, 1, 2, 3, 4].map((i) => <path key={i} d={`M ${W * (0.15 + i * 0.18)} 0 L ${W * (0.05 + i * 0.18)} ${H} L ${W * (0.17 + i * 0.18)} ${H} L ${W * (0.21 + i * 0.18)} 0 Z`} fill="#fff6d0" opacity={0.5 + 0.5 * Math.sin(t * 0.8 + i)} />)}</g>
   );

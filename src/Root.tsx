@@ -5,6 +5,7 @@ import { IllustratedVideo, illustratedFrames, type IllustratedSpec } from "./ill
 import { StageDemo } from "./stickman/story/StageDemo";
 import { FlatVideo, flatFrames } from "./flat/FlatVideo";
 import { FLAT_DEMO, FLAT_SHEET_SHOT } from "./flat/demo";
+import { FLAT_DEMO2 } from "./flat/demo2";
 import type { FlatVideoSpec } from "./flat/spec";
 import { RideSheet } from "./stickman/story/puppet/RideSheet";
 import horsePuppet from "./stickman/story/puppet/examples/horse.json";
@@ -159,6 +160,7 @@ export const RemotionRoot: React.FC = () => {
       {/* FLAT-VECTOR: the flat 2D engine on its own (props = a FlatVideoSpec); FlatVideoWide is the 16:9 version, FlatSheet the cast side by side */}
       <Composition id="FlatVideo" component={FlatVideo as unknown as React.FC<Record<string, unknown>>} width={1080} height={1920} fps={30} durationInFrames={300} defaultProps={FLAT_DEMO as unknown as Record<string, unknown>} calculateMetadata={({ props }) => ({ durationInFrames: flatFrames(props as unknown as FlatVideoSpec, 30) })} />
       <Composition id="FlatVideoWide" component={FlatVideo as unknown as React.FC<Record<string, unknown>>} width={1920} height={1080} fps={30} durationInFrames={300} defaultProps={FLAT_DEMO as unknown as Record<string, unknown>} calculateMetadata={({ props }) => ({ durationInFrames: flatFrames(props as unknown as FlatVideoSpec, 30) })} />
+      <Composition id="FlatV2" component={FlatVideo as unknown as React.FC<Record<string, unknown>>} width={1080} height={1920} fps={30} durationInFrames={300} defaultProps={FLAT_DEMO2 as unknown as Record<string, unknown>} calculateMetadata={({ props }) => ({ durationInFrames: flatFrames(props as unknown as FlatVideoSpec, 30) })} />
       <Composition id="FlatSheet" component={FlatVideo as unknown as React.FC<Record<string, unknown>>} width={2400} height={1100} fps={30} durationInFrames={60} defaultProps={{ characters: FLAT_DEMO.characters, shots: [{ ...FLAT_SHEET_SHOT(FLAT_DEMO.characters.map((c) => c.id)), sec: 2 }] } as unknown as Record<string, unknown>} />
       <Composition id="ActivityDemo" component={ActivityDemo} width={720} height={1280} fps={30} durationInFrames={360} />
 
