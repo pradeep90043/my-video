@@ -276,6 +276,26 @@ export const Graphic: React.FC<{ g: GraphicSpec; box: Box; t: number; font: stri
         </g>
       );
     }
+    case "pie": {
+      // values are shares (they are scaled to 100): the highlighted slice is pulled out and coloured; a value alone is "x% of the whole"
+      const vals = g.values.length ? g.values.slice(0, 5) : g.value !== undefined ? [g.value, Math.max(0, 100 - g.value)] : [50, 50];
+      const total = vals.reduce((a, b) => a + b, 0) || 1, R = Math.min(w, h) * 0.34, k = clamp01((t - 0.15) / 1.1), hi = g.highlight ?? 0;
+      let a0 = -Math.PI / 2;
+      const cols = [accent, "#2f9eb3", "#8a6fd1", "#e0b13a", "#5fb878"];
+      return (
+        <g transform={`translate(${cx} ${cy - 4 * u})`}>
+          {vals.map((v, i) => {
+            const a1 = a0 + (v / total) * Math.PI * 2 * k, mid = (a0 + a1) / 2, pull = i === hi ? 3 * u : 0, big = a1 - a0 > Math.PI ? 1 : 0;
+            const ox = Math.cos(mid) * pull, oy = Math.sin(mid) * pull;
+            const d = `M ${ox} ${oy} L ${ox + R * Math.cos(a0)} ${oy + R * Math.sin(a0)} A ${R} ${R} 0 ${big} 1 ${ox + R * Math.cos(a1)} ${oy + R * Math.sin(a1)} Z`;
+            a0 = a1;
+            return <path key={i} d={d} fill={i === hi ? cols[0] : cols[(i % 4) + 1]} stroke="#10132a" strokeWidth={0.8 * u} />;
+          })}
+          {text(`${Number(((vals[hi] / total) * 100).toFixed(1))}%`, 0, R + 11 * u, 9 * u, { fill: accent, weight: 900, opacity: fadeIn(t, 0.9) })}
+          {g.title && text(g.title, 0, R + 19 * u, 5 * u, { opacity: fadeIn(t, 1.0) })}
+        </g>
+      );
+    }
     case "cards": {
       // 2-4 cards side by side: an icon, a title, a small line and a verdict badge (check / cross / question) - "A said no, B only hinted, C showed it"
       const n = Math.max(2, Math.min(4, items.length)), gap = 3 * u, cwid = (w * 0.92 - gap * (n - 1)) / n, ch = Math.min(h * 0.8, cwid * 1.5), x0 = x + w * 0.04;

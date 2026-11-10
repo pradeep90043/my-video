@@ -45,7 +45,7 @@ export const FX = ["none", "stars", "dust", "embers", "rings", "rays", "snow", "
 export const LIGHTS = ["day", "dusk", "night", "flashback", "danger"] as const;
 export const ENTERS = ["none", "fade", "slide-left", "slide-right", "pop", "rise"] as const;
 export const CAMERAS = ["static", "push", "pull", "pan-left", "pan-right"] as const;
-export const GRAPHICS = ["calendar", "clock", "compass", "scroll", "nodes", "stat", "list", "versus", "timeline", "icon", "bars", "date-card", "statement", "map", "cards", "book"] as const;
+export const GRAPHICS = ["calendar", "clock", "compass", "scroll", "nodes", "stat", "list", "versus", "timeline", "icon", "bars", "date-card", "statement", "map", "cards", "book", "pie"] as const;
 
 const hex = z.string().regex(/^#[0-9a-fA-F]{6}$/);
 const color = (d: string) => hex.catch(d).default(d);
