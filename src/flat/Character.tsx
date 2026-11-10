@@ -633,6 +633,29 @@ const Headwear: React.FC<{ c: CharacterSpec; ink: (s: string) => string }> = ({ 
         {[-50, -25, 0, 25, 50].map((x) => <circle key={x} cx={x} cy={-883} r={5} fill={ink("#f7f3ea")} />)}
       </g>
     );
+    case "ten-heads": {
+      // Ravana: a main crown with a row of nine smaller crowned faces above it
+      const skin = ink(skinColor(c.skin)), dk = ink(shade(skinColor(c.skin), -0.25));
+      const row = (n: number, y: number, r: number) => Array.from({ length: n }, (_, i) => {
+        const x = (i - (n - 1) / 2) * r * 2.05;
+        return (
+          <g key={`${y}${i}`} transform={`translate(${x} ${y})`}>
+            <path d={`M ${-r * 0.9} ${-r * 0.7} L ${-r * 0.7} ${-r * 1.5} L ${-r * 0.3} ${-r * 1.05} L 0 ${-r * 1.7} L ${r * 0.3} ${-r * 1.05} L ${r * 0.7} ${-r * 1.5} L ${r * 0.9} ${-r * 0.7} Z`} fill={col} />
+            <ellipse cx={0} cy={0} rx={r * 0.82} ry={r} fill={skin} />
+            <path d={`M ${-r * 0.5} ${-r * 0.28} L ${-r * 0.12} ${-r * 0.2} M ${r * 0.5} ${-r * 0.28} L ${r * 0.12} ${-r * 0.2}`} stroke={dk} strokeWidth={r * 0.1} />
+            <circle cx={-r * 0.3} cy={-r * 0.02} r={r * 0.08} fill="#1b1b24" /><circle cx={r * 0.3} cy={-r * 0.02} r={r * 0.08} fill="#1b1b24" />
+            <path d={`M ${-r * 0.3} ${r * 0.45} Q 0 ${r * 0.58} ${r * 0.3} ${r * 0.45}`} stroke={dk} strokeWidth={r * 0.09} fill="none" />
+          </g>
+        );
+      });
+      return (
+        <g>
+          <path d="M -86 -880 L -86 -946 L -52 -910 L -26 -964 L 0 -914 L 26 -964 L 52 -910 L 86 -946 L 86 -880 Z" fill={col} />
+          <rect x={-88} y={-892} width={176} height={18} fill={dark} rx={4} />
+          {row(9, -1030, 44)}
+        </g>
+      );
+    }
     case "moon-jata": return (
       <g>
         <path d="M -44 -900 Q -60 -1000 -20 -1050 Q 0 -1080 20 -1050 Q 60 -1000 44 -900 Z" fill={ink(c.hairColor)} />

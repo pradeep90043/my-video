@@ -12,7 +12,7 @@ import { DRAWN_ID, DrawnPartSchema } from "./drawn";
 
 export const SKINS = { light: "#f3d2b6", fair: "#e9bf9c", wheat: "#d9a57c", tan: "#c58b5e", brown: "#a06b45", dark: "#6e4630" } as const;
 export const HAIR_STYLES = ["short", "side-part", "spiky", "curly", "bald", "long", "bun", "ponytail", "braid", "jata", "afro", "wavy"] as const;
-export const HEADWEAR = ["none", "crown", "mukut", "krishna-mukut", "horns", "turban", "cap", "hijab", "veil", "halo", "helmet", "hat", "tiara", "peacock-feather", "headband", "moon-jata"] as const;
+export const HEADWEAR = ["none", "crown", "mukut", "krishna-mukut", "horns", "turban", "cap", "hijab", "veil", "halo", "helmet", "hat", "tiara", "peacock-feather", "headband", "moon-jata", "ten-heads"] as const;
 export const UPPER = ["tshirt", "shirt", "suit", "hoodie", "kurta", "bare", "armor", "blouse", "robe", "coat", "sweater", "uniform"] as const;
 export const LOWER = ["pants", "jeans", "shorts", "skirt", "dhoti", "saree", "lehenga", "none"] as const;
 export const ACCESSORIES = ["necklace", "earrings", "armlets", "bangles", "belt", "watch", "bag", "scarf", "sash", "glasses", "tie", "garland", "snake", "rudraksha"] as const;
