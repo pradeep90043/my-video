@@ -137,7 +137,7 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
   return (
     <g>
       <g transform={bgT}><Background kind={shot.bg} W={W} H={H} t={t} palette={shot.palette} uid={uid} /></g>
-      {shot.light === "night" && shot.bg !== "night" && <g transform={bgT}><LightBack kind="night" W={W} H={H} t={t} /></g>}
+      {(shot.light === "dusk" || (shot.light === "night" && shot.bg !== "night")) && <g transform={bgT}><LightBack kind={shot.light} W={W} H={H} t={t} /></g>}
       <g transform={camT}>
         <Fx kind={shot.fx} W={W} H={H} t={t} />
         {g && <Graphic g={g} box={gBox} t={t} font={FLAT_FONT} accent={accent} />}

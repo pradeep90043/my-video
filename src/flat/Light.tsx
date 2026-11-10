@@ -7,8 +7,14 @@ import React from "react";
 const rand = (n: number) => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 
 export const LightBack: React.FC<{ kind: string; W: number; H: number; t: number }> = ({ kind, W, H, t }) => {
-  if (kind !== "night") return null;
   const m = Math.min(W, H);
+  if (kind === "dusk") return (
+    <g>
+      <circle cx={W * 0.5} cy={H * 0.58} r={m * 0.26} fill="#ffb15a" opacity={0.22} />
+      <circle cx={W * 0.5} cy={H * 0.58} r={m * 0.16} fill="#ffd08a" opacity={0.95} />
+    </g>
+  );
+  if (kind !== "night") return null;
   return (
     <g>
       {Array.from({ length: 46 }, (_, i) => <circle key={i} cx={rand(i) * W} cy={rand(i + 90) * H * 0.55} r={(1 + rand(i + 5) * 2) * (m / 1080) * 1.6} fill="#fff6d8" opacity={0.35 + 0.5 * Math.abs(Math.sin(t * (0.8 + rand(i + 9)) + i))} />)}
