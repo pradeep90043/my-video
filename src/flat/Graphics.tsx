@@ -143,14 +143,16 @@ export const Graphic: React.FC<{ g: GraphicSpec; box: Box; t: number; font: stri
       );
     }
     case "stat": {
-      const target = g.value ?? 0, k = clamp01((t - 0.2) / 1.2), shown = Math.round(target * (1 - Math.pow(1 - k, 3)));
+      const target = g.value ?? 0, k = clamp01((t - 0.2) / 1.2), shown = Number((target * (1 - Math.pow(1 - k, 3))).toFixed(Number.isInteger(target) ? 0 : 1));
       return (
         <g transform={`translate(${cx} ${cy})`}>
-          {(() => { const unit = g.text && g.text.length <= 3 ? g.text : "";
-            const label = `${shown.toLocaleString("en-IN")}${unit}`, full = `${target.toLocaleString("en-IN")}${unit}`;
+          {(() => { const raw = (g.text ?? "").trim(), cur = /^[₹$€£]/.test(raw) ? raw[0] : "", rest = raw.slice(cur.length).trim();
+            // a currency sign goes before the number, "%" or a short Latin unit after it; any other word (वजन, करोड़, people) is a label under it
+            const unit = /^(%|°|x|×|[A-Za-z]{1,3})$/.test(rest) ? rest : "";
+            const label = `${cur}${shown.toLocaleString("en-IN")}${unit}`, full = `${cur}${target.toLocaleString("en-IN")}${unit}`;
             return <g transform={`scale(${popIn(t, 0)})`}>{text(label, 0, 8 * u, Math.min(26 * u, (w * 0.9) / (full.length * 0.62)), { fill: accent, weight: 900 })}</g>; })()}
-          {/* a longer "unit" is a label: it goes under the number, with the title */}
-          {[g.text && g.text.length > 3 ? g.text : undefined, g.title ?? items[0]].filter(Boolean).map((l, i) => text(l!, 0, (24 + i * 9) * u, 6.5 * u, { opacity: fadeIn(t, 0.6 + i * 0.2) }))}
+          {/* a word-unit is a label: it goes under the number, with the title */}
+          {[(() => { const r = (g.text ?? "").trim().replace(/^[₹$€£]\s*/, ""); return r && !/^(%|°|x|×|[A-Za-z]{1,3})$/.test(r) ? r : undefined; })(), g.title ?? items[0]].filter(Boolean).map((l, i) => text(l!, 0, (24 + i * 9) * u, 6.5 * u, { opacity: fadeIn(t, 0.6 + i * 0.2) }))}
         </g>
       );
     }
