@@ -652,7 +652,7 @@ const Headwear: React.FC<{ c: CharacterSpec; ink: (s: string) => string }> = ({ 
         <g>
           <path d="M -86 -880 L -86 -946 L -52 -910 L -26 -964 L 0 -914 L 26 -964 L 52 -910 L 86 -946 L 86 -880 Z" fill={col} />
           <rect x={-88} y={-892} width={176} height={18} fill={dark} rx={4} />
-          {row(1, -1170, 34)}{row(3, -1085, 34)}{row(5, -990, 36)}
+          {row(1, -1150, 34)}{row(3, -1065, 34)}{row(5, -975, 36)}
         </g>
       );
     }
