@@ -22,7 +22,7 @@ export const HEADS = ["human", "elephant", "monkey", "eagle"] as const;
 export const POSTURES = ["stand", "sit", "meditate", "kneel", "seated", "ride"] as const;
 export const FRAMINGS = ["wide", "medium", "close"] as const;
 export const ANIMALS = ["cow", "elephant", "horse", "peacock", "snake", "mouse", "bird", "lion", "deer", "dog"] as const;
-export const SET_PIECES = ["hill", "throne", "yagya", "lotus", "thali", "tree", "house", "boat", "chariot", "pillars", "cloud", "volcano"] as const;
+export const SET_PIECES = ["hill", "throne", "yagya", "lotus", "thali", "tree", "house", "boat", "chariot", "pillars", "cloud", "volcano", "hut", "gate", "kailash"] as const;
 export const MARKS = ["none", "bindi", "tilak", "tripundra", "namam", "scar", "freckles"] as const;
 export const FACIAL = ["none", "beard", "moustache", "beard-long", "stubble"] as const;
 export const EYES = ["normal", "glow", "closed", "big"] as const;
@@ -41,9 +41,11 @@ export const BACKGROUNDS = [
   "mountains", "sea", "space", "plain",
 ] as const;
 export const FX = ["none", "stars", "dust", "embers", "rings", "rays", "snow", "rain", "petals", "fireflies", "sparkle", "confetti", "storm", "flood", "clouds"] as const;
+/** the light of a shot: the same place at another time or mood (day is the plain background) */
+export const LIGHTS = ["day", "dusk", "night", "flashback", "danger"] as const;
 export const ENTERS = ["none", "fade", "slide-left", "slide-right", "pop", "rise"] as const;
 export const CAMERAS = ["static", "push", "pull", "pan-left", "pan-right"] as const;
-export const GRAPHICS = ["calendar", "clock", "compass", "scroll", "nodes", "stat", "list", "versus", "timeline", "icon", "bars", "date-card", "statement", "map"] as const;
+export const GRAPHICS = ["calendar", "clock", "compass", "scroll", "nodes", "stat", "list", "versus", "timeline", "icon", "bars", "date-card", "statement", "map", "cards", "book"] as const;
 
 const hex = z.string().regex(/^#[0-9a-fA-F]{6}$/);
 const color = (d: string) => hex.catch(d).default(d);
@@ -167,6 +169,8 @@ export const ShotSchema = z.object({
   palette: z.array(hex).max(3).catch([]).default([]),
   fx: pick(FX, "none"),
   camera: pick(CAMERAS, "push"),
+  /** the same place re-lit: dusk (warm), night (blue, stars, moon), flashback (faded), danger (red edges) */
+  light: pick(LIGHTS, "day"),
   /** the heading at the top with an underline */
   title: z.string().max(60).optional().catch(undefined),
   cast: listOf(CastInShotSchema, 8),
@@ -199,7 +203,7 @@ export type FlatVideoSpec = z.infer<typeof FlatVideoSchema>;
 export const FLAT_CATALOG = {
   skins: Object.keys(SKINS), heads: HEADS, postures: POSTURES, framings: FRAMINGS, animals: ANIMALS, set: SET_PIECES, hair: HAIR_STYLES, headwear: HEADWEAR, upper: UPPER, lower: LOWER, accessories: ACCESSORIES,
   marks: MARKS, facial: FACIAL, eyes: EYES, moods: MOODS, gestures: GESTURES, props: PROPS, backgrounds: BACKGROUNDS, fx: FX,
-  enters: ENTERS, cameras: CAMERAS, graphics: GRAPHICS,
+  enters: ENTERS, cameras: CAMERAS, graphics: GRAPHICS, lights: LIGHTS,
 };
 
 export const skinColor = (s: string): string => (SKINS as Record<string, string>)[s] ?? (/^#[0-9a-fA-F]{6}$/.test(s) ? s : SKINS.wheat);

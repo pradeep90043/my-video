@@ -276,6 +276,45 @@ export const Graphic: React.FC<{ g: GraphicSpec; box: Box; t: number; font: stri
         </g>
       );
     }
+    case "cards": {
+      // 2-4 cards side by side: an icon, a title, a small line and a verdict badge (check / cross / question) - "A said no, B only hinted, C showed it"
+      const n = Math.max(2, Math.min(4, items.length)), gap = 3 * u, cwid = (w * 0.92 - gap * (n - 1)) / n, ch = Math.min(h * 0.8, cwid * 1.5), x0 = x + w * 0.04;
+      return (
+        <g>
+          {items.slice(0, n).map((it, i) => {
+            const k = popIn(t, 0.15 + i * 0.3), px = x0 + i * (cwid + gap) + cwid / 2, ic = g.icons[i] ?? "star", badge = ic === "check" ? "#3fae6a" : ic === "cross" ? RED : accent;
+            return (
+              <g key={i} transform={`translate(${px} ${cy}) scale(${k})`}>
+                <rect x={-cwid / 2} y={-ch / 2} width={cwid} height={ch} rx={2.4 * u} fill="#17214a" stroke={accent} strokeWidth={0.5 * u} />
+                <circle cx={0} cy={-ch * 0.22} r={Math.min(cwid * 0.24, 9 * u)} fill={badge} opacity={0.22} />
+                <g transform={`translate(0 ${-ch * 0.22})`}><PropIcon name={ic} size={Math.min(cwid * 0.34, 12 * u)} /></g>
+                {wrap(it, Math.max(8, Math.round(cwid / (3.1 * u)))).slice(0, 3).map((l, j) => text(l, 0, ch * 0.1 + j * 5.6 * u, Math.min(4.8 * u, cwid / 9), { weight: 900 }))}
+                {g.subs[i] && wrap(g.subs[i], Math.max(8, Math.round(cwid / (2.4 * u)))).slice(0, 2).map((l, j) => text(l, 0, ch * 0.36 + j * 4 * u, Math.min(3.6 * u, cwid / 11), { fill: "#c9c2d8", weight: 700 }))}
+              </g>
+            );
+          })}
+        </g>
+      );
+    }
+    case "book": {
+      // an open book: the chapter in a gold heading, a few ruled lines of text and, if the story asks, a "?" page
+      const bw = Math.min(w * 0.92, h * 1.5), bh = bw * 0.62, k = popIn(t, 0.05), q = (g.text ?? "").trim() === "?";
+      const page = (px: number, left: boolean) => (
+        <g>
+          <path d={left ? `M ${px} ${-bh / 2} L 0 ${-bh / 2 + 3 * u} L 0 ${bh / 2} L ${px} ${bh / 2 - 3 * u} Z` : `M 0 ${-bh / 2 + 3 * u} L ${px} ${-bh / 2} L ${px} ${bh / 2 - 3 * u} L 0 ${bh / 2} Z`} fill={PAPER} stroke="#c9b48a" strokeWidth={0.4 * u} />
+        </g>
+      );
+      const lines = items.slice(0, 5);
+      return (
+        <g transform={`translate(${cx} ${cy}) scale(${k})`}>
+          <rect x={-bw / 2 - 3 * u} y={-bh / 2 - 2 * u} width={bw + 6 * u} height={bh + 4 * u} rx={2 * u} fill="#5a2a22" />
+          {page(-bw / 2, true)}{page(bw / 2, false)}
+          {g.title && text(g.title, -bw / 4, -bh / 2 + 9 * u, Math.min(6.4 * u, bw / (g.title.length * 0.7 + 2)), { fill: "#7a4a14" })}
+          {lines.map((l, i) => <g key={i} opacity={fadeIn(t, 0.4 + i * 0.25)}><rect x={-bw / 2 + 4 * u} y={-bh / 2 + 15 * u + i * 7 * u} width={bw / 2 - 8 * u} height={0.9 * u} fill="#8a6f46" opacity={0.7} />{text(l, -bw / 4, -bh / 2 + 13.6 * u + i * 7 * u, 3.6 * u, { fill: "#4a3a22", weight: 700 })}</g>)}
+          {q ? <g opacity={fadeIn(t, 0.7)}>{text("?", bw / 4, bh * 0.14, bh * 0.5, { fill: "#c9a24a", weight: 900 })}</g> : lines.slice(0, 0)}
+        </g>
+      );
+    }
     case "statement": {
       const lines = wrap((g.text ?? g.title ?? "").toUpperCase(), 16);
       const size = Math.min(13 * u, (w * 1.6) / Math.max(8, ...lines.map((l) => l.length)));

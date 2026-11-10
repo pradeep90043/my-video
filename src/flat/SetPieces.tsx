@@ -113,6 +113,35 @@ export const SetPiece: React.FC<{ kind: string; t: number }> = ({ kind, t }) => 
         </g>
       );
     }
+    case "hut": return (
+      <g>
+        <rect x={-210} y={-300} width={420} height={300} fill="#c99a5b" />
+        {Array.from({ length: 9 }, (_, i) => <line key={i} x1={-190 + i * 47} y1={-300} x2={-190 + i * 47} y2={0} stroke="#a87a3f" strokeWidth={7} />)}
+        <path d="M -290 -290 L 0 -520 L 290 -290 Z" fill="#d9b56a" />
+        {Array.from({ length: 11 }, (_, i) => <line key={i} x1={-270 + i * 54} y1={-295} x2={-200 + i * 40} y2={-345 - Math.abs(5 - i) * -8} stroke="#b8924a" strokeWidth={5} />)}
+        <path d="M -270 -292 L 0 -505 L 270 -292" fill="none" stroke="#a87a3f" strokeWidth={10} />
+        <path d="M -60 0 L -60 -190 Q 0 -250 60 -190 L 60 0 Z" fill="#3a2a1c" />
+        <rect x={-300} y={-6} width={600} height={14} rx={7} fill="#7a5a34" opacity={0.55} />
+      </g>
+    );
+    case "gate": return (
+      <g>
+        <path d="M -330 0 L -330 -820 Q 0 -1000 330 -820 L 330 0 Z" fill="#c9952f" />
+        <path d="M -270 0 L -270 -790 Q 0 -930 270 -790 L 270 0 Z" fill="#e7b24a" />
+        <rect x={-6} y={-880} width={12} height={880} fill="#a87a22" />
+        {[-1, 1].map((sd) => [0, 1, 2, 3].map((r) => [0, 1].map((c) => <circle key={`${sd}${r}${c}`} cx={sd * (60 + c * 110)} cy={-180 - r * 170} r={22} fill="none" stroke="#a87a22" strokeWidth={8} />)))}
+        <circle cx={0} cy={-940} r={28} fill="#d6453a" stroke="#f2c14e" strokeWidth={8} />
+      </g>
+    );
+    case "kailash": return (
+      <g>
+        <path d="M -900 0 L -250 -620 L -120 -560 L 0 -1050 L 130 -560 L 260 -640 L 900 0 Z" fill="#6f87b8" />
+        <path d="M 0 -1050 L -125 -610 L -60 -650 L 0 -560 L 70 -650 L 125 -610 Z" fill="#f4f8ff" />
+        <path d="M -250 -620 L -170 -440 L -90 -520 L -120 -560 Z" fill="#eef4ff" />
+        <path d="M 260 -640 L 190 -470 L 110 -540 L 130 -560 Z" fill="#eef4ff" />
+        <path d="M -900 0 L -250 -620 L -420 -250 L -620 -120 Z" fill="#5a73a6" opacity={0.6} />
+      </g>
+    );
     case "cloud": return (
       <g transform={`translate(0 ${Math.sin(t * 1.1) * 12})`} fill="#ffffff">
         <ellipse cx={0} cy={-60} rx={420} ry={90} /><circle cx={-200} cy={-120} r={120} /><circle cx={40} cy={-170} r={160} /><circle cx={250} cy={-110} r={110} />

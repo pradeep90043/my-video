@@ -7,6 +7,7 @@ import { Character, stateAt } from "./Character";
 import { Fx, FxFront, Graphic, popIn, wrap, type Box } from "./Graphics";
 import { Animal, SADDLE } from "./Animals";
 import { SetPiece } from "./SetPieces";
+import { LightBack, LightFront } from "./Light";
 import { DrawnArt, type DrawnLibrary } from "./drawn";
 import { PropIcon } from "./icons";
 import { CharacterSchema, ShotSchema, type CharacterSpec, type ShotSpec } from "./spec";
@@ -136,6 +137,7 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
   return (
     <g>
       <g transform={bgT}><Background kind={shot.bg} W={W} H={H} t={t} palette={shot.palette} uid={uid} /></g>
+      {shot.light === "night" && shot.bg !== "night" && <g transform={bgT}><LightBack kind="night" W={W} H={H} t={t} /></g>}
       <g transform={camT}>
         <Fx kind={shot.fx} W={W} H={H} t={t} />
         {g && <Graphic g={g} box={gBox} t={t} font={FLAT_FONT} accent={accent} />}
@@ -186,6 +188,7 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
           );
         })}
       </g>
+      {(hasCast || shot.animals.length > 0 || shot.set.length > 0) && !g && <LightFront kind={shot.light} W={W} H={H} uid={uid} />}
       {shot.title && (
         <g opacity={titleK} transform={`translate(0 ${(1 - titleK) * -12 * u})`}>
           {LIGHT_BGS.has(shot.bg) && (() => {
