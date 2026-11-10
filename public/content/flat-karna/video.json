@@ -1,0 +1,801 @@
+{
+ "format": "short",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "कर्ण का सबसे बड़ा दान",
+ "description": "",
+ "tags": [],
+ "totalFrames": 1936,
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "सूर्यपुत्र कर्ण अपने दान के लिए पूरी दुनिया में प्रसिद्ध था।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sky",
+      "fx": "dust",
+      "camera": "push",
+      "title": "दानवीर कर्ण",
+      "cast": [
+       {
+        "id": "karna",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "tag": {
+         "name": "कर्ण"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 0,
+   "durationFrames": 158,
+   "duration": 5.266666666666667
+  },
+  {
+   "id": "s01",
+   "text": "उसके शरीर पर जन्म से ही सोने का कवच और कुंडल थे, जिनके रहते उसे कोई नहीं हरा सकता था।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sky",
+      "fx": "sparkle",
+      "camera": "push",
+      "title": "अजेय कवच",
+      "cast": [
+       {
+        "id": "karna",
+        "gesture": "hold-up",
+        "mood": "calm",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "prop": "sword"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 158,
+   "durationFrames": 250,
+   "duration": 8.333333333333334
+  },
+  {
+   "id": "s02",
+   "text": "महाभारत के युद्ध से एक रात पहले, सूर्यदेव उसके सपने में आए।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "night",
+      "fx": "stars",
+      "camera": "push",
+      "title": "सूर्यदेव का आगमन",
+      "cast": [
+       {
+        "id": "surya",
+        "gesture": "idle",
+        "mood": "calm",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "tag": {
+         "name": "सूर्यदेव"
+        }
+       },
+       {
+        "id": "karna",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "surya",
+       "name": "सूर्यदेव",
+       "gender": "male",
+       "age": "old",
+       "build": "regular",
+       "skin": "#ffcc66",
+       "hair": "bald",
+       "hairColor": "#ffffff",
+       "headwear": "halo",
+       "headwearColor": "#ffd700",
+       "upper": "bare",
+       "lower": "none",
+       "accent": "#ffd700",
+       "accessories": [],
+       "mark": "none",
+       "facial": "beard-long",
+       "eyes": "glow",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 408,
+   "durationFrames": 182,
+   "duration": 6.066666666666666
+  },
+  {
+   "id": "s03",
+   "text": "उन्होंने कहा, कल इंद्र ब्राह्मण बनकर आएंगे और तुम्हारा कवच मांगेंगे।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "night",
+      "fx": "stars",
+      "camera": "push",
+      "title": "देवराज का छल",
+      "cast": [
+       {
+        "id": "surya",
+        "gesture": "point",
+        "mood": "calm",
+        "talking": true,
+        "enter": "none",
+        "look": "center"
+       },
+       {
+        "id": "karna",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "none",
+        "look": "center"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "surya",
+       "name": "सूर्यदेव",
+       "gender": "male",
+       "age": "old",
+       "build": "regular",
+       "skin": "#ffcc66",
+       "hair": "bald",
+       "hairColor": "#ffffff",
+       "headwear": "halo",
+       "headwearColor": "#ffd700",
+       "upper": "bare",
+       "lower": "none",
+       "accent": "#ffd700",
+       "accessories": [],
+       "mark": "none",
+       "facial": "beard-long",
+       "eyes": "glow",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 590,
+   "durationFrames": 194,
+   "duration": 6.466666666666667
+  },
+  {
+   "id": "s04",
+   "text": "अगली सुबह, कर्ण नदी किनारे सूर्य की पूजा कर रहा था।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sea",
+      "fx": "rays",
+      "camera": "push",
+      "title": "सूर्य की पूजा",
+      "cast": [
+       {
+        "id": "karna",
+        "gesture": "namaste",
+        "mood": "calm",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "say": "हे सूर्यदेव!"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 784,
+   "durationFrames": 153,
+   "duration": 5.1
+  },
+  {
+   "id": "s05",
+   "text": "तभी एक बूढ़ा ब्राह्मण आया और बोला, मुझे तुम्हारा कवच और कुंडल चाहिए।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sea",
+      "fx": "rays",
+      "camera": "push",
+      "title": "ब्राह्मण का वेश",
+      "cast": [
+       {
+        "id": "brahmin-indra",
+        "gesture": "present",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "tag": {
+         "name": "ब्राह्मण बने इंद्र"
+        }
+       },
+       {
+        "id": "karna",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "brahmin-indra",
+       "name": "ब्राह्मण बने इंद्र",
+       "gender": "male",
+       "age": "old",
+       "build": "slim",
+       "skin": "#ddccaa",
+       "hair": "short",
+       "hairColor": "#ffffff",
+       "headwear": "none",
+       "upper": "robe",
+       "upperColor": "#ffffff",
+       "lower": "none",
+       "accent": "#8b4513",
+       "accessories": [],
+       "mark": "tripundra",
+       "facial": "beard-long",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 937,
+   "durationFrames": 205,
+   "duration": 6.833333333333333
+  },
+  {
+   "id": "s06",
+   "text": "कर्ण जानता था कि यह इंद्र हैं, फिर भी वह मुस्कुराया।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sea",
+      "fx": "rays",
+      "camera": "push",
+      "title": "ज्ञान और मुस्कान",
+      "cast": [
+       {
+        "id": "karna",
+        "gesture": "idle",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center"
+       },
+       {
+        "id": "brahmin-indra",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "brahmin-indra",
+       "name": "ब्राह्मण बने इंद्र",
+       "gender": "male",
+       "age": "old",
+       "build": "slim",
+       "skin": "#ddccaa",
+       "hair": "short",
+       "hairColor": "#ffffff",
+       "headwear": "none",
+       "upper": "robe",
+       "upperColor": "#ffffff",
+       "lower": "none",
+       "accent": "#8b4513",
+       "accessories": [],
+       "mark": "tripundra",
+       "facial": "beard-long",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1142,
+   "durationFrames": 148,
+   "duration": 4.933333333333334
+  },
+  {
+   "id": "s07",
+   "text": "उसने अपने हाथों से कवच उतारा और ब्राह्मण को दे दिया।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sea",
+      "fx": "rays",
+      "camera": "push",
+      "title": "अमूल्य दान",
+      "cast": [
+       {
+        "id": "karna",
+        "gesture": "present",
+        "mood": "calm",
+        "talking": true,
+        "enter": "none",
+        "look": "center"
+       },
+       {
+        "id": "brahmin-indra",
+        "gesture": "idle",
+        "mood": "surprised",
+        "talking": false,
+        "enter": "none",
+        "look": "center"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "brahmin-indra",
+       "name": "ब्राह्मण बने इंद्र",
+       "gender": "male",
+       "age": "old",
+       "build": "slim",
+       "skin": "#ddccaa",
+       "hair": "short",
+       "hairColor": "#ffffff",
+       "headwear": "none",
+       "upper": "robe",
+       "upperColor": "#ffffff",
+       "lower": "none",
+       "accent": "#8b4513",
+       "accessories": [],
+       "mark": "tripundra",
+       "facial": "beard-long",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1290,
+   "durationFrames": 157,
+   "duration": 5.233333333333333
+  },
+  {
+   "id": "s08",
+   "text": "इंद्र शर्मिंदा हो गए और बदले में उसे एक अमोघ शक्ति दी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "sparkle",
+      "camera": "push",
+      "title": "वरदान",
+      "cast": [
+       {
+        "id": "indra",
+        "gesture": "bless",
+        "mood": "happy",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "tag": {
+         "name": "इंद्र"
+        }
+       },
+       {
+        "id": "karna",
+        "gesture": "hold",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "indra",
+       "name": "इंद्र",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#ffcc66",
+       "hair": "short",
+       "hairColor": "#ffffff",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "robe",
+       "upperColor": "#ffffff",
+       "lower": "none",
+       "accent": "#daa520",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1447,
+   "durationFrames": 166,
+   "duration": 5.533333333333333
+  },
+  {
+   "id": "s09",
+   "text": "सिर्फ़ तीन बातें याद रखिए: दान, वचन और साहस।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "confetti",
+      "camera": "push",
+      "title": "नैतिक शिक्षा",
+      "cast": [],
+      "graphic": {
+       "type": "list",
+       "items": [
+        "दान",
+        "वचन",
+        "साहस"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1613,
+   "durationFrames": 148,
+   "duration": 4.933333333333334
+  },
+  {
+   "id": "s10",
+   "text": "और यही वजह है कि आज भी कर्ण को दानवीर कहा जाता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "sparkle",
+      "camera": "push",
+      "title": "दानवीर कर्ण",
+      "cast": [
+       {
+        "id": "karna",
+        "gesture": "present",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "say": "यह मेरा सौभाग्य है।"
+       }
+      ],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "कर्ण आज भी दानवीर कहलाते हैं।"
+      }
+     },
+     "cast": [
+      {
+       "id": "karna",
+       "name": "कर्ण",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "skin": "#f5d7a7",
+       "hair": "short",
+       "hairColor": "#332211",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#d4af37",
+       "lower": "dhoti",
+       "lowerColor": "#ffffff",
+       "accent": "#daa520",
+       "accessories": [
+        "armlets",
+        "bangles"
+       ],
+       "mark": "tilak",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1761,
+   "durationFrames": 175,
+   "duration": 5.833333333333333
+  }
+ ]
+}

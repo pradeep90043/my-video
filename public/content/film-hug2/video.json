@@ -1,0 +1,83 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "en",
+ "title": "film-hug2",
+ "description": "",
+ "tags": [],
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "",
+   "startFrame": 0,
+   "durationFrames": 240,
+   "duration": 8,
+   "visual": {
+    "transition": "cut",
+    "shot": {
+     "secs": 8,
+     "place": "park",
+     "time": "day",
+     "props": [
+      {
+       "id": "gift",
+       "kind": "gift",
+       "at": 0.2,
+       "on": "floor"
+      }
+     ],
+     "cast": [
+      {
+       "id": "maa",
+       "who": "seller",
+       "at": 0.25,
+       "skin": "medium",
+       "outfit": "saree",
+       "top": "#b0413e",
+       "bottom": "#e0b84a"
+      },
+      {
+       "id": "ravi",
+       "who": "student",
+       "at": 0.75,
+       "skin": "medium",
+       "top": "#3e6fa8"
+      }
+     ],
+     "actions": [
+      {
+       "at": 0.3,
+       "who": "maa",
+       "do": "pick",
+       "target": "gift"
+      },
+      {
+       "at": 2,
+       "who": "maa",
+       "do": "give",
+       "target": "ravi"
+      },
+      {
+       "at": 4,
+       "who": "ravi",
+       "do": "hug",
+       "target": "maa"
+      }
+     ],
+     "camera": {
+      "shot": "full",
+      "on": [
+       "maa",
+       "ravi"
+      ]
+     }
+    }
+   }
+  }
+ ],
+ "totalFrames": 240
+}

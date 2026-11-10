@@ -1,0 +1,3515 @@
+{
+ "format": "longform",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "hi",
+ "title": "छिपकली की पकड़ का विज्ञान",
+ "description": "",
+ "tags": [],
+ "totalFrames": 12033,
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "आपके घर की दीवार पर जो छिपकली चलती है ना उसके पैरों में इतनी ताकत है कि वो दो इंसानों को छत से उल्टा लटका दे और उसका खुद का वजन सिर्फ 100 ग्राम।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "छिपकली की शक्ति",
+      "cast": [],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "tag": {
+         "name": "छिपकली",
+         "sub": "intro"
+        },
+        "x": 0.5,
+        "scale": 0.8
+       }
+      ]
+     },
+     "cast": [],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 0,
+   "durationFrames": 381,
+   "duration": 12.7
+  },
+  {
+   "id": "s01",
+   "text": "अब सोचो ना उसके पैरों में ग्लू है ना सक्शन कप।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "ग्लू बनाम सक्शन",
+      "cast": [],
+      "graphic": {
+       "type": "versus",
+       "items": [
+        "ग्लू",
+        "सक्शन कप"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 381,
+   "durationFrames": 135,
+   "duration": 4.5
+  },
+  {
+   "id": "s02",
+   "text": "फिर भी वो कांच जैसी चिकनी दीवार पर उल्टी दौड़ जाती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "उल्टी दौड़",
+      "cast": [],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.5,
+        "scale": 0.8
+       }
+      ]
+     },
+     "cast": [],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 516,
+   "durationFrames": 169,
+   "duration": 5.633333333333334
+  },
+  {
+   "id": "s03",
+   "text": "आखिर यह होता कैसे है?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "रहस्य?",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "कैसे?"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 685,
+   "durationFrames": 102,
+   "duration": 3.4
+  },
+  {
+   "id": "s04",
+   "text": "ज्यादातर लोगों को लगता है कि उसके पैरों में कुछ चिपचिपा होता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "भ्रम",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "think",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "प्रो. नेहा"
+        }
+       }
+      ],
+      "crowd": 5
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 787,
+   "durationFrames": 187,
+   "duration": 6.233333333333333
+  },
+  {
+   "id": "s05",
+   "text": "लेकिन अगर आप कभी छिपकली का पैर छुओ तो वह बिल्कुल सूखा मिलेगा।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "सूखा पैर",
+      "cast": [],
+      "graphic": {
+       "type": "icon",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "water"
+       ],
+       "text": "सूखा"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 974,
+   "durationFrames": 182,
+   "duration": 6.066666666666666
+  },
+  {
+   "id": "s06",
+   "text": "कुछ लोग सोचते हैं कि वो सक्शन से चिपकती है जैसे बाथरूम वाले प्लास्टिक हुक।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "मिथक",
+      "cast": [
+       {
+        "id": "arav",
+        "gesture": "point",
+        "mood": "surprised",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "आरव"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "arav",
+       "name": "आरव",
+       "gender": "male",
+       "age": "teen",
+       "build": "slim",
+       "head": "human",
+       "skin": "tan",
+       "hair": "short",
+       "hairColor": "#3d2b1f",
+       "headwear": "none",
+       "upper": "hoodie",
+       "upperColor": "#1e90ff",
+       "lower": "jeans",
+       "lowerColor": "#2c2c2c",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1156,
+   "durationFrames": 207,
+   "duration": 6.9
+  },
+  {
+   "id": "s07",
+   "text": "लेकिन साइंटिस्ट ने छिपकली को वैक्यूम में रखकर देखा जहां सक्शन काम ही नहीं कर सकता और वो तब भी चिपकी रही तो असली खेल कहीं और है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "वैक्यूम प्रयोग",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "hold",
+        "mood": "calm",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.6,
+        "scale": 0.6
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 1363,
+   "durationFrames": 336,
+   "duration": 11.2
+  },
+  {
+   "id": "s08",
+   "text": "और वो खेल छुपा है उसके पैरों के अंदर।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "अंदर का रहस्य",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "अंदर छिपा खेल"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1699,
+   "durationFrames": 125,
+   "duration": 4.166666666666667
+  },
+  {
+   "id": "s09",
+   "text": "अगर आप छिपकली की उंगलियों को पलट कर देखो तो नीचे पतली-पतली धारियां दिखेंगी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "धारियां",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "पतली‑पतली धारियां"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1824,
+   "durationFrames": 211,
+   "duration": 7.033333333333333
+  },
+  {
+   "id": "s10",
+   "text": "अब इन्हें माइक्रोस्कोप से देखो तो पता चलता है कि हर धारी पर हजारों बाल जैसे बेहद पतले स्ट्रक्चर्स लगे हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "static",
+      "title": "माइक्रोस्कोप दृश्य",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "देखो ये संरचना",
+        "tag": {
+         "name": "डॉ. अजय"
+        }
+       },
+       {
+        "id": "prof-neha",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2035,
+   "durationFrames": 286,
+   "duration": 9.533333333333333
+  },
+  {
+   "id": "s11",
+   "text": "इन्हें सेटे कहते हैं और यह हमारे सिर के बालों से भी कई गुना पतले होते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "सेटे क्या?",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "सेटे: पतले स्ट्रक्चर"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 2321,
+   "durationFrames": 211,
+   "duration": 7.033333333333333
+  },
+  {
+   "id": "s12",
+   "text": "लेकिन असली कमाल इसके भी आगे है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "static",
+      "title": "कमाल का खुलासा",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "raise",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2532,
+   "durationFrames": 129,
+   "duration": 4.3
+  },
+  {
+   "id": "s13",
+   "text": "हर एक बाल का सिरा फिर से सैकड़ों और भी छोटी शाखाओं में बट जाता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "static",
+      "title": "शाखा दिखाओ",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "present",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "prop": "laptop"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2661,
+   "durationFrames": 200,
+   "duration": 6.666666666666667
+  },
+  {
+   "id": "s14",
+   "text": "और यह इतनी छोटी होती हैं कि इनकी चौड़ाई नैनो मीटर्स में नापी जाती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "static",
+      "title": "नैनो माप",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "hold",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2861,
+   "durationFrames": 205,
+   "duration": 6.833333333333333
+  },
+  {
+   "id": "s15",
+   "text": "मतलब एक छिपकली के पैरों में करोड़ों छोटे-छोटे सिरे होते हैं जो दीवार को छू रहे होते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "static",
+      "title": "छिपकली के पैर",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "point",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "देखो ये सिरे"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "say": "छिपकली",
+        "tag": {
+         "name": "छिपकली"
+        },
+        "x": 0.7,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 3066,
+   "durationFrames": 243,
+   "duration": 8.1
+  },
+  {
+   "id": "s16",
+   "text": "अब यहां से समझो कि ये चिपकते कैसे हैं?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "static",
+      "title": "चिपकने का सवाल",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "think",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 3309,
+   "durationFrames": 133,
+   "duration": 4.433333333333334
+  },
+  {
+   "id": "s17",
+   "text": "दुनिया की हर चीज एटम्स से बनी है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "static",
+      "title": "एटम्स सब",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "talk",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 3442,
+   "durationFrames": 129,
+   "duration": 4.3
+  },
+  {
+   "id": "s18",
+   "text": "दीवार भी और छिपकली का पैर भी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "दीवार व पैर",
+      "cast": [],
+      "graphic": {
+       "type": "icon",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "star",
+        "star"
+       ],
+       "text": "दीवार और छिपकली पैर"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 3571,
+   "durationFrames": 111,
+   "duration": 3.7
+  },
+  {
+   "id": "s19",
+   "text": "जब दो चीजें एक दूसरे के बेहद करीब आ जाती हैं, बस कुछ नैनोमीटर्स की दूरी पर, तो उनके एटम्स आपस में एक हल्का सा खिंचाव महसूस करते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "sparkle",
+      "camera": "push",
+      "title": "नैनो खिंचाव",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "नैनो मीटर दूरी पर खिंचाव"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 3682,
+   "durationFrames": 367,
+   "duration": 12.233333333333333
+  },
+  {
+   "id": "s20",
+   "text": "इस खिंचाव को वेंडर वाल्स फोर्स कहते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "वेंडर वाल्स फोर्स",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "वेंडर वाल्स फोर्स"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 4049,
+   "durationFrames": 136,
+   "duration": 4.533333333333333
+  },
+  {
+   "id": "s21",
+   "text": "यह फोर्स अकेले बहुत ही कमजोर होती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "कमजोर फोर्स",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "point",
+        "mood": "sad",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "एकल में कमजोर"
+       },
+       {
+        "id": "dr-ajay",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 4185,
+   "durationFrames": 136,
+   "duration": 4.533333333333333
+  },
+  {
+   "id": "s22",
+   "text": "लेकिन अब जरा सोचो एक धागा तो आप आसानी से तोड़ दोगे लेकिन करोड़ों धागों से बनी रस्सी को तोड़ना इतना आसान नहीं है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "धागा बनाम रस्सी",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "धागा आसान, रस्सी कठिन"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 4321,
+   "durationFrames": 328,
+   "duration": 10.933333333333334
+  },
+  {
+   "id": "s23",
+   "text": "छिपकली के साथ भी बिल्कुल यही होता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "छिपकली का उदाहरण",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "देखो छिपकली"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "say": "मैं भी पकड़ता हूँ",
+        "tag": {
+         "name": "छिपकली"
+        },
+        "x": 0.7,
+        "scale": 0.5,
+        "color": "#8b5a2b"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 4649,
+   "durationFrames": 133,
+   "duration": 4.433333333333334
+  },
+  {
+   "id": "s24",
+   "text": "करोड़ों सिरे हर एक में थोड़ा सा खिंचाव और सब मिलकर बना देते हैं एक जबरदस्त ग्रिप।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "जबरदस्त ग्रिप",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "मिलकर बनता है ग्रिप"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 4782,
+   "durationFrames": 216,
+   "duration": 7.2
+  },
+  {
+   "id": "s25",
+   "text": "अब आप सोच रहे होंगे कि यह फोर्स तो हमारे हाथों में भी होगी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "हाथों की शक्ति",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "raise",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "डॉ.अजय"
+        }
+       },
+       {
+        "id": "prof-neha",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 4998,
+   "durationFrames": 169,
+   "duration": 5.633333333333334
+  },
+  {
+   "id": "s26",
+   "text": "फिर हम दीवार से क्यों नहीं चिपकते?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "दीवार क्यों नहीं",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "दीवार नहीं चिपकती"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 5167,
+   "durationFrames": 106,
+   "duration": 3.533333333333333
+  },
+  {
+   "id": "s27",
+   "text": "क्योंकि जो दीवार हमें चिकनी दिखती है ना वो असल में बहुत उबड़ खाबड़ होती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "उबड़ खाबड़ दीवार",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "point",
+        "mood": "surprised",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "say": "छिपकली यहाँ!",
+        "tag": {
+         "name": "छिपकली"
+        },
+        "x": 0.7,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 5273,
+   "durationFrames": 213,
+   "duration": 7.1
+  },
+  {
+   "id": "s28",
+   "text": "बहुत छोटे लेवल पर उसमें उभार और गड्ढे भरे होते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "उभार और गड्ढे",
+      "cast": [],
+      "graphic": {
+       "type": "nodes",
+       "items": [
+        "उभार",
+        "गड्ढा"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "star",
+        "question"
+       ]
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 5486,
+   "durationFrames": 167,
+   "duration": 5.566666666666666
+  },
+  {
+   "id": "s29",
+   "text": "जब हम दीवार छूते हैं तो हमारी स्किन बस ऊपर के कुछ उभारों को ही छू पाती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "स्किन की सीमा",
+      "cast": [
+       {
+        "id": "arav",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "framing": "close"
+     },
+     "cast": [
+      {
+       "id": "arav",
+       "name": "आरव",
+       "gender": "male",
+       "age": "teen",
+       "build": "slim",
+       "head": "human",
+       "skin": "tan",
+       "hair": "short",
+       "hairColor": "#3d2b1f",
+       "headwear": "none",
+       "upper": "hoodie",
+       "upperColor": "#1e90ff",
+       "lower": "jeans",
+       "lowerColor": "#2c2c2c",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 5653,
+   "durationFrames": 220,
+   "duration": 7.333333333333333
+  },
+  {
+   "id": "s30",
+   "text": "लेकिन छिपकली के करोड़ों छोटे सिरे इतने मुलायम होते हैं कि हर गड्ढे के अंदर तक जाकर दीवार से एकदम सट जाते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "छिपकली के सिरे",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "छिपकली के करोड़ों छोटे सिरे"
+      },
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "say": "छिपकली",
+        "tag": {
+         "name": "छिपकली"
+        },
+        "x": 0.5,
+        "scale": 0.6
+       }
+      ]
+     },
+     "cast": [],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 5873,
+   "durationFrames": 303,
+   "duration": 10.1
+  },
+  {
+   "id": "s31",
+   "text": "और यही वजह है कि उसे मिलती है वो पकड़ जो हमें कभी नहीं मिलती।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "अद्भुत पकड़",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "point",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "यह पकड़ अद्भुत है!"
+       },
+       {
+        "id": "prof-neha",
+        "gesture": "think",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.8,
+        "scale": 0.4
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 6176,
+   "durationFrames": 182,
+   "duration": 6.066666666666666
+  },
+  {
+   "id": "s32",
+   "text": "टोके नाम की एक बड़ी छिपकली पर हुई रिसर्च के हिसाब से अगर उसके सारे बाल एक साथ पूरी ताकत से चिपक जाएं तो वह लगभग 130 किलो तक लटका सकती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "130 किलो शक्ति",
+      "cast": [],
+      "graphic": {
+       "type": "stat",
+       "title": "किलो",
+       "items": [],
+       "subs": [],
+       "value": 130,
+       "values": [],
+       "icons": [],
+       "text": "वजन"
+      },
+      "animals": [
+       {
+        "kind": "drawn-large-monitor-lizard-about-1-2a0f0cf2",
+        "say": "टोके",
+        "tag": {
+         "name": "टोके"
+        },
+        "x": 0.5,
+        "scale": 0.8
+       }
+      ]
+     },
+     "cast": [],
+     "drawn": {
+      "drawn-large-monitor-lizard-about-1-2a0f0cf2": {
+       "type": "animal",
+       "description": "large monitor lizard, about 1.5 m long, green with patterned skin",
+       "creature": {
+        "height": 180,
+        "length": 882,
+        "body": "long",
+        "color": "#3a7f3a",
+        "belly": "#6abf6a",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.5,
+        "neck": 0.2,
+        "head": "snout",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "long",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "scales",
+        "patternColor": "#2e5d2e",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 6358,
+   "durationFrames": 392,
+   "duration": 13.066666666666666
+  },
+  {
+   "id": "s33",
+   "text": "लेकिन रुको यहां एक सवाल उठता है अगर मकड़ इतनी तगड़ी है तो छिपकली अपना पैर उठाती कैसे है?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "सवाल उठता",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "छिपकली पैर कैसे उठाए?"
+      },
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.5,
+        "scale": 0.6
+       }
+      ]
+     },
+     "cast": [],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 6750,
+   "durationFrames": 268,
+   "duration": 8.933333333333334
+  },
+  {
+   "id": "s34",
+   "text": "इसका जवाब है नेचर की सबसे स्मार्ट डिज़ाइंस में से एक।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "स्मार्ट डिज़ाइन",
+      "cast": [],
+      "graphic": {
+       "type": "icon",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "star"
+       ],
+       "text": "नेचर"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 7018,
+   "durationFrames": 157,
+   "duration": 5.233333333333333
+  },
+  {
+   "id": "s35",
+   "text": "यह बाल तभी चिपकते हैं जब वो दीवार से एक खास एंगल पर हो।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "कोण का रहस्य",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "hold",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "30° एंगल जरूरी"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.6,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 7175,
+   "durationFrames": 183,
+   "duration": 6.1
+  },
+  {
+   "id": "s36",
+   "text": "जैसे ही यह एंगल लगभग 30° से ज्यादा होता है, पकड़ अपने आप छूट जाती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "पकड़ छूटना",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "raise",
+        "mood": "surprised",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "कोण बढ़ा, पकड़ गई!"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.5,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 7358,
+   "durationFrames": 234,
+   "duration": 7.8
+  },
+  {
+   "id": "s37",
+   "text": "इसलिए छिपकली अपनी उंगलियों को आगे से पीछे की तरफ मोड़ती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "उंगलियों का मोड़",
+      "cast": [
+       {
+        "id": "arav",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.7,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "arav",
+       "name": "आरव",
+       "gender": "male",
+       "age": "teen",
+       "build": "slim",
+       "head": "human",
+       "skin": "tan",
+       "hair": "short",
+       "hairColor": "#3d2b1f",
+       "headwear": "none",
+       "upper": "hoodie",
+       "upperColor": "#1e90ff",
+       "lower": "jeans",
+       "lowerColor": "#2c2c2c",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 7592,
+   "durationFrames": 187,
+   "duration": 6.233333333333333
+  },
+  {
+   "id": "s38",
+   "text": "बिल्कुल वैसे जैसे हम दीवार से टेप उतारते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "टेप हटाना",
+      "cast": [
+       {
+        "id": "arav",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.75,
+        "scale": 0.4
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "arav",
+       "name": "आरव",
+       "gender": "male",
+       "age": "teen",
+       "build": "slim",
+       "head": "human",
+       "skin": "tan",
+       "hair": "short",
+       "hairColor": "#3d2b1f",
+       "headwear": "none",
+       "upper": "hoodie",
+       "upperColor": "#1e90ff",
+       "lower": "jeans",
+       "lowerColor": "#2c2c2c",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 7779,
+   "durationFrames": 154,
+   "duration": 5.133333333333334
+  },
+  {
+   "id": "s39",
+   "text": "और यह सब एक पल में हो जाता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "एक पल",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "think",
+        "mood": "calm",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.5,
+        "scale": 0.6
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 7933,
+   "durationFrames": 123,
+   "duration": 4.1
+  },
+  {
+   "id": "s40",
+   "text": "इतना ही नहीं इसके पैर हर कदम के साथ खुद साफ भी होते रहते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "dust",
+      "camera": "push",
+      "title": "स्वच्छ पैर",
+      "cast": [],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "tag": {
+         "name": "छिपकली"
+        },
+        "x": 0.5,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 8056,
+   "durationFrames": 192,
+   "duration": 6.4
+  },
+  {
+   "id": "s41",
+   "text": "इसलिए धूल जमने से इसकी पकड़ कमजोर नहीं होती।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "dust",
+      "camera": "push",
+      "title": "धूल‑मुक्त पकड़",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "धूल नहीं, पकड़ मजबूत"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 8248,
+   "durationFrames": 143,
+   "duration": 4.766666666666667
+  },
+  {
+   "id": "s42",
+   "text": "लेकिन इसका मतलब यह नहीं कि छिपकली हर जगह चिपक सकती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "हर जगह नहीं",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "हर जगह नहीं",
+        "tag": {
+         "name": "डॉ. अजय"
+        }
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "say": "स्लिप!",
+        "x": 0.6,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 8391,
+   "durationFrames": 187,
+   "duration": 6.233333333333333
+  },
+  {
+   "id": "s43",
+   "text": "टेफ़लॉन जैसी बहुत चिकनी या गीली सतह पर यह भी फिसलने लगती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "चिकनी सतह",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "टैफ़्लॉन पर फिसलती"
+      },
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "x": 0.5,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 8578,
+   "durationFrames": 190,
+   "duration": 6.333333333333333
+  },
+  {
+   "id": "s44",
+   "text": "तो क्या इंसान भी कभी ऐसा कर पाएगा?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "इंसान?",
+      "cast": [
+       {
+        "id": "arav",
+        "gesture": "think",
+        "mood": "surprised",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "आरव"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "arav",
+       "name": "आरव",
+       "gender": "male",
+       "age": "teen",
+       "build": "slim",
+       "head": "human",
+       "skin": "tan",
+       "hair": "short",
+       "hairColor": "#3d2b1f",
+       "headwear": "none",
+       "upper": "hoodie",
+       "upperColor": "#1e90ff",
+       "lower": "jeans",
+       "lowerColor": "#2c2c2c",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 8768,
+   "durationFrames": 118,
+   "duration": 3.933333333333333
+  },
+  {
+   "id": "s45",
+   "text": "नेचर के हिसाब से तो यह आसान नहीं है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "classroom",
+      "fx": "none",
+      "camera": "push",
+      "title": "प्रकृति कठिन",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "point",
+        "mood": "calm",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "prop": "chart",
+        "say": "आसान नहीं",
+        "tag": {
+         "name": "प्रो. नेहा"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 8886,
+   "durationFrames": 138,
+   "duration": 4.6
+  },
+  {
+   "id": "s46",
+   "text": "क्योंकि जब कोई शरीर बड़ा होता है तो उसका वजन बहुत तेजी से बढ़ता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "वजन बढ़ता",
+      "cast": [],
+      "graphic": {
+       "type": "stat",
+       "title": "वजन",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "साइज़ से तेज़"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 9024,
+   "durationFrames": 205,
+   "duration": 6.833333333333333
+  },
+  {
+   "id": "s47",
+   "text": "लेकिन पैरों का एरिया उतनी तेजी से नहीं बढ़ता।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "पैर का क्षेत्र",
+      "cast": [],
+      "graphic": {
+       "type": "bars",
+       "items": [
+        "वजन",
+        "पैर क्षेत्र"
+       ],
+       "subs": [],
+       "values": [
+        10,
+        2
+       ],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 9229,
+   "durationFrames": 139,
+   "duration": 4.633333333333334
+  },
+  {
+   "id": "s48",
+   "text": "कैमब्रिज यूनिवर्सिटी के साइंटिस्ट ने कैलकुलेट किया कि अगर किसी इंसान को छिपकली की तरह दीवार पर चिपकना हो तो उसके शरीर के सामने वाले हिस्से का लगभग 80% हिस्सा इन पैड्स से ढका होना चाहिए।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "कैम्पस गणना",
+      "cast": [],
+      "graphic": {
+       "type": "scroll",
+       "title": "कैम्ब्रिज गणना",
+       "items": [
+        "80% शरीर आगे"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 9368,
+   "durationFrames": 462,
+   "duration": 15.4
+  },
+  {
+   "id": "s49",
+   "text": "मतलब आप दीवार पर चलोगे नहीं बल्कि मोस्टर की तरह चिपके रहोगे।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "चिपकना",
+      "cast": [
+       {
+        "id": "dr-ajay",
+        "gesture": "raise",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "दीवार पर मोन्स्टर जैसा चिपकना"
+      }
+     },
+     "cast": [
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 9830,
+   "durationFrames": 182,
+   "duration": 6.066666666666666
+  },
+  {
+   "id": "s50",
+   "text": "लेकिन जो नेचर नहीं कर पाया वो इंसान ने कर दिखाया।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "none",
+      "camera": "push",
+      "palette": [
+       "#0a0a0a",
+       "#2b2b2b"
+      ],
+      "title": "मानव की जीत",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "जो नेचर नहीं कर पाया, इंसान ने कर दिखाया"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 10012,
+   "durationFrames": 148,
+   "duration": 4.933333333333334
+  },
+  {
+   "id": "s51",
+   "text": "2014 में स्टैनफोर्ड यूनिवर्सिटी के रिसर्चरर्स ने छिपकली के पैरों की नकल करके खास सिलिकॉन ग्लव्स बनाए।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "स्टैनफोर्ड खोज",
+      "cast": [],
+      "graphic": {
+       "type": "date-card",
+       "items": [],
+       "subs": [
+        "छिपकली‑प्रेरित ग्लव्स"
+       ],
+       "values": [],
+       "icons": [],
+       "text": "2014"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 10160,
+   "durationFrames": 271,
+   "duration": 9.033333333333333
+  },
+  {
+   "id": "s52",
+   "text": "और इन्ही ग्लव्स की मदद से लगभग 70 किलो का एक इंसान एक सीधी कांच की दीवार पर करीब 12 फीट ऊपर तक चढ़ गया।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "कांच की दीवार",
+      "cast": [
+       {
+        "id": "arav",
+        "gesture": "hold-up",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "arav",
+       "name": "आरव",
+       "gender": "male",
+       "age": "teen",
+       "build": "slim",
+       "head": "human",
+       "skin": "tan",
+       "hair": "short",
+       "hairColor": "#3d2b1f",
+       "headwear": "none",
+       "upper": "hoodie",
+       "upperColor": "#1e90ff",
+       "lower": "jeans",
+       "lowerColor": "#2c2c2c",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 10431,
+   "durationFrames": 297,
+   "duration": 9.9
+  },
+  {
+   "id": "s53",
+   "text": "वो भी बिना किसी रस्सी के।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "none",
+      "camera": "push",
+      "palette": [
+       "#1a1a1a",
+       "#3a3a3a"
+      ],
+      "title": "बिना रस्सी",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "बिना किसी रस्सी के"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 10728,
+   "durationFrames": 95,
+   "duration": 3.1666666666666665
+  },
+  {
+   "id": "s54",
+   "text": "आज यही टेक्नोलॉजी रोबोट्स में इस्तेमाल हो रही है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "रोबोट में उपयोग",
+      "cast": [
+       {
+        "id": "prof-neha",
+        "gesture": "point",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "dr-ajay",
+        "gesture": "think",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "prop": "laptop"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "prof-neha",
+       "name": "प्रो. नेहा",
+       "gender": "female",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "bun",
+       "hairColor": "#8b4513",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#ff8c00",
+       "lower": "jeans",
+       "lowerColor": "#1a1a1a",
+       "accent": "#ffcc00",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "dr-ajay",
+       "name": "डॉ. अजय",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "short",
+       "hairColor": "#2c2c2c",
+       "headwear": "cap",
+       "headwearColor": "#ffffff",
+       "upper": "coat",
+       "upperColor": "#ffffff",
+       "lower": "pants",
+       "lowerColor": "#2c2c2c",
+       "accent": "#0077ff",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 10823,
+   "durationFrames": 154,
+   "duration": 5.133333333333334
+  },
+  {
+   "id": "s55",
+   "text": "और नासा इससे ऐसे ड्रिपर्स बना रहा है जो स्पेस में तैरते कचरे को पकड़ सकें क्योंकि वहां सक्शन काम ही नहीं करता।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "space",
+      "fx": "stars",
+      "camera": "push",
+      "title": "नासा ड्रिपर",
+      "cast": [],
+      "graphic": {
+       "type": "icon",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "rocket",
+        "star"
+       ],
+       "text": "स्पेस में कचरा"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 10977,
+   "durationFrames": 282,
+   "duration": 9.4
+  },
+  {
+   "id": "s56",
+   "text": "यानी जिस छोटी सी छिपकली को देखकर हम डर जाते हैं उसी के पैरों में छुपा है वो राज जो शायद एक दिन इंसान को सच में दीवार पर चलना सिखा देगा और अगर आपको लगता है यह क्रेजी था तो अगली वीडियो में बताऊंगा कि मकड़ी का जाल स्टील से भी मजबूत कैसे होता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "छिपकली का राज",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "एक दिन दीवार पर चलना संभव"
+      },
+      "animals": [
+       {
+        "kind": "drawn-small-common-house-gecko-abo-2205e1ea",
+        "tag": {
+         "name": "छिपकली"
+        },
+        "x": 0.3,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [],
+     "drawn": {
+      "drawn-small-common-house-gecko-abo-2205e1ea": {
+       "type": "animal",
+       "description": "small common house gecko, about 10 cm long, brown with speckles",
+       "creature": {
+        "height": 60,
+        "length": 80,
+        "body": "slim",
+        "color": "#8B4513",
+        "belly": "#c9a67b",
+        "legs": 4,
+        "legLength": 0.2,
+        "legThick": 0.2,
+        "neck": 0.1,
+        "head": "round",
+        "headSize": 0.2,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "spots",
+        "patternColor": "#5a3e2b",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 11259,
+   "durationFrames": 628,
+   "duration": 20.933333333333334
+  },
+  {
+   "id": "s57",
+   "text": "सब्सक्राइब कर लो ताकि यह अगला कमाल मिस ना हो।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "none",
+      "camera": "push",
+      "palette": [
+       "#202020",
+       "#404040"
+      ],
+      "title": "सब्सक्राइब करें",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "सब्सक्राइब करो, मिस न करो"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 11887,
+   "durationFrames": 146,
+   "duration": 4.866666666666666
+  }
+ ]
+}

@@ -1,0 +1,783 @@
+{
+ "format": "short",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "समुद्र मंथन",
+ "description": "",
+ "tags": [],
+ "totalFrames": 2042,
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "क्या आप जानते हैं कि अमृत कहाँ से आया था?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "none",
+      "camera": "push",
+      "palette": [
+       "#2b0a1f",
+       "#5a0c3b"
+      ],
+      "title": "अमृत की कहानी",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "अमृत की उत्पत्ति"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 0,
+   "durationFrames": 127,
+   "duration": 4.233333333333333
+  },
+  {
+   "id": "s01",
+   "text": "देवता और असुर दोनों अमर होना चाहते थे।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "temple",
+      "fx": "none",
+      "camera": "push",
+      "title": "इच्छा का संघर्ष",
+      "cast": [
+       {
+        "id": "narrator",
+        "gesture": "think",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "वाचक (वयस्क पुरुष)"
+        }
+       },
+       {
+        "id": "child",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "जिज्ञासु बच्ची"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "narrator",
+       "name": "वाचक (वयस्क पुरुष)",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "tan",
+       "hair": "short",
+       "hairColor": "#3b2a1a",
+       "headwear": "cap",
+       "headwearColor": "#333333",
+       "upper": "shirt",
+       "upperColor": "#1e88e5",
+       "lower": "jeans",
+       "lowerColor": "#0d47a1",
+       "accent": "#e2a93b",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "stubble",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "child",
+       "name": "जिज्ञासु बच्ची",
+       "gender": "female",
+       "age": "child",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "ponytail",
+       "hairColor": "#ffb74d",
+       "headwear": "none",
+       "headwearColor": "#000000",
+       "upper": "tshirt",
+       "upperColor": "#ff7043",
+       "lower": "shorts",
+       "lowerColor": "#ffca28",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "big",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 127,
+   "durationFrames": 128,
+   "duration": 4.266666666666667
+  },
+  {
+   "id": "s02",
+   "text": "भगवान विष्णु ने कहा, क्षीर सागर का मंथन करो, उसमें से अमृत निकलेगा।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sea",
+      "fx": "rays",
+      "camera": "push",
+      "title": "क्षीर सागर का मंथन",
+      "cast": [
+       {
+        "id": "vishnu",
+        "gesture": "present",
+        "mood": "calm",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "विष्णु (कुर्म)"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "vishnu",
+       "name": "विष्णु (कुर्म)",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#3b6fd1",
+       "hair": "long",
+       "hairColor": "#2c1e0f",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#fdd835",
+       "lower": "dhoti",
+       "lowerColor": "#fdd835",
+       "accent": "#e2a93b",
+       "accessories": [
+        "garland"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 255,
+   "durationFrames": 199,
+   "duration": 6.633333333333334
+  },
+  {
+   "id": "s03",
+   "text": "मंदराचल पर्वत को मथानी बनाया गया, और नागराज वासुकी को रस्सी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "मथानी और रस्सी",
+      "cast": [],
+      "graphic": {
+       "type": "list",
+       "items": [
+        "मंदराचल पर्वत",
+        "नागराज वासुकी"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "star",
+        "star"
+       ]
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 454,
+   "durationFrames": 182,
+   "duration": 6.066666666666666
+  },
+  {
+   "id": "s04",
+   "text": "पर जैसे ही मंथन शुरू हुआ, भारी पर्वत समुद्र में डूबने लगा।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sea",
+      "fx": "storm",
+      "camera": "push",
+      "title": "पर्वत डूबता",
+      "cast": [
+       {
+        "id": "vishnu",
+        "gesture": "cover-mouth",
+        "mood": "surprised",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "dhanvantari",
+        "gesture": "cover-mouth",
+        "mood": "surprised",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "धन्वन्तरी"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "vishnu",
+       "name": "विष्णु (कुर्म)",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#3b6fd1",
+       "hair": "long",
+       "hairColor": "#2c1e0f",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#fdd835",
+       "lower": "dhoti",
+       "lowerColor": "#fdd835",
+       "accent": "#e2a93b",
+       "accessories": [
+        "garland"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "dhanvantari",
+       "name": "धन्वन्तरी",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "light",
+       "hair": "bun",
+       "hairColor": "#5a3e2b",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#90caf9",
+       "lower": "dhoti",
+       "lowerColor": "#90caf9",
+       "accent": "#e2a93b",
+       "accessories": [
+        "garland",
+        "bag"
+       ],
+       "mark": "none",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 636,
+   "durationFrames": 169,
+   "duration": 5.633333333333334
+  },
+  {
+   "id": "s05",
+   "text": "तब विष्णु ने एक विशाल कछुए का रूप लिया, कूर्म अवतार, और पर्वत को अपनी पीठ पर उठा लिया।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "mountains",
+      "fx": "none",
+      "camera": "push",
+      "title": "कूर्म अवतार",
+      "cast": [
+       {
+        "id": "vishnu",
+        "gesture": "lift",
+        "mood": "calm",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-giant-tortoise-with-a-domed--a9c5bb99",
+        "x": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "vishnu",
+       "name": "विष्णु (कुर्म)",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#3b6fd1",
+       "hair": "long",
+       "hairColor": "#2c1e0f",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#fdd835",
+       "lower": "dhoti",
+       "lowerColor": "#fdd835",
+       "accent": "#e2a93b",
+       "accessories": [
+        "garland"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-giant-tortoise-with-a-domed--a9c5bb99": {
+       "type": "animal",
+       "description": "giant tortoise with a domed shell",
+       "creature": {
+        "height": 400,
+        "length": 900,
+        "body": "round",
+        "color": "#6b8e23",
+        "belly": "#c2b280",
+        "legs": 4,
+        "legLength": 0.12,
+        "legThick": 0.9,
+        "neck": 0.2,
+        "head": "snout",
+        "headSize": 0.35,
+        "ears": "none",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": true,
+        "shellColor": "#4a703f",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "scales",
+        "patternColor": "#5a6b4c"
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 805,
+   "durationFrames": 238,
+   "duration": 7.933333333333334
+  },
+  {
+   "id": "s06",
+   "text": "मंथन से सबसे पहले हलाहल विष निकला, जिससे पूरी सृष्टि जलने लगी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "none",
+      "camera": "push",
+      "palette": [
+       "#331111"
+      ],
+      "title": "हैलाहल विष",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "सृष्टि में आग लगी"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1043,
+   "durationFrames": 191,
+   "duration": 6.366666666666666
+  },
+  {
+   "id": "s07",
+   "text": "महादेव ने वह विष पी लिया और उनका कंठ नीला पड़ गया, इसीलिए उन्हें नीलकंठ कहते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "temple",
+      "fx": "none",
+      "camera": "push",
+      "title": "नीलकंठ",
+      "cast": [
+       {
+        "id": "shiva",
+        "gesture": "hold",
+        "mood": "calm",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "prop": "cup",
+        "say": "आह",
+        "tag": {
+         "name": "शिव"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "shiva",
+       "name": "शिव",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#8fb3d9",
+       "hair": "long",
+       "hairColor": "#2c1e0f",
+       "headwear": "moon-jata",
+       "headwearColor": "#c0c0c0",
+       "upper": "robe",
+       "upperColor": "#4b4b4b",
+       "lower": "none",
+       "lowerColor": "#000000",
+       "accent": "#e2a93b",
+       "accessories": [
+        "snake",
+        "rudraksha"
+       ],
+       "mark": "tripundra",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1234,
+   "durationFrames": 245,
+   "duration": 8.166666666666666
+  },
+  {
+   "id": "s08",
+   "text": "फिर समुद्र से कामधेनु गाय और सफ़ेद हाथी ऐरावत निकले।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sea",
+      "fx": "none",
+      "camera": "push",
+      "title": "कामधेनु और ऐरावत",
+      "cast": [],
+      "animals": [
+       {
+        "kind": "cow",
+        "x": 0.3,
+        "scale": 0.6
+       },
+       {
+        "kind": "elephant",
+        "x": 0.7,
+        "scale": 0.8,
+        "color": "#eef0f2"
+       }
+      ]
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1479,
+   "durationFrames": 161,
+   "duration": 5.366666666666666
+  },
+  {
+   "id": "s09",
+   "text": "उसके बाद कमल पर बैठी माता लक्ष्मी प्रकट हुईं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "temple",
+      "fx": "none",
+      "camera": "push",
+      "title": "लक्ष्मी प्रकट",
+      "cast": [
+       {
+        "id": "lakshmi",
+        "gesture": "bless",
+        "mood": "happy",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "seated",
+        "tag": {
+         "name": "लक्ष्मी"
+        }
+       }
+      ],
+      "set": [
+       {
+        "kind": "lotus",
+        "x": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "lakshmi",
+       "name": "लक्ष्मी",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "long",
+       "hairColor": "#d4a373",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ff69b4",
+       "lower": "saree",
+       "lowerColor": "#ffcc00",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1640,
+   "durationFrames": 139,
+   "duration": 4.633333333333334
+  },
+  {
+   "id": "s10",
+   "text": "आख़िर में धन्वंतरि अमृत का कलश लेकर निकले।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "sea",
+      "fx": "sparkle",
+      "camera": "pan-right",
+      "title": "अमृत का कलश",
+      "cast": [
+       {
+        "id": "dhanvantari",
+        "gesture": "present",
+        "mood": "happy",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "x": 0.5,
+        "prop": "kalash"
+       },
+       {
+        "id": "vishnu",
+        "gesture": "wave",
+        "mood": "calm",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "x": 0.2
+       },
+       {
+        "id": "lakshmi",
+        "gesture": "wave",
+        "mood": "happy",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "x": 0.8
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dhanvantari",
+       "name": "धन्वन्तरी",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "light",
+       "hair": "bun",
+       "hairColor": "#5a3e2b",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#90caf9",
+       "lower": "dhoti",
+       "lowerColor": "#90caf9",
+       "accent": "#e2a93b",
+       "accessories": [
+        "garland",
+        "bag"
+       ],
+       "mark": "none",
+       "facial": "beard",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "vishnu",
+       "name": "विष्णु (कुर्म)",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#3b6fd1",
+       "hair": "long",
+       "hairColor": "#2c1e0f",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#fdd835",
+       "lower": "dhoti",
+       "lowerColor": "#fdd835",
+       "accent": "#e2a93b",
+       "accessories": [
+        "garland"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "lakshmi",
+       "name": "लक्ष्मी",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "long",
+       "hairColor": "#d4a373",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ff69b4",
+       "lower": "saree",
+       "lowerColor": "#ffcc00",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1779,
+   "durationFrames": 133,
+   "duration": 4.433333333333334
+  },
+  {
+   "id": "s11",
+   "text": "और इस तरह चौदह रत्न समुद्र मंथन से मिले।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "चौदह रत्न",
+      "cast": [],
+      "graphic": {
+       "type": "stat",
+       "title": "रत्न",
+       "items": [],
+       "subs": [],
+       "value": 14,
+       "values": [],
+       "icons": [],
+       "text": "समुद्र मंथन"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1912,
+   "durationFrames": 130,
+   "duration": 4.333333333333333
+  }
+ ]
+}

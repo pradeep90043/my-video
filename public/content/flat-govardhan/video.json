@@ -1,0 +1,185 @@
+{
+ "format": "short",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "गोवर्धन पूजा की कहानी",
+ "description": "",
+ "tags": [],
+ "totalFrames": 2897,
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "क्या आप जानते हैं कि दिवाली के अगले दिन गोवर्धन पूजा क्यों होती है?",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 0,
+   "durationFrames": 187,
+   "duration": 6.233333333333333
+  },
+  {
+   "id": "s01",
+   "text": "ये कहानी है सात साल के कृष्ण की।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 187,
+   "durationFrames": 116,
+   "duration": 3.8666666666666667
+  },
+  {
+   "id": "s02",
+   "text": "ब्रज के लोग हर साल वर्षा के देवता इंद्र की पूजा करते थे।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 303,
+   "durationFrames": 163,
+   "duration": 5.433333333333334
+  },
+  {
+   "id": "s03",
+   "text": "गाँव वाले उन्हें छप्पन भोग चढ़ाते थे, ताकि बारिश अच्छी हो।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 466,
+   "durationFrames": 179,
+   "duration": 5.966666666666667
+  },
+  {
+   "id": "s04",
+   "text": "एक दिन छोटे कृष्ण ने नंद बाबा से पूछा, हम इंद्र की पूजा क्यों करते हैं?",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 645,
+   "durationFrames": 211,
+   "duration": 7.033333333333333
+  },
+  {
+   "id": "s05",
+   "text": "हमारी गायों को घास तो गोवर्धन पर्वत देता है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 856,
+   "durationFrames": 149,
+   "duration": 4.966666666666667
+  },
+  {
+   "id": "s06",
+   "text": "कृष्ण की बात सुनकर सभी गाँव वालों ने इंद्र की जगह गोवर्धन की पूजा की।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1005,
+   "durationFrames": 195,
+   "duration": 6.5
+  },
+  {
+   "id": "s07",
+   "text": "यह देखकर इंद्र बहुत क्रोधित हो गए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1200,
+   "durationFrames": 115,
+   "duration": 3.8333333333333335
+  },
+  {
+   "id": "s08",
+   "text": "वे अपने हाथी ऐरावत पर बैठे और बादलों को आदेश दिया, ब्रज को डुबो दो!",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1315,
+   "durationFrames": 207,
+   "duration": 6.9
+  },
+  {
+   "id": "s09",
+   "text": "आसमान में काले बादल छा गए और भयानक बारिश होने लगी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1522,
+   "durationFrames": 163,
+   "duration": 5.433333333333334
+  },
+  {
+   "id": "s10",
+   "text": "गाँव में पानी भरने लगा, लोग और गायें डर से काँपने लगे।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1685,
+   "durationFrames": 167,
+   "duration": 5.566666666666666
+  },
+  {
+   "id": "s11",
+   "text": "तभी कृष्ण मुस्कुराए और अपनी छोटी उंगली पर पूरा गोवर्धन पर्वत उठा लिया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1852,
+   "durationFrames": 203,
+   "duration": 6.766666666666667
+  },
+  {
+   "id": "s12",
+   "text": "सभी ब्रजवासी और उनकी गायें पर्वत के नीचे आ गए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2055,
+   "durationFrames": 147,
+   "duration": 4.9
+  },
+  {
+   "id": "s13",
+   "text": "सात दिन और सात रातें बारिश होती रही, पर कृष्ण की उंगली नहीं हिली।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2202,
+   "durationFrames": 189,
+   "duration": 6.3
+  },
+  {
+   "id": "s14",
+   "text": "आखिर इंद्र को अपनी गलती समझ आई और उन्होंने कृष्ण से क्षमा माँगी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2391,
+   "durationFrames": 189,
+   "duration": 6.3
+  },
+  {
+   "id": "s15",
+   "text": "तभी से हर साल दिवाली के अगले दिन गोवर्धन पूजा होती है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2580,
+   "durationFrames": 173,
+   "duration": 5.766666666666667
+  },
+  {
+   "id": "s16",
+   "text": "और इसीलिए कृष्ण को गिरिधारी भी कहा जाता है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2753,
+   "durationFrames": 144,
+   "duration": 4.8
+  }
+ ]
+}

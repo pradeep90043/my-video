@@ -1,0 +1,884 @@
+{
+ "format": "longform",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "hi",
+ "title": "अंबानी इतने अमीर कैसे बने",
+ "description": "",
+ "tags": [],
+ "totalFrames": 12985,
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "आज इंडिया के सबसे अमीर परिवारों में से एक है अंबानी परिवार।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 0,
+   "durationFrames": 173,
+   "duration": 5.766666666666667
+  },
+  {
+   "id": "s01",
+   "text": "पेट्रोल, फोन, कपड़े, ग्रोसरी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 173,
+   "durationFrames": 102,
+   "duration": 3.4
+  },
+  {
+   "id": "s02",
+   "text": "आप दिन में किसी ना किसी तरह Reliance का पैसा जरूर खर्च करते हैं।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 275,
+   "durationFrames": 184,
+   "duration": 6.133333333333334
+  },
+  {
+   "id": "s03",
+   "text": "लेकिन क्या आप जानते हैं इस सारी दौलत की शुरुआत एक ऐसे लड़के से हुई थी जिसके पिता स्कूल टीचर थे जो कभी तीर्थ यात्रियों को पकोड़े बेचता था।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 459,
+   "durationFrames": 361,
+   "duration": 12.033333333333333
+  },
+  {
+   "id": "s04",
+   "text": "यह कहानी सिर्फ अमीरी की नहीं है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 820,
+   "durationFrames": 122,
+   "duration": 4.066666666666666
+  },
+  {
+   "id": "s05",
+   "text": "यह कहानी है एक बड़ी सोच, रिस्क और एक जबरदस्त स्ट्रेटजी की।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 942,
+   "durationFrames": 187,
+   "duration": 6.233333333333333
+  },
+  {
+   "id": "s06",
+   "text": "आज हम समझेंगे कि अंबानी इतने अमीर कैसे बने।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1129,
+   "durationFrames": 148,
+   "duration": 4.933333333333334
+  },
+  {
+   "id": "s07",
+   "text": "धीरूभाई अंबानी का जन्म 1932 में गुजरात के चोरवाड़ गांव में हुआ।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1277,
+   "durationFrames": 202,
+   "duration": 6.733333333333333
+  },
+  {
+   "id": "s08",
+   "text": "परिवार बहुत अमीर नहीं था।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1479,
+   "durationFrames": 95,
+   "duration": 3.1666666666666665
+  },
+  {
+   "id": "s09",
+   "text": "पिता स्कूल में पढ़ाते थे और घर की हालत ठीक-ठाक ही थी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1574,
+   "durationFrames": 166,
+   "duration": 5.533333333333333
+  },
+  {
+   "id": "s10",
+   "text": "कहा जाता है कि धीरूभाई ने बचपन में ही पैसे कमाने की कोशिश शुरू कर दी थी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1740,
+   "durationFrames": 198,
+   "duration": 6.6
+  },
+  {
+   "id": "s11",
+   "text": "एक कहानी यह मशहूर है कि वह गिरनार के मेले में आने वाले लोगों को पकोड़े बेचते थे।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 1938,
+   "durationFrames": 221,
+   "duration": 7.366666666666666
+  },
+  {
+   "id": "s12",
+   "text": "सिर्फ 16 17 साल की उम्र में वह यमन के अदन शहर पहुंच गए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2159,
+   "durationFrames": 178,
+   "duration": 5.933333333333334
+  },
+  {
+   "id": "s13",
+   "text": "वहां एक ट्रेडिंग कंपनी में नौकरी की।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2337,
+   "durationFrames": 119,
+   "duration": 3.966666666666667
+  },
+  {
+   "id": "s14",
+   "text": "काम छोटा था।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2456,
+   "durationFrames": 70,
+   "duration": 2.3333333333333335
+  },
+  {
+   "id": "s15",
+   "text": "तनख्वाह भी ज्यादा नहीं थी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2526,
+   "durationFrames": 94,
+   "duration": 3.1333333333333333
+  },
+  {
+   "id": "s16",
+   "text": "लेकिन यहां उन्होंने वह चीज सीखी जो बाद में उनकी सबसे बड़ी ताकत बनी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2620,
+   "durationFrames": 195,
+   "duration": 6.5
+  },
+  {
+   "id": "s17",
+   "text": "ट्रेडिंग कैसे होती है?",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2815,
+   "durationFrames": 93,
+   "duration": 3.1
+  },
+  {
+   "id": "s18",
+   "text": "मार्जिन कैसे बनता है?",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2908,
+   "durationFrames": 99,
+   "duration": 3.3
+  },
+  {
+   "id": "s19",
+   "text": "और दुनिया में चीजें कहां सस्ती और कहां महंगी बिकती हैं?",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3007,
+   "durationFrames": 167,
+   "duration": 5.566666666666666
+  },
+  {
+   "id": "s20",
+   "text": "कुछ साल बाद 1958 के आसपास वो इंडिया वापस आए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3174,
+   "durationFrames": 176,
+   "duration": 5.866666666666666
+  },
+  {
+   "id": "s21",
+   "text": "जेब में बहुत कम पैसा था लेकिन दिमाग में एक पक्का आईडिया था।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3350,
+   "durationFrames": 177,
+   "duration": 5.9
+  },
+  {
+   "id": "s22",
+   "text": "मुंबई के मस्जिद बंदर में एक छोटा सा कमरा, एक फोन और कुछ कुर्सियां।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3527,
+   "durationFrames": 190,
+   "duration": 6.333333333333333
+  },
+  {
+   "id": "s23",
+   "text": "यहीं से Reliance कमर्शियल कॉरपोरेशन की शुरुआत हुई।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3717,
+   "durationFrames": 146,
+   "duration": 4.866666666666666
+  },
+  {
+   "id": "s24",
+   "text": "शुरू में वो मसाले और दूसरी चीजें एक्सपोर्ट करते थे।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3863,
+   "durationFrames": 156,
+   "duration": 5.2
+  },
+  {
+   "id": "s25",
+   "text": "और यर्न यानी धागा इंपोर्ट करते थे।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 4019,
+   "durationFrames": 119,
+   "duration": 3.966666666666667
+  },
+  {
+   "id": "s26",
+   "text": "फिर उन्होंने एक समझदारी भरा फैसला किया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 4138,
+   "durationFrames": 128,
+   "duration": 4.266666666666667
+  },
+  {
+   "id": "s27",
+   "text": "उस वक्त इंडिया में पॉलीएस्टर धागे की डिमांड बढ़ रही थी और धीरू भाई ने इसमें बड़ा मौका देखा।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 4266,
+   "durationFrames": 241,
+   "duration": 8.033333333333333
+  },
+  {
+   "id": "s28",
+   "text": "उनकी सोच सिंपल थी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 4507,
+   "durationFrames": 87,
+   "duration": 2.9
+  },
+  {
+   "id": "s29",
+   "text": "कम मार्जिन लो लेकिन बहुत ज्यादा माल बेचो।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 4594,
+   "durationFrames": 124,
+   "duration": 4.133333333333334
+  },
+  {
+   "id": "s30",
+   "text": "जब तक दूसरे कपड़ा बिजनेसमैन सोचते रहते।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 4718,
+   "durationFrames": 134,
+   "duration": 4.466666666666667
+  },
+  {
+   "id": "s31",
+   "text": "धीरू भाई तब तक नए प्लांट की प्लानिंग कर चुके होते थे।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 4852,
+   "durationFrames": 156,
+   "duration": 5.2
+  },
+  {
+   "id": "s32",
+   "text": "1966 में अहमदाबाद के पास नरोदा में उन्होंने अपनी टेक्सटाइल मिल लगाई और 1975 के आसपास आया वो ब्रांड जो घर-घर में पहुंच गया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 5008,
+   "durationFrames": 367,
+   "duration": 12.233333333333333
+  },
+  {
+   "id": "s33",
+   "text": "विमल Reliance का कपड़ा अब बाजार में बिक रहा था और हर किसी की जुबान पर था।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 5375,
+   "durationFrames": 204,
+   "duration": 6.8
+  },
+  {
+   "id": "s34",
+   "text": "बिजनेस को बड़ा करने के लिए पैसे चाहिए थे और यहां धीरूभाई ने वो किया जो उस वक्त बहुत कम लोगों ने सोचा था।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 5579,
+   "durationFrames": 274,
+   "duration": 9.133333333333333
+  },
+  {
+   "id": "s35",
+   "text": "1977 में Reliance पब्लिक हुई।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 5853,
+   "durationFrames": 123,
+   "duration": 4.1
+  },
+  {
+   "id": "s36",
+   "text": "मतलब कोई भी आम आदमी कंपनी के शेयर खरीद सकता था।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 5976,
+   "durationFrames": 161,
+   "duration": 5.366666666666666
+  },
+  {
+   "id": "s37",
+   "text": "धीरूभाई ने एक बहुत छोटे निवेश करने वाले को भी कंपनी का हिस्सेदार बना लिया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 6137,
+   "durationFrames": 203,
+   "duration": 6.766666666666667
+  },
+  {
+   "id": "s38",
+   "text": "कहा जाता है कि उन्होंने लाखों रिटेल इन्वेस्टर्स को जोड़ लिया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 6340,
+   "durationFrames": 160,
+   "duration": 5.333333333333333
+  },
+  {
+   "id": "s39",
+   "text": "इससे दो काम हुए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 6500,
+   "durationFrames": 78,
+   "duration": 2.6
+  },
+  {
+   "id": "s40",
+   "text": "पहला Reliance को एक्सपेंशन के लिए लगातार पैसा मिला और दूसरा हजारों लाखों घर के लोगों को Reliance के शेयर से अच्छा मुनाफा मिला तो वह कंपनी के सबसे बड़े फैंस बन गए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 6578,
+   "durationFrames": 400,
+   "duration": 13.333333333333334
+  },
+  {
+   "id": "s41",
+   "text": "Reliance की शेयर होल्डर्स की मीटिंग्स इतनी बड़ी होती थी कि उन्हें स्टेडियम्स में करना पड़ता था।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 6978,
+   "durationFrames": 225,
+   "duration": 7.5
+  },
+  {
+   "id": "s42",
+   "text": "यह भी एक तरीका था इन्वेस्टर्स का भरोसा बनाए रखने का।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 7203,
+   "durationFrames": 161,
+   "duration": 5.366666666666666
+  },
+  {
+   "id": "s43",
+   "text": "अब सुनिए वो स्ट्रेटजी जो Reliance की सबसे बड़ी ताकत बनी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 7364,
+   "durationFrames": 157,
+   "duration": 5.233333333333333
+  },
+  {
+   "id": "s44",
+   "text": "इसको कहते हैं बैकवर्ड इंटीग्रेशन।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 7521,
+   "durationFrames": 110,
+   "duration": 3.6666666666666665
+  },
+  {
+   "id": "s45",
+   "text": "मतलब आप कपड़ा बनाते हो तो धागे के लिए दूसरे पर डिपेंड क्यों रहो?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "push",
+      "title": "निर्भरता प्रश्न",
+      "cast": [],
+      "graphic": {
+       "type": "nodes",
+       "items": [
+        "कपड़ा",
+        "धागा"
+       ],
+       "subs": [
+        "निर्माता",
+        "आपूर्तिकर्ता"
+       ],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 7631,
+   "durationFrames": 172,
+   "duration": 5.733333333333333
+  },
+  {
+   "id": "s46",
+   "text": "धागे के लिए फाइबर खुद बनाओ।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "none",
+      "camera": "push",
+      "title": "फ़ाइबर बनाओ",
+      "cast": [
+       {
+        "id": "dhiru",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "धीरूभाई",
+         "sub": "मुख्य"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "dhiru",
+       "name": "धीरूभाई अंबानी",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "wheat",
+       "hair": "short",
+       "hairColor": "#3b2e2e",
+       "headwear": "none",
+       "upper": "shirt",
+       "upperColor": "#1a237e",
+       "lower": "pants",
+       "lowerColor": "#0d47a1",
+       "accent": "#ffeb3b",
+       "accessories": [
+        "watch",
+        "belt"
+       ],
+       "mark": "none",
+       "facial": "moustache",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 7803,
+   "durationFrames": 103,
+   "duration": 3.433333333333333
+  },
+  {
+   "id": "s47",
+   "text": "फाइबर के लिए जो पेट्रोकेमिकल्स चाहिए वो भी खुद बनाओ और उन पेट्रोकेमिकल्स के लिए जो तेल चाहिए उसकी रिफाइनिंग भी खुद करो।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "city",
+      "fx": "none",
+      "camera": "push",
+      "title": "संपूर्ण श्रृंखला",
+      "cast": [],
+      "graphic": {
+       "type": "timeline",
+       "items": [
+        "तेल",
+        "पेट्रोकेमिकल्स",
+        "फ़ाइबर"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 7906,
+   "durationFrames": 302,
+   "duration": 10.066666666666666
+  },
+  {
+   "id": "s48",
+   "text": "हर कदम पर किसी और का मुनाफा खत्म और वो मुनाफा आपका हो जाता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "none",
+      "camera": "push",
+      "palette": [
+       "#3a0a0a"
+      ],
+      "title": "मुनाफा आपका",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "हर कदम पर आपका मुनाफा"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 8208,
+   "durationFrames": 196,
+   "duration": 6.533333333333333
+  },
+  {
+   "id": "s49",
+   "text": "कॉस्ट कम, कंट्रोल ज्यादा।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "कम लागत, अधिक नियंत्रण",
+      "cast": [],
+      "graphic": {
+       "type": "bars",
+       "items": [
+        "कॉस्ट",
+        "कंट्रोल"
+       ],
+       "subs": [],
+       "values": [
+        1,
+        5
+       ],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 8404,
+   "durationFrames": 92,
+   "duration": 3.066666666666667
+  },
+  {
+   "id": "s50",
+   "text": "इसी सोच के साथ Reliance कपड़े से पेट्रो केमिकल्स में गई और फिर तेल रिफाइनिंग में और फिर आया गुजरात का जामगर।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 8496,
+   "durationFrames": 274,
+   "duration": 9.133333333333333
+  },
+  {
+   "id": "s51",
+   "text": "यहां Reliance ने एक रिफाइनरी कॉम्प्लेक्स बनाया जो आगे चलकर दुनिया के सबसे बड़े रिफाइनिंग कॉम्प्लेक्सेस में से एक बना।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 8770,
+   "durationFrames": 285,
+   "duration": 9.5
+  },
+  {
+   "id": "s52",
+   "text": "एक छोटी ट्रेडिंग कंपनी एक बड़े इंडस्ट्रियल एंपायर में बदल चुकी थी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9055,
+   "durationFrames": 189,
+   "duration": 6.3
+  },
+  {
+   "id": "s53",
+   "text": "2002 में धीरूभाई अंबानी का देहांत हो गया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9244,
+   "durationFrames": 143,
+   "duration": 4.766666666666667
+  },
+  {
+   "id": "s54",
+   "text": "उनके बाद एंपायर की जिम्मेदारी उनके बेटे मुकेश और अनिल पर आ गई।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9387,
+   "durationFrames": 184,
+   "duration": 6.133333333333334
+  },
+  {
+   "id": "s55",
+   "text": "कुछ साल तक सब ठीक रहा।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9571,
+   "durationFrames": 94,
+   "duration": 3.1333333333333333
+  },
+  {
+   "id": "s56",
+   "text": "फिर 2005 में दोनों भाइयों के बीच झगड़े के बाद बिजनेस का बंटवारा हो गया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9665,
+   "durationFrames": 215,
+   "duration": 7.166666666666667
+  },
+  {
+   "id": "s57",
+   "text": "मुकेश अंबानी के पास आया तेल, गैस और पेट्रोकेमिकल्स यानी Reliance का असली कोर और अनिल अंबानी के हिस्से में आए टेलीकॉम पावर और फाइनेंशियल सर्विज।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9880,
+   "durationFrames": 362,
+   "duration": 12.066666666666666
+  },
+  {
+   "id": "s58",
+   "text": "यहीं से दोनों की कहानियां अलग हो गई।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 10242,
+   "durationFrames": 114,
+   "duration": 3.8
+  },
+  {
+   "id": "s59",
+   "text": "मुकेश ने कोर बिज़नेस मजबूत रखा और फिर दो बहुत बड़े नए दांव खेले।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 10356,
+   "durationFrames": 189,
+   "duration": 6.3
+  },
+  {
+   "id": "s60",
+   "text": "पहला Reliance रिटेल, ग्रोसरी, इलेक्ट्रॉनिक्स, फैशन।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 10545,
+   "durationFrames": 148,
+   "duration": 4.933333333333334
+  },
+  {
+   "id": "s61",
+   "text": "Reliance ने पूरे इंडिया में स्टोर्स का जाल बिछा दिया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 10693,
+   "durationFrames": 142,
+   "duration": 4.733333333333333
+  },
+  {
+   "id": "s62",
+   "text": "दूसरा Jio 2016 में Jio आया और उसके साथ ही डाटा के दाम गिर गए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 10835,
+   "durationFrames": 206,
+   "duration": 6.866666666666666
+  },
+  {
+   "id": "s63",
+   "text": "कुछ महीनों तक फ्री ऑफर्स उसके बाद बहुत सस्ता डाटा।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 11041,
+   "durationFrames": 151,
+   "duration": 5.033333333333333
+  },
+  {
+   "id": "s64",
+   "text": "रिजल्ट करोड़ों लोगों ने पहली बार इंटरनेट यूज़ करना शुरू किया और Reliance को मिला एक बड़ा कस्टमर बेस जो उसके बाकी बिजनेसेस के लिए भी काम आया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 11192,
+   "durationFrames": 343,
+   "duration": 11.433333333333334
+  },
+  {
+   "id": "s65",
+   "text": "2020 में Jio प्लेटफॉर्म्स में Facebook, Google और कई बड़ी कंपनियों ने अरबों रुपए का निवेश किया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 11535,
+   "durationFrames": 257,
+   "duration": 8.566666666666666
+  },
+  {
+   "id": "s66",
+   "text": "इस पैसे से Reliance ने अपना कर्ज भी कम किया और आगे बढ़ने के लिए तैयार हुआ।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 11792,
+   "durationFrames": 210,
+   "duration": 7
+  },
+  {
+   "id": "s67",
+   "text": "इसी तरह एक डिजिटल एंपायर बन गई।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 12002,
+   "durationFrames": 118,
+   "duration": 3.933333333333333
+  },
+  {
+   "id": "s68",
+   "text": "दूसरी तरफ अनिल अंबानी के बिजनेस पर बहुत कर्ज चढ़ गया।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 12120,
+   "durationFrames": 151,
+   "duration": 5.033333333333333
+  },
+  {
+   "id": "s69",
+   "text": "एक बात और Reliance के आलोचक कहते हैं कि कंपनी को पॉलिसी और सरकार के साथ अच्छे संबंधों से भी फायदा मिला।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 12271,
+   "durationFrames": 282,
+   "duration": 9.4
+  },
+  {
+   "id": "s70",
+   "text": "सपोर्ट करने वाले कहते हैं कि असली वजह स्केल और एग्जीक्यूशन थी।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 12553,
+   "durationFrames": 189,
+   "duration": 6.3
+  },
+  {
+   "id": "s71",
+   "text": "सच शायद दोनों के बीच कहीं है और इसे समझना जरूरी है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 12742,
+   "durationFrames": 181,
+   "duration": 6.033333333333333
+  },
+  {
+   "id": "s72",
+   "text": "हम्म!",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 12923,
+   "durationFrames": 62,
+   "duration": 2.066666666666667
+  }
+ ]
+}

@@ -1,0 +1,2703 @@
+{
+ "format": "longform",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "hi",
+ "title": "लक्ष्मण रेखा का रहस्य",
+ "description": "",
+ "tags": [],
+ "totalFrames": 8565,
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "रामायण की सबसे मशहूर घटनाओं में से एक है लक्ष्मण रेखा।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "none",
+      "camera": "push",
+      "palette": [
+       "#2b1a3a",
+       "#5a2c6e"
+      ],
+      "title": "लक्ष्मण रेखा",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "लक्ष्मण रेखा"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 0,
+   "durationFrames": 163,
+   "duration": 5.433333333333334
+  },
+  {
+   "id": "s01",
+   "text": "लेकिन बहुत कम लोग जानते हैं कि वाल्मीकि रामायण के अरण्यकांड में लक्ष्मण रेखा खींचने का कोई जिक्र नहीं मिलता।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "temple",
+      "fx": "dust",
+      "camera": "push",
+      "title": "अरण्यकांड में",
+      "cast": [],
+      "graphic": {
+       "type": "scroll",
+       "title": "अनुपस्थिति",
+       "items": [
+        "लक्ष्मण रेखा नहीं"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 163,
+   "durationFrames": 270,
+   "duration": 9
+  },
+  {
+   "id": "s02",
+   "text": "उस दिन पंचवटी में असल में जो हुआ था वो इससे कहीं ज्यादा दर्दनाक था।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "storm",
+      "camera": "push",
+      "title": "दर्दनाक घटना",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "दर्दनाक रहस्य"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 433,
+   "durationFrames": 187,
+   "duration": 6.233333333333333
+  },
+  {
+   "id": "s03",
+   "text": "कहानी शुरू होती है पंचवटी के आश्रम से।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "पंचवटी आश्रम",
+      "cast": [
+       {
+        "id": "rama",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "राम"
+        }
+       },
+       {
+        "id": "lakshman",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "लक्ष्मण"
+        }
+       },
+       {
+        "id": "sita",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "सीता"
+        }
+       }
+      ],
+      "set": [
+       {
+        "kind": "house",
+        "x": 0.5,
+        "scale": 0.8
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "rama",
+       "name": "राम",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#4a7fd4",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "mukut",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#f5e1a4",
+       "lower": "dhoti",
+       "lowerColor": "#f5e1a4",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 620,
+   "durationFrames": 127,
+   "duration": 4.233333333333333
+  },
+  {
+   "id": "s04",
+   "text": "एक दिन माता सीता की नजर एक बेहद सुंदर सुनहरे हिरण पर पड़ी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "sparkle",
+      "camera": "push",
+      "title": "सुनहरा हिरण",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "point",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "सीता",
+         "sub": "first"
+        }
+       }
+      ],
+      "animals": [
+       {
+        "kind": "deer",
+        "say": "मैं यहाँ हूँ",
+        "tag": {
+         "name": "स्वर्ण हिरण",
+         "sub": "first"
+        },
+        "x": 0.6,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 747,
+   "durationFrames": 173,
+   "duration": 5.766666666666667
+  },
+  {
+   "id": "s05",
+   "text": "उसकी सुंदरता देखकर उन्होंने भगवान श्री राम से उसे पकड़ कर लाने की इच्छा जताई ताकि वे उसे अपने साथ अयोध्या ले जा सकें।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "हिरण की इच्छा",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "talk",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "rama",
+        "gesture": "idle",
+        "mood": "calm",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "rama",
+       "name": "राम",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#4a7fd4",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "mukut",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#f5e1a4",
+       "lower": "dhoti",
+       "lowerColor": "#f5e1a4",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 920,
+   "durationFrames": 315,
+   "duration": 10.5
+  },
+  {
+   "id": "s06",
+   "text": "माता सीता की इच्छा पूरी करने के लिए भगवान श्री राम उस हिरण के पीछे चले गए और उनकी रक्षा के लिए लक्ष्मण जी को आश्रम में ही छोड़ गए।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "रक्षा के लिए",
+      "cast": [
+       {
+        "id": "rama",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "lakshman",
+        "gesture": "idle",
+        "mood": "calm",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "rama",
+       "name": "राम",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#4a7fd4",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "mukut",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#f5e1a4",
+       "lower": "dhoti",
+       "lowerColor": "#f5e1a4",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1235,
+   "durationFrames": 329,
+   "duration": 10.966666666666667
+  },
+  {
+   "id": "s07",
+   "text": "लेकिन वो हिरण कोई साधारण हिरण नहीं था।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "none",
+      "camera": "push",
+      "palette": [
+       "#3b0d2a"
+      ],
+      "title": "छिपा रूप",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "हिरण नहीं साधारण"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1564,
+   "durationFrames": 127,
+   "duration": 4.233333333333333
+  },
+  {
+   "id": "s08",
+   "text": "वो राक्षस मारीच था जिसे रावण ने अपनी योजना में शामिल किया था।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "मारिच का रूप",
+      "cast": [
+       {
+        "id": "marich",
+        "gesture": "idle",
+        "mood": "evil",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "मारीच"
+        }
+       }
+      ],
+      "animals": [
+       {
+        "kind": "deer",
+        "x": 0.5,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "marich",
+       "name": "मारीच",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "drawn-golden-deer-head-with-antler-b2a142a3",
+       "skin": "#ffd700",
+       "hair": "bald",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#8b4513",
+       "lower": "pants",
+       "lowerColor": "#654321",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-golden-deer-head-with-antler-b2a142a3": {
+       "type": "head",
+       "description": "golden deer head with antlers, shining",
+       "kit": {
+        "shape": "long",
+        "color": "#ffd700",
+        "muzzle": "small",
+        "muzzleColor": "#ffea80",
+        "mane": false,
+        "maneColor": "#8a4f1c",
+        "ears": "pointed",
+        "horns": "curved",
+        "hornColor": "#ffd700",
+        "tusks": false,
+        "trunk": false,
+        "fangs": false,
+        "fierce": false
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 1691,
+   "durationFrames": 176,
+   "duration": 5.866666666666666
+  },
+  {
+   "id": "s09",
+   "text": "दरअसल रावण ने ही मारीच को सुनहरे हिरण का रूप धारण करने के लिए कहा था।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "रावण की योजना",
+      "cast": [
+       {
+        "id": "raavan",
+        "gesture": "point",
+        "mood": "evil",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "रावण"
+        }
+       },
+       {
+        "id": "marich",
+        "gesture": "idle",
+        "mood": "evil",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "raavan",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5a3d2b",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "turban",
+       "headwearColor": "#8b4513",
+       "upper": "robe",
+       "upperColor": "#6b4c3b",
+       "lower": "dhoti",
+       "lowerColor": "#4b3621",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "marich",
+       "name": "मारीच",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "drawn-golden-deer-head-with-antler-b2a142a3",
+       "skin": "#ffd700",
+       "hair": "bald",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#8b4513",
+       "lower": "pants",
+       "lowerColor": "#654321",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-golden-deer-head-with-antler-b2a142a3": {
+       "type": "head",
+       "description": "golden deer head with antlers, shining",
+       "kit": {
+        "shape": "long",
+        "color": "#ffd700",
+        "muzzle": "small",
+        "muzzleColor": "#ffea80",
+        "mane": false,
+        "maneColor": "#8a4f1c",
+        "ears": "pointed",
+        "horns": "curved",
+        "hornColor": "#ffd700",
+        "tusks": false,
+        "trunk": false,
+        "fangs": false,
+        "fierce": false
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 1867,
+   "durationFrames": 189,
+   "duration": 6.3
+  },
+  {
+   "id": "s10",
+   "text": "उसकी योजना थी कि माता सीता उस हिरण को देखकर भगवान श्री राम से उसे पकड़ने के लिए कहेंगी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "static",
+      "title": "हिरण की योजना",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "point",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "rama",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "framing": "medium",
+      "animals": [
+       {
+        "kind": "deer",
+        "tag": {
+         "name": "स्वर्ण हिरण"
+        },
+        "x": 0.7,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "rama",
+       "name": "राम",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#4a7fd4",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "mukut",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#f5e1a4",
+       "lower": "dhoti",
+       "lowerColor": "#f5e1a4",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2056,
+   "durationFrames": 248,
+   "duration": 8.266666666666667
+  },
+  {
+   "id": "s11",
+   "text": "फिर दोनों भाई आश्रम से दूर चले जाएंगे और वो आसानी से माता सीता का हरण कर सकेगा।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "static",
+      "title": "भाईयों का प्रस्थान",
+      "cast": [],
+      "graphic": {
+       "type": "map",
+       "items": [
+        "आश्रम",
+        "वन"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "star"
+       ]
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 2304,
+   "durationFrames": 237,
+   "duration": 7.9
+  },
+  {
+   "id": "s12",
+   "text": "भगवान श्री राम को जल्द ही समझ आ गया कि यह कोई साधारण हिरण नहीं बल्कि किसी राक्षस की चाल है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "static",
+      "title": "रहस्य खुला",
+      "cast": [
+       {
+        "id": "rama",
+        "gesture": "think",
+        "mood": "surprised",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "यह छल है"
+       }
+      ],
+      "framing": "close"
+     },
+     "cast": [
+      {
+       "id": "rama",
+       "name": "राम",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#4a7fd4",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "mukut",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#f5e1a4",
+       "lower": "dhoti",
+       "lowerColor": "#f5e1a4",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2541,
+   "durationFrames": 264,
+   "duration": 8.8
+  },
+  {
+   "id": "s13",
+   "text": "उन्होंने उस पर बाण चला दिया।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "static",
+      "title": "बाण चलाया",
+      "cast": [
+       {
+        "id": "rama",
+        "gesture": "attack",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand",
+        "prop": "bow",
+        "say": "बाण!"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "rama",
+       "name": "राम",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#4a7fd4",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "mukut",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#f5e1a4",
+       "lower": "dhoti",
+       "lowerColor": "#f5e1a4",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2805,
+   "durationFrames": 98,
+   "duration": 3.2666666666666666
+  },
+  {
+   "id": "s14",
+   "text": "बाण लगते ही मारीच अपने असली रूप में आ गया।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "dust",
+      "camera": "push",
+      "title": "रूप परिवर्तन",
+      "cast": [
+       {
+        "id": "marich",
+        "gesture": "raise",
+        "mood": "evil",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "marich"
+        }
+       }
+      ],
+      "animals": [
+       {
+        "kind": "deer",
+        "x": 0.6,
+        "scale": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "marich",
+       "name": "मारीच",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "drawn-golden-deer-head-with-antler-b2a142a3",
+       "skin": "#ffd700",
+       "hair": "bald",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#8b4513",
+       "lower": "pants",
+       "lowerColor": "#654321",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-golden-deer-head-with-antler-b2a142a3": {
+       "type": "head",
+       "description": "golden deer head with antlers, shining",
+       "kit": {
+        "shape": "long",
+        "color": "#ffd700",
+        "muzzle": "small",
+        "muzzleColor": "#ffea80",
+        "mane": false,
+        "maneColor": "#8a4f1c",
+        "ears": "pointed",
+        "horns": "curved",
+        "hornColor": "#ffd700",
+        "tusks": false,
+        "trunk": false,
+        "fangs": false,
+        "fierce": false
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 2903,
+   "durationFrames": 137,
+   "duration": 4.566666666666666
+  },
+  {
+   "id": "s15",
+   "text": "लेकिन मरते-मरते उसने अपनी आखिरी चाल चली।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "static",
+      "title": "अंतिम चाल",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "अंतिम चाल"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 3040,
+   "durationFrames": 137,
+   "duration": 4.566666666666666
+  },
+  {
+   "id": "s16",
+   "text": "उसने भगवान श्री राम की आवाज में पुकार लगाई।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "static",
+      "title": "धोखा आवाज",
+      "cast": [
+       {
+        "id": "marich",
+        "gesture": "talk",
+        "mood": "evil",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "marich",
+       "name": "मारीच",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "drawn-golden-deer-head-with-antler-b2a142a3",
+       "skin": "#ffd700",
+       "hair": "bald",
+       "headwear": "none",
+       "upper": "armor",
+       "upperColor": "#8b4513",
+       "lower": "pants",
+       "lowerColor": "#654321",
+       "accent": "#ff0000",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-golden-deer-head-with-antler-b2a142a3": {
+       "type": "head",
+       "description": "golden deer head with antlers, shining",
+       "kit": {
+        "shape": "long",
+        "color": "#ffd700",
+        "muzzle": "small",
+        "muzzleColor": "#ffea80",
+        "mane": false,
+        "maneColor": "#8a4f1c",
+        "ears": "pointed",
+        "horns": "curved",
+        "hornColor": "#ffd700",
+        "tusks": false,
+        "trunk": false,
+        "fangs": false,
+        "fierce": false
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 3177,
+   "durationFrames": 136,
+   "duration": 4.533333333333333
+  },
+  {
+   "id": "s17",
+   "text": "हां सीते हां लक्ष्मण।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "static",
+      "title": "हां सीते हां लक्ष्मण",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "हां सीते हां लक्ष्मण"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 3313,
+   "durationFrames": 81,
+   "duration": 2.7
+  },
+  {
+   "id": "s18",
+   "text": "यह आवाज सुनकर माता सीता घबरा गई।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "static",
+      "title": "सीता घबरा गई",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "cover-mouth",
+        "mood": "scared",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "framing": "close"
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 3394,
+   "durationFrames": 122,
+   "duration": 4.066666666666666
+  },
+  {
+   "id": "s19",
+   "text": "उन्होंने लक्ष्मण जी से तुरंत भगवान श्री राम की मदद के लिए जाने को कहा।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "static",
+      "title": "लक्ष्मण को बुलाना",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "lakshman",
+        "gesture": "raise",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 3516,
+   "durationFrames": 184,
+   "duration": 6.133333333333334
+  },
+  {
+   "id": "s20",
+   "text": "लेकिन लक्ष्मण जी जानते थे कि भगवान श्री राम को कोई हरा नहीं सकता।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "अडिग विश्वास",
+      "cast": [
+       {
+        "id": "lakshman",
+        "gesture": "think",
+        "mood": "calm",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "Lakshman"
+        }
+       },
+       {
+        "id": "rama",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "Rama"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "rama",
+       "name": "राम",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#4a7fd4",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "mukut",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#f5e1a4",
+       "lower": "dhoti",
+       "lowerColor": "#f5e1a4",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 3700,
+   "durationFrames": 190,
+   "duration": 6.333333333333333
+  },
+  {
+   "id": "s21",
+   "text": "उन्होंने माता सीता को समझाया कि यह किसी राक्षस की चाल हो सकती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "राक्षस की चाल",
+      "cast": [
+       {
+        "id": "lakshman",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "sita",
+        "gesture": "think",
+        "mood": "surprised",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "Sita"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 3890,
+   "durationFrames": 199,
+   "duration": 6.633333333333334
+  },
+  {
+   "id": "s22",
+   "text": "मगर माता सीता इतनी घबरा चुकी थी कि उन्होंने लक्ष्मण जी से बहुत कठोर बातें कह दी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "घबराहट की पुकार",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "cry",
+        "mood": "scared",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "तुमने मुझे धोखा दिया"
+       },
+       {
+        "id": "lakshman",
+        "gesture": "shrug",
+        "mood": "sad",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 4089,
+   "durationFrames": 230,
+   "duration": 7.666666666666667
+  },
+  {
+   "id": "s23",
+   "text": "यहां तक कि उन पर आरोप लगा दिया कि शायद वह भगवान श्री राम के संकट में पड़ने का इंतजार कर रहे हैं और भरत जी ने उन्हें किसी खास मकसद से यहां भेजा है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "संदेह की फुसफुस",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "point",
+        "mood": "angry",
+        "talking": true,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "lakshman",
+        "gesture": "arms-crossed",
+        "mood": "surprised",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 4319,
+   "durationFrames": 390,
+   "duration": 13
+  },
+  {
+   "id": "s24",
+   "text": "आखिर में माता सीता ने कह दिया कि अगर लक्ष्मण जी उनकी बात मानकर भगवान श्री राम की मदद के लिए नहीं गए तो वह अपने प्राण त्याग देंगी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "प्राण त्याग की शपथ",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "raise",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "lakshman",
+        "gesture": "idle",
+        "mood": "sad",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 4709,
+   "durationFrames": 338,
+   "duration": 11.266666666666667
+  },
+  {
+   "id": "s25",
+   "text": "यह बातें सुनकर लक्ष्मण जी को बहुत दुख हुआ।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "dust",
+      "camera": "push",
+      "title": "दुःख का बोझ",
+      "cast": [
+       {
+        "id": "lakshman",
+        "gesture": "cry",
+        "mood": "sad",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "graphic": {
+       "type": "stat",
+       "title": "दुःख",
+       "items": [],
+       "subs": [],
+       "value": 80,
+       "values": [],
+       "icons": [],
+       "text": "%"
+      }
+     },
+     "cast": [
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 5047,
+   "durationFrames": 133,
+   "duration": 4.433333333333334
+  },
+  {
+   "id": "s26",
+   "text": "आखिरकार उन्होंने हाथ जोड़कर कहा वन के देवता आपकी रक्षा करें और भगवान श्री राम की खोज में आश्रम से निकल गए।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "वचन और प्रस्थान",
+      "cast": [
+       {
+        "id": "lakshman",
+        "gesture": "hands-hips",
+        "mood": "calm",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "set": [
+       {
+        "kind": "house",
+        "x": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 5180,
+   "durationFrames": 287,
+   "duration": 9.566666666666666
+  },
+  {
+   "id": "s27",
+   "text": "लेकिन यहां एक बात ध्यान देने वाली है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "ध्यान दें",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "एक महत्वपूर्ण बात"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 5467,
+   "durationFrames": 138,
+   "duration": 4.6
+  },
+  {
+   "id": "s28",
+   "text": "वाल्मीकि रामायण में लक्ष्मण जी जाते समय कोई रेखा नहीं खींचते।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "रेखा नहीं",
+      "cast": [],
+      "graphic": {
+       "type": "icon",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "star"
+       ],
+       "text": "लक्ष्मण ने रेखा नहीं खींची"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 5605,
+   "durationFrames": 176,
+   "duration": 5.866666666666666
+  },
+  {
+   "id": "s29",
+   "text": "कुछ ही देर बाद आश्रम के द्वार पर एक साधु पहुंचा।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "temple",
+      "fx": "none",
+      "camera": "push",
+      "title": "साधु का आगमन",
+      "cast": [],
+      "animals": [
+       {
+        "kind": "drawn-part-5ddf747d",
+        "say": "शांति",
+        "x": 0.5,
+        "scale": 0.8
+       }
+      ]
+     },
+     "cast": [],
+     "drawn": {
+      "drawn-part-5ddf747d": {
+       "type": "animal",
+       "description": "साधु",
+       "creature": {
+        "height": 1000,
+        "length": 500,
+        "body": "slim",
+        "color": "#ff8800",
+        "belly": "#ffcc99",
+        "legs": 2,
+        "legLength": 0.45,
+        "legThick": 0.4,
+        "neck": 0.2,
+        "head": "round",
+        "headSize": 0.25,
+        "ears": "round",
+        "horns": "none",
+        "hornColor": "#000000",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "none",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "none",
+        "patternColor": "#5a3a20",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": true,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 5781,
+   "durationFrames": 148,
+   "duration": 4.933333333333334
+  },
+  {
+   "id": "s30",
+   "text": "माता सीता ने उन्हें अतिथि समझकर आदर से बैठाया और उनका स्वागत करने लगी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "palace",
+      "fx": "none",
+      "camera": "push",
+      "title": "आतिथ्य की शुरुआत",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "present",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "स्वागत है आप सभी का",
+        "tag": {
+         "name": "Sita",
+         "sub": "माता"
+        }
+       },
+       {
+        "id": "rama",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "lakshman",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "rama",
+       "name": "राम",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#4a7fd4",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "mukut",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#f5e1a4",
+       "lower": "dhoti",
+       "lowerColor": "#f5e1a4",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 5929,
+   "durationFrames": 211,
+   "duration": 7.033333333333333
+  },
+  {
+   "id": "s31",
+   "text": "लेकिन उन्हें क्या पता था कि उनके सामने खड़ा यह साधु कोई और नहीं बल्कि भेष बदलकर आया खुद रावण था।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "palace",
+      "fx": "dust",
+      "camera": "push",
+      "title": "भेष बदलकर",
+      "cast": [
+       {
+        "id": "raavan",
+        "gesture": "point",
+        "mood": "evil",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "मैं वही हूँ",
+        "tag": {
+         "name": "Ravana",
+         "sub": "रावण"
+        }
+       },
+       {
+        "id": "sita",
+        "gesture": "idle",
+        "mood": "surprised",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "raavan",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5a3d2b",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "turban",
+       "headwearColor": "#8b4513",
+       "upper": "robe",
+       "upperColor": "#6b4c3b",
+       "lower": "dhoti",
+       "lowerColor": "#4b3621",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 6140,
+   "durationFrames": 270,
+   "duration": 9
+  },
+  {
+   "id": "s32",
+   "text": "उसने अचानक अपना असली रूप दिखाया और माता सीता का हरण कर लिया।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "palace",
+      "fx": "rays",
+      "camera": "push",
+      "title": "हरण का क्षण",
+      "cast": [
+       {
+        "id": "raavan",
+        "gesture": "attack",
+        "mood": "evil",
+        "talking": true,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand",
+        "say": "अब जाओ!"
+       },
+       {
+        "id": "sita",
+        "gesture": "cry",
+        "mood": "scared",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "raavan",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5a3d2b",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "turban",
+       "headwearColor": "#8b4513",
+       "upper": "robe",
+       "upperColor": "#6b4c3b",
+       "lower": "dhoti",
+       "lowerColor": "#4b3621",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5d6a0",
+       "hair": "long",
+       "hairColor": "#000000",
+       "headwear": "tiara",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#ffcccc",
+       "lower": "saree",
+       "lowerColor": "#ff99aa",
+       "accent": "#e2a93b",
+       "accessories": [
+        "bangles"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 6410,
+   "durationFrames": 187,
+   "duration": 6.233333333333333
+  },
+  {
+   "id": "s33",
+   "text": "अब सवाल उठता है कि आखिर लक्ष्मण रेखा की कहानी आई कहां से?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "लक्ष्मण रेखा?",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "लक्ष्मण रेखा की उत्पत्ति?"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 6597,
+   "durationFrames": 171,
+   "duration": 5.7
+  },
+  {
+   "id": "s34",
+   "text": "दरअसल लक्ष्मण रेखा का जिक्र रामायण की कुछ दूसरी परंपराओं में भी मिलता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "अन्य परम्पराएँ",
+      "cast": [],
+      "graphic": {
+       "type": "list",
+       "items": [
+        "उपन्यासी परम्परा",
+        "तेलुगु रंगनाथ रामायण",
+        "इतर ग्रंथ"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 6768,
+   "durationFrames": 200,
+   "duration": 6.666666666666667
+  },
+  {
+   "id": "s35",
+   "text": "महानाटक और तेलुगु की रंगनाथ रामायण जैसी रचनाओं में इसका वर्णन मिलता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "नाट्य यात्रा",
+      "cast": [],
+      "graphic": {
+       "type": "timeline",
+       "items": [
+        "रामायण",
+        "रंगनाथ रामायण",
+        "महानाटक"
+       ],
+       "subs": [],
+       "highlight": 1,
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 6968,
+   "durationFrames": 210,
+   "duration": 7
+  },
+  {
+   "id": "s36",
+   "text": "वहीं गोस्वामी तुलसीदास जी के रामचरितमानस के लंका कांड में मंदोदरी रावण को ताना देती हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "palace",
+      "fx": "none",
+      "camera": "push",
+      "title": "मंदोदरी की ताना",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "मंदोदरी रावण को ताना देती हैं"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 7178,
+   "durationFrames": 245,
+   "duration": 8.166666666666666
+  },
+  {
+   "id": "s37",
+   "text": "रामानुज लघु रेख खचाई सोऊ नहीं नाघेहु अस मनुसाई।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "palace",
+      "fx": "none",
+      "camera": "push",
+      "title": "श्लोक",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "रामानुज लघु रेख खचाई सोऊ नहीं नाघेहु अस मनुसाई।"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 7423,
+   "durationFrames": 156,
+   "duration": 5.2
+  },
+  {
+   "id": "s38",
+   "text": "यानी लक्ष्मण जी ने जो छोटी सी रेखा खींची थी रावण उसे भी पार नहीं कर पाया।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "रेखा का बल",
+      "cast": [],
+      "graphic": {
+       "type": "stat",
+       "title": "रावण पार नहीं कर सका",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 7579,
+   "durationFrames": 208,
+   "duration": 6.933333333333334
+  },
+  {
+   "id": "s39",
+   "text": "हालांकि रामचरितमानस में भी रेखा खींचने का पूरा दृश्य नहीं बताया गया है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "palace",
+      "fx": "none",
+      "camera": "push",
+      "title": "अस्पष्ट दृश्य",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "रामचरितमानस में रेखा का दृश्य नहीं"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 7787,
+   "durationFrames": 204,
+   "duration": 6.8
+  },
+  {
+   "id": "s40",
+   "text": "धीरे-धीरे अलग-अलग राम कथाओं, लोक कथाओं और राम लीलाओं के जरिए लक्ष्मण रेखा की यह कहानी बेहद मशहूर हो गई।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "temple",
+      "fx": "none",
+      "camera": "push",
+      "title": "कहानियों की यात्रा",
+      "cast": [],
+      "graphic": {
+       "type": "timeline",
+       "items": [
+        "राम कथा",
+        "लोक कथा",
+        "राम लीला"
+       ],
+       "subs": [],
+       "highlight": 2,
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 7991,
+   "durationFrames": 285,
+   "duration": 9.5
+  },
+  {
+   "id": "s41",
+   "text": "यानी लक्ष्मण रेखा की कहानी गलत नहीं है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "palace",
+      "fx": "none",
+      "camera": "push",
+      "title": "सत्य की घोषणा",
+      "cast": [
+       {
+        "id": "lakshman",
+        "gesture": "salute",
+        "mood": "calm",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "rama",
+        "gesture": "idle",
+        "mood": "happy",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "lakshman",
+       "name": "लक्ष्मण",
+       "gender": "male",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "#d2b48c",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "kurta",
+       "upperColor": "#c0a080",
+       "lower": "dhoti",
+       "lowerColor": "#c0a080",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "rama",
+       "name": "राम",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#4a7fd4",
+       "hair": "side-part",
+       "hairColor": "#000000",
+       "headwear": "mukut",
+       "headwearColor": "#e2a93b",
+       "upper": "kurta",
+       "upperColor": "#f5e1a4",
+       "lower": "dhoti",
+       "lowerColor": "#f5e1a4",
+       "accent": "#e2a93b",
+       "accessories": [],
+       "mark": "tilak",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 8276,
+   "durationFrames": 138,
+   "duration": 4.6
+  },
+  {
+   "id": "s42",
+   "text": "लेकिन हर रामायण में इसका जिक्र एक जैसा नहीं मिलता।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "dust",
+      "camera": "push",
+      "title": "विचित्र उल्लेख",
+      "cast": [],
+      "graphic": {
+       "type": "list",
+       "items": [
+        "वाल्मीकि रामायण",
+        "अयोध्या कांड",
+        "भक्ति संस्करण"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 8414,
+   "durationFrames": 151,
+   "duration": 5.033333333333333
+  }
+ ]
+}

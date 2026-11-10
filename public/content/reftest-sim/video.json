@@ -1,0 +1,1247 @@
+{
+ "format": "longform",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "hi",
+ "title": "सिम कार्ड कैसे काम करता है",
+ "description": "",
+ "tags": [],
+ "totalFrames": 12135,
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "आप जिस नंबर को अपना नंबर समझते हो वो आपकी सिम की असली पहचान है ही नहीं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "वास्तविक पहचान",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "आपका नंबर नहीं है असली सिम पहचान"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 0,
+   "durationFrames": 215,
+   "duration": 7.166666666666667
+  },
+  {
+   "id": "s01",
+   "text": "सिम की असली पहचान एक और नंबर है जो आपने आज तक देखा भी नहीं होगा और वही तय करता है कि कॉल, मैसेज और ओटीपी आपके ही फोन पर कैसे पहुंचते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "छुपा नंबर",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "एक और नंबर जो नहीं देखा"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 215,
+   "durationFrames": 409,
+   "duration": 13.633333333333333
+  },
+  {
+   "id": "s02",
+   "text": "और वीडियो के आखिर में बताऊंगा कि सिम स्वाइप से लोगों के खाते कैसे खाली होते हैं और उससे बचने के लिए आपको क्या करना चाहिए।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "सिम स्वाइप खतरा",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "सिम स्वाइप से खाते खाली"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 624,
+   "durationFrames": 309,
+   "duration": 10.3
+  },
+  {
+   "id": "s03",
+   "text": "लेकिन सबसे पहले सिम है क्या?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "सिम क्या?",
+      "cast": [
+       {
+        "id": "exp",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "exp",
+         "sub": "intro"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "exp",
+       "name": "सिम विशेषज्ञ",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#f5d6a1",
+       "hair": "short",
+       "hairColor": "#4a3b2c",
+       "headwear": "none",
+       "upper": "shirt",
+       "upperColor": "#2e86c1",
+       "lower": "jeans",
+       "lowerColor": "#1f618d",
+       "accent": "#ffcc00",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 933,
+   "durationFrames": 102,
+   "duration": 3.4
+  },
+  {
+   "id": "s04",
+   "text": "यह एक छोटी सी चिप है जिसमें मेमोरी होती है और इसमें तीन चीजें सबसे जरूरी हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "छोटी चिप",
+      "cast": [],
+      "graphic": {
+       "type": "list",
+       "items": [
+        "चिप",
+        "मेमोरी",
+        "तीन चीजें"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1035,
+   "durationFrames": 246,
+   "duration": 8.2
+  },
+  {
+   "id": "s05",
+   "text": "पहली एक सीरियल नंबर जिसे आईसीसी आईडी कहते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "आईसीसी आईडी",
+      "cast": [
+       {
+        "id": "exp",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "आईसीसी आईडी"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "exp",
+       "name": "सिम विशेषज्ञ",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#f5d6a1",
+       "hair": "short",
+       "hairColor": "#4a3b2c",
+       "headwear": "none",
+       "upper": "shirt",
+       "upperColor": "#2e86c1",
+       "lower": "jeans",
+       "lowerColor": "#1f618d",
+       "accent": "#ffcc00",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1281,
+   "durationFrames": 165,
+   "duration": 5.5
+  },
+  {
+   "id": "s06",
+   "text": "दूसरी आईएमएसआई यानी आपकी सिम की नेटवर्क पहचान।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "आईएमएसआई",
+      "cast": [
+       {
+        "id": "operator",
+        "gesture": "talk",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "आईएमएसआई",
+        "tag": {
+         "name": "operator",
+         "sub": "intro"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "operator",
+       "name": "ऑपरेटर कर्मचारी",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#d2a679",
+       "hair": "side-part",
+       "hairColor": "#3e2723",
+       "headwear": "cap",
+       "headwearColor": "#0e6655",
+       "upper": "uniform",
+       "upperColor": "#0e6655",
+       "lower": "pants",
+       "lowerColor": "#0b5345",
+       "accent": "#f1c40f",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1446,
+   "durationFrames": 159,
+   "duration": 5.3
+  },
+  {
+   "id": "s07",
+   "text": "इसमें पहले तीन अंक देश के होते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "देश कोड",
+      "cast": [],
+      "graphic": {
+       "type": "stat",
+       "title": "देश कोड",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "पहले 3 अंक"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1605,
+   "durationFrames": 133,
+   "duration": 4.433333333333334
+  },
+  {
+   "id": "s08",
+   "text": "फिर ऑपरेटर के और बाकी आपकी पहचान से जुड़े होते हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "ऑपरेटर कोड",
+      "cast": [
+       {
+        "id": "operator",
+        "gesture": "point",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "operator",
+       "name": "ऑपरेटर कर्मचारी",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#d2a679",
+       "hair": "side-part",
+       "hairColor": "#3e2723",
+       "headwear": "cap",
+       "headwearColor": "#0e6655",
+       "upper": "uniform",
+       "upperColor": "#0e6655",
+       "lower": "pants",
+       "lowerColor": "#0b5345",
+       "accent": "#f1c40f",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1738,
+   "durationFrames": 172,
+   "duration": 5.733333333333333
+  },
+  {
+   "id": "s09",
+   "text": "और तीसरी चीज एक सीक्रेट चाबी, 128 बिट की चाबी।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "static",
+      "title": "गुप्त चाबी",
+      "cast": [
+       {
+        "id": "exp",
+        "gesture": "hold",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "prop": "key"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "exp",
+       "name": "सिम विशेषज्ञ",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#f5d6a1",
+       "hair": "short",
+       "hairColor": "#4a3b2c",
+       "headwear": "none",
+       "upper": "shirt",
+       "upperColor": "#2e86c1",
+       "lower": "jeans",
+       "lowerColor": "#1f618d",
+       "accent": "#ffcc00",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1910,
+   "durationFrames": 181,
+   "duration": 6.033333333333333
+  },
+  {
+   "id": "s10",
+   "text": "इसे ऑपरेटर सिम तैयार करते वक्त डालता है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2091,
+   "durationFrames": 144,
+   "duration": 4.8
+  },
+  {
+   "id": "s11",
+   "text": "इसकी एक कॉपी ऑपरेटर के सिस्टम में भी रखी जाती है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2235,
+   "durationFrames": 164,
+   "duration": 5.466666666666667
+  },
+  {
+   "id": "s12",
+   "text": "और सबसे दिलचस्प बात सिम इस चाबी को कभी बाहर नहीं बताती।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2399,
+   "durationFrames": 171,
+   "duration": 5.7
+  },
+  {
+   "id": "s13",
+   "text": "अब सोचिए आप अपना फोन ऑन करते हो।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2570,
+   "durationFrames": 124,
+   "duration": 4.133333333333334
+  },
+  {
+   "id": "s14",
+   "text": "फोन मोबाइल नेटवर्क से कनेक्शन बनाता है और नेटवर्क के टावर आपकी रिक्वेस्ट को ऑपरेटर के कोर नेटवर्क तक पहुंचा देते हैं।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2694,
+   "durationFrames": 304,
+   "duration": 10.133333333333333
+  },
+  {
+   "id": "s15",
+   "text": "4G में टावर को ई नोट भी और 5G में जी नोट भी कहते हैं।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 2998,
+   "durationFrames": 195,
+   "duration": 6.5
+  },
+  {
+   "id": "s16",
+   "text": "लेकिन अब कोर नेटवर्क को पक्का करना है कि आप सच में असली यूजर हो।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3193,
+   "durationFrames": 190,
+   "duration": 6.333333333333333
+  },
+  {
+   "id": "s17",
+   "text": "और यहीं आता है इस पूरी कहानी का सबसे मजेदार हिस्सा।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3383,
+   "durationFrames": 159,
+   "duration": 5.3
+  },
+  {
+   "id": "s18",
+   "text": "नेटवर्क आपको एक रैंडम नंबर भेजता है जिसे चैलेंज कहते हैं।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3542,
+   "durationFrames": 195,
+   "duration": 6.5
+  },
+  {
+   "id": "s19",
+   "text": "सिम उस चैलेंज को अपनी सीक्रेट चाबी की मदद से प्रोसेस करती है और एक जवाब तैयार करती है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 3737,
+   "durationFrames": 252,
+   "duration": 8.4
+  },
+  {
+   "id": "s20",
+   "text": "फिर वो जवाब नेटवर्क को भेजा जाता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "push",
+      "title": "जवाब भेजा",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "जवाब नेटवर्क को भेजा गया"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 3989,
+   "durationFrames": 131,
+   "duration": 4.366666666666666
+  },
+  {
+   "id": "s21",
+   "text": "लेकिन चाबी, चाबी कभी हवा में नहीं जाती।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "push",
+      "title": "चाबी सुरक्षित",
+      "cast": [],
+      "graphic": {
+       "type": "icon",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "key"
+       ],
+       "text": "चाबी हवा में नहीं जाती"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 4120,
+   "durationFrames": 130,
+   "duration": 4.333333333333333
+  },
+  {
+   "id": "s22",
+   "text": "नेटवर्क भी अपनी तरफ मौजूद सीक्रेट जानकारी से जवाब को वेरीफाई करता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "push",
+      "title": "सुरक्षा जाँच",
+      "cast": [],
+      "graphic": {
+       "type": "icon",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "lock"
+       ],
+       "text": "सीक्रेट जानकारी से वेरीफाई"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 4250,
+   "durationFrames": 214,
+   "duration": 7.133333333333334
+  },
+  {
+   "id": "s23",
+   "text": "दोनों का हिसाब सही तो आप नेटवर्क में ऑथेंटिकेट हो जाते हो।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "push",
+      "title": "ऑथेंटिकेशन",
+      "cast": [
+       {
+        "id": "exp",
+        "gesture": "point",
+        "mood": "happy",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "exp",
+       "name": "सिम विशेषज्ञ",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#f5d6a1",
+       "hair": "short",
+       "hairColor": "#4a3b2c",
+       "headwear": "none",
+       "upper": "shirt",
+       "upperColor": "#2e86c1",
+       "lower": "jeans",
+       "lowerColor": "#1f618d",
+       "accent": "#ffcc00",
+       "accessories": [
+        "glasses"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 4464,
+   "durationFrames": 171,
+   "duration": 5.7
+  },
+  {
+   "id": "s24",
+   "text": "लेकिन अब एक सवाल आपका असली फोन नंबर आखिर रहता कहां है?",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "push",
+      "title": "नंबर कहाँ?",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "असली फोन नंबर कहाँ रहता?"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 4635,
+   "durationFrames": 185,
+   "duration": 6.166666666666667
+  },
+  {
+   "id": "s25",
+   "text": "वह ऑपरेटर के नेटवर्क डेटाबेस में दर्ज होता है और आपकी सिम की पहचान से जुड़ा होता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "pan-right",
+      "title": "डेटाबेस में",
+      "cast": [
+       {
+        "id": "operator",
+        "gesture": "hold",
+        "mood": "neutral",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "operator",
+         "sub": "पहला"
+        }
+       },
+       {
+        "id": "customer",
+        "gesture": "think",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "ग्राहक"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "operator",
+       "name": "ऑपरेटर कर्मचारी",
+       "gender": "male",
+       "age": "adult",
+       "build": "regular",
+       "head": "human",
+       "skin": "#d2a679",
+       "hair": "side-part",
+       "hairColor": "#3e2723",
+       "headwear": "cap",
+       "headwearColor": "#0e6655",
+       "upper": "uniform",
+       "upperColor": "#0e6655",
+       "lower": "pants",
+       "lowerColor": "#0b5345",
+       "accent": "#f1c40f",
+       "accessories": [],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      },
+      {
+       "id": "customer",
+       "name": "ग्राहक",
+       "gender": "female",
+       "age": "teen",
+       "build": "slim",
+       "head": "human",
+       "skin": "#f5cfa0",
+       "hair": "ponytail",
+       "hairColor": "#ff8a65",
+       "headwear": "none",
+       "upper": "tshirt",
+       "upperColor": "#2980b9",
+       "lower": "shorts",
+       "lowerColor": "#7f8c8d",
+       "accent": "#27ae60",
+       "accessories": [
+        "watch"
+       ],
+       "mark": "none",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 4820,
+   "durationFrames": 254,
+   "duration": 8.466666666666667
+  },
+  {
+   "id": "s26",
+   "text": "पुराने नेटवर्क में एचएलआर और 4G में एचएसएस जैसी प्रणालियां इस्तेमाल होती हैं।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "push",
+      "title": "पुराने सिस्टम",
+      "cast": [],
+      "graphic": {
+       "type": "list",
+       "items": [
+        "HLR",
+        "HSS"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 5074,
+   "durationFrames": 237,
+   "duration": 7.9
+  },
+  {
+   "id": "s27",
+   "text": "5G में यूडीएम जैसी प्रणाली यह काम करती है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "office",
+      "fx": "none",
+      "camera": "push",
+      "title": "5G UDM",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "5G में UDM काम करता है"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 5311,
+   "durationFrames": 155,
+   "duration": 5.166666666666667
+  },
+  {
+   "id": "s28",
+   "text": "अब मान लो कोई आपका नंबर डायल करता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "city",
+      "fx": "none",
+      "camera": "push",
+      "title": "डायल किया",
+      "cast": [
+       {
+        "id": "thief",
+        "gesture": "hold",
+        "mood": "evil",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "prop": "phone",
+        "tag": {
+         "name": "thief",
+         "sub": "पहला"
+        }
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "thief",
+       "name": "ठग",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#8d5524",
+       "hair": "spiky",
+       "hairColor": "#000000",
+       "headwear": "none",
+       "upper": "hoodie",
+       "upperColor": "#2c3e50",
+       "lower": "jeans",
+       "lowerColor": "#34495e",
+       "accent": "#c0392b",
+       "accessories": [
+        "bag"
+       ],
+       "mark": "scar",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 5466,
+   "durationFrames": 141,
+   "duration": 4.7
+  },
+  {
+   "id": "s29",
+   "text": "नेटवर्क पता लगाता है कि आपका फोन अभी किस नेटवर्क एरिया में मौजूद है और फिर कॉल को सही रास्ते से आपके फोन तक पहुंचाता है।",
+   "visual": {
+    "pose": "idle",
+    "flat": {
+     "shot": {
+      "bg": "city",
+      "fx": "none",
+      "camera": "push",
+      "title": "कॉल रूटिंग",
+      "cast": [],
+      "graphic": {
+       "type": "timeline",
+       "items": [
+        "एरिया पता",
+        "रूटिंग",
+        "डिलिवरी"
+       ],
+       "subs": [],
+       "highlight": 2,
+       "values": [],
+       "icons": []
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 5607,
+   "durationFrames": 331,
+   "duration": 11.033333333333333
+  },
+  {
+   "id": "s30",
+   "text": "लेकिन अगर आप चलती गाड़ी में हो तो जैसे-जैसे आप आगे बढ़ते हो, नेटवर्क तय करता है कि आपका कनेक्शन अगले टावर को कब देना है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 5938,
+   "durationFrames": 334,
+   "duration": 11.133333333333333
+  },
+  {
+   "id": "s31",
+   "text": "इसे हैंडओवर कहते हैं।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 6272,
+   "durationFrames": 103,
+   "duration": 3.433333333333333
+  },
+  {
+   "id": "s32",
+   "text": "और इसी प्रक्रिया की मदद से आप चलते-चलते कॉल पर बात कर सकते हो बिना हर बार नए सिरे से कनेक्शन बनाए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 6375,
+   "durationFrames": 258,
+   "duration": 8.6
+  },
+  {
+   "id": "s33",
+   "text": "और इंटरनेट आपका डाटा टावर से मोबाइल नेटवर्क के कोर तक जाता है और वहां से इंटरनेट पर।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 6633,
+   "durationFrames": 236,
+   "duration": 7.866666666666666
+  },
+  {
+   "id": "s34",
+   "text": "यानी आपका फोन सिर्फ टावर से बात नहीं कर रहा।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 6869,
+   "durationFrames": 138,
+   "duration": 4.6
+  },
+  {
+   "id": "s35",
+   "text": "उसके पीछे पूरा नेटवर्क काम कर रहा है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 7007,
+   "durationFrames": 130,
+   "duration": 4.333333333333333
+  },
+  {
+   "id": "s36",
+   "text": "अब एक आंकड़ा सुनिए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 7137,
+   "durationFrames": 86,
+   "duration": 2.8666666666666667
+  },
+  {
+   "id": "s37",
+   "text": "ट्राई के मुताबिक जून 2026 के आखिर में भारत में करीब 128 करोड़ मोबाइल कनेक्शन थे और हर कनेक्शन को नेटवर्क में पहचानने और मैनेज करने के लिए अलग-अलग जानकारी इस्तेमाल होती है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 7223,
+   "durationFrames": 470,
+   "duration": 15.666666666666666
+  },
+  {
+   "id": "s38",
+   "text": "इस पहचान को सुरक्षित रखना भी जरूरी है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 7693,
+   "durationFrames": 137,
+   "duration": 4.566666666666666
+  },
+  {
+   "id": "s39",
+   "text": "इसीलिए 5G में आईएमएसआई की जगह एसयूआईसीआई जैसी पहचान का इस्तेमाल करके उसे छुपाया जा सकता है ताकि कोई नकली टावर आपकी असली पहचान आसानी से ना पढ़ सके।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 7830,
+   "durationFrames": 434,
+   "duration": 14.466666666666667
+  },
+  {
+   "id": "s40",
+   "text": "भारत में एक व्यक्ति के नाम पर सिम की सीमा भी तय है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 8264,
+   "durationFrames": 163,
+   "duration": 5.433333333333334
+  },
+  {
+   "id": "s41",
+   "text": "आमतौर पर नौ मोबाइल कनेक्शन लेकिन अब आते हैं उस हिस्से पर जिसका वादा शुरुआत में किया था।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 8427,
+   "durationFrames": 238,
+   "duration": 7.933333333333334
+  },
+  {
+   "id": "s42",
+   "text": "सिम स्वाइप सरल भाषा में समझो।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 8665,
+   "durationFrames": 105,
+   "duration": 3.5
+  },
+  {
+   "id": "s43",
+   "text": "आपका फोन नंबर वही रहता है लेकिन ऑपरेटर के सिस्टम में उससे जुड़ी सिम बदल दी जाती है और अगर यह बदलाव किसी ठग के हाथों हो जाए तो आपके नंबर पर आने वाले मैसेज और ओटीपी नई सिम पर पहुंच सकते हैं।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 8770,
+   "durationFrames": 512,
+   "duration": 17.066666666666666
+  },
+  {
+   "id": "s44",
+   "text": "वहीं आपकी पुरानी सिम नेटवर्क खो सकती है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9282,
+   "durationFrames": 144,
+   "duration": 4.8
+  },
+  {
+   "id": "s45",
+   "text": "अब सोचिए अगर बैंक का ओटीपी भी उसी नंबर पर आता है तो कितना बड़ा खतरा पैदा हो सकता है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9426,
+   "durationFrames": 253,
+   "duration": 8.433333333333334
+  },
+  {
+   "id": "s46",
+   "text": "इसी वजह से सिम स्वाइप को गंभीरता से लेना जरूरी है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9679,
+   "durationFrames": 162,
+   "duration": 5.4
+  },
+  {
+   "id": "s47",
+   "text": "ट्राई के नियमों के मुताबिक सिम बदलने या स्वाइप करने के बाद 7 दिन तक नंबर को दूसरे ऑपरेटर में पोर्ट करने पर रोक रहती है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 9841,
+   "durationFrames": 310,
+   "duration": 10.333333333333334
+  },
+  {
+   "id": "s48",
+   "text": "लेकिन सबसे जरूरी बात इस सुरक्षा नियम पर ही निर्भर मत रहिए।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 10151,
+   "durationFrames": 169,
+   "duration": 5.633333333333334
+  },
+  {
+   "id": "s49",
+   "text": "अगर आपकी सिम अचानक बिना वजह बंद हो जाए तो तुरंत अपने मोबाइल ऑपरेटर से संपर्क करो और अगर आपको लगे कि किसी ने आपके नंबर का गलत इस्तेमाल किया है तो अपने बैंक को भी तुरंत बताओ।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 10320,
+   "durationFrames": 453,
+   "duration": 15.1
+  },
+  {
+   "id": "s50",
+   "text": "जल्दी कार्रवाई करना नुकसान रोकने में मदद कर सकता है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 10773,
+   "durationFrames": 164,
+   "duration": 5.466666666666667
+  },
+  {
+   "id": "s51",
+   "text": "तो अब आपको पता चल गया कि सिम सिर्फ एक नंबर नहीं है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 10937,
+   "durationFrames": 174,
+   "duration": 5.8
+  },
+  {
+   "id": "s52",
+   "text": "अगर यह वीडियो काम का लगा तो इसे उस दोस्त को भेजो जो कहता है कि सिम तो बस एक नंबर होता है।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 11111,
+   "durationFrames": 263,
+   "duration": 8.766666666666667
+  },
+  {
+   "id": "s53",
+   "text": "चैनल सब्सक्राइब करो क्योंकि अगले वीडियो में बताऊंगा कि ई सिम में फिजिकल सिम कार्ड के बिना यह सब कैसे चलता है?",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 11374,
+   "durationFrames": 275,
+   "duration": 9.166666666666666
+  },
+  {
+   "id": "s54",
+   "text": "और कमेंट में बताओ आपकी सिम किस कंपनी की है?",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 11649,
+   "durationFrames": 146,
+   "duration": 4.866666666666666
+  },
+  {
+   "id": "s55",
+   "text": "Jio, Airtel, VI या BSNL?",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 11795,
+   "durationFrames": 110,
+   "duration": 3.6666666666666665
+  },
+  {
+   "id": "s56",
+   "text": "और क्या आपको कभी सिम स्वैप का डर लगा है?",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 11905,
+   "durationFrames": 141,
+   "duration": 4.7
+  },
+  {
+   "id": "s57",
+   "text": "नीचे कमेंट करके बताओ।",
+   "visual": {
+    "pose": "idle"
+   },
+   "startFrame": 12046,
+   "durationFrames": 89,
+   "duration": 2.966666666666667
+  }
+ ]
+}

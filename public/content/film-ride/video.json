@@ -1,0 +1,274 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "en",
+ "title": "film-ride",
+ "description": "",
+ "tags": [],
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "",
+   "startFrame": 0,
+   "durationFrames": 180,
+   "duration": 6,
+   "visual": {
+    "transition": "cut",
+    "shot": {
+     "secs": 6,
+     "place": "park",
+     "time": "day",
+     "props": [
+      {
+       "id": "crown-gift",
+       "draw": {
+        "svg": "<polygon points=\"-50,0 -60,-70 -30,-40 0,-80 30,-40 60,-70 50,0\" fill=\"#FFB800\" stroke=\"#2B2B2B\" stroke-width=\"4\"/><circle cx=\"0\" cy=\"-50\" r=\"9\" fill=\"#C0392B\"/>",
+        "w": 120,
+        "h": 80,
+        "mount": "surface",
+        "grip": [
+         0,
+         -30
+        ]
+       },
+       "at": 0.85,
+       "on": "floor"
+      }
+     ],
+     "cast": [
+      {
+       "id": "ghoda",
+       "draw": {
+        "name": "horse",
+        "height": 578,
+        "gallop": true,
+        "seat": {
+         "bone": "body",
+         "at": [
+          -16,
+          -52
+         ]
+        },
+        "palette": {
+         "fur": "#9C6B43",
+         "furD": "#7A4F2F",
+         "furL": "#B8844F",
+         "mane": "#2E1E14",
+         "hoof": "#3A2A20",
+         "accent": "#B71C1C",
+         "gold": "#FFB800",
+         "out": "#2B2B2B",
+         "mouth": "#7A1F2B",
+         "belly": "#C79A6B"
+        },
+        "bones": [
+         {
+          "id": "body",
+          "parent": null,
+          "at": [
+           0,
+           -190
+          ],
+          "role": "body",
+          "svg": "<ellipse cx=\"0\" cy=\"0\" rx=\"125\" ry=\"58\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"0\" cy=\"34\" rx=\"95\" ry=\"22\" fill=\"$belly\" stroke=\"$out\" stroke-width=\"0\" opacity=\"0.5\"/><rect x=\"-24\" y=\"-64\" width=\"70\" height=\"22\" rx=\"10\" fill=\"$accent\" stroke=\"$out\" stroke-width=\"3\"/><rect x=\"-24\" y=\"-56\" width=\"70\" height=\"6\" rx=\"3\" fill=\"$gold\" stroke=\"$out\" stroke-width=\"0\"/>"
+         },
+         {
+          "id": "legFF",
+          "parent": "body",
+          "at": [
+           84,
+           34
+          ],
+          "role": "leg",
+          "group": "B",
+          "z": -2,
+          "svg": "<rect x=\"-15\" y=\"0\" width=\"30\" height=\"76\" rx=\"13\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+         },
+         {
+          "id": "legFFL",
+          "parent": "legFF",
+          "at": [
+           0,
+           72
+          ],
+          "role": "lower",
+          "group": "B",
+          "svg": "<rect x=\"-11\" y=\"0\" width=\"22\" height=\"84\" rx=\"9\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"1\" cy=\"86\" rx=\"15\" ry=\"9\" fill=\"$hoof\" stroke=\"$out\" stroke-width=\"3\"/>"
+         },
+         {
+          "id": "legBF",
+          "parent": "body",
+          "at": [
+           -84,
+           34
+          ],
+          "role": "leg",
+          "group": "A",
+          "z": -2,
+          "svg": "<rect x=\"-15\" y=\"0\" width=\"30\" height=\"76\" rx=\"13\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+         },
+         {
+          "id": "legBFL",
+          "parent": "legBF",
+          "at": [
+           0,
+           72
+          ],
+          "role": "lower",
+          "group": "A",
+          "svg": "<rect x=\"-11\" y=\"0\" width=\"22\" height=\"84\" rx=\"9\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"1\" cy=\"86\" rx=\"15\" ry=\"9\" fill=\"$hoof\" stroke=\"$out\" stroke-width=\"3\"/>"
+         },
+         {
+          "id": "legFN",
+          "parent": "body",
+          "at": [
+           100,
+           34
+          ],
+          "role": "leg",
+          "group": "A",
+          "z": 1,
+          "svg": "<rect x=\"-15\" y=\"0\" width=\"30\" height=\"76\" rx=\"13\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+         },
+         {
+          "id": "legFNL",
+          "parent": "legFN",
+          "at": [
+           0,
+           72
+          ],
+          "role": "lower",
+          "group": "A",
+          "svg": "<rect x=\"-11\" y=\"0\" width=\"22\" height=\"84\" rx=\"9\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"1\" cy=\"86\" rx=\"15\" ry=\"9\" fill=\"$hoof\" stroke=\"$out\" stroke-width=\"3\"/>"
+         },
+         {
+          "id": "legBN",
+          "parent": "body",
+          "at": [
+           -100,
+           34
+          ],
+          "role": "leg",
+          "group": "B",
+          "z": 1,
+          "svg": "<rect x=\"-15\" y=\"0\" width=\"30\" height=\"76\" rx=\"13\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/>"
+         },
+         {
+          "id": "legBNL",
+          "parent": "legBN",
+          "at": [
+           0,
+           72
+          ],
+          "role": "lower",
+          "group": "B",
+          "svg": "<rect x=\"-11\" y=\"0\" width=\"22\" height=\"84\" rx=\"9\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\"/><ellipse cx=\"1\" cy=\"86\" rx=\"15\" ry=\"9\" fill=\"$hoof\" stroke=\"$out\" stroke-width=\"3\"/>"
+         },
+         {
+          "id": "head",
+          "parent": "body",
+          "at": [
+           98,
+           -28
+          ],
+          "role": "head",
+          "z": 0,
+          "svg": "<path d=\"M-34,34 L18,-92 L60,-70 L46,40 Z\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\" stroke-linejoin=\"round\"/><path d=\"M18,-92 L-8,-58 L-26,0 L-34,34 L-14,10 L8,-46 Z\" fill=\"$mane\" stroke=\"$out\" stroke-width=\"3\" stroke-linejoin=\"round\"/><path d=\"M30,-106 Q74,-130 122,-84 Q134,-66 120,-56 Q102,-52 86,-66 L52,-70 Z\" fill=\"$fur\" stroke=\"$out\" stroke-width=\"3.5\" stroke-linejoin=\"round\"/><ellipse cx=\"121\" cy=\"-68\" rx=\"9\" ry=\"7\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"2.5\"/>"
+         },
+         {
+          "id": "jaw",
+          "parent": "head",
+          "at": [
+           98,
+           -60
+          ],
+          "role": "jaw",
+          "svg": "<path d=\"M0,0 Q22,10 26,2 Q18,-4 0,-6 Z\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/>"
+         },
+         {
+          "id": "ear",
+          "parent": "head",
+          "at": [
+           44,
+           -104
+          ],
+          "role": "ear",
+          "z": 1,
+          "svg": "<polygon points=\"0,0 -8,-30 14,-6\" fill=\"$furD\" stroke=\"$out\" stroke-width=\"3\" stroke-linejoin=\"round\"/>"
+         },
+         {
+          "id": "tail",
+          "parent": "body",
+          "at": [
+           -118,
+           -28
+          ],
+          "role": "tail",
+          "z": -3,
+          "svg": "<path d=\"M0,0 Q-44,10 -54,84 Q-52,98 -42,80 Q-18,52 4,16 Z\" fill=\"$mane\" stroke=\"$out\" stroke-width=\"3\" stroke-linejoin=\"round\"/>"
+         }
+        ],
+        "eyes": [
+         {
+          "bone": "head",
+          "at": [
+           78,
+           -90
+          ],
+          "r": 6
+         }
+        ],
+        "scale": 1.7
+       },
+       "at": 0.15
+      },
+      {
+       "id": "raja",
+       "who": "customer",
+       "rides": "ghoda",
+       "skin": "medium",
+       "outfit": "kurta",
+       "top": "#7B1FA2",
+       "beard": "beard"
+      },
+      {
+       "id": "sevak",
+       "who": "student",
+       "at": 0.75,
+       "skin": "tan",
+       "top": "#2E86DE"
+      }
+     ],
+     "actions": [
+      {
+       "at": 0.3,
+       "who": "raja",
+       "do": "run",
+       "to": 0.6
+      },
+      {
+       "at": 2.6,
+       "who": "sevak",
+       "do": "pick",
+       "target": "crown-gift"
+      },
+      {
+       "at": 4.2,
+       "who": "raja",
+       "do": "say",
+       "text": "चलो शिकार पर!"
+      }
+     ],
+     "camera": {
+      "shot": "wide"
+     }
+    }
+   }
+  }
+ ],
+ "totalFrames": 180
+}

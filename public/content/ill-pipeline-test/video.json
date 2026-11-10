@@ -1,0 +1,272 @@
+{
+ "format": "longform",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "hi",
+ "title": "test",
+ "description": "",
+ "tags": [],
+ "totalFrames": 540,
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "राजकुमार विक्रम ने महामंत्री से कहा,",
+   "startFrame": 0,
+   "durationFrames": 97,
+   "duration": 3.2333333333333334,
+   "visual": {
+    "illustrated": {
+     "bg": "content/ill-pipeline-test/images/palace.png",
+     "grade": "dusk",
+     "fx": "embers",
+     "actors": [
+      {
+       "id": "king",
+       "url": "content/ill-pipeline-test/images/king.png",
+       "meta": {
+        "w": 589,
+        "h": 1158,
+        "neck": 230,
+        "neckX": 320.5,
+        "headTop": 0,
+        "feet": 1158,
+        "cx": 249.0
+       },
+       "height": 0.62,
+       "ground": 0.94,
+       "flip": true,
+       "x": 0.33
+      },
+      {
+       "id": "minister",
+       "url": "content/ill-pipeline-test/images/minister.png",
+       "meta": {
+        "w": 542,
+        "h": 1168,
+        "neck": 232,
+        "neckX": 331.5,
+        "headTop": 0,
+        "feet": 1168,
+        "cx": 297.5
+       },
+       "height": 0.6,
+       "ground": 0.94,
+       "flip": false,
+       "x": 0.68,
+       "talking": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s01",
+   "text": "आज मैं अकेले ही जंगल जाऊँगा।",
+   "startFrame": 97,
+   "durationFrames": 97,
+   "duration": 3.2333333333333334,
+   "visual": {
+    "illustrated": {
+     "bg": "content/ill-pipeline-test/images/palace.png",
+     "grade": "dusk",
+     "fx": "embers",
+     "cont": true,
+     "actors": [
+      {
+       "id": "king",
+       "url": "content/ill-pipeline-test/images/king.png",
+       "meta": {
+        "w": 589,
+        "h": 1158,
+        "neck": 230,
+        "neckX": 320.5,
+        "headTop": 0,
+        "feet": 1158,
+        "cx": 249.0
+       },
+       "height": 0.62,
+       "ground": 0.94,
+       "flip": true,
+       "x": 0.33,
+       "talking": true
+      },
+      {
+       "id": "minister",
+       "url": "content/ill-pipeline-test/images/minister.png",
+       "meta": {
+        "w": 542,
+        "h": 1168,
+        "neck": 232,
+        "neckX": 331.5,
+        "headTop": 0,
+        "feet": 1168,
+        "cx": 297.5
+       },
+       "height": 0.6,
+       "ground": 0.94,
+       "flip": false,
+       "x": 0.68
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s02",
+   "text": "सुबह की सुनहरी रोशनी में,",
+   "startFrame": 194,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "illustrated": {
+     "bg": "content/ill-pipeline-test/images/forest.png",
+     "grade": "day",
+     "fx": "rays",
+     "actors": [
+      {
+       "id": "king",
+       "url": "content/ill-pipeline-test/images/king.png",
+       "meta": {
+        "w": 589,
+        "h": 1158,
+        "neck": 230,
+        "neckX": 320.5,
+        "headTop": 0,
+        "feet": 1158,
+        "cx": 249.0
+       },
+       "height": 0.62,
+       "ground": 0.94,
+       "flip": true,
+       "x": 0.5,
+       "fromX": 0.12
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s03",
+   "text": "वह घने जंगल के रास्ते पर निकल पड़ा।",
+   "startFrame": 284,
+   "durationFrames": 90,
+   "duration": 3.0,
+   "visual": {
+    "illustrated": {
+     "bg": "content/ill-pipeline-test/images/forest.png",
+     "grade": "day",
+     "fx": "rays",
+     "cont": true,
+     "actors": [
+      {
+       "id": "king",
+       "url": "content/ill-pipeline-test/images/king.png",
+       "meta": {
+        "w": 589,
+        "h": 1158,
+        "neck": 230,
+        "neckX": 320.5,
+        "headTop": 0,
+        "feet": 1158,
+        "cx": 249.0
+       },
+       "height": 0.62,
+       "ground": 0.94,
+       "flip": true,
+       "x": 0.62,
+       "walk": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s04",
+   "text": "और तभी, उसके सामने,",
+   "startFrame": 374,
+   "durationFrames": 75,
+   "duration": 2.5,
+   "visual": {
+    "illustrated": {
+     "bg": "content/ill-pipeline-test/images/clearing.png",
+     "grade": "night",
+     "fx": "fireflies",
+     "actors": [
+      {
+       "id": "king",
+       "url": "content/ill-pipeline-test/images/king.png",
+       "meta": {
+        "w": 589,
+        "h": 1158,
+        "neck": 230,
+        "neckX": 320.5,
+        "headTop": 0,
+        "feet": 1158,
+        "cx": 249.0
+       },
+       "height": 0.62,
+       "ground": 0.94,
+       "flip": true,
+       "x": 0.3
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "s05",
+   "text": "एक सोने का हिरण आकर खड़ा हो गया।",
+   "startFrame": 449,
+   "durationFrames": 91,
+   "duration": 3.033333333333333,
+   "visual": {
+    "illustrated": {
+     "bg": "content/ill-pipeline-test/images/clearing.png",
+     "grade": "night",
+     "fx": "fireflies",
+     "cont": true,
+     "actors": [
+      {
+       "id": "king",
+       "url": "content/ill-pipeline-test/images/king.png",
+       "meta": {
+        "w": 589,
+        "h": 1158,
+        "neck": 230,
+        "neckX": 320.5,
+        "headTop": 0,
+        "feet": 1158,
+        "cx": 249.0
+       },
+       "height": 0.62,
+       "ground": 0.94,
+       "flip": true,
+       "x": 0.3
+      },
+      {
+       "id": "deer",
+       "url": "content/ill-pipeline-test/images/deer.png",
+       "meta": {
+        "w": 741,
+        "h": 801,
+        "neck": 255,
+        "neckX": 144.0,
+        "headTop": 0,
+        "feet": 801,
+        "cx": 455.3
+       },
+       "height": 0.4,
+       "ground": 0.94,
+       "flip": false,
+       "x": 0.72,
+       "fromX": 1.05
+      }
+     ]
+    }
+   }
+  }
+ ]
+}

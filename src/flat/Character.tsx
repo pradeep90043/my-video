@@ -634,7 +634,7 @@ const Headwear: React.FC<{ c: CharacterSpec; ink: (s: string) => string }> = ({ 
       </g>
     );
     case "ten-heads": {
-      // Ravana: a main crown with a row of nine smaller crowned faces above it
+      // Ravana: a main crown with nine smaller crowned faces stacked on it in three tiers (5, 3, 1), drawn top tier first
       const skin = ink(skinColor(c.skin)), dk = ink(shade(skinColor(c.skin), -0.25));
       const row = (n: number, y: number, r: number) => Array.from({ length: n }, (_, i) => {
         const x = (i - (n - 1) / 2) * r * 2.05;
@@ -652,7 +652,7 @@ const Headwear: React.FC<{ c: CharacterSpec; ink: (s: string) => string }> = ({ 
         <g>
           <path d="M -86 -880 L -86 -946 L -52 -910 L -26 -964 L 0 -914 L 26 -964 L 52 -910 L 86 -946 L 86 -880 Z" fill={col} />
           <rect x={-88} y={-892} width={176} height={18} fill={dark} rx={4} />
-          {row(9, -1030, 44)}
+          {row(1, -1170, 34)}{row(3, -1085, 34)}{row(5, -990, 36)}
         </g>
       );
     }

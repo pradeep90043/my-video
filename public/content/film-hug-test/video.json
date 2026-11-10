@@ -1,0 +1,124 @@
+{
+ "format": "shorts",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "horizontal",
+ "language": "en",
+ "title": "film-hug-test",
+ "description": "",
+ "tags": [],
+ "scenes": [
+  {
+   "id": "s00",
+   "text": "",
+   "startFrame": 0,
+   "durationFrames": 180,
+   "duration": 6,
+   "visual": {
+    "transition": "cut",
+    "shot": {
+     "secs": 6,
+     "place": "park",
+     "time": "day",
+     "props": [
+      {
+       "id": "gift",
+       "kind": "gift",
+       "at": 0.2,
+       "on": "floor"
+      }
+     ],
+     "cast": [
+      {
+       "id": "maa",
+       "who": "seller",
+       "at": 0.25,
+       "shirt": "#a8574a"
+      },
+      {
+       "id": "ravi",
+       "who": "student",
+       "at": 0.75,
+       "shirt": "#3e6fa8"
+      }
+     ],
+     "actions": [
+      {
+       "at": 0.4,
+       "who": "maa",
+       "do": "pick",
+       "target": "gift"
+      },
+      {
+       "at": 2.2,
+       "who": "maa",
+       "do": "give",
+       "target": "ravi"
+      },
+      {
+       "at": 4.2,
+       "who": "ravi",
+       "do": "hug",
+       "target": "maa"
+      }
+     ],
+     "camera": {
+      "shot": "wide"
+     }
+    }
+   }
+  },
+  {
+   "id": "s01",
+   "text": "",
+   "startFrame": 180,
+   "durationFrames": 150,
+   "duration": 5,
+   "visual": {
+    "transition": "cut",
+    "shot": {
+     "secs": 5,
+     "place": "bedroom",
+     "time": "day",
+     "props": [
+      {
+       "id": "phone",
+       "kind": "phone",
+       "on": "nightstand"
+      }
+     ],
+     "cast": [
+      {
+       "id": "ravi",
+       "who": "student",
+       "at": 0.6,
+       "shirt": "#3e6fa8"
+      }
+     ],
+     "actions": [
+      {
+       "at": 0.4,
+       "who": "ravi",
+       "do": "pick",
+       "target": "phone"
+      },
+      {
+       "at": 2.6,
+       "who": "ravi",
+       "do": "use",
+       "target": "phone",
+       "dur": 2
+      }
+     ],
+     "camera": {
+      "shot": "medium",
+      "on": "ravi"
+     }
+    }
+   }
+  }
+ ],
+ "totalFrames": 330
+}

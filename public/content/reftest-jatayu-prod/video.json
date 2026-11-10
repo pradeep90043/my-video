@@ -1,0 +1,3384 @@
+{
+ "format": "short",
+ "template": "stickman",
+ "theme": "dark",
+ "composition": "StickmanVideo",
+ "fps": 30,
+ "orientation": "vertical",
+ "language": "hi",
+ "title": "जटायु गिद्ध की वीरता: रावण के सामने कितना समय टिक पाएगा?",
+ "description": "",
+ "tags": [],
+ "totalFrames": 3648,
+ "scenes": [
+  {
+   "id": "s01",
+   "text": "क्या आप जानते हैं कि देवताओं से भी डरने वाला रावण, ज़मीन पर सीधे गिरा?",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 1,
+     "topic": "palace",
+     "shot": 0,
+     "cont": false,
+     "bg": "palace",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 30,
+       "pose": "scared",
+       "mood": "scared",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false
+      },
+      {
+       "id": "jatayu",
+       "x": 70,
+       "pose": "stand",
+       "mood": "scared",
+       "flip": true,
+       "scale": 1,
+       "delay": 8,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "mountains",
+      "fx": "none",
+      "camera": "push",
+      "title": "डरला रावण",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "hold",
+        "mood": "evil",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "tag": {
+         "name": "रावण"
+        }
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-golden-deer-with-ruby-eyes-f4772687",
+        "say": "तेरे पास हूं?",
+        "tag": {
+         "name": "हिंरा"
+        },
+        "x": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-golden-deer-with-ruby-eyes-f4772687": {
+       "type": "animal",
+       "description": "golden deer with ruby eyes",
+       "creature": {
+        "height": 500,
+        "length": 800,
+        "body": "slim",
+        "color": "#FFD700",
+        "belly": "#FFEA8A",
+        "legs": 4,
+        "legLength": 0.55,
+        "legThick": 0.2,
+        "neck": 0.3,
+        "head": "long",
+        "headSize": 0.4,
+        "ears": "pointed",
+        "horns": "antlers",
+        "hornColor": "#B8860B",
+        "mane": false,
+        "maneColor": "#7a4a1a",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "thin",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "none",
+        "patternColor": "#5a3a20",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": true
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 0,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s02",
+   "text": "और जिसने यह लौका था, वही एक बूढ़ा उपद्रव?",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 1,
+     "topic": "forest",
+     "shot": 1,
+     "cont": false,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1.15,
+       "delay": 0,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    }
+   },
+   "startFrame": 96,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s03",
+   "text": "सब लोग समझते हैं कि जटायु सबरे में बस एक पल टिक पाए। लेकिन वाल्मीक रामायण पढ़ो,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 2,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1.15,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 40,
+       "fromPose": "stand"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    }
+   },
+   "startFrame": 192,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s04",
+   "text": "तो समझ आता है कि उसने राघव को ऐसा हाल कर दिया था कि उसे अंत में चंडाल का सहारा लेना पड़ा।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 3,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "give",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1.15,
+       "delay": 0,
+       "speaking": false,
+       "holds": "gift",
+       "react": "no",
+       "fromX": 40,
+       "fromPose": "stand"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    }
+   },
+   "startFrame": 288,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s05",
+   "text": "आज मैं आपको बताऊंगा कि वह सैन्य गृह योद्धा कैसे था,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 4,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1.15,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 40,
+       "fromPose": "give"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    }
+   },
+   "startFrame": 384,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s06",
+   "text": "और वह वो क्या बातें सीखते हैं जो अक्सर हमें छूट जाती हैं,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 5,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1.15,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 40,
+       "fromPose": "stand"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "room",
+      "fx": "sparkle",
+      "camera": "push",
+      "title": "अनकही बातें",
+      "cast": [],
+      "graphic": {
+       "type": "list",
+       "items": [
+        "कर्म और धर्म",
+        "निस्वार्थ प्रेम",
+        "सच्चा त्याग"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "star",
+        "heart",
+        "check"
+       ]
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 480,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s07",
+   "text": "और अंत में मैं वह एक रहस्य भी उजागर करूंगा जो इस इतिहास की गहराई में छिपा है।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 6,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1.15,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 40,
+       "fromPose": "stand"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "fireflies",
+      "camera": "push",
+      "palette": [
+       "#120826",
+       "#2b124c"
+      ],
+      "title": "इतिहास का रहस्य",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "एक छिपा हुआ रहस्य"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 576,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s08",
+   "text": "कहानी शुरू होती है पंचवट्टी के जंगल से।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 7,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "talk",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1.15,
+       "delay": 0,
+       "speaking": true,
+       "says": "नी शुरू होती है पंचवट्टी…",
+       "fromX": 40,
+       "fromPose": "stand"
+      }
+     ],
+     "props": [
+      {
+       "type": "tree",
+       "x": 50,
+       "air": 0,
+       "scale": 1.3,
+       "anim": "none",
+       "delay": 6
+      }
+     ],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "dust",
+      "camera": "push",
+      "title": "पंचवटी का जंगल",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "idle",
+        "mood": "calm",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "x": 0.5,
+        "tag": {
+         "name": "सीता"
+        }
+       }
+      ],
+      "set": [
+       {
+        "kind": "tree",
+        "x": 0.2
+       },
+       {
+        "kind": "tree",
+        "x": 0.8
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "none",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#d32f2f",
+       "lower": "saree",
+       "lowerColor": "#d32f2f",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "earrings",
+        "bangles",
+        "belt"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 672,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s09",
+   "text": "एक पेड़ पर, इन्सान की उम्र के साथ जटायु सो रहे थे।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 8,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "sleep",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 40,
+       "fromPose": "talk"
+      }
+     ],
+     "props": [
+      {
+       "type": "tree",
+       "x": 50,
+       "air": 0,
+       "scale": 1.3,
+       "anim": "none",
+       "delay": 6
+      }
+     ],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "विशालकाय जटायु",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "idle",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand",
+        "x": 0.2
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird",
+        "tag": {
+         "name": "जटायु",
+         "sub": "दिव्य पक्षी"
+        },
+        "x": 0.5,
+        "scale": 1.2
+       }
+      ],
+      "set": [
+       {
+        "kind": "tree",
+        "x": 0.5
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "none",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#d32f2f",
+       "lower": "saree",
+       "lowerColor": "#d32f2f",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "earrings",
+        "bangles",
+        "belt"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 768,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s10",
+   "text": "तभी माता सीता की चीख सुनकर उनकी नींद कुली।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 9,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "scared",
+       "mood": "surprised",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 50,
+       "fromPose": "sleep"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "storm",
+      "camera": "push",
+      "title": "संकट की पुकार",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "cry",
+        "mood": "scared",
+        "talking": true,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand",
+        "x": 0.3,
+        "say": "रक्ष करें!"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird",
+        "x": 0.7,
+        "scale": 1.1
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "none",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#d32f2f",
+       "lower": "saree",
+       "lowerColor": "#d32f2f",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "earrings",
+        "bangles",
+        "belt"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 864,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s11",
+   "text": "उन्होंने देखा कि रावण सीता को अपने रथ पर उठाकर ले जा रहा है।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 10,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 70,
+       "pose": "carry",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false
+      },
+      {
+       "id": "sita",
+       "x": 30,
+       "pose": "cry",
+       "mood": "scared",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "car",
+       "x": 50,
+       "air": 0,
+       "scale": 1.3,
+       "anim": "none",
+       "delay": 6
+      }
+     ],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "सीता का अपहरण",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "hold",
+        "mood": "evil",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       },
+       {
+        "id": "sita",
+        "gesture": "cry",
+        "mood": "scared",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "set": [
+       {
+        "kind": "chariot",
+        "x": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      },
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "none",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#d32f2f",
+       "lower": "saree",
+       "lowerColor": "#d32f2f",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "earrings",
+        "bangles",
+        "belt"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 960,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s12",
+   "text": "जटायु ने पहले मैदाव करने की कोशिश की।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 11,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "dust",
+      "camera": "push",
+      "title": "जटायु की चुनौती",
+      "cast": [],
+      "animals": [
+       {
+        "kind": "bird",
+        "x": 0.7
+       }
+      ]
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1056,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s13",
+   "text": "उन्होंने कहा, रावण, मैं बूढ़ा हूं और तुम जवान।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 12,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 30,
+       "pose": "talk",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": true,
+       "says": "रावण, मैं बूढ़ा हूं और…",
+       "fromX": 50,
+       "fromPose": "fight"
+      },
+      {
+       "id": "ravan",
+       "x": 70,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "बुढ़ापा बनाम जवानी",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "arms-crossed",
+        "mood": "evil",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "framing": "medium"
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1152,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s14",
+   "text": "तुम्हारे पास चंदा बाट, कच और रत है।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 13,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 30,
+       "pose": "talk",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": true,
+       "fromX": 30,
+       "fromPose": "talk"
+      },
+      {
+       "id": "ravan",
+       "x": 70,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "fromX": 70,
+       "fromPose": "stand"
+      }
+     ],
+     "props": [
+      {
+       "type": "car",
+       "x": 50,
+       "air": 0,
+       "scale": 1.3,
+       "anim": "none",
+       "delay": 6
+      }
+     ],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "रावण का अहंकार",
+      "cast": [],
+      "graphic": {
+       "type": "list",
+       "items": [
+        "धनुष",
+        "कवच",
+        "रथ"
+       ],
+       "subs": [],
+       "values": [],
+       "icons": [
+        "bow",
+        "star",
+        "star"
+       ]
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1248,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s15",
+   "text": "लेकिन सुन लो, जब तक मैं जीवित हूं,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 14,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "talk",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": true,
+       "fromX": 30,
+       "fromPose": "talk"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "अटल प्रतिज्ञा",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "point",
+        "mood": "angry",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1344,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s16",
+   "text": "तुम माता सेला को लेकर सुरानत नहीं जा सकते।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 15,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "carry",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": true,
+       "react": "no",
+       "fromX": 50,
+       "fromPose": "talk"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "माता की रक्षा",
+      "cast": [
+       {
+        "id": "sita",
+        "gesture": "think",
+        "mood": "sad",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird",
+        "x": 0.3
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "none",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#d32f2f",
+       "lower": "saree",
+       "lowerColor": "#d32f2f",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "earrings",
+        "bangles",
+        "belt"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1440,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s17",
+   "text": "रावण ने उनकी बात नहीं मानी और आगे बढ़ने लगा।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 16,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 20,
+       "pose": "walk",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "react": "no"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "रावण का दुस्साहस",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "point",
+        "mood": "evil",
+        "talking": true,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "say": "हट जाओ पक्षी!"
+       }
+      ],
+      "set": [
+       {
+        "kind": "chariot",
+        "x": 0.6,
+        "scale": 1.2
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1536,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s18",
+   "text": "तभी जटायु ने आसमान में उड़कर रावण पर हमला कर दिया।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 17,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 80,
+       "pose": "run",
+       "mood": "angry",
+       "flip": true,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false
+      },
+      {
+       "id": "ravan",
+       "x": 30,
+       "pose": "scared",
+       "mood": "scared",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "fromX": 20,
+       "fromPose": "walk"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "sky",
+      "fx": "clouds",
+      "camera": "push",
+      "title": "आकाश में युद्ध",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "attack",
+        "mood": "angry",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird",
+        "x": 0.5,
+        "scale": 1.5,
+        "moveTo": 0.2
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1632,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s19",
+   "text": "सबसे पहले उन्होंने अपने पैरों से रावण का धनुष तोड़ दिया,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 18,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "struggle",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 80,
+       "fromPose": "run"
+      },
+      {
+       "id": "ravan",
+       "x": 50,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "holds": "sword",
+       "fromX": 30,
+       "fromPose": "scared"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "sky",
+      "fx": "sparkle",
+      "camera": "push",
+      "title": "धनुष खंडित",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "hold-up",
+        "mood": "neutral",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand",
+        "prop": "bow"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird",
+        "x": 0.5
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1728,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s20",
+   "text": "फिर पंजों से कच फाड़ डाला।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 19,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "struggle",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 50,
+       "fromPose": "struggle"
+      },
+      {
+       "id": "ravan",
+       "x": 50,
+       "pose": "tired",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "fromX": 50,
+       "fromPose": "fight"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "sky",
+      "fx": "embers",
+      "camera": "push",
+      "title": "कवच पर प्रहार",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "shrug",
+        "mood": "surprised",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird",
+        "x": 0.5
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 1824,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s21",
+   "text": "लेकिन तभी एक अद्भुत घटना घटी, जिसे सुनकर आपका भी जवाब मुड़ जाएगा।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 20,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "think",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": true,
+       "react": "no",
+       "fromX": 50,
+       "fromPose": "struggle"
+      }
+     ],
+     "props": [],
+     "fx": "sparkle"
+    },
+    "flat": {
+     "shot": {
+      "bg": "palace",
+      "fx": "embers",
+      "camera": "push",
+      "title": "एक अद्भुत घटना",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "एक अद्भुत घटना घटी"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 1920,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s22",
+   "text": "जटायु ने रावण के रथ की ओर तेज़ी से उड़ते हुए सबसे पहले उसके रत्नों से जड़े धनुष को अपने बड़े पैर से तोड़ दिया।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 21,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 60,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 50,
+       "fromPose": "think"
+      },
+      {
+       "id": "ravan",
+       "x": 70,
+       "pose": "scared",
+       "mood": "scared",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "chest",
+       "x": 70,
+       "air": 0,
+       "scale": 1.3,
+       "anim": "shake",
+       "delay": 6
+      }
+     ],
+     "fx": "sparkle"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "dust",
+      "camera": "push",
+      "title": "धनुष तोड़ना",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "idle",
+        "mood": "angry",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird",
+        "tag": {
+         "name": "जटायु"
+        }
+       }
+      ],
+      "set": [
+       {
+        "kind": "chariot",
+        "x": 0.5
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2016,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s23",
+   "text": "फिर अपने पंखों की तीखी चोट से वह चमकता हुआ कवच फाड़ कर रावण के कंधे से उड़ा दिया।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 22,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 60,
+       "fromPose": "fight"
+      },
+      {
+       "id": "ravan",
+       "x": 60,
+       "pose": "cry",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "fromX": 70,
+       "fromPose": "scared"
+      }
+     ],
+     "props": [],
+     "fx": "sparkle"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "sparkle",
+      "camera": "push",
+      "title": "कवच फाड़ना",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "idle",
+        "mood": "angry",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2112,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s24",
+   "text": "रथ को खींचने वाले खच्चरों के चेहरे पिशाचों जैसे थे,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 23,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 30,
+       "pose": "angry",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 60,
+       "fromPose": "cry"
+      }
+     ],
+     "props": [
+      {
+       "type": "horse",
+       "x": 80,
+       "air": 0,
+       "scale": 1.5,
+       "anim": "shake",
+       "delay": 6
+      }
+     ],
+     "fx": "smoke"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "dust",
+      "camera": "push",
+      "title": "खच्चर के चेहरे",
+      "cast": [],
+      "animals": [
+       {
+        "kind": "bird"
+       }
+      ]
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 2208,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s25",
+   "text": "पर जटायु ने अपनी तीखी चोंच से उन्हें एक‑एक करके गिरा दिया,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 24,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false
+      }
+     ],
+     "props": [
+      {
+       "type": "horse",
+       "x": 80,
+       "air": 0,
+       "scale": 1,
+       "anim": "pop",
+       "delay": 6
+      }
+     ],
+     "fx": "leaves"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "dust",
+      "camera": "push",
+      "title": "पिशाच गिरना",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "idle",
+        "mood": "angry",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird"
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2304,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s26",
+   "text": "और रथ के सारथी का सिर भी काट कर उसे बिखेर दिया।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 25,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 50,
+       "fromPose": "fight"
+      },
+      {
+       "id": "ravan",
+       "x": 70,
+       "pose": "tired",
+       "mood": "scared",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "fx": "smoke"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "dust",
+      "camera": "push",
+      "title": "सारथी का सिर",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "idle",
+        "mood": "angry",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird"
+       }
+      ],
+      "set": [
+       {
+        "kind": "chariot",
+        "x": 0.5
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2400,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s27",
+   "text": "रावण जमीन पर गिरा, फिर भी उसकी आँखों में साहस की चमक थी।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 26,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 50,
+       "pose": "sad",
+       "mood": "worried",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 70,
+       "fromPose": "tired"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "embers",
+      "camera": "push",
+      "title": "साहस की चमक",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "idle",
+        "mood": "sad",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "framing": "close",
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2496,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s28",
+   "text": "जटायु ने तुरंत उसकी दसों बाएँ भुजाओं को चोंच से काटा,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 27,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false
+      },
+      {
+       "id": "ravan",
+       "x": 60,
+       "pose": "cry",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "fromX": 50,
+       "fromPose": "sad"
+      }
+     ],
+     "props": [],
+     "fx": "lightning"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "embers",
+      "camera": "push",
+      "title": "भुजा काटना",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "idle",
+        "mood": "scared",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2592,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s29",
+   "text": "लेकिन जहाँ से भुजाएं गिरी थीं, वहाँ से नई भुजाएँ विष की ज्वालाओं जैसी उभर आईं,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 28,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 50,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "holds": "sword",
+       "react": "yes",
+       "fromX": 60,
+       "fromPose": "cry"
+      }
+     ],
+     "props": [
+      {
+       "type": "sword",
+       "x": 50,
+       "air": 0,
+       "scale": 1.3,
+       "anim": "shake",
+       "delay": 6
+      }
+     ],
+     "fx": "smoke"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "embers",
+      "camera": "push",
+      "title": "नई भुजाएँ",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "idle",
+        "mood": "scared",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2688,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s30",
+   "text": "जैसे कोई सांप बिल से अचानक बाहर निकलता हो।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 29,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 50,
+       "pose": "angry",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "react": "surprise",
+       "fromX": 50,
+       "fromPose": "fight"
+      }
+     ],
+     "props": [
+      {
+       "type": "tree",
+       "x": 20,
+       "air": 0,
+       "scale": 1.3,
+       "anim": "none",
+       "delay": 6
+      }
+     ],
+     "fx": "leaves"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "embers",
+      "camera": "push",
+      "title": "विष की ज्वालाएँ",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "idle",
+        "mood": "scared",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2784,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s31",
+   "text": "यह दृश्य जटायु को भी हैरान कर गया।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 30,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "stand",
+       "mood": "surprised",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "react": "surprise"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "जटायु का आश्चर्य",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "हैरान!"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 2880,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s32",
+   "text": "अब जटायु थका‑थका था, जबकि रावण ने उसी मौके का फायदा उठाया।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 31,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 30,
+       "pose": "tired",
+       "mood": "sad",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "acts": [
+        {
+         "at": 0,
+         "pose": "tired"
+        },
+        {
+         "at": 0.5,
+         "pose": "carry"
+        }
+       ],
+       "fromX": 50,
+       "fromPose": "stand"
+      },
+      {
+       "id": "ravan",
+       "x": 70,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": true,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "dust",
+      "camera": "push",
+      "title": "मौका मिला",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "raise",
+        "mood": "evil",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "bird",
+        "say": "थक गया",
+        "tag": {
+         "name": "जटायु",
+         "sub": "eagle"
+        },
+        "x": 0.6,
+        "scale": 0.8
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 2976,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s33",
+   "text": "उसने जटायु के पंख, पैर और दोनों बगले काट दिए, और वह जमीन पर गिर पड़ा,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 32,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 40,
+       "pose": "cry",
+       "mood": "sad",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 30,
+       "fromPose": "carry"
+      },
+      {
+       "id": "ravan",
+       "x": 70,
+       "pose": "fight",
+       "mood": "angry",
+       "flip": true,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "fromX": 70,
+       "fromPose": "fight"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "कट",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "attack",
+        "mood": "evil",
+        "talking": false,
+        "enter": "none",
+        "look": "center",
+        "posture": "stand",
+        "prop": "sword"
+       }
+      ],
+      "cont": true
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      }
+     ]
+    }
+   },
+   "startFrame": 3072,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s34",
+   "text": "अपना शरीर नहीं बचा सका।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 33,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "jatayu",
+       "x": 50,
+       "pose": "cry",
+       "mood": "sad",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "react": "no",
+       "fromX": 40,
+       "fromPose": "cry"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "night",
+      "fx": "stars",
+      "camera": "push",
+      "title": "दुर्भाग्य",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "अपना शरीर नहीं बचा सका"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 3168,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s35",
+   "text": "रावण अपना रथ, धनुष और सारथी खोकर भी सिया को लेकर आगे बढ़ गया।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 34,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 30,
+       "pose": "carry",
+       "mood": "angry",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "react": "no"
+      },
+      {
+       "id": "sita",
+       "x": 70,
+       "pose": "scared",
+       "mood": "sad",
+       "flip": true,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "forest",
+      "fx": "none",
+      "camera": "push",
+      "title": "अडिग रावण",
+      "cast": [
+       {
+        "id": "ravana",
+        "gesture": "raise",
+        "mood": "evil",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand",
+        "prop": "bow"
+       },
+       {
+        "id": "sita",
+        "gesture": "idle",
+        "mood": "calm",
+        "talking": false,
+        "enter": "fade",
+        "look": "center",
+        "posture": "stand"
+       }
+      ],
+      "animals": [
+       {
+        "kind": "drawn-part-cdbdbec1",
+        "x": 0.2,
+        "scale": 0.7
+       }
+      ]
+     },
+     "cast": [
+      {
+       "id": "ravana",
+       "name": "रावण",
+       "gender": "male",
+       "age": "adult",
+       "build": "heavy",
+       "head": "human",
+       "skin": "#5c6b63",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "crown",
+       "headwearColor": "#e2a93b",
+       "upper": "armor",
+       "upperColor": "#b58428",
+       "lower": "dhoti",
+       "lowerColor": "#b71c1c",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "armlets",
+        "belt",
+        "sash"
+       ],
+       "mark": "tilak",
+       "facial": "moustache",
+       "eyes": "glow",
+       "fangs": true,
+       "silhouette": false
+      },
+      {
+       "id": "sita",
+       "name": "सीता",
+       "gender": "female",
+       "age": "adult",
+       "build": "slim",
+       "head": "human",
+       "skin": "fair",
+       "hair": "long",
+       "hairColor": "#111111",
+       "headwear": "none",
+       "headwearColor": "#e2a93b",
+       "upper": "blouse",
+       "upperColor": "#d32f2f",
+       "lower": "saree",
+       "lowerColor": "#d32f2f",
+       "accent": "#e2a93b",
+       "accessories": [
+        "necklace",
+        "earrings",
+        "bangles",
+        "belt"
+       ],
+       "mark": "bindi",
+       "facial": "none",
+       "eyes": "normal",
+       "fangs": false,
+       "silhouette": false
+      }
+     ],
+     "drawn": {
+      "drawn-part-cdbdbec1": {
+       "type": "animal",
+       "description": "रथ",
+       "creature": {
+        "height": 1000,
+        "length": 1200,
+        "body": "long",
+        "color": "#d4af37",
+        "belly": "#f4e8c1",
+        "legs": 2,
+        "legLength": 0.5,
+        "legThick": 0.6,
+        "neck": 0.4,
+        "head": "long",
+        "headSize": 0.5,
+        "ears": "pointed",
+        "horns": "none",
+        "hornColor": "#efe6d2",
+        "mane": true,
+        "maneColor": "#8b4513",
+        "trunk": false,
+        "hump": false,
+        "shell": false,
+        "shellColor": "#5a8a4c",
+        "tail": "long",
+        "wings": false,
+        "wingColor": "#8a6a4a",
+        "pattern": "none",
+        "patternColor": "#5a3a20",
+        "plates": false,
+        "plateColor": "#c0502a",
+        "frill": false,
+        "arms": false,
+        "teeth": false
+       }
+      }
+     }
+    }
+   },
+   "startFrame": 3264,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s36",
+   "text": "अपने विचार कमेंट में बताइए।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pull",
+    "story": {
+     "look": "story",
+     "run": 35,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 30,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "fromX": 30,
+       "fromPose": "carry"
+      },
+      {
+       "id": "sita",
+       "x": 70,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": true,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "fromX": 70,
+       "fromPose": "scared"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "plain",
+      "fx": "none",
+      "camera": "push",
+      "title": "आपकी राय",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "अपने विचार कमेंट में बताइए"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 3360,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s37",
+   "text": "अगर आपको यह कहानी पसंद आई,",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "push",
+    "story": {
+     "look": "story",
+     "run": 36,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 30,
+       "pose": "talk",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": true,
+       "says": "नी पसंद आई",
+       "fromX": 30,
+       "fromPose": "stand"
+      },
+      {
+       "id": "sita",
+       "x": 70,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": true,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "fromX": 70,
+       "fromPose": "stand"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "glow",
+      "fx": "none",
+      "camera": "push",
+      "title": "धन्यवाद",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "अगर आपको कहानी पसंद आई"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 3456,
+   "durationFrames": 96,
+   "duration": 3.2
+  },
+  {
+   "id": "s38",
+   "text": "तो चैनल को सब्सक्राइब करना न भूलें और अगली वीडियो में जटायु के ६०,००० साल के इतिहास के रहस्यों को देखें।",
+   "visual": {
+    "pose": "idle",
+    "mood": "neutral",
+    "camera": "pan-right",
+    "story": {
+     "look": "story",
+     "run": 37,
+     "topic": "forest",
+     "shot": 1,
+     "cont": true,
+     "bg": "forest",
+     "time": "day",
+     "chars": [
+      {
+       "id": "ravan",
+       "x": 30,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": false,
+       "scale": 1,
+       "delay": 0,
+       "speaking": false,
+       "react": "no",
+       "fromX": 30,
+       "fromPose": "talk"
+      },
+      {
+       "id": "sita",
+       "x": 70,
+       "pose": "stand",
+       "mood": "neutral",
+       "flip": true,
+       "scale": 1,
+       "delay": 4,
+       "speaking": false,
+       "fromX": 70,
+       "fromPose": "stand"
+      }
+     ],
+     "props": [],
+     "fx": "none"
+    },
+    "flat": {
+     "shot": {
+      "bg": "sunburst",
+      "fx": "none",
+      "camera": "push",
+      "palette": [
+       "#ffcc00",
+       "#ff6600"
+      ],
+      "title": "सब्सक्राइब",
+      "cast": [],
+      "graphic": {
+       "type": "statement",
+       "items": [],
+       "subs": [],
+       "values": [],
+       "icons": [],
+       "text": "सब्सक्राइब करें और देखें"
+      }
+     },
+     "cast": []
+    }
+   },
+   "startFrame": 3552,
+   "durationFrames": 96,
+   "duration": 3.2
+  }
+ ]
+}
