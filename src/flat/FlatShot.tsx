@@ -85,9 +85,17 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
   const rowLen = onGround.reduce((n, a) => n + sizeOf(a.kind).len * a.scale, 0) || 1;
   const maxTall = Math.max(1, ...shot.animals.map((a) => sizeOf(a.kind).tall * a.scale));
   const kShot = Math.min(kBase, (W * 0.94) / rowLen, (groundY - H * 0.2) / maxTall);
+  // a winged creature beside people: no bigger than half the frame's width, on the left with the people to its right, near the ground
+  // (lifted only in a sky scene, and then just above head height), so it is never cropped or hovering far overhead
+  const flyers = shot.animals.filter((a) => flies(a.kind));
+  const withPeople = hasCast && flyers.length > 0;
+  const kFly = flyers.length ? Math.min(kShot, ((withPeople || shot.set.length ? 0.5 : 0.66) * W) / Math.max(1, ...flyers.map((a) => sizeOf(a.kind).len * a.scale))) : kShot;
+  const flyLift = withPeople ? (shot.bg === "sky" ? H * 0.12 : 0) : shot.bg === "sky" ? H * 0.3 : 0;
   const animals = wide ? shot.animals.map((a, i) => {
-    const k = kShot * a.scale, x0 = (a.x ?? (i + 0.5) / shot.animals.length) * W;
-    let x = x0, walking = false;
+    const k = (flies(a.kind) ? kFly : kShot) * a.scale, x0 = (flies(a.kind) && !withPeople && shot.set.some((sp) => Math.abs(sp.x - (a.x ?? 0.5)) < 0.22) ? 0.74 : a.x ?? (flies(a.kind) && withPeople ? 0.27 : (i + 0.5) / shot.animals.length)) * W;
+    // a flyer never runs off the edge of the frame
+    const half = flies(a.kind) ? (sizeOf(a.kind).len * k) / 2 : 0;
+    let x = flies(a.kind) ? Math.max(half, Math.min(W - half, x0)) : x0, walking = false;
     if (a.moveTo != null) {
       const span = Math.max(1.5, (Math.abs(a.moveTo * W - x0) / (W * 0.22)));
       const q = clamp01(t / span); x = x0 + (a.moveTo * W - x0) * ease(q); walking = q < 1;
@@ -100,7 +108,7 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
     const spec = chars.get(c.id)!;
     const k = kBase * (crop ? 1 : c.scale);
     const spread = crop && cast.length === 2 ? [0.27, 0.73][i] : undefined;
-    const baseX = (spread ?? c.x ?? SPREAD[cast.length]?.[i] ?? (i + 0.5) / cast.length) * W;
+    const baseX = (spread ?? c.x ?? (withPeople && !crop ? 0.56 + ((i + 0.5) / cast.length) * 0.4 : undefined) ?? SPREAD[cast.length]?.[i] ?? (i + 0.5) / cast.length) * W;
     // entrance
     const e = ease(t / (c.enter.startsWith("slide") ? WALK_SEC : 0.45));
     let x = baseX, y = groundY, opacity = 1, sc = 1, walking = false;
@@ -155,7 +163,7 @@ export const FlatShotSvg: React.FC<ShotProps> = ({ shot: raw, characters: rawCha
         {animals.map((m, i) => (
           <g key={`an${i}`}>
             <ellipse cx={m.x} cy={groundY - 4 * u} rx={300 * m.k} ry={26 * m.k} fill="#000" opacity={0.2} />
-            <g transform={`translate(${m.x} ${groundY - (flies(m.a.kind) ? H * 0.4 + Math.sin(t * 1.4 + i) * 20 * u : 0)}) scale(${m.k * (m.flip ? -1 : 1)} ${m.k})`}>{m.a.kind.startsWith("drawn-") ? <DrawnArt part={drawn[m.a.kind]} t={t + i} walking={m.walking} /> : <Animal kind={m.a.kind} color={m.a.color} t={t + i} walking={m.walking} />}</g>
+            <g transform={`translate(${m.x} ${groundY - (flies(m.a.kind) ? flyLift + Math.sin(t * 1.4 + i) * 20 * u : 0)}) scale(${m.k * (m.flip ? -1 : 1)} ${m.k})`}>{m.a.kind.startsWith("drawn-") ? <DrawnArt part={drawn[m.a.kind]} t={t + i} walking={m.walking} /> : <Animal kind={m.a.kind} color={m.a.color} t={t + i} walking={m.walking} />}</g>
           </g>
         ))}
         {people.map((q) => (
