@@ -57,6 +57,17 @@ export const CinematicScene: React.FC<{ spec: PhotoSpec; theme: Theme; accent: s
   const panX = interpolate(t, [0, 1], [-18, 18]);
   const fade = interpolate(frame, [0, 8], [0, 1], { extrapolateRight: "clamp" });
 
+  // a clip another engine already composed (the piece engine): played as it is, nothing added; the video's own captions, voice and music are layered by the caller
+  if (spec.raw && spec.video && hasMedia) {
+    return (
+      <g opacity={fade}>
+        <foreignObject x={0} y={0} width={W} height={H}>
+          <OffthreadVideo src={src} muted startFrom={Math.round(spec.startFrom * fps)} style={{ width: W, height: H, objectFit: "cover" }} />
+        </foreignObject>
+      </g>
+    );
+  }
+
   // darker where the words sit; an AI picture gets a heavier cover
   const shade = spec.dim ? 0.62 : 0.38;
 
