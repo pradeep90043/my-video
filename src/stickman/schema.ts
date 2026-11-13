@@ -321,6 +321,8 @@ export const PhotoSchema = z.object({
   points: z.array(z.string().min(1).max(44)).max(4).optional(),
   /** full: the picture is an AI image (vague): darken it so the words carry the scene */
   dim: z.boolean().optional(),
+  /** a clip another engine already composed (the piece engine): played as it is, full frame, with no zoom, no cover and no text of its own. Needs `video` and `full`. */
+  raw: z.boolean().optional(),
 });
 
 /** A timed one-shot sound (footsteps, door, alarm, …) inside a scene. */
